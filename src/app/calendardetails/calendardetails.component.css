@@ -1,0 +1,15 @@
+.hover_show .price_b {
+    display: none !important
+}
+.hover_show:hover .price_b {
+    display: block !important
+}
+.hover_show:hover .price {
+    display: none !important
+}
+div.active {
+    display: block !important;
+}
+div.notactive {
+    display: none !important;
+}

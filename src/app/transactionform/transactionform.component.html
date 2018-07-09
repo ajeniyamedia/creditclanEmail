@@ -1,0 +1,82 @@
+<form #f="ngForm" novalidate>
+    <div class="row">
+        <div class="col-md-10">
+            <div class="form-group " [ngClass]="{'has-error': errors.ACCOUNT_ID, '': !errors.ACCOUNT_ID}">
+                <label for="" class="control-label">Account</label>
+                <select (ngModelChange)="changeAccountType($event)" class="form-control js-example-basic-single" style="width:100%" id="ACCOUNT_ID"
+                    name="ACCOUNT_ID" [(ngModel)]="transaction.ACCOUNT_ID">
+                    <option value="0"></option>
+
+                    <option *ngFor="let com of com_accounts" [ngValue]="com">{{com.GL_NAME}}|{{com.GL_CODE}}</option>
+                    <option *ngFor="let cus of people_customers" [ngValue]="cus">{{cus.LEGAL_NAME}}|{{cus.ACCOUNT_NUMBER}}</option>
+
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group " [ngClass]="{'has-error': errors.INTRAFOLIONUMBER, '': !errors.INTRAFOLIONUMBER}">
+                <label class="control-label" id="IFN">IFN</label>
+                <input class="form-control" type="number" value="1" id="INTRAFOLIONUMBER" name="INTRAFOLIONUMBER" [(ngModel)]="transaction.INTRAFOLIONUMBER">
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="transaction?.ISA=='1'">
+        <div class="col-md-6">
+            <div class="form-group" [ngClass]="{'has-error': errors.OTHER_FORM_TYPE, '': !errors.OTHER_FORM_TYPE}">
+                <label for="" class="control-label">Account Type</label>
+                <select (ngModelChange)="changeOtherFormType($event)" class="form-control" id="OTHER_FORM_TYPE" name="OTHER_FORM_TYPE" [(ngModel)]="transaction.OTHER_FORM_TYPE">
+                    <option [value]="0">select</option>
+                    <option [value]="1">Loan</option>
+                    <option [value]="2">Investments</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group b b_1 animated" [ngClass]="{'has-error': errors.LOANS, '': !errors.LOANS}" *ngIf="transaction.OTHER_FORM_TYPE=='1'">
+                <label class="no-margin control-label">Loans</label>
+                <select class="form-control" id="LOANS" style="width:100%" name="LOANS" [(ngModel)]="transaction.LOANS">
+                    <option *ngFor="let loan of loans" [ngValue]="loan">{{loan?.REQUEST_ID}}</option>
+                </select>
+            </div>
+            <div class="form-group b b_1 animated" [ngClass]="{'has-error': errors.INVESTMENTS, '': !errors.INVESTMENTS}" *ngIf="transaction.OTHER_FORM_TYPE=='2'">
+                <label class="no-margin control-label">Investments</label>
+                <select class="form-control" id="INVESTMENTS" style="width:100%" name="INVESTMENTS" [(ngModel)]="transaction.INVESTMENTS">
+                    <option *ngFor="let investment of investments" [ngValue]="investment">{{investment?.INVESTMENT_ID}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group" [ngClass]="{'has-error': errors.AMOUNT, '': !errors.AMOUNT}">
+                <label for="" class="control-label">Debit</label>
+                <input type="text" (ngModelChange)="transaction.AMOUNT_=0" class="form-control" id="AMOUNT" name="AMOUNT" value="0" [(ngModel)]="transaction.AMOUNT">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group" [ngClass]="{'has-error': errors.AMOUNT_, '': !errors.AMOUNT_}">
+                <label for="" class="control-label">Credit</label>
+                <input type="text" (ngModelChange)="transaction.AMOUNT=0" class="form-control" id="AMOUNT_" name="AMOUNT_" value="0" [(ngModel)]="transaction.AMOUNT_">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group" [ngClass]="{'has-error': errors.DATE_ADDED, '': !errors.DATE_ADDED}">
+            <label for="" class="control-label col-md-6">Date</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" ngui-datetime-picker date-only="true" name="DATE_ADDED" [(ngModel)]="transaction.DATE_ADDED">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="" class="control-label">Narrative</label>
+                <input id="NARRATIVE" class="form-control" name="NARRATIVE" [(ngModel)]="transaction.NARRATIVE">
+            </div>
+        </div>
+    </div>
+    <button (click)="save(f.value, f.valid)" class="btn btn-white btn-block" style="margin-bottom:15px">{{issearching?'Update Entry':'Add Entry'}}
+        <i class="fa fa-spin fa-spinner hide"></i>
+    </button>
+</form>

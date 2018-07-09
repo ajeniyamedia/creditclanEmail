@@ -1,0 +1,412 @@
+<!-- Navigation -->
+<section class="panel" style="margin-bottom:0px">
+    <header class="panel-heading">
+        <span class="tools pull-right">
+            <ul class="list-inline">
+                <li>
+                    <a [routerLink]="['../contract']">Summary</a>
+                </li>
+                <li>
+                    <a [routerLink]="['../repayments']">Schedule</a>
+                </li>
+                <li>
+                    <a [routerLink]="['../more']">More</a>
+                </li>
+            </ul>
+        </span>
+        <span>LOAN GUARANTORS</span>
+    </header>
+</section>
+
+<!-- Stat -->
+<section class="panel" *ngIf="showGuarantorList">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-9">
+                <div *ngIf="searchingGuarantors">
+                    <h4>Search Guarantors</h4>
+                    <div style="background: #FAFAFA; border: 1px solid #ccc;padding: 12px; margin-top: 5px">
+                        <input type="text" name="" style="border: none; background: none; font-size: 16px; width: 100%; max-width: 92%;" placeholder="" [(ngModel)]="model.lender_name" (keyup.enter)="search_for_guarantors()">
+                        <img src="assets/images/search.PNG" style="vertical-align: top;" (click)="search_for_guarantors()">
+                    </div>
+                </div>
+                <div *ngIf="!searchingGuarantors">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="panel-icon offer_made">
+                                <p class="count">{{guarantors_summary?.INVITATIONS_SENT}}
+                                    <br>
+                                    <span>Invitations</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="panel-icon offer_accepted">
+                                <p class="count">{{guarantors_summary?.INVITATIONS_ACCEPTED}}
+                                    <br>
+                                    <span>Accepted</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="panel-icon offer_funded">
+                                <p class="count">{{guarantors_summary?.INVITATIONS_REJECTED}}
+                                    <br>
+                                    <span>Rejected</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 8px; padding-bottom: 8px">
+                    <span class="pull-left">Rejected</span>
+                    <span class="pull-right">
+                        {{guarantors_summary?.INVITATIONS_REJECTED}}
+                    </span>
+                    <div class="clearfix"></div>
+                </div>
+                <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;padding-bottom: 8px" *ngIf="loan?.LOAN_STATUS <= 2">
+                    <div>
+                        <span class="pull-left">Actions</span>
+                        <span class="pull-right">
+                            <div class="btn-group">
+
+                                <button aria-expanded="false" class="btn btn-xs btn-white dropdown-toggle" data-toggle="dropdown" type="button">
+                                    <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li *ngIf="loan_product?.SEND_GUARANTOR_INVITESnpm start">
+                                <a (click)="addGuarantors=!addGuarantors">
+                                    <i class="fa fa-plus"></i> Add Guarantor</a>
+                            </li>
+                            <li>
+                                <a (click)="searchingGuarantors=!searchingGuarantors">
+                                    <i class="fa fa-search"></i> Search</a>
+                            </li>
+                        </ul>
+                    </div>
+                    </span>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <a class="btn btn-white btn-block edged_box">Back</a>
+        </div>
+    </div>
+    </div>
+</section>
+
+<!-- List of Guarantors -->
+<section class="panel" style="background:none" *ngIf="showGuarantorList">
+    <div *ngFor="let guarantor of guarantors">
+        <article class="media" [ngClass]="{'borbot': fromcustomer != '0'}" style="margin: 5px 0px;background: #fff;padding: 5px;cursor:pointer; margin-bottom:0px">
+            <div class="pull-left thumb p-thumb" (click)="openGuarantor(guarantor?.RG_ID)">
+                <img src="assets/attachments/avatar-mini.jpg" style="width:50px; height:50px">
+            </div>
+            <button class="btn btn-white pull-right" *ngIf="fromcustomer != '0'">View</button>
+            <button class="btn btn-white pull-right disabled" *ngIf="guarantor?.STATUS == '0'">Pending</button>
+            <button (click)="openGuarantor(guarantor?.RG_ID)" class="btn btn-white pull-right" *ngIf="guarantor?.STATUS != '0'">View</button>
+            <div class="media-body">
+                <p class=" p-head" href="javascript:;">{{guarantor?.GUARANTOR_NAME}}</p>
+                <p>{{guarantor?.GUARANTOR_PEOPLE_EMAIL}}</p>
+                <p>{{guarantor?.DATE_ADDED | amDateFormat:'LL'}}</p>
+            </div>
+        </article>
+        <article *ngIf="guarantorOpen==guarantor?.RG_ID && guarantor?.STATUS!='0'" class="media animated ben" style="margin-top:0px; background:#fff; border-top:1px solid #eaeaea">
+            <div *ngIf="fromcustomer != '0'">
+                <div style="width: 80%; margin:10px auto;">
+                    <ul>
+                        <li class="text-left black_c sub_title ">
+                            <span class="small"> Loan Amount</span>
+                            <p class="no-margin black_c pull-right" style="">{{guarantor?.request_principal | number:'.2-2'}}</p>
+                        </li>
+                        <li class="text-left black_c sub_title " *ngIf="guarantor?.loan_status>1">
+                            <span class="small"> Expiry Date</span>
+                            <p class="no-margin black_c pull-right" style="">{{guarantor?.expiry_date | amDateFormat:'LL'}}</p>
+                        </li>
+                    </ul>
+                    <a [routerLink]="['/loan',guarantor?.request_id]" class="btn btn-white pull-right">View Loan</a>
+                </div>
+            </div>
+            <app-viewguarantor *ngIf="fromcustomer == '0'" (uploaded)="someMethod($event)" [guarantor_request_id]="guarantor?.RG_ID"></app-viewguarantor>
+        </article>
+    </div>
+</section>
+
+<!-- Empty State -->
+<section class="panel" *ngIf="gua_count==0">
+    <div class="panel-body">
+        <div class="text-center" style="margin:20px 0px">
+            <a href="javascript:;" style="font-size:40px">
+                <i class="fa fa-meh-o"></i>
+            </a>
+            <h3 style="margin-bottom: 26px; text-align: center;">No guarantors</h3>
+        </div>
+    </div>
+</section>
+
+<!-- Load Single Guarantor -->
+<div *ngIf="!showGuarantorList">
+    <section class="panel" *ngIf="loading"></section>
+    <div *ngIf="!loading">
+        <header class="panel-heading" style="background: #fff; margin-top: -10px;">
+            <small><a href="javascript:;" (click)="showGuarantorLists()">&lt; Back</a></small>
+            <span class="tools pull-right">
+                <button class="btn btn-success btn-xs" (click)="accept_guarantor()">Accept</button>
+                <button class="btn btn-danger btn-xs" (click)="reject_guarantor()">Reject</button>
+                <button class="btn btn-danger btn-xs" (click)="requestForCard()">Send For Card</button>
+            </span>
+        </header>
+
+        <!-- New View Guarantor -->
+        <div>
+            <ul class="frm">
+                <!-- Basic Information -->
+                <li class="title basic_title">Basic Details
+                    <a class="pull-right co-panel hide" data-sub="basic" style="color:#000">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="pull-right co-panel_ fadeIn" data-sub="basic" style="color:#000">
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                </li>
+                <li class="sub basic animated">
+                    <div class="_profile_edit_toogle collapse in">
+                        <div class="panel-body bio">
+                            <div class="col-md-4">
+                                <div class="form-group row profile-nav " style="margin-bottom:0;">
+                                    <div class="user-heading round" style="background:none;padding-top: 0px !important;">
+                                        <a class="staff-education_add" style="cursor:pointer;">
+                                            <img class="prev_img_1" src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507989748/avatar-mini.jpg">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bio-d" style="overflow:hidden">
+                                <div class="pro_head" style="    padding-top: 15px;">
+                                    <h4 class="no-margin blue_c" style=" color: blue; word-wrap:break-word">{{model.basicInfo.prev["LEGAL_NAME"]}}</h4>
+                                    <p _ngcontent-c13="">{{model.basicInfo.prev["EMAIL"]}}</p>
+                                    <div style="width: 100%;max-width: 450px;margin: 20px auto; padding-top: 10px; border-top: 1px solid #d9d9d9; margin-left: 0 ">
+                                        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Details</span>
+                                                <span class="pull-right">{{gprofile?.data.guarantor.details.has_phone?gprofile?.data.guarantor.details.phone.PHONE:'No Phone Added'}}</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <span class="pull-right">{{model.basicInfo.prev["DATE_OF_BIRTH"]?model.basicInfo.prev["DATE_OF_BIRTH"]: 'No Date of Birth'}}</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <span class="pull-right">{{model.basicInfo.prev["GENDER"] == 1 ? 'Male' : 'Female'}}</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <span *ngFor="let status of marital_status">
+                                                    <span class="pull-right" *ngIf="status.value == model.basicInfo.prev['MARITAL_STATUS']">{{status.display}}</span>
+                                                </span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <!-- Address -->
+                <li class="title address_title">Home Address
+                    <a class="pull-right co-panel hide" data-sub="address" href="javascript:;" style="color:#000"><i class="fa fa-chevron-up"></i></a>
+                    <a class="pull-right co-panel_ " data-sub="address" style="color:#000"><i class="fa fa-chevron-down"></i></a>
+                </li>
+                <li class="sub address animated">
+                    <div class="_profile_edit_toogle collapse in">
+                        <div class="panel-body bio">
+                            <div class="bio-d" style="overflow:hidden">
+                                <div class="pro_head" style="    padding-top: 15px;">
+                                    <div style="width: 100%;max-width: 450px;margin: 20px auto; padding-top: 10px;">
+                                        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Address</span>
+                                                <span class="pull-right">{{model.address.prev["ADDRESS"]}}</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Country</span>
+                                                <span class="pull-right">{{model.address.prev["COUNTRY"] == 1 ? 'Nigeria' : "Non Nigeria - model.address.prev['COUNTRY']"}}</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div style="border-bottom: 1px solid #d9d9d9; margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Landmark</span>
+                                                <span class="pull-right">{{model.address.prev["LANDMARK"]}}</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div style="margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Nature of Accomodation</span>
+                                                <span class="pull-right">{{model.address.prev["NATURE_OF_ACCOMODATION"]}}</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <span class="pull-right">{{model.address.prev["TIME_AT_CURRENT_ADDRESS"]}} Year(s)</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <!-- Work -->
+                <li class="title">Work Information
+                    <a class="pull-right co-panel hide" data-sub="nextofkin" href="javascript:;" style="color:#000"><i class="fa fa-chevron-up"></i></a>
+                    <a class="pull-right co-panel_ fadeIn" data-sub="nextofkin" style="color:#000"><i class="fa fa-chevron-down"></i></a>
+                </li>
+                <li class="sub nextofkin animated">
+                    <div class="_profile_edit_toogle collapse in">
+                        <div class="panel-body bio">
+                            <div class="bio-d" style="overflow:hidden">
+                                <div class="pro_head" style="    padding-top: 15px;" *ngIf="model.work.prev.OCCUPATION_ID == 1 || model.work.prev.OCCUPATION_ID == 2 ||  model.work.prev.OCCUPATION_ID == 4">
+                                    <div style="width: 100%;max-width: 450px;margin: 20px auto; padding-top: 10px;">
+                                        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Company Name</span>
+                                                <span class="pull-right">{{model.work.prev.COMPANY_OF_WORK}}</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div  style="border-bottom: 1px solid #d9d9d9; margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Work Sector</span>
+                                                <span class="pull-right">{{model.work.prev.WORK_SECTOR}}</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div  style="border-bottom: 1px solid #d9d9d9; margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Work Address</span>
+                                                <span class="pull-right">{{model.work.prev.WORK_ADDRESS}}</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div  style="border-bottom: 1px solid #d9d9d9; margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Work Date</span>
+                                                <span class="pull-right">
+                                                    <span *ngFor="let month of months">
+                                                        <span class="pull-right" *ngIf="month.value == model.work.prev.START_MONTH">{{month.display}}</span>
+                                                    </span>
+                                                    <span>&nbsp;{{model.work.prev.START_YEAR}}</span> 
+                                                </span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>                                                                                
+                                    </div>
+                                </div>
+                                <div class="pro_head" style="    padding-top: 15px;" *ngIf="model.work.prev.OCCUPATION_ID ==7">
+                                    <div style="width: 100%;max-width: 450px;margin: 20px auto; padding-top: 10px;">
+                                        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Unemployed</span>
+                                                <span class="pull-right">{{model.work.prev.COMPANY_OF_WORK}}</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                                                                                   
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <!-- Account and Card -->
+                <li class="title">Bank Account and Repayment Card
+                    <a class="pull-right co-panel hide" data-sub="nextofkin" href="javascript:;" style="color:#000"><i class="fa fa-chevron-up"></i></a>
+                    <a class="pull-right co-panel_ fadeIn" data-sub="nextofkin" style="color:#000"><i class="fa fa-chevron-down"></i></a>
+                </li>
+                <li class="sub nextofkin animated">
+                    <div class="_profile_edit_toogle collapse in">
+                        <div class="panel-body bio">
+                            <div class="bio-d" style="overflow:hidden">
+                                <div class="pro_head" style="    padding-top: 15px;">
+                                    <div style="width: 100%;max-width: 450px;margin: 20px auto; padding-top: 10px;">
+
+
+                                        <!-- Card -->
+                                        <div *ngIf="!gprofile?.data.guarantor.details.has_card"><h5>No Cards Added</h5></div>
+                                        <div *ngIf="gprofile?.data.guarantor.details.has_card && gprofile?.data.guarantor.details.acct_card.CARD_VALIDATED_THROUGH=='2'">
+                                            <div>                                                
+                                                <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                                    <div class="form-group">
+                                                        Bank:
+                                                        <span class="pull-right">{{gprofile?.data.guarantor.details.acct_card.PAYSTACK_CHECK_ID.authorization.bank}}</span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        Card Type:
+                                                        <span class="pull-right">{{gprofile?.data.guarantor.details.acct_card.PAYSTACK_CHECK_ID.authorization.card_type}}</span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        Last Four Digits:
+                                                        <span class="pull-right">{{gprofile?.data.guarantor.details.acct_card.PAYSTACK_CHECK_ID.authorization.last4}}</span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        Exp Month/Year:
+                                                        <span class="pull-right">{{gprofile?.data.guarantor.details.acct_card.PAYSTACK_CHECK_ID.authorization.exp_month}}|{{gprofile?.data.guarantor.details.acct_card.PAYSTACK_CHECK_ID.authorization.exp_year}}</span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>                                                
+                                            </div>                                            
+                                        </div>
+
+                                        
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>                
+            </ul>
+        </div>
+        <!--// End New View -->
+
+
+    </div>
+</div>
+
+<!-- Add Guarantors -->
+<div *ngIf="addGuarantors">
+    <section class="panel">
+        <div class="panel-body">
+            <div style="">
+                <div class="offer_form">
+                    <h4>Enter the email of each guarantor to be invited</h4>
+                    <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
+                        <div>
+                            <!-- <tag-input [(ngModel)]="items" [editable]="true" [separatorKeyCodes]="[32, 188]" [allowDupes]="false" [validators]="validators" [errorMessages]="errorMessages"></tag-input> -->
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:10px">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <button class="btn btn-pink btn-block edged_box" (click)="sendGuarantorInvites()" [disabled]="!items||loading"><span *ngIf="!loading">Send Invitations</span><i *ngIf="loading" class="fa fa-spinner fa-spin"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

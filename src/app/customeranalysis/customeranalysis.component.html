@@ -1,0 +1,98 @@
+<!-- loading -->
+<div *ngIf="loading">
+    <section class="panel ">
+        <div class="panel-body" >
+            <div class="row">
+                <div class="col-md-12" style='margin-top:50px;text-align: center;'>
+                    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div *ngIf="!loading">
+    <section class="panel contract_area hideable_area" style="margin-bottom: 10px">
+        <header class="panel-heading">
+            <span class="tools pull-right">
+                <ul class="list-inline">
+                    <li>
+                        <a [routerLink]="['../contract']">Summary</a>
+                    </li>
+                    <li>
+                      <a [routerLink]="['../checklist']">Checklist</a>
+                  </li>
+                    <li>
+                        <a [routerLink]="['../repayments']">Schedule</a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['../more']">More</a>
+                    </li>
+                </ul>
+            </span>
+            <span>Analysis</span>
+        </header>
+    </section>
+    <form #analysisform="ngForm" novalidate>
+        <section class="panel">
+            
+            <div class="panel-body" style="position:relative">
+                <span class="t_l4 t_cool ">Send Request for Analytics</span>
+                <div class="act_btns pull-right col-md-3">
+                    <button [disabled]="analysis_settings.ENABLE_GENERAL == false && analysis_settings.ENABLE_SOCIAL == false && analysis_settings.ENABLE_CREDIT_BUREAU == false" (click)="saveAnlysisRequest(analysisform.value, analysisform.valid)" class="btn btn-white btn-block edged_box t_cool" style="border-color: rgba(248, 73, 3, 0.849);color: rgba(248, 73, 3, 0.849);">Begin</button>
+                </div>
+                <p>Enjoy the benefits of our analytics</p>
+            </div>
+        </section>
+
+        <!-- request-->
+        <section class="panel">
+            <div class="panel-body" style="position:relative">
+                <div class="col-md-6">
+                    <div class="panel-iconn">
+                        <p class="amount"> &#8358;{{amount}}
+                            <br>
+                            <span>FperRequest</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                <ul class="list list_border">
+                    <li class="text-left">
+                        <span class="t_cool" style="font-size:13px;">Analytics for your underwriting just scaled</span>
+                    </li>
+                    <li class="text-left">
+                    <span>
+                        <input type="checkbox" name="ENABLE_GENERAL" (ngModelChange)="changeAnalysisAmount($event,'1')" [(ngModel)]="analysis_settings.ENABLE_GENERAL">
+                    </span>
+                    <span class="analysis-txt">
+                        <strong>General:</strong> Enjoy the benefit of extraordinary
+                        Analytics on your loan underwriting
+                        . We are better than anything currently in the eco
+                    </span>
+                    
+                    </li>
+                    <li>
+                    <span>
+                        <input type="checkbox" name="ENABLE_SOCIAL" (ngModelChange)="changeAnalysisAmount($event,'2')" [(ngModel)]="analysis_settings.ENABLE_SOCIAL">
+                    </span>
+                    <span class="analysis-txt">
+                        <strong>Social:</strong> Enjoy the benefit of extraordinary Analytics on your loan underwriting
+                        . We are better than anything currently in the eco
+                    </span>
+                    </li>
+                    <li>
+                    <span>
+                        <input type="checkbox" name="ENABLE_CREDIT_BUREAU" (ngModelChange)="changeAnalysisAmount($event,'3')" [(ngModel)]="analysis_settings.ENABLE_CREDIT_BUREAU">
+                    </span>
+                    <span class="analysis-txt"> 
+                        <strong>Creidit Bureau:</strong> Enjoy the benefit of extraordinary Analytics on your loan underwriting
+                        . We are better than anything currently in the eco
+                    </span>
+                    </li>
+                </ul>
+                </div>
+            </div>
+        </section>
+    </form>
+
+</div>

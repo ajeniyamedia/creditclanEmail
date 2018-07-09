@@ -1,0 +1,201 @@
+<section class="panel" style="min-height:500px" *ngIf="issearching">
+    <header class="panel-heading" style="overflow:auto;padding: 5px 10px">
+        <span class="tools pull-right">
+            <a (click)="issearching=!issearching">
+                <i class="fa fa-arrow-left"></i> Add More</a>
+        </span>
+    </header>
+    <div class="panel-body" style="padding:10px">
+        <div class="row">
+            <div class="col-md-6">
+                <section class="panel panl" style="margin-bottom: 5px">
+                    <div class="panel-body" style="padding:7.5px">
+                        <article class="media">
+
+                            <div class="pull-left" style="margin-top: 5px">
+                                <h4 class="no-margin" style="word-wrap:break-word; margin-bottom: 10px">Total Debit</h4>
+                            </div>
+                            <a class="pull-right">{{journal.TOTAL_DEBIT}}</a>
+                        </article>
+                    </div>
+                </section>
+
+            </div>
+            <div class="col-md-6">
+                <section class="panel panl" style="margin-bottom: 5px">
+                    <div class="panel-body" style="padding:7.5px">
+                        <article class="media">
+
+                            <div class="pull-left" style="margin-top: 5px">
+                                <h4 class="no-margin" style="word-wrap:break-word; margin-bottom: 10px">Total Credit</h4>
+                            </div>
+                            <a class="pull-right">{{journal.TOTAL_CREDIT}}</a>
+                        </article>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="row hover_toggle_desc">
+            <div class="col-md-6">
+                <section class="panel panl hover_toggle" style="margin-bottom: 5px" *ngFor="let debit of debits;let i=index">
+                    <div class="panel-body" style="padding:7.5px">
+                        <article class="media">
+
+                            <div class="pull-left thumb" style="margin-top: 5px">
+                                <h6 class="no-margin" style="word-wrap:break-word; margin-bottom: 0px">{{debit.ISA=="1"?debit.ACCOUNT_ID.LEGAL_NAME:debit.ACCOUNT_ID.GL_NAME}}</h6>
+                            </div>
+                            <a class="pull-right">{{debit.AMOUNT}}</a>
+                            <a class="pull-right hover_show" (click)="deleteTransaction('1',i)">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                            <div class="media-body" style="display:block">
+                                {{debit.NARRATIVE}}
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+            </div>
+            <div class="col-md-6">
+                <section class="panel panl hover_toggle" style="margin-bottom: 5px" *ngFor="let credit of credits;let i=index">
+                    <div class="panel-body" style="padding:7.5px">
+                        <article class="media">
+
+                            <div class="pull-left thumb" style="margin-top: 5px">
+                                <h6 class="no-margin" style="word-wrap:break-word; margin-bottom: 0px">{{credit.ISA=="1"?credit.ACCOUNT_ID.LEGAL_NAME:credit.ACCOUNT_ID.GL_NAME}}</h6>
+                            </div>
+                            <a class="pull-right">{{credit.AMOUNT_}}</a>
+                            <a class="pull-right hover_show" (click)="deleteTransaction('2',i)">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                            <div class="media-body" style="display:block">
+                                {{credit.NARRATIVE}}
+                            </div>
+                        </article>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+<section class="panel" style="min-height:500px" *ngIf="!issearching">
+    <form #f="ngForm" novalidate>
+        <div class="panel-body" style="padding:0px">
+
+
+            <article class="media hover_toggle_desc" style="border-bottom: 1px solid #eee;
+        padding: 15px;">
+
+                <div class="pull-left" style="margin-top: 5px">
+                    <p class="no-margin t_lh1 t_l4" style="font-size: 14px">{{journal?.JOURNAL_ENTRY_ID}}|{{journal?.DATE_ADDED}}|{{journal?.NARRATION}}</p>
+                </div>
+
+
+                <div class="pull-right text-right hover_toggle">
+                    <button class="pull-right btn btn-white wd_btn hover_show" [disabled]="loading" (click)="saveJournal()" style="border-radius: 0">Save Journal
+                        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+                    </button>
+                    <button *ngIf="edit" class="pull-right btn btn-white wd_btn hover_show" [disabled]="loading" (click)="approveJournal()" style="border-radius: 0">Approve Journal
+                        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+                    </button>
+                    <button *ngIf="edit" class="pull-right btn btn-white wd_btn hover_show" [disabled]="loading" (click)="rejectJournal()" style="border-radius: 0">Reject Journal
+                        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+                    </button>
+                    <button class="pull-right btn btn-white wd_btn hover_show" [disabled]="loading" (click)="updateJournal=!updateJournal" style="border-radius: 0">Update Details</button>
+                </div>
+            </article>
+        </div>
+        <div class="panel-body" *ngIf="updateJournal" style="padding:10px 10px 10px 10px">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class=" form-inline">
+                        <div class="form-group" [ngClass]="{'has-error': errors.DATE_ADDED, '': !errors.DATE_ADDED}">
+                            <label class="control-label">Date</label>
+                            <input type="text" class="form-control" ngui-datetime-picker date-only="true" name="DATE_ADDED" [(ngModel)]="journal.DATE_ADDED">
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class=" form-inline">
+
+                        <div class="form-group" [ngClass]="{'has-error': errors.NARRATION, '': !errors.NARRATION}" style="width:100%">
+                            <label class="control-label">Narration</label>
+                            <input type="text" class="form-control" id="NARRATION" name="NARRATION" [(ngModel)]="journal.NARRATION" style="width:100%">
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <div class=" form-inline">
+                        <label class="control-label">&nbsp;</label>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="USE_AS_SUB" id="USE_AS_SUB" [(ngModel)]="journal.USE_AS_SUB"> Use as Subnarration</label>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="panel-body" *ngIf="!loading">
+            <div style="margin:0px auto; width:60%">
+                <app-transactionform [issearching]="isediting" (doTheTransfer)="doTransfer($event)" [currentUser]="currentUser" [com_accounts]="com_accounts"
+                    [people_customers]="people_customers" (addTransactionToJournal)="addTransactionToJournal($event)" (deleteTransaction)="deleteTransaction($event)"></app-transactionform>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row" *ngIf="secOpen=='total'" (mouseenter)="secOpen='preview'">
+                <div class="col-md-6">
+                    <section class="panel panl" style="margin-bottom: 5px">
+                        <div class="panel-body"  [ngClass]="{'has-errors': has_error, '': !has_error}">
+                            <article class="media">
+
+                                <div class="pull-left" style="margin-top: 5px">
+                                    <h4 class="no-margin" style="word-wrap:break-word; margin-bottom: 10px">Total Debit</h4>
+                                </div>
+                                <a class="pull-right">{{journal.TOTAL_DEBIT}}</a>
+                            </article>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-6">
+                    <section class="panel panl" style="margin-bottom: 5px">
+                        <div class="panel-body"  [ngClass]="{'has-errors': has_error, '': !has_error}">
+                            <article class="media">
+
+                                <div class="pull-left" style="margin-top: 5px">
+                                    <h4 class="no-margin" style="word-wrap:break-word; margin-bottom: 10px">Total Credit</h4>
+                                </div>
+                                <a class="pull-right">{{journal.TOTAL_CREDIT}}</a>
+                            </article>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="row" *ngIf="secOpen=='preview'" (mouseleave)="secOpen='total'">
+                <div class="col-md-12">
+                    <section class="panel panl" style="margin-bottom: 5px">
+                        <div class="panel-body">
+                            <article class="media">
+
+                                <div class="pull-left" style="margin-top: 5px">
+                                    <h4 class="no-margin" style="word-wrap:break-word; margin-bottom: 10px">View / Modify Details</h4>
+                                </div>
+                                <a class="pull-right btn btn-white wd_btn" style="border-radius: 0" (click)="issearching=!issearching">View</a>
+                            </article>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</section>

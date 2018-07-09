@@ -1,0 +1,76 @@
+/* Statement Table */
+
+.statement {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 14px;
+	padding: 10px;
+	background: #FBFBFB;
+}
+
+.statement .panel-default{
+	border: 1px solid #ddd;
+}
+
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>thead>tr>th {
+    padding: 8px;
+}
+
+.table>thead>tr>th {
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+
+
+/* Key Value Table*/
+
+.key-value-table {
+    border: 1px solid #D5D5D5;
+    border-collapse: collapse;
+    border-spacing: 1px;
+    width: 100%;
+    word-wrap: break-word;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.key-value-table caption {
+    background-color: #F0F0F0;
+    color: #656565;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.5;
+    padding: 5px;
+    text-align: center;
+    text-shadow: none !important;
+    border: 1px solid #D5D5D5;
+    text-transform: capitalize;
+    border-bottom: 0;
+}
+
+.key-value-table th {
+    text-align: right;
+    background-color: #F0F0F0;
+    font-weight: 700;
+    color: #656565;
+    padding: 3px 6px !important;
+    vertical-align: top !important;
+    border: 1px solid #D5D5D5;
+    width: 40%;
+}
+
+.key-value-table .wide th {
+    width: 60%;
+}
+
+.key-value-table td {
+    overflow: hidden;
+    padding: 3px 6px;
+    vertical-align: middle;
+    border: 1px solid #D5D5D5;
+    border-right: none;
+}

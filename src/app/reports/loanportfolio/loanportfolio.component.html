@@ -1,0 +1,154 @@
+<div class="container-fluid" style="margin-top:120px;">
+  <div class="row reports">
+
+      <div class="col-md-12 report_heading">
+          <div class="panel panel-default box">
+              <div class="panel-heading" style="background: rgba(240,240,240,.5);">
+                  <span style="line-height: 2.2em">Loan Portfolio Report</span>
+                  <!-- <div class="form-inline pull-right">
+                      
+                      <div class="input-group">
+                          <input type="text" name="TPDATE" class="form-control" [(ngModel)]="filter.TPDATE" ngui-datetime-picker date-only="true" />
+                          <span class="input-group-addon">To</span>
+                          <input type="text" name="TPDATE_" class="form-control" [(ngModel)]="filter.TPDATE_" ngui-datetime-picker date-only="true"
+                          />
+                      </div>
+                      
+                      <button (click)="getLoans()" class="btn btn-primary btn-tp edged_box" [disabled]="loading">Submit <i *ngIf="loading" class="fa fa-spinner fa-spin"></i></button>
+                  </div> -->
+                  <div class="form-inline pull-right">  
+                    <div class="form-group">
+                            <select (change)="changeFilter($event)" class="form-control" id="FILTER_TYPE" [(ngModel)]="filterStatus" >
+                                  
+                                 <option *ngFor="let opt of filter_types" [value]="opt.value">{{opt.display}}</option>
+                                </select>
+                            </div>                      
+                
+                <div class="input-group" *ngIf="filterStatus=='date_duration'">
+                    <input type="text" name="TPDATE" class="form-control" [(ngModel)]="filter.TPDATE" ngui-datetime-picker date-only="true" />
+                    <span class="input-group-addon">To</span>
+                    <input type="text" name="TPDATE_" class="form-control" [(ngModel)]="filter.TPDATE_" ngui-datetime-picker date-only="true"
+                    />
+                </div>
+               
+                    <div class="form-group" *ngIf="filterStatus=='company'">
+                        <select class="form-control" id="COMPANY" [(ngModel)]="filter.COMPANY">
+                        <option value="">select</option>
+                      <option *ngFor="let company of companies" [ngValue]="company">{{company?.LEGAL_NAME}}</option>          
+                        </select>
+                        </div>
+                        <button (click)="getLoans()" class="btn btn-primary btn-tp edged_box" [disabled]="loading">Submit <i *ngIf="loading" class="fa fa-spinner fa-spin"></i></button>
+            </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-md-12 mbot15">
+            <div class="row report_aggregate">
+                    <div class="col-md-3">
+                            <div class="aggregate">
+                                <section class="panel text-center">
+          
+                                    <div class="value">
+                                        <h1 class=" count4 mbot0">{{aggregate?.summary.total_loans_in_portfolio|number:'.2-2'}}</h1>
+                                        <p>Total Loans</p>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                          <div class="aggregate">
+                            <section class="panel text-center">
+          
+                                <div class="value">
+                                    <h1 class=" count4 mbot0">{{aggregate?.total_count_loans_in_portfolio}}</h1>
+                                    <p>Count</p>
+                                </div>
+                            </section>
+                            </div>
+                        </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                                <div class="col-md-4">
+                                        <div class="aggregate">
+                                                <section class="panel text-center">
+                              
+                                                    <div class="value">
+                                                        <h1 class=" count4 mbot0">{{aggregate?.total_repayment|number:'.2-2'}}</h1>
+                                                        <p>Total Repayment</p>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                            
+                                    </div>
+                                    <div class="col-md-4">
+                                            <div class="aggregate">
+                                                    <section class="panel text-center">
+                                  
+                                                        <div class="value">
+                                                            <h1 class=" count4 mbot0">{{aggregate?.total_paid|number:'.2-2'}}</h1>
+                                                            <p>Total Paid</p>
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                                
+                                        </div>
+                                        <div class="col-md-4">
+                                                <div class="aggregate">
+                                                        <section class="panel text-center">
+                                      
+                                                            <div class="value">
+                                                                <h1 class=" count4 mbot0">{{aggregate?.total_remaining|number:'.2-2'}}</h1>
+                                                                <p>Total Balance</p>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                    
+                                            </div>
+                        </div>
+                    </div>
+            </div>
+      </div>
+      <div class="col-md-12 report_content">
+          <div class="panel panel-default box">
+              <div class="panel-heading hover_toggle" style="position: relative;background: rgba(240,240,240,.5);">
+                  <span class="btn btn-small btn-primary" (click)="exportReport()">Export</span>
+                  <small class="pull-right">
+                      <strong>Select Fields</strong>
+                  </small>
+                  <div class="pull-right text-left hover_show" style="position: absolute; right: 0; text-align: left; top: 3px">
+                      <div class="panel panel-default box field_list">
+                          <ul class="list-group radio_list" *ngFor="let column of objectKeys(columns)">
+                              <li class="list-group-item">
+                                  <label>
+                                      <input type="checkbox" [(ngModel)]="columns[column]" />
+                                      <span>{{column}}</span>
+                                  </label>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+              <div class="panel-body">
+                  <div style="height:300px; overflow-y: auto">
+                      <table class="table table-striped table-bordered table_bold_title">
+                          <thead>
+                              <tr>
+                                  <ng-container *ngFor="let column of objectKeys(columns)">
+                                      <th *ngIf="columns[column]">{{column}}</th>
+                                  </ng-container>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let row of rows">
+                                  <ng-container *ngFor="let column of objectKeys(columns)">
+                                      <td *ngIf="columns[column]">{{row[column]}}</td>
+                                  </ng-container>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

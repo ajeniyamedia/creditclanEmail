@@ -1,0 +1,189 @@
+<section id="main-content">
+  <div class="container" style="min-height:600px; width:100% !important;padding:0px">
+    <div class="row" style="margin-top:101px;">
+      <div class="col-md-12">
+        <section class="panel">
+          <header class="panel-heading">
+            <div class="row" style="padding:15px">
+              <div class="col-md-4">Financial Position</div>
+              <div class="col-md-2">&nbsp;</div>
+              <div class="col-md-5">
+                <div class="input-group">
+                  <!-- <input type="text" name="PLDDATE" class="form-control" [(ngModel)]="filter.PLDDATE" ngui-datetime-picker date-only="true"
+                    /> -->
+                  <!-- <span class="input-group-addon">To</span> -->
+                  <input type="text" name="DDATE_" class="form-control" [(ngModel)]="filter.DDATE_" ngui-datetime-picker date-only="true" />
+
+                </div>
+              </div>
+              <div class="col-md-1">
+                <button (click)="getBalanceSheet()" class="btn btn-white btn-xs btn-pls">Submit</button>
+              </div>
+            </div>
+
+
+          </header>
+          <header class="panel-heading" style="overflow:auto">
+
+            <span class="tools pull-right" style="margin-right:10px">
+              <a href="javascript:;" target="_blank" class="btn btn-white btn-xs printResult">
+                <i class="fa fa-file-excel-o"></i>
+              </a>
+              <a [routerLink]="['/reports/balance_sheet_grouping']" class="btn btn-xs btn-white btn-enlarged">Balance Sheet Grouping</a>
+            </span>
+            <span class="tools pull-right" style="margin-right:10px">
+              <label class="control-label">
+                <input type="checkbox" name="SHOW_ZERO_BALANCE" [(ngModel)]="filter.SHOW_ZERO_BALANCE"> Show zero balance</label>
+
+            </span>
+          </header>
+
+          <div style="">
+            <table class="table table-striped">
+              <tbody>
+
+                <tr>
+                  <td>ASSETS</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr *ngFor="let group of data?.a.GROUPS">
+                  <td>{{group.GROUP_DETAILS.GROUP_TITLE}}</td>
+                  <td>{{group.GROUP_TOTAL|number:'.2-2'}}</td>
+                </tr>
+                <tr>
+                  <td>TOTAL ASSETS</td>
+                  <td>{{data?.a.CATEGORY_TOTAL|number:'.2-2'}}</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td>LIABILITIES</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr *ngFor="let group of data?.b.GROUPS">
+                  <td>{{group.GROUP_DETAILS.GROUP_TITLE}}</td>
+                  <td>{{group.GROUP_TOTAL|number:'.2-2'}}</td>
+                </tr>
+                <tr>
+                  <td> </td>
+                  <td>{{data?.b.CATEGORY_TOTAL|number:'.2-2'}}</td>
+                </tr>
+                <tr>
+                  <td>EQUITY</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr *ngFor="let group of data?.c.GROUPS">
+                  <td>{{group.GROUP_DETAILS.GROUP_TITLE}}</td>
+                  <td>{{group.GROUP_TOTAL|number:'.2-2'}}</td>
+                </tr>
+                <tr>
+                  <td> </td>
+                  <td>{{data?.c.CATEGORY_TOTAL|number:'.2-2'}}</td>
+                </tr>
+                <tr class="">
+                  <td>TOTAL LIABILITIES AND EQUITY</td>
+                  <td>
+                    {{data?.c.CATEGORY_TOTAL+data?.b.CATEGORY_TOTAL|number:'.2-2'}}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="">
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <td>NOTES</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <div *ngFor="let group of data?.a.GROUPS">
+                  <tr>
+                    <td>{{group.GROUP_DETAILS.GROUP_TITLE}}</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr *ngFor="let item of group.ITEMS">
+                    <td>{{item.DETAILS.GL_NAME}}</td>
+                    <td>{{item.OPENING_BALANCE|number:'.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>{{group.GROUP_TOTAL|number:'.2-2'}}</td>
+                  </tr>
+                </div>
+
+                <tr>
+                  <td></td>
+                  <td>&nbsp;</td>
+                </tr>
+
+                <div *ngFor="let group of data?.b.GROUPS">
+                  <tr>
+                    <td>{{group.GROUP_DETAILS.GROUP_TITLE}}</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr *ngFor="let item of group.ITEMS">
+                    <td>{{item.DETAILS.GL_NAME}}</td>
+                    <td>{{item.OPENING_BALANCE|number:'.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>{{group.GROUP_TOTAL|number:'.2-2'}}</td>
+                  </tr>
+                </div>
+
+
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <div *ngFor="let group of data?.c.GROUPS">
+                  <tr>
+                    <td>{{group.GROUP_DETAILS.GROUP_TITLE}}</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr *ngFor="let item of group.ITEMS">
+                    <td>{{item.DETAILS.GL_NAME}}</td>
+                    <td>{{item.OPENING_BALANCE|number:'.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>{{group.GROUP_TOTAL|number:'.2-2'}}</td>
+                  </tr>
+                </div>
+
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <div *ngFor="let group of data?.d.GROUPS">
+                  <tr>
+                    <td>{{group.GROUP_DETAILS.GROUP_TITLE}}</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr *ngFor="let item of group.ITEMS">
+                    <td>{{item.DETAILS.GL_NAME}}</td>
+                    <td>{{item.OPENING_BALANCE|number:'.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>{{group.GROUP_TOTAL|number:'.2-2'}}</td>
+                  </tr>
+                </div>
+
+
+
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>

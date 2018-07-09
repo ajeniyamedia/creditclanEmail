@@ -1,0 +1,131 @@
+
+    
+    <div class="container" style="margin-top:120px;">
+        <div class="row">
+            <div class="col-md-9">
+                <div>
+                    <div class="row">
+                        <div class="col-md-4" style="padding-right: 0 !important">
+                            <a class="box mason mason2 br0" style="padding: 15px;padding-bottom: 140px; text-align: left; border-bottom: 0" href="javascript:;" (click)="go_to_wallet()">                            
+                                <div>
+                                   <p class="txt t_l2 t_lh1">{{dashboarddata?.PLATFORM_WALLET.cu}}</p>
+                                   <p class="txt t_l4 t_dull t_lh1">Platform Wallet</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-4" style="padding: 0 !important">
+                            <a class="box mason mason2 br0" style="padding: 15px;padding-top: 140px; text-align: left; border-bottom: 0" [routerLink]="['./settings']">
+                                <div class="text-right">
+                                   <p class="txt t_l2 t_lh1">Settings</p>
+                                   <p class="txt t_l4 t_dull t_lh1">Management</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-4" style="padding-left: 0 !important">
+                            <a  (mouseenter)="showingAvgLRate=!showingAvgLRate" *ngIf="!showingAvgLRate" class="box mason mason2 colored" style="padding: 15px;padding-bottom: 140px; text-align: left; border-bottom: 0" (click)="go_to_queue()">
+                                <div>
+                                   <p class="txt t_l2 t_lh1">{{dashboarddata?.all_queue}}  Request(s)</p>
+                                   <p class="txt t_l4 t_dull t_lh1">on Payment Queue</p>
+                                </div>
+                            </a>
+                            <div class="box mason mason2 colored" style="height:200px; border-bottom: 0;cursor:pointer;padding:15px !important" (click)="go_to_queue()" *ngIf="showingAvgLRate" (mouseleave)="showingAvgLRate=!showingAvgLRate">
+                                    <ul>
+                                        <li>
+                                            Disbursement
+                                            <div class="pull-right">{{data?.payment_queue_size}}</div>
+                                            <div class="clear_fix"></div>
+                                        </li>
+                                        <li>
+                                                Investment Payment
+                                                <div class="pull-right">0</div>
+                                                <div class="clear_fix"></div>
+                                            </li>
+                                            <li>
+                                                    Wallet Withdrawal
+                                                    <div class="pull-right">{{data?.wallet_withdrawal_size}}</div>
+                                                    <div class="clear_fix"></div>
+                                                </li>
+                                                <li>
+                                                        Wallet Funding
+                                                        <div class="pull-right">{{data?.wallet_funding_size}}</div>
+                                                        <div class="clear_fix"></div>
+                                                    </li>
+                                                    <li>
+                                                            Queued Repayments
+                                                            <div class="pull-right">0</div>
+                                                            <div class="clear_fix"></div>
+                                                        </li>
+                                                        <li>
+                                                               Customer Repayments
+                                                               <div class="pull-right">0</div>
+                                                               <div class="clear_fix"></div>
+                                                            </li>
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" style="padding-right: 0 !important">
+                            <a class="box mason mason2 br0 colored" style="padding: 15px;padding-bottom: 140px; text-align: left; border-bottom: 0" href="javascript:;" (click)="go_to_c_wallet()">
+                                <div class="text-right">
+                                   <p class="txt t_l2 t_lh1">{{dashboarddata?.DASHBOARD_BL.WALLET_BALANCES.CUSTOMERS_WALLET_BALANCE|money}}</p>
+                                   <p class="txt t_l4 t_dull t_lh1">Customer Wallets</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="padding-left: 0 !important">
+                            <div>
+                                <a class="box mason mason2 pd0" style="padding: 15px;padding-bottom: 42px; text-align: left; border-bottom: 0">
+                                    <div class="text-right">
+                                       <p class="txt t_l2 t_lh1">Accounting</p>
+                                       <p class="txt t_l4 t_dull t_lh1">for Operations</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div>
+                                <a class="box mason mason2" style="padding: 15px;padding-bottom: 42px; text-align: left; border-bottom: 0" href="javascript:;" (click)="go_to_emps()">
+                                <div>
+                                   <p class="txt t_l2 t_lh1">{{dashboarddata?.all_emp}} User(s)</p>
+                                   <p class="txt t_l4 t_dull t_lh1">Setup right and roles</p>
+                                </div>
+                            </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="box mason mason2" style="padding: 15px; text-align: left" href="javascript:;" (click)="go_to_banks()">                        
+                                <div>
+                                   <p class="txt t_l2 t_lh1">{{dashboarddata?.banks.count}} Acccount(s)</p>
+                                   <p class="txt t_l4 t_dull t_lh1">Setup for transfers</p>
+                                </div>
+                            </a>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <section class="box panel">
+                  <div class="panel-body">              
+                      <ul class="list list_border">
+                          <li>
+                            <a class="txt_l4" href="javascript:;">Financials</a>
+                          </li>                      
+                          <li>
+                            <a class="txt_l4" href="javascript:;">Guarantors</a>
+                          </li>
+                          <li>
+                            <a class="txt_l4" href="javascript:;">Messages</a>
+                          </li>                                        
+                          <li>
+                            <a class="txt_l4" href="javascript:;">Attachments</a>
+                          </li>
+                          <li>
+                            <a class="txt_l4" href="javascript:;">Photos</a>
+                          </li>
+                      </ul>
+                  </div>
+                </section>
+            </div>
+        </div>
+    </div>

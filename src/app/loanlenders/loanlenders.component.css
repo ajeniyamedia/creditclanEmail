@@ -1,0 +1,83 @@
+.panel {
+	margin-bottom: 10px !important;
+}
+.panel-icon {
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    /* float: left; */
+    margin-right: 15px;
+    text-align: center; 
+    padding-top: 18px;
+}
+.panel-icon .count {
+    font-size: 24px;
+    padding: 12px 0 0 0;
+    line-height: 1;
+}
+.panel-icon .count span {
+    display: block;
+    font-size: 11px;
+    margin-top: 3px;
+}
+.offer_made {
+   border: 1px solid #373454;
+   color: #373454;
+}
+.offer_accepted {
+    border: 1px solid #ACD9F7;
+    color: #ACD9F7;
+}
+.offer_funded {
+    border: 1px solid #6FA960;
+    color: #6FA960;
+}
+.weather-category ul li { 
+    width: 49% !important; 
+}
+.twt-category { 
+    margin-top: 0px !important; 
+}
+.twt-footer { 
+    margin-top: 50px !important; 
+}
+
+
+
+.lndrs{
+    height: 260px;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.lndrs .lndr_foot{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.lndrs .headline{
+  font-size: 16px;
+  line-height: 1;
+  margin: 0;
+}
+
+.lndrs .headline span{
+  font-size: 10px;
+  display: block;
+}
+
+.list li {
+    padding-right: 0;
+}
+
+.selected_inv article.media:hover{
+    background-color: transparent;
+}
+.acceptance {
+    margin-top: 52px !important;
+    text-align: center !important;
+}

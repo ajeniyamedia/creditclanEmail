@@ -1,0 +1,350 @@
+<div *ngIf="sub_summary=='0'||sub_summary=='4'">
+    <div *ngIf="loan?.IS_CANCELLED !='1'">
+        <!-- <div class="profile_area animated fadeIn" *ngIf="loan?.IS_PEER_TO_PEER=='1'"> -->
+        <div class="profile_area animated fadeIn">
+                    <!-- Menu Sections -->
+            <section class="panel contract_area hideable_area"  *ngIf="!from_loan_contract">
+                <header class="panel-heading" *ngIf="sub_summary=='0'">
+                    <span class="tools pull-right">
+                      <ul class="list-inline">
+                          <li><a [routerLink]="['../p2p']">Summary</a></li>
+                          <li><a [routerLink]="['../lenders']">Lenders</a></li>
+                      </ul>
+                    </span>
+                    <span>P2P Market</span>
+                </header>
+
+                <div class="panel-body" *ngIf="toggleDocs">
+                    <app-loandocument [master]="master"></app-loandocument>
+                </div>
+                <div class="panel-body" *ngIf="changeProduct">
+                    <app-changeproduct [master]="master"></app-changeproduct>
+                </div>
+                <div class="panel-body" *ngIf="editContract">
+                    <app-loancontractform (uploaded)="someMethod($event)" [master]="master"></app-loancontractform>
+                </div>
+                <div class="" *ngIf="locationOpen">
+                    <app-userlocation [latitude]="lat" [longitude]="lng"></app-userlocation>
+                </div>
+                <div class="panel-body" *ngIf="calllogsOpen">
+                    <app-loanlogs [master]="master"></app-loanlogs>
+                </div>
+            </section>
+            
+            <!-- Summary Bar -->
+            <section class="panel" *ngIf="!from_loan_contract && loan?.LOAN_STATUS=='1'" style="margin-bottom: 10px">
+                <div class="panel-body hover_toggle_desc" >
+                    <div class="pull-left" style="margin-right: 10px">
+                        <a>
+                            <img class="" src="assets/img/people_circle.png" style="width:60px; height:60px">
+                        </a>
+                    </div>
+                    <div class="pull-left">
+                        <h4 style="margin-bottom: 2px">Funding Ongoing<br>
+                            <small>{{loan?.LENDERS.SUMMARY}}</small>
+                        </h4>
+                    </div>
+                    <div class="pull-right col-md-4 text-right">
+                        <div class="hover_hide">
+                            <h4 style="margin-bottom: 2px">
+                                <small *ngIf="loan?.ADDED_TO_PAYMENT_QUEUE==1">{{loan?.AMOUNT_TO_BE_RECEIVED | number:'.2-2'}} Funded</small>
+                                <small *ngIf="loan?.ADDED_TO_PAYMENT_QUEUE!=1">{{loan?.REMAINING | number:'.2-2'}} Pending</small>
+                            </h4>
+                            <div class="progress progress-xs" style="margin-bottom: 0px">
+                                <div class="progress-bar" role="progressbar" attr.aria-valuenow="{{loan?.PERCENTAGE_FUNDED}}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <a class="btn btn-block edged_box hover_show btn-danger" (click)="confirmRemoveLoan(loan?.REQUEST_ID)">
+                          Exit Market
+                        </a>                        
+                    </div>
+                </div>
+            </section>
+
+            <!-- Funding Summary from Market -->
+            <section class="panel">
+                <div class="panel-body" style="padding: 30px; padding-left: 15px">
+                    <div class="row">
+                        <div class="col-md-4">                            
+                            <section class="panel text-center" style="border:1px solid #ddd; border-radius:15px;margin: 14px 0px 0px 15px; ">
+                                <div class="panel-body">
+                                    <h3 class="no-margin txt t_hot t_l5" style="word-wrap:break-word; margin-top: 10px; margin-bottom: 20px; font-size: 14px">Funding Summary</h3>
+                                    <div style="margin-top: 35px; margin-bottom: 30px"><img class="" src="assets/images/save.PNG" style="width:60px; height:60px"></div>
+                                    <a *ngIf="sub_summary=='0'" [routerLink]="['../lenders']" class="btn btn-white btn-pink btn-block">View Lenders</a>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-md-7 col-md-offset-1">
+                            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                <p class="t_l4">Offers Made To The Borrower By Lenders</p>
+                            </div>
+                            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                    <div class="form-group">
+                                        <span class="pull-left text-primary">Amount Requested</span>
+                                        <span class="pull-right">
+                        {{loan?.REQUEST_PRINCIPAL|number:'.2-2'}}
+                      </span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                <div class="form-group">
+                                    <span class="pull-left text-primary"># Lenders Accepted</span>
+                                    <span class="pull-right">
+                    {{loan?.LENDERS.COUNT}}
+                  </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                <div class="form-group">
+                                    <span class="pull-left text-primary">Total Funded</span>
+                                    <span class="pull-right">
+                                        {{getTotalFunded(loan?.PERCENTAGE_FUNDED,loan?.REQUEST_PRINCIPAL)|number:'.2-2'}}
+                  </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                <div class="form-group">
+                                    <span class="pull-left text-primary"># No of Offers</span>
+                                    <span class="pull-right">
+                    {{loan?.LENDERS.COUNT}}
+                  </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                <div class="form-group">
+                                    <span class="pull-left text-primary">Total Amount Offered</span>
+                                    <span class="pull-right">
+                    {{loan?.TOTAL_AMOUNT_OFFERED | number:'.2-2'}}
+                  </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div *ngIf="loan?.ADDED_TO_PAYMENT_QUEUE!=1" style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                <div class="form-group">
+                                    <span class="pull-left text-primary"> Expires</span>
+                                    <span class="pull-right">
+                    {{loan?.EXPIRATION_DATE | amTimeAgo}}
+                  </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Funding Summary from Platform -->
+            <section class="panel" *ngIf="!from_loan_contract">
+                <section class="panel bd" style="border:1px solid #eee" *ngIf="loan?.PLATFORM_HAS_MADE_OFFER=='1'&&!offer_area">
+                    <div class="panel-body" style="padding:15px 30px !important">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="loanterms" style="width: 100%;max-width: 450px;margin: 20px auto;">
+                                    <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                        <div class="form-group" style="border-bottom: 1px solid #d9d9d9;padding-bottom: 10px;">
+                                            <span class="t_l4">Offers Made by Platform to Borrower</span>
+                                        </div>
+                                        <div class="form-group" style="border-bottom: 1px solid #d9d9d9;padding-bottom: 10px;">
+                                            <span class="pull-left text-primary">Offered Amount</span>
+                                            <span class="pull-right">
+                        {{loan?.PLATFORM_OFFER.BID_PRINCIPAL | number:'.2-2'}}
+                      </span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group" style="border-bottom: 1px solid #d9d9d9;padding-bottom: 10px;">
+                                            <span class="pull-left text-primary">Tenor</span>
+                                            <span class="pull-right">
+                        {{loan?.PLATFORM_OFFER.BID_TENOR}}{{loan?.PLATFORM_OFFER.BID_PERIOD}}
+                      </span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group" style="border-bottom: 1px solid #d9d9d9;padding-bottom: 10px;">
+                                            <span class="pull-left text-primary">Interest Rate</span>
+                                            <span class="pull-right">
+                        {{loan?.PLATFORM_OFFER.BID_RATE}}%
+                      </span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <span class="pull-left text-primary">Offered When</span>
+                                            <span class="pull-right">
+                        {{loan?.PLATFORM_OFFER.AGO}}
+                      </span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group">
+                                                <span class="pull-left text-primary">Offered Status</span>
+                                                <span class="pull-right" *ngIf="loan?.PLATFORM_OFFER.OFFER_STATUS==='-1'">
+                            Rejected
+                          </span>
+                          <span class="pull-right" *ngIf="loan?.PLATFORM_OFFER.OFFER_STATUS>3">
+                                Accepted
+                              </span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-md-offset-1">
+                                <section class="panel" style="border:1px solid #ddd; border-radius:15px;margin: 14px 0px 0px 0px; ">
+                                    <div class="panel-body">
+                                        <div class="text-center" style="padding:15px">
+                                            <p>
+                                                <img style="width:80px;" src="assets/img/handshake.png">
+                                            </p>
+                                            <p class="t_l4" style="margin-bottom: 30px">Offer Made</p>
+                                            <a *ngIf="sub_summary=='0'&&loan?.PLATFORM_OFFER.OFFER_STATUS<2" (click)="offer_area = !offer_area" class="btn btn-white btn-block edged_box">Modify Offer</a>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="panel bd" style="border:1px solid #eee" *ngIf="loan?.PLATFORM_HAS_MADE_OFFER!='1'&&!offer_area">
+                    <div class="panel-body" style="padding:15px 30px !important">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="loanterms" style="width: 100%;max-width: 450px;margin: 20px auto;">
+                                    <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                            <div class="form-group" style="border-bottom: 1px solid #d9d9d9;padding-bottom: 10px;">
+                                                    <span class="pull-left text-primary">Amount Left</span>
+                                                    <span class="pull-right">
+                                                            {{loan?.REQUEST_PRINCIPAL | number:'.2-2'}}
+                              </span>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                        <div class="form-group" style="border-bottom: 1px solid #d9d9d9;padding-bottom: 10px;">
+                                            <span class="pull-left text-primary">Offered Amount</span>
+                                            <span class="pull-right">
+                        0
+                      </span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group" style="border-bottom: 1px solid #d9d9d9;padding-bottom: 10px;">
+                                            <span class="pull-left text-primary">Tenor</span>
+                                            <span class="pull-right">
+                        0
+                      </span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group" style="border-bottom: 1px solid #d9d9d9;padding-bottom: 10px;">
+                                            <span class="pull-left text-primary">Interest Rate</span>
+                                            <span class="pull-right">
+                        0
+                      </span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <span class="pull-left text-primary">Offered When</span>
+                                            <span class="pull-right">
+
+                      </span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-md-offset-1">
+                                <section class="panel" style="border:1px solid #ddd; border-radius:15px;margin: 14px 0px 0px 0px; ">
+                                    <div class="panel-body">
+                                        <div class="text-center" style="padding:15px">
+                                            <p>
+                                                <img style="width:80px;" src="assets/img/cancel.png">
+                                            </p>
+                                            <p class="t_l4" style="margin-bottom: 30px">No Offers Yet</p>
+                                            <a *ngIf="loan?.PLATFORM_HAS_MADE_OFFER == '0'&&loan?.LOAN_STATUS == '1'" (click)="offer_area = !offer_area" class="btn btn-white btn-block edged_box">Make Offer</a>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="panel-body" *ngIf="offer_area">
+                    <div class="offer_form">
+                        <form #f="ngForm" novalidate>
+                            <!-- We'll add our form controls here -->
+                            <div class="form-group">
+                                <label class="control-label">Amount</label>
+                                <div class="input-group ">
+                                    <input type="text" name="BID_PRINCIPAL" class="form-control" required [(ngModel)]="platformOffer.BID_PRINCIPAL">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                            <span class="sel_cur">{{loan_currency}}</span>
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li *ngFor="let c of countries">
+                                                <a href="javascript:;" (click)="changeCurrency(c)">{{c.currency[0]}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- <small [hidden]="platformOffer.BID_PRINCIPAL.valid" class="text-danger">
+                    Amount is required.
+                  </small> -->
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Interest</label>
+                                <div class="input-group ">
+                                    <input type="text" name="BID_RATE" class="form-control" required [(ngModel)]="platformOffer.BID_RATE">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                            <span class="sel_cur">{{interest_duration}}</span>
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li *ngFor="let d of loan_durations">
+                                                <a href="javascript:;" (click)="changeDuration(d,2)">{{d.INTEREST_DURATION}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Duration</label>
+                                <div class="input-group ">
+                                    <input type="text" name="BID_TENOR" class="form-control" required [(ngModel)]="platformOffer.BID_TENOR">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                            <span class="sel_cur">{{loan_duration}}</span>
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li *ngFor="let d of loan_durations">
+                                                <a href="javascript:;" (click)="changeDuration(d,1)">{{d.LOAN_DURATION}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <button *ngIf="loan?.ADDED_TO_PAYMENT_QUEUE!=1" [disabled]="loading||!f.valid" type="submit" class="btn btn-white btn-block" (click)="submitOffer(f.value)">Save Offer</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- If loan is not in the market, show this. -->
+        <!-- <div *ngIf="loan?.IS_PEER_TO_PEER!='1'">Send Loan to Market</div> -->
+
+    </div>
+</div>
+
+<div *ngIf="overlayOpen">
+    <div class="overlay_ app_overlay animated" style="overflow:auto;background:#fff;">
+        <div class="col-md-12">
+            <a class="dismiss cancel_treat_ close" role="button" (click)="overlayOpen=false">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class=" overpanel-content container" role="document" style="text-align:left; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+            <app-loanform [request_id]='loan?.REQUEST_ID' [sub]='1'></app-loanform>
+        </div>
+    </div>
+</div>

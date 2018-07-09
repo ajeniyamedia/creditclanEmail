@@ -1,0 +1,28 @@
+/*.xgv li {
+	border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 15px;
+    overflow: auto;
+}*/
+
+.mason{
+	display: block;
+    padding: 204px 0;
+    text-align: center;
+    background-color: #fff
+}
+.mason:hover{
+	background-color: #FAFAFA;
+}
+.mason2{
+	padding: 93px 0;
+}
+
+.expense{
+    font-size: 14px;
+}
+
+.expense ul li{
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}

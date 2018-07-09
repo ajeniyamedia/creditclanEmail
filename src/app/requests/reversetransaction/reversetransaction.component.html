@@ -1,0 +1,34 @@
+<div class="modl text-center">
+
+    <div class="modl_title" style="margin-bottom: 50px">
+        <h2>
+            <span class="text-success">Reverse Transaction</span>
+            <br>
+            <small class="modl_sub">This action will reverse transaction to disbursement. Are you sure ?.</small>
+        </h2>
+    </div>
+
+    <div style="margin-bottom: 25px">
+        <div class="modl_prof">
+          <div>
+              <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{loan?.FILE_NAME | imagenotfound}}?q=auto" style="border-radius: 50%">
+          </div>
+          <h4 class="t_l3">{{loan?.LEGAL_NAME}}</h4>
+          <h6>{{loan?.REQUEST_PRINCIPAL}}|{{loan?.REQUEST_TENOR}} {{loan?.LOAN_DURATION}}</h6>
+        
+        </div>
+    </div>
+
+    <div style="width: 200px; margin: 0 auto">
+        <div style="margin-bottom: 30px">
+            <!-- <button class="text-center txt t_l4 t_cool big_btn btn-block good"><strong>Accept Contract</strong>
+                        </button> -->
+            <button class="text-center txt t_l4 btn-block" [ngClass]="{'btn-danger': is_done=='0', 'btn-success': is_done=='1'}" style="padding-top: 12px; padding-bottom: 12px"
+                (click)="reverseContract(loan)" [disabled]="loading||is_done=='1'">
+                <strong *ngIf="is_done=='0'">Confirm</strong>
+                <i class="fa fa-spinner fa-spin" *ngIf="loading && is_done=='0'"></i>
+                <i class="fa fa-check" *ngIf="!loading && is_done=='1'"></i>
+            </button>
+        </div>
+    </div>
+</div>

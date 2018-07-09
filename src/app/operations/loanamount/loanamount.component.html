@@ -1,0 +1,62 @@
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingSLI">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSLI" aria-expanded="true" aria-controls="collapseSLI">
+          Loan Amount Based Interest Settings
+        </a>
+      </h4>
+    </div>
+    <div id="collapseSLI" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSLI">
+      <div class="panel-body">
+        <div class="panel-body toc-panel">
+          <form #specialLoanInterest="ngForm" novalidate>
+            <div class="form-group row">
+              <div class="col-md-12">
+                <ul>
+                  <li class="text-left">
+                    <span> Enable </span>
+                    <div class="pull-right">
+                      <input type="checkbox" name="ENABLE_LOAN_INTEREST_ON_AMOUNT" name="ENABLE_LOAN_INTEREST_ON_AMOUNT" [(ngModel)]="product.ENABLE_LOAN_INTEREST_ON_AMOUNT">
+                      <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="product.LOAN_PRODUCT_ID">
+                      <input type="hidden" name="LOAN_INTEREST_ON_AMOUNT_TYPE" [(ngModel)]="product.LOAN_INTEREST_ON_AMOUNT_TYPE">
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="form-group row" *ngIf="product.ENABLE_LOAN_INTEREST_ON_AMOUNT">
+                <label class="control-label col-md-6">Loan Amount</label>
+              <div class="col-md-6"> 
+                <input type="text" class="form-control" name="LOAN_INTEREST_AMOUNT" [(ngModel)]="product.LOAN_INTEREST_AMOUNT"> </div>
+            </div>
+            <div class="form-group row" *ngIf="product.ENABLE_LOAN_INTEREST_ON_AMOUNT">
+                <label class="control-label col-md-6">Loan Interest</label>
+              <div class="col-md-6">
+
+                <div class="input-group ">
+                  <input type="text" class="form-control" [(ngModel)]="product.LOAN_INTEREST_ON_AMOUNT" name="LOAN_INTEREST_ON_AMOUNT">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-white dropdown-toggle  lockForCom" data-toggle="dropdown">
+                      <span class="sel_cur">{{special_interest_duration}}</span>
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                      <li *ngFor="let d of loan_durations;let i=index;">
+                        <a (click)="changeDuration(i,3)">{{d.INTEREST_DURATION}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <button type="submit" (click)="saveSpecialLoanInterest(specialLoanInterest.value, specialLoanInterest.valid)" [disabled]="loading" class="btn btn-white pull-right">
+              <span *ngIf="!loading">Submit</span>
+              <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

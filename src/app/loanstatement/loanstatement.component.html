@@ -1,0 +1,124 @@
+<section class="panel">
+
+
+    <header class="panel-heading">
+        Loan Account Statement
+        <span class="tools pull-right">
+            <div class="btn-group">
+                <button class="btn btn-white btn-xs" (click)="breakLoan()" type="button">Break Loan</button>
+                <button class="btn btn-white btn-xs" (click)="makeLoanPayment()" type="button">Make Payment</button>
+                <button class="btn btn-white btn-xs" type="button">More</button>
+                <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">
+                    <span class="caret"></span>
+                </button>
+                <ul role="menu" class="dropdown-menu">
+                        <li>
+                                <a (click)="requestForCard()">Request For Card</a>
+                            </li>
+                    <li>
+                        <a (click)="sendAccountStatement()">Send Statement</a>
+                    </li>
+                    <li>
+                        <a (click)="sendEmailReminder()">Send Email Reminder</a>
+                    </li>
+                    <li>
+                        <a (click)="sendSMSReminder()">Send SMS Reminder</a>
+                    </li>
+                    <li *ngIf="loan?.loan.ALLOW_AUTO_DEBIT=='1'">
+                        <a (click)="stopAutoDebit()">Cancel Autodebit</a>
+                    </li>
+                    <li *ngIf="loan?.loan.ALLOW_AUTO_DEBIT=='0'">
+                        <a (click)="startAutoDebit()">Enable Autodebit</a>
+                    </li>
+                    <li>
+                        <a (click)="type_of_entry='4';getStatement()">Show Payments</a>
+                    </li>
+                    <li>
+                        <a (click)="type_of_entry='1';getStatement()">Show Disbursements</a>
+                    </li>
+                    <li>
+                        <a (click)="type_of_entry='3';getStatement()">Show Interests</a>
+                    </li>
+                    <li>
+                        <a (click)="type_of_entry='5';getStatement()">Show Fees</a>
+                    </li>
+                    <li>
+                        <a (click)="type_of_entry='-1';getStatement()">Show All Transactions</a>
+                    </li>
+                </ul>
+            </div>
+        </span>
+    </header>
+
+    <div class="panel-body">
+        <div class="row invoice-list" style="margin-bottom:0px">
+
+            <div class="col-lg-4 col-sm-4">
+                <h4>CLIENT INFO</h4>
+                <ul class="unstyled">
+                    <li>Client :
+                        <strong>{{loan?.custoner_account.LEGAL_NAME}}</strong>
+                    </li>
+                    <li>Account Number : {{loan?.custoner_account.ACCOUNT_NUMBER}}</li>
+
+                </ul>
+            </div>
+            <div class="col-lg-4 col-sm-4">
+                <!-- <h4>OVERDUE IDEBTEDNESS</h4>
+                                   <ul class="unstyled">
+                                        <li>Total Debit		: <strong>{{}}</strong></li>
+                                        <li>Total Credit		: 1,000,000.00</li>
+                                        <li>Balance		: 1,650,000.00</li>
+                                    </ul> -->
+                &nbsp;
+            </div>
+            <div class="col-lg-4 col-sm-4">
+                <h4>ACCOUNT SUMMARY</h4>
+                <ul class="unstyled">
+                    <li>Principal :
+                        <strong>{{loan?.loan.REQUEST_PRINCIPAL|number:'.2-2'}}</strong>
+                    </li>
+                    <li>Total Debit : {{loan?.TOTAL_DEBIT|number:'.2-2'}}</li>
+                    <li>Total Credit : {{loan?.TOTAL_CREDIT|number:'.2-2'}}</li>
+                    <li>Current Balance : {{loan?.loan?.LOAN_BALANCE|number:'.2-2'}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Debit</th>
+                <th>Credit</th>
+                <th>Balance</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let trans of transactions;let i=index;">
+                <td>{{trans.DATE_ADDED | amDateFormat: 'YYYY-MM-DD'}}</td>
+                <td>{{trans.NARRATION_CUSTOMER}}</td>
+                <td>{{trans.DEBIT|number:'.2-2'}}</td>
+                <td>{{trans.CREDIT|number:'.2-2'}}</td>
+
+                <td>{{trans.BALANCE|number:'.2-2'}}</td>
+                <td>
+                    <div class="btn-group" *ngIf="type_of_entry=='4'">
+
+                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul role="menu" class="dropdown-menu">
+                            <li>
+                                <a (click)="initiateRollback(trans)">Rollback</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>

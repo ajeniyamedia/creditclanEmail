@@ -1,0 +1,33 @@
+
+<section class="panel" style="margin-bottom:7.5px">
+	<header class="panel-heading" >
+	Customer
+	<span class="tools pull-right">
+                    
+   
+                              <div class="btn-group">
+                                    <a [routerLink]="['../contract']" class="btn btn-white btn-xs nob" type="button">Contract</a>
+                                    <a [routerLink]="['../repayments']" class="btn btn-white btn-xs btd" type="button">Repayment</a>
+                                    <a [routerLink]="['../approvals']" class="btn btn-white btn-xs btd" type="button">Workflow</a>
+                                    <!-- <a  [routerLink]="['../comments']" class="btn btn-white btn-xs btd" type="button">Comment</a> -->
+                                    <a  [routerLink]="['../guarantors']" class="btn btn-white btn-xs btd" type="button">Guarantors</a>
+                                  <button aria-expanded="false" class="btn btn-xs btn-white dropdown-toggle" data-toggle="dropdown" type="button"><span class="caret"></span></button>
+                                  <ul class="dropdown-menu" role="menu">
+                                      
+                                  </ul>
+                              </div>
+                              </span>
+	</header>
+</section>
+<section class="panel">
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-12">
+                    <div *ngIf='loan'>
+                            <!-- <app-customer-update [sub]="1" [loan]="loan"></app-customer-update> -->
+                         </div>
+ 
+</div>
+</div>
+</div>
+</section>

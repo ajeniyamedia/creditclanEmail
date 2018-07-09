@@ -1,0 +1,160 @@
+
+<div style="width: 80%; margin: 0px auto;">
+    <div class="row">
+        <div class="col-md-12">
+            &nbsp;
+        </div>
+    </div>
+
+    <div class="row placeholder" *ngIf="loading">
+        <div class="col-md-3">
+            <a href="javascript:;" class="">
+                <section class="panel chH sd_bt">
+                    &nbsp;
+                </section>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="javascript:;" class="">
+                <section class="panel chH sd_bt">&nbsp;
+                </section>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="javascript:;" class="">
+                <section class="panel chH sd_bt">&nbsp;
+                </section>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="javascript:;" class="">
+                <section class="panel chH sd_bt">&nbsp;
+                </section>
+            </a>
+        </div>
+    </div>
+    <div *ngIf="!loading && limited">
+        <div class="text-center" style="margin: 50px 0">            
+            <p class="txt t_l1 t_lh1">Recent Transactions</p>
+            <p class="txt t_l3">All Recent Funding Activities</p>
+        </div>
+        <div class="row">
+            <div class="col-md-3" *ngFor="let loan of loans_summary?.loans">
+                <a>
+
+                    <section class="panel chH" *ngIf="masterClosed!='loan.REQUEST_ID'">
+                        <!-- <div class="{{loan.LOAN_STATUS | loanStatus}}">{{loan.LOAN_STATUS | loanStatusText}}</div> -->
+                        <div class="panel-body text-center" style="padding-bottom:0;">
+                            <h3 class="no-margin" style="word-wrap:break-word; min-height:20px; font-size:13px;">{{loan.LEGAL_NAME}} <br />
+                                <!-- <small>Employee / Banking</small> -->
+                            </h3>
+                            <app-rating [rating]='loan?.PEOPLE_RATING_ID'></app-rating>
+                            <div class="" style="margin:10px auto;">
+                                <img class="{{loan.LOAN_STATUS | loanStatus}}" src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{loan?.FILE_NAME | imagenotfound}}?q=auto" style=" width: 100px;   height: 100px; border-radius: 50%; ">
+                            </div>
+                            <div class="">
+                                <h4 class="" style="margin-top: 25px">{{loan.TOTAL_REMAINING}}<br />
+                                    <small>out of {{loan.REQUEST_PRINCIPAL}} left</small>
+                                </h4>
+                                <div class="progress progress-xs" style="">
+                                    <div class="progress-bar {{loan.PERCENTAGE_FUNDED|safe}}" role="progressbar" attr.aria-valuenow="{{loan.PERCENTAGE_FUNDED|safe}}"
+                                        aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <small style="display:block; font-size:9px">{{loan.PERCENTAGE_FUNDED}}% funded | {{loan.TOTAL_FUNDED}}</small>
+                            </div>
+                            <div class="row" style="margin-top:60px">
+                                <div class="col-md-5 text-center" style="border-right:1px solid #eaeaea">
+                                    <p class="headline">{{loan.REQUESTED}}<span style="display:block">Requested</span></p>
+                                </div>
+                                <div class="col-md-4 text-center" style="border-right:1px solid #eaeaea">
+                                    <p class="headline">{{loan.REQUEST_TENOR}}<span style="display:block">{{loan.LOAN_DURATION}}</span></p>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <p style="    font-size: 21px;
+          margin-top: 10px;"> <i class="fa {{loan.IS_PEER_TO_PEER|peertopeer}}"></i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <section class="panel chH">
+                    <div class="panel-body" style="padding-bottom: 31px; height: 400px; position: relative;">
+                        <div style="padding: 25px 0px; text-align: center">
+                            <h1 style="margin-bottom: 0px; font-size:110px">{{loans_summary?.count}}</h1>
+                            <span class="small" style="display: block">Remaining</span>
+                        </div>                        
+                        <a [routerLink]="['/credit/requests']" class="btn btn-normal btn-block ld_btn_portfolio egded-box" style="padding: 10px; position: absolute; left: 15px; right: 15px; bottom: 15px; width: auto; background: #fd8900">Enter Market</a>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-3" *ngFor="let i of loans_summary?.remaining">
+                <section class="panel chH" style="border: 1px solid #eee">
+                    <div class="panel-body" style="padding-bottom: 31px">
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <section id="main-content">
+        <div class="" style="min-height:600px">
+            <div class="row" style="margin-top:50px;">
+                <div class="col-md-12" style="padding:0;">
+                    <div id="ajax_view">
+                        <div *ngIf="!loading && !limited">
+
+                            <div class="row">
+                                <div class="col-md-3" *ngFor="let loan of loans">
+                                    <a href="javascript:;">
+                                        <section class="panel chH" *ngIf="slaveOpen==loan?.REQUEST_ID" (mouseout)="openSlave(0)">
+                                            <div class="panel-body" style="padding:16px 32px">
+                                                <a class="btn btn-white btn-block" [routerLink]="['/loan',loan.REQUEST_ID]">View Loan</a>
+                                                <a class="btn btn-white btn-block" (click)="open_loan(loan.REQUEST_ID)">Preview Loan</a>
+                                                <a class="btn btn-white btn-block" (click)="reject_request(loan.REQUEST_ID)">Reject Request</a>
+                                            </div>
+                                        </section>
+                                        <section class="panel chH" *ngIf="masterClosed!=loan?.REQUEST_ID" (mouseenter)="openSlave(loan.REQUEST_ID)">
+                                            <div class="{{loan.LOAN_STATUS | loanStatus}}">{{loan.LOAN_STATUS | loanStatusText}}</div>
+                                            <div class="panel-body text-center" style="padding-bottom:0;">
+                                                <h3 class="no-margin" style="word-wrap:break-word; min-height:52px; font-size:13px;">{{loan.LEGAL_NAME}}</h3>
+                                                <div class="" style="margin:10px auto;">
+                                                    <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{loan?.FILE_NAME | imagenotfound}}?q=auto" style=" width: 100px;   height: 100px; border-radius: 50%; ">
+                                                </div>
+                                                <div class="">
+                                                    <h4 class="" style="margin-top: 25px">{{loan.TOTAL_REMAINING}}</h4>
+                                                    <div class="progress progress-xs" style="">
+                                                        <div class="progress-bar {{loan.PERCENTAGE_FUNDED|safe}}" role="progressbar" attr.aria-valuenow="{{loan.PERCENTAGE_FUNDED|safe}}"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                    <small style="display:block; font-size:9px">{{loan.PERCENTAGE_FUNDED}}% funded | {{loan.TOTAL_FUNDED}}</small>
+                                                </div>
+                                                <div class="row" style="margin-top:60px">
+                                                    <div class="col-md-5 text-center" style="border-right:1px solid #eaeaea">
+                                                        <p class="headline">{{loan.REQUESTED}}<span style="display:block">Requested</span></p>
+                                                    </div>
+                                                    <div class="col-md-4 text-center" style="border-right:1px solid #eaeaea">
+                                                        <p class="headline">{{loan.REQUEST_TENOR}}<span style="display:block">{{loan.LOAN_DURATION}}</span></p>
+                                                    </div>
+                                                    <div class="col-md-3 text-center">
+                                                        <p style="    font-size: 21px;
+    margin-top: 10px;"> <i class="fa {{loan.IS_PEER_TO_PEER|peertopeer}}"></i></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div *ngIf="viewing_loan">
+
+    <app-loansummary [loan_viewed]="loan_viewed"></app-loansummary>
+
+</div>

@@ -1,0 +1,42 @@
+<div *ngIf="repayments?.COUNT==0">
+  <div class="text-center" style="padding-top: 20px; padding-bottom:100px">
+    <a  href="javascript:;" style="font-size:70px"><i class="fa fa-meh-o"></i></a>
+       <h4 style="margin-bottom: 0px; text-align: center;">No record</h4> 
+       
+  </div>
+</div>
+<div class="carousel" *ngIf="repayments?.COUNT!=0" style="min-height:210px">
+    <div (mouseenter)="showingSummary=!showingSummary" *ngIf="!showingSummary">
+        <p class="t_l4 t_cool" style="margin-bottom: 10px">Due Repayments</p>
+        <article class="media mgt" *ngFor="let repayment of repayments?.RESULT" style="margin-bottom: 0px;
+        padding-bottom: 5px;">
+            <a class="pull-left thumb p-thumb" style="margin-top:0px">
+              <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{repayment?.FILE_NAME | imagenotfound}}?q=auto" style=" width: 30px;   height: 30px; border-radius: 50%; ">
+            </a>
+            <!-- <app-image [image]='loan?.FILE_NAME'></app-image> -->
+            <div class="media-body" style="float: left">
+                <p class="truncate" style="margin-bottom:0px">{{repayment?.LEGAL_NAME|limitto:'10'}}</p>
+
+                <p class="p-head t_l0" style="margin-bottom:0px">{{repayment?.HOW_MUCH_REMAINING | number:'.2-2'}}</p>
+                <p class="p-head t_l0 txt" style="color: #000;margin-bottom:0px">{{repayment?.REPAYMENT_DATE | amTimeAgo}}</p>
+                
+            </div>
+        </article>
+        <article class="media mgt" *ngIf="repayments!=0">
+            <a class="pull-left thumb p-thumb" style="font-size:35px">
+              <i class="fa fa-plus-circle"></i>
+            </a>
+            <div class="media-body" style="float: left">
+                <h3 class="p-head" style="color: #000;margin-bottom:0px;font-size:22px;margin-top:10px">{{repayments?.REST}} more</h3>
+                 
+            </div>
+        </article>
+    </div>
+    <div *ngIf="showingSummary" (mouseleave)="showsum()" style="min-height:195px;">        
+        <div class="text-center" style="padding:15px 0px; margin-top: 50px">
+          <p class="txt t_l3 t_lh1">{{repayments?.COUNT}}</p>
+          <p class="txt t_dull">Due Repayments</p>
+        </div>
+        <div class="text-center"><a  [routerLink]="['../../operations/calendar']" class="btn btn-white btn-full egded-box">View Schedule</a></div>
+    </div>
+  </div>

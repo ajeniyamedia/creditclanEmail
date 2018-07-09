@@ -1,0 +1,225 @@
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingEligibility">
+    <h4 class="panel-title">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEligibility" aria-expanded="false"
+        aria-controls="collapseEligibility">
+        Eligibility
+      </a>
+    </h4>
+  </div>
+  <div id="collapseEligibility" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEligibility">
+    <div class="panel-body">
+      <form #eligibility="ngForm" novalidate>
+        <ul class="list list_border sm">
+
+          <li class="text-left">
+            <span> Profile</span>
+            <div class="pull-right">
+              <input type="checkbox" name="PROFILE_ELIGIBILITY" name="PROFILE_ELIGIBILITY" [(ngModel)]="backend.PROFILE_ELIGIBILITY">
+            </div>
+          </li>
+          <li class="text-left">
+            <span> Bank Account/Profile Name Match</span>
+            <div class="pull-right">
+              <input type="checkbox" name="BANK_ACCOUNT_ELIGIBILITY" name="BANK_ACCOUNT_ELIGIBILITY" [(ngModel)]="backend.BANK_ACCOUNT_ELIGIBILITY">
+            </div>
+          </li>
+          <li class="text-left">
+            <span> Income</span>
+            <div class="pull-right">
+              <input type="checkbox" name="INCOME_ELIGIBILITY" name="INCOME_ELIGIBILITY" [(ngModel)]="backend.INCOME_ELIGIBILITY">
+            </div>
+          </li>
+          <li class="text-left">
+            <span> Rating</span>
+            <div class="pull-right">
+              <input type="checkbox" name="RATING_ELIGIBILITY" name="RATING_ELIGIBILITY" [(ngModel)]="backend.RATING_ELIGIBILITY">
+            </div>
+          </li>
+          <li class="text-left" *ngIf="backend.RATING_ELIGIBILITY">
+            <span> Minimum Ratings ( 0-5 )</span>
+            <div class="pull-right">
+              <input type="text" name="MINIMUM_RATINGS_ID" name="MINIMUM_RATINGS_ID" [(ngModel)]="backend.MINIMUM_RATINGS_ID">
+            </div>
+          </li>
+          <li class="text-left hide">
+            <span> Default Amount</span>
+            <div class="pull-right">
+              <input type="checkbox" name="DEFAULT_AMOUNT_ELIGIBILITY" name="DEFAULT_AMOUNT_ELIGIBILITY" [(ngModel)]="backend.DEFAULT_AMOUNT_ELIGIBILITY">
+            </div>
+          </li>
+          <li class="text-left">
+            <span> BVN</span>
+            <div class="pull-right">
+              <input type="checkbox" name="BVN_ELIGIBILITY" name="BVN_ELIGIBILITY" [(ngModel)]="backend.BVN_ELIGIBILITY">
+            </div>
+          </li>
+          <li class="text-left hide">
+            <span> Card</span>
+            <div class="pull-right">
+              <input type="checkbox" name="CARD_ELIGIBILITY" name="CARD_ELIGIBILITY" [(ngModel)]="backend.CARD_ELIGIBILITY">
+            </div>
+          </li>
+          <li class="text-left">
+            <span> Suspend if eligibility fails</span>
+            <div class="pull-right">
+              <input type="checkbox" name="SUSPEND_IF_FAIL_ELIGIBILITY" name="SUSPEND_IF_FAIL_ELIGIBILITY" [(ngModel)]="backend.SUSPEND_IF_FAIL_ELIGIBILITY">
+            </div>
+          </li>
+        </ul>
+
+
+        <div *ngIf="backend.SUSPEND_IF_FAIL_ELIGIBILITY">
+
+          <div class="form-group row" id="loan_interval_container">
+            <div class="col-md-6">
+              <label class="no-margin control-label">Duration (Hours)</label>
+
+            </div>
+            <div class="col-md-6">
+
+              <div class="input-group btn-block">
+                <input type="text" class="form-control btn-block" name="SUSPEND_FOR_HOW_LONG" [(ngModel)]="backend.SUSPEND_FOR_HOW_LONG">
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <button type="submit" (click)="saveEligibility(eligibility.value, eligibility.valid)" [disabled]="loading" class="btn btn-white pull-right">
+          <span *ngIf="!loading">Submit</span>
+          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingQB">
+    <h4 class="panel-title">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseQB" aria-expanded="false"
+        aria-controls="collapseQB">
+        Qualified Borrowers
+      </a>
+    </h4>
+  </div>
+  <div id="collapseQB" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingQB">
+    <div class="panel-body">
+      <form #qb="ngForm" novalidate>
+        <div class="form-group row">
+          <label class="control-label col-md-6">Minimum Age</label>
+          <div class="col-md-6">
+            <input type="text" name="MIN_AGE" #MIN_AGE="ngModel" [(ngModel)]="qualified_borrowers.MIN_AGE" id="MIN_AGE" class="form-control"
+              required>
+
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="control-label col-md-6">Maximum Age</label>
+          <div class="col-md-6">
+            <input type="text" name="MAX_AGE" #MAX_AGE="ngModel" [(ngModel)]="qualified_borrowers.MAX_AGE" id="MAX_AGE" class="form-control"
+              required>
+
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="control-label col-md-4">Preferred Marital Status</label>
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-6" *ngFor="let occ of marital_statuses;let i = index" style="padding-right:5px !important">
+                <div class="form-group" style="margin-bottom:0px">
+                  <span class="pull-left text-primary">{{occ?.display}}</span>
+                  <span class="pull-right">
+                    <div class="checkbox" style="margin:0px !important">
+                      <label>
+                        <input type="checkbox" [checked]="isMaritalStatusAvailable(occ?.value,i)" name="mstat_{{occ?.value}}" (change)="checkMaritalStatus(occ,$event.target.checked,i)">
+
+                      </label>
+                    </div>
+                  </span>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="control-label col-md-4">Allowed Address States</label>
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-6" *ngFor="let state of states;let i = index" style="padding-right:5px !important">
+                <div class="form-group" style="margin-bottom:0px">
+                  <span class="pull-left text-primary">{{state?.state_name}}</span>
+                  <span class="pull-right">
+                    <div class="checkbox" style="margin:0px !important">
+                      <label>
+                        <input type="checkbox" [checked]="isStateAvailable(state?.state_id,i)" name="tat_{{state?.state_name}}" (change)="checkAllowedState(state,$event.target.checked,i)">
+
+                      </label>
+                    </div>
+                  </span>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="control-label col-md-6">Minimum Salary</label>
+          <div class="col-md-6">
+            <input type="text" name="MIN_SALARY_ACCEPTABLE" #MIN_SALARY_ACCEPTABLE="ngModel" [(ngModel)]="qualified_borrowers.MIN_SALARY_ACCEPTABLE"
+              id="MIN_SALARY_ACCEPTABLE" class="form-control" required>
+            <input type="hidden" name="LOAN_PRODUCT_ID" #LOAN_PRODUCT_ID="ngModel" [(ngModel)]="qualified_borrowers.LOAN_PRODUCT_ID"
+              id="LOAN_PRODUCT_ID">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="control-label col-md-4">Preferred Occupation</label>
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-6" *ngFor="let occ of occupations;let i = index" style="padding-right:5px !important">
+                <div class="form-group" style="margin-bottom:0px">
+                  <span class="pull-left text-primary">{{occ?.DESCRIPTION}}</span>
+                  <span class="pull-right">
+                    <div class="checkbox" style="margin:0px !important">
+                      <label>
+                        <input type="checkbox" [checked]="isAvailable(occ?.OCCUPATION_ID,'occupation',i)" name="role_{{occ?.OCCUPATION_ID}}" (change)="checkOccupation(occ,$event.target.checked,i)">
+
+                      </label>
+                    </div>
+                  </span>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="control-label col-md-4">Preferred Sector</label>
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-6" *ngFor="let occ of sectors;let i = index" style="padding-right:5px !important">
+                <div class="form-group" style="margin-bottom:0px">
+                  <span class="pull-left text-primary">{{occ?.DESCRIPTION}}</span>
+                  <span class="pull-right">
+                    <div class="checkbox" style="margin:0px !important">
+                      <label>
+                        <input type="checkbox" [checked]="isAvailable(occ?.OCCUPATION_ID,'sector',i)" name="role_{{occ?.OCCUPATION_ID}}" (change)="checkSector(occ,$event.target.checked,i)">
+
+                      </label>
+                    </div>
+                  </span>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="submit" (click)="saveQualifiedBorrowers(qb.value, qb.valid)" [disabled]="loading" class="btn btn-white pull-right">
+          <span *ngIf="!loading">Submit</span>
+          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+</div>

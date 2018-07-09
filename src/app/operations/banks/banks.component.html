@@ -1,0 +1,148 @@
+<!-- <modal id="custom-modal-1">
+    <div class="modal">
+        <div class="modal-body">
+            <h1>A Custom Modal!</h1>
+            <p>
+                Home page text: <input type="text" [(ngModel)]="bodyText" />
+            </p>
+            <button (click)="openModal('custom-modal-1');">Close</button>
+        </div>
+    </div>
+    <div class="modal-background"></div>
+</modal> -->
+
+<section id="main-content">
+    <div class="container" style="min-height:600px;">
+      <div class="row"  style="margin-top:120px;">
+              <div class="col-md-12" style="padding:0;">
+                      <div id="ajax_view">
+                          <div class="row" >
+                              <div class="col-md-8">
+                                  <section class="panel panl" style="margin-bottom: 5px">
+                                      <div class="panel-body">
+                                        <article class="media">
+                                            <div class="pull-left thumb">
+                                              <img src="assets/images/file.PNG">
+                                            </div>
+                                            <div class="pull-left" style="margin-top: 5px">
+                                              <h4 class="no-margin" style="word-wrap:break-word; margin-bottom: 10px">Bank Accounts</h4>
+                                            </div>
+                                            <button (click)="overlayWithdrawal=true;showForm=true" class="pull-right btn btn-white wd_btn" style="border-radius: 0">Add New Bank</button>
+                                        </article> 
+                                        
+                                               
+                                      </div>
+                                  </section>
+                                  <section class="panel">
+                                    <div class="panel-body" style="padding:0px">
+                                        <div *ngIf="banks?.count=='0'">
+                                            <div class="panel panel-body box" style="position: relative; padding: 30px">
+    
+                                                <div style="margin-top: 100px"></div>
+                                    
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <ul class="list list_border" id="no-padding-right">
+                                                            <li>
+                                                                <p class="txt t_l2 t_cool">No Records</p>
+                                                            </li> 
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-8"></div>
+                                                </div>
+                                            </div>
+                                        </div>  
+                                        
+                                        <article class="media hover_toggle_desc" *ngFor="let bank of banks?.banks" style="border-bottom: 1px solid #eee;
+                                        padding: 15px;">
+                                            <div class="pull-left thumb" style="padding-right: 20px">
+                                              <img src="assets/images/i.PNG">
+                                            </div>
+                                            <div class="pull-left" style="margin-top: 5px">
+                                              <h5 class="no-margin" style="margin-bottom: 7px">{{bank?.LENDER_BANK_ACCOUNT_NAME}}</h5>
+                                              <p class="no-margin t_lh1 t_l4" style="font-size: 14px">{{bank?.LENDER_ACCOUNT_NUMBER}}|{{bank?.LENDER_BANK_ID.bank_name}}</p> 
+                                            </div>
+                                            
+                                            
+                                            <div class="pull-right text-right hover_toggle">
+                                                <div class="hover_hide">
+                                                    <h5 class="no-margin" style="margin-bottom: 7px">{{bank?.ledger.cu|number:'.2-2'}}</h5>
+                                                    <p class="no-margin t_lh1 t_l4 t_cool" style="font-size: 14px">Current Balance</p> 
+                                                </div>
+                                                <a class="pull-right btn btn-white wd_btn hover_show" (click)="view_statement(bank.ledger)" style="border-radius: 0">Statement</a>
+                                                <button class="pull-right btn btn-white wd_btn hover_show" (click)="deleteBank(bank)" style="border-radius: 0"><i class="fa fa-trash"></i></button>
+                                              </div> 
+                                        </article>
+                                    </div>
+                                  </section>
+                              </div>
+                              <div class="col-md-3 ">
+                                <section style="border-radius:10px" class="panel text-center" [ngClass]="{'greenb': banks?.count>0, 'blueb':  banks?.count==0}">
+                                  <!-- <div class="panel-body text-center">
+                                    <h4 style="margin:0px !important">Wallet</h4>
+                                    <img src="assets/img/bell.png" style="width:60px;margin:15px 0px">
+                                    <h2>{{state?.cu|money}}</h2> 
+                                    <p>Wallet Balance</p>
+                                    <div class="row">
+                                      <div class="col-md-12">
+                                        <button class="btn btn-white btn-block">Fund Wallet</button>
+                                      </div>
+                                    </div>
+                                  </div> -->
+                                  <div class="panel-body" style="padding: 63px 15px;">
+                                    
+                                    <div>
+                                        <h3 style="font-size:34px">{{banks?.count}}
+                                            <span class="small" style="font-size: 44%;
+                                            display: block;
+                                            color: #fff;">Total</span>
+                                        </h3> 
+                                    </div>
+                                    <!-- <div class="row">
+                                      <div class="col-md-12">
+                                        <button (click)="back()" class="btn btn-white">Back</button>
+                                      </div>
+                                    </div> -->
+                                </div>
+                                </section>
+                                <section class="panel">
+                                  <div class="panel-body">
+                                      <ul class="list list_border largewidth"> 
+                                          <li>
+                                              <a class="txt_l4"  [routerLink]="['/operations/wallet']">Wallet</a>
+                                            </li>
+                                      </ul>
+                                  </div>
+                                </section>
+                              </div>
+                              <div class="col-md-1">&nbsp;</div>
+                            </div>
+  
+                      </div>
+              </div>
+      </div>
+    </div>
+  </section>
+  <div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayWithdrawal">
+    
+             <div class="col-md-12">
+                 <a class="dismiss cancel_treat_ close" role="button" (click)="overlayWithdrawal=false">
+                   <i class="fa fa-times" aria-hidden="true"></i>
+                   </a> 
+               </div>
+           <div class=" overpanel-content container" role="document" style="text-align:left;width:600px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+            <app-newbankform [has_ebills_error]="has_ebills_error" [ebills_error]="ebills_error" (checkIfEbillsBankAlreadyExists)="checkIfEbillsBankAlreadyExists()" (doTheTransfer)="doTransfer()" (saveTheLenderBank)="saveLenderBank()" (testTheTransfer)="testTransfer($event)" (changeTheBankCode)="changeBankCode($event)" (changeTheBankCode_)="changeBankCode_($event)" (verifyTheAccount)="verifyAccount($event)" [nigerian_banks]="nigerian_banks" [fresponse]="fresponse" [otpConfirmed]="otpConfirmed" [otpHBSFC]="otpHBSFC" [showForm]="showForm" [confirming]="confirming" [loading]="loading" [VERIFY_STATUS]="VERIFY_STATUS" [charge_account]="charge_account" [credit]="credit" [bank]="bank" [showTestTransfer]=true></app-newbankform>
+          </div>
+  </div> 
+  <div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayOpen">
+      
+               <div class="col-md-12">
+                   <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+                     <i class="fa fa-times" aria-hidden="true"></i>
+                     </a>
+                 </div>
+             <div class=" overpanel-content container" role="document" style="text-align:left;width:1000px;min-height:500px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+                <!-- <app-payment [record_type]="record_type" [schedule_type]="schedule_type" [disburse]="disburse" [security_question]="state?.security_question.QUESTION"></app-payment> -->
+                <app-ledger (dateChanged)="handledateChanged($event)" [ledger]="ledger" [transactions]="transactions" [account_details]="account_details"></app-ledger>
+        </div>
+    </div> 

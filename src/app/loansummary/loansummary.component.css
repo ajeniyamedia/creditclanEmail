@@ -1,0 +1,74 @@
+.loan_summary .form-group {
+    margin-bottom: 5px;
+}
+.section-border {
+    border: 1px solid #eee;
+    border-radius: 10px;
+}
+.right-arrows {
+    position: absolute !important;
+    right: 105px !important;
+    top: 316px !important;
+    font-size: 50px !important
+}
+.left-arrows {
+    position: absolute !important;
+    left: 105px !important;
+    top: 316px !important;
+    font-size: 50px !important
+}
+
+img.applied {
+    border: 2px solid orange !important;
+}
+
+
+
+/* Footer section style */
+.ln_sum_ft .media .t_l4{
+    font-size: 15px;
+}
+.ln_sum_ft .media .t_l5{
+    font-size: 11px;
+}
+.ln_sum_ft{
+    padding: 0;
+}
+.ln_sum_ft article{
+    padding: 20px 15px;
+    cursor: pointer;
+    padding-right: 0;
+}
+.ln_sum_ft .ft_tb:hover{
+    background: #eeeeee;
+}
+
+
+/* Rating Style */
+.sm_rating{
+    margin-bottom: 20px;
+}
+.sm_rating .rating{
+  float: none !important;
+  font-size: inherit !important;
+  line-height: 1;
+  margin-left: 0 !important;
+}
+.sm_rating .rating label{
+  font-size: 15px !important;
+  float: none !important;
+  margin: 0 !important;
+}
+
+
+
+/* Portfolio Request */
+.portf_summ .sm_rating .rating label {
+    margin: -2px !important;
+}
+
+
+/* reduce the margin of the items of the loan summary to create space for the bottom button*/
+.ln_smry .reduce_margin .form-group{
+  margin-bottom: 11px;
+}

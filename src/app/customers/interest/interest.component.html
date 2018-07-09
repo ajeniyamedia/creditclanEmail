@@ -1,0 +1,145 @@
+<section class="panel panel-default">
+            <div class="panel-heading">
+              Interest Settings
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+             
+            </div> 
+            <div class="panel-body">
+              <div class="panel-body toc-panel">
+                <form #g="ngForm" novalidate>
+                  <div class="form-group row">
+                    <label class="control-label col-md-6">Interest Rate type</label>
+                    <div class="col-md-6">
+                      <input type="hidden" name="LOAN_INTEREST_TYPE" [(ngModel)]="company_interest.LOAN_INTEREST_TYPE">
+                      <select name="INTEREST_RATE_TYPE_ID" [(ngModel)]="company_interest.INTEREST_RATE_TYPE_ID" class="form-control">
+                        <option [value]="0"></option>
+                        <option [value]="1" selected="selected">Flat</option>
+                        <option [value]="2">Simple</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row" id="loan_interest_container">
+                    <label class="control-label col-md-6">Interest</label>
+                    <div class="col-md-6">
+
+                      <div class="input-group ">
+                        <input type="text" class="form-control" [(ngModel)]="company_interest.REQUEST_RATE" name="REQUEST_RATE">
+                        <div class="input-group-btn">
+                          <button type="button" class="btn btn-white dropdown-toggle  lockForCom" data-toggle="dropdown">
+                            <span class="sel_cur">{{interest_duration}}</span>
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu pull-right">
+                            <li *ngFor="let d of loan_durations;let i=index;">
+                              <a (click)="changeDuration(i,2)">{{d.INTEREST_DURATION}}</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="for-closed-end animated">
+
+                    <div class="form-group row">
+
+
+                      <label class="col-md-6">
+                        Installment Frequency
+                      </label>
+                      <div class="col-md-6">
+
+                        <select name="INSTALLMENT_FREQUENCY" (change)="changeFrequency($event)" [(ngModel)]="company_interest.INSTALLMENT_FREQUENCY" class="form-control">
+                          <option [value]="0"></option>
+                          <option [value]="1">One Off</option>
+                          <option [value]="2">Monthly</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+
+
+                      <label class="col-md-6">
+                        Repayment type
+                      </label>
+                      <div class="col-md-6">
+
+                        <select name="REPAYMENT_TYPE_ID" [(ngModel)]="company_interest.REPAYMENT_TYPE_ID" class="form-control">
+                          <option [value]="0"></option>
+                          <option [value]="1">EPI</option>
+                          <option [value]="2">Interest Alone</option>
+                          <option [value]="3">Bullet</option>
+                          <option [value]="6">Reducing Balance</option>
+                        </select>
+                      </div>
+                    </div>
+
+
+
+
+                    <div class="form-group row ">
+
+                      <div class="col-md-6 rpVV animated ">
+                        <label for="RMI" class="control-label">Interest Applied When</label>
+
+                      </div>
+                      <div class="col-md-6">
+                        <select class="form-control" [(ngModel)]="company_interest.RP_SET_TYPE" name="RP_SET_TYPE">
+                          <option [value]="0">select</option>
+                          <option [value]="1">Immediate</option>
+                          <option [value]="2">Prorated</option>
+
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group row " *ngIf="company_interest?.INSTALLMENT_FREQUENCY==='2'">
+
+                      <div class="col-md-6 rpVV animated ">
+                        <label for="RMI" class="control-label">Repayment Period</label>
+
+                      </div>
+                      <div class="col-md-6">
+                        <select class="form-control" name="MONTHLY_PERIOD" [(ngModel)]="company_interest.MONTHLY_PERIOD">
+                          <option [value]="1">Monthly</option>
+                          <option [value]="2">+28 days</option>
+                          <option [value]="3">+29 days</option>
+                          <option [value]="4">+30 days</option>
+                          <option [value]="5">+31 days</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row ">
+
+                        <div class="col-md-6 rpVV animated ">
+                          <label for="RMI" class="control-label">Disbursement Date</label>
+  
+                        </div>
+                        <div class="col-md-6">
+                          <input type="text" class="form-control" name="COMPANY_DISBURSEMENT" [(ngModel)]="company_interest.COMPANY_DISBURSEMENT" >
+                        </div>
+                      </div>
+
+                  </div>
+                  <div class="form-group row ">
+
+                      <div class="col-md-6 rpVV animated ">
+                        <label for="RMI" class="control-label">Repayment Day</label>
+
+                      </div>
+                      <div class="col-md-6">
+                        <select class="form-control" name="REPAYMENT_DAY" [(ngModel)]="company_interest.REPAYMENT_DAY">
+                         
+                          <option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]" [value]="number">{{number}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  <button type="submit" (click)="saveCompanyInterest(g.value, g.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <span *ngIf="!loading">Submit</span>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </section>

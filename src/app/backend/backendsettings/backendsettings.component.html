@@ -1,0 +1,2294 @@
+<app-main-navigation *ngIf="!is_dashboard"></app-main-navigation>
+<div class="container" [ngClass]="is_dashboard == true? 'head': 'dashhead'">
+  <div class="row">
+    <div class="col-md-9">
+      <section class="panel panl" style="margin-bottom: 5px">
+        <div class="panel-body">
+          <article class="media">
+            <div class="pull-left">
+              <h4 class="no-margin">Backend Settings</h4>
+            </div>
+            <!-- <a href="javascript:;" aria-expanded="false" class="pull-right">Toggle</a> -->
+          </article>
+        </div>
+      </section>
+
+      <div>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <app-generalform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
+            [loan_duration]='loan_duration' [loading]='loading' [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'></app-generalform>
+
+          <app-interestform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
+            [interest_duration]='interest_duration' [special_interest_duration]='special_interest_duration' [loading]='loading'
+            [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'></app-interestform>
+
+          <app-loanamount (saveForm)="saveLAFrom($event)" [product]='product' [special_interest_duration]='special_interest_duration'
+            [loading]='loading' [loan_durations]='loan_durations'></app-loanamount>
+
+          <app-interestratefloor [floor_rate]='floor_rate' [loading]='loading' [loan_durations]='loan_durations' (saveForm)="saveFRFrom($event)"
+            [special_interest_duration]='special_interest_duration'></app-interestratefloor>
+
+          <app-originationfee (saveForm)="saveOFFrom($event)" [product]='product' [companyaccounts]='companyaccounts' [loading]='loading'
+            [fee_settings]='fee_settings'></app-originationfee>
+
+
+
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingBSB">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseBSB" aria-expanded="true" aria-controls="collapseBSB">
+                  Borrower Score Based Interest Rates
+                </a>
+              </h4>
+            </div>
+            <div id="collapseBSB" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingBSB">
+              <div class="panel-body">
+                <div class="toc-panel">
+                  <form #interestBandForm="ngForm" novalidate>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="control-label">Lower Band</label>
+                          <input type="text" class="form-control" name="LOWER_BAND" [(ngModel)]="band.LOWER_BAND">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="control-label">Higher Band</label>
+                        <input type="text" class="form-control" name="HIGHER_BAND" [(ngModel)]="band.HIGHER_BAND">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="control-label">Max Rate</label>
+                          <input type="text" class="form-control" name="MAXIMUM_RATE" [(ngModel)]="band.MAXIMUM_RATE">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="control-label">Max Amount</label>
+                        <input type="text" class="form-control" name="MAXIMUM_AMOUNT" [(ngModel)]="band.MAXIMUM_AMOUNT">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="control-label">Max Duration</label>
+                          <input type="text" class="form-control" name="MAXIMUM_DURATION" [(ngModel)]="band.MAXIMUM_DURATION">
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-6">
+                                <label class="control-label">Max Amount</label>
+                                <input type="text" class="form-control" name="MAXIMUM_AMOUNT" [(ngModel)]="band.MAXIMUM_AMOUNT">
+                            </div> -->
+                    </div>
+                    <button type="submit" (click)="saveInterestRateBand(interestBandForm.value, interestBandForm.valid)" [disabled]="loading"
+                      class="btn btn-white pull-right">
+                      <span *ngIf="!loading">Submit</span>
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </form>
+                </div>
+
+              </div>
+              <div class="panel-body">
+                <table class="table table-striped">
+                  <thead>
+                    <th>Lower</th>
+                    <th>Higher</th>
+                    <th>Max Amount</th>
+                    <th>Max Rate</th>
+                    <th>Max Duration</th>
+                    <th></th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let band of interest_bands">
+                      <td>{{ band?.LOWER_BAND }}</td>
+                      <td>{{ band?.HIGHER_BAND }}</td>
+                      <td>{{ band?.MINIMUM_AMOUNT }}</td>
+                      <td>{{ band?.MAXIMUM_RATE }}</td>
+                      <td>{{ band?.MAXIMUM_DURATION }}</td>
+                      <td>
+                        <button class="btn btn-white btn-small" (click)="editBand(band)">
+                          <i class="fa fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-white btn-small" (click)="deleteBand(band)">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="panel panel-default hide" *ngIf="enable_peer=='1'">
+            <div class="panel-heading" role="tab" id="headingInvestors">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseInvestors" aria-expanded="false"
+                  aria-controls="collapseInvestors">
+                  Investors
+                </a>
+              </h4>
+            </div>
+            <div id="collapseInvestors" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInvestors">
+              <div class="panel-body">
+                <div class="panel-body toc-panel">
+                  <form #investor="ngForm" novalidate>
+                    <div class="form-group row">
+                      <label class="control-label col-md-6">Maximum Investment</label>
+                      <div class="col-md-6">
+
+                        <input name="MAXIMUM_INVESTMENT_PERCENT" [(ngModel)]="investors.MAXIMUM_INVESTMENT_PERCENT" class="form-control">
+
+                      </div>
+                    </div>
+
+
+                    <button type="submit" (click)="saveInvestor(investor.value, investor.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                      <span *ngIf="!loading">Submit</span>
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingF">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseF" aria-expanded="false"
+                  aria-controls="collapseF">
+                  Fines
+                </a>
+              </h4>
+            </div>
+            <div id="collapseF" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingF">
+              <div class="panel-body">
+                <div class="panel-body toc-panel">
+                  <form #fines="ngForm" novalidate>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Enable Fines</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="ENABLE_FINES" name="ENABLE_FINES" [(ngModel)]="fines_settings.ENABLE_FINES">
+                              <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="product.LOAN_PRODUCT_ID">
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="fines_settings.ENABLE_FINES">
+
+
+                      <label class="col-md-6">
+                        Percentage Value
+                      </label>
+                      <div class="col-md-6">
+
+                        <input name="FINES_PERCENT_VALUE" [(ngModel)]="fines_settings.FINES_PERCENT_VALUE" type="text" class="form-control">
+
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="fines_settings.ENABLE_FINES">
+
+
+                      <label class="col-md-6">
+                        Flat Value
+                      </label>
+                      <div class="col-md-6">
+
+                        <input name="FINES_FLAT_VALUE" [(ngModel)]="fines_settings.FINES_FLAT_VALUE" type="text" class="form-control">
+                      </div>
+                    </div>
+                    <div class="form-group row hide">
+                      <label class="control-label col-md-6">Account</label>
+                      <div class="col-md-6">
+                        <select name="FINES_ACCOUNT" [(ngModel)]="fines_settings.FINES_ACCOUNT" class="form-control">
+                          <option *ngFor="let account of companyaccounts" [value]="account.ACCOUNT_ID">{{account.GL_NAME}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <button type="submit" (click)="saveFines(fines.value, fines.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                      <span *ngIf="!loading">Submit</span>
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingBreak">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseBreak" aria-expanded="false"
+                  aria-controls="collapseBreak">
+                  Loan Breaking
+                </a>
+              </h4>
+            </div>
+            <div id="collapseBreak" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingBreak">
+              <div class="panel-body">
+                <div class="panel-body toc-panel">
+                  <form #breakForm="ngForm" novalidate>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Enable Autobreak</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="ALLOW_AUTOBREAK" [(ngModel)]="break_settings.ALLOW_AUTOBREAK">
+                              <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="product.LOAN_PRODUCT_ID">
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+
+                    <button type="submit" (click)="saveBreakSettings(breakForm.value, breakForm.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                      <span *ngIf="!loading">Submit</span>
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingPayments">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePayments" aria-expanded="false"
+                  aria-controls="collapsePayments">
+                  Payments
+                </a>
+              </h4>
+            </div>
+            <div id="collapsePayments" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPayments">
+              <div class="panel-body">
+                <div class="panel-body toc-panel">
+                  <form #paymentsForm="ngForm" novalidate>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Send Payments to queue</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="SEND_PAYMENTS_TO_QUEUE" [(ngModel)]="payment.SEND_PAYMENTS_TO_QUEUE">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Enable Autoapprove Payments</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="ALLOW_AUTO_APPROVE_PAYMENT" [(ngModel)]="payment.ALLOW_AUTO_APPROVE_PAYMENT">
+                              <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="product.LOAN_PRODUCT_ID">
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="payment.ALLOW_AUTO_APPROVE_PAYMENT">
+
+
+                      <label class="col-md-6">
+                        Maximum Amount
+                      </label>
+                      <div class="col-md-6">
+
+                        <input name="AUTO_APPROVE_PAYMENT_AMOUNT" [(ngModel)]="payment.AUTO_APPROVE_PAYMENT_AMOUNT" type="text" class="form-control">
+
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Allow part payment</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="ALLOW_PART_PAYMENT" [(ngModel)]="payment.ALLOW_PART_PAYMENT">
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <button type="submit" (click)="savePayments(paymentsForm.value, paymentsForm.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                      <span *ngIf="!loading">Submit</span>
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingSeven">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false"
+                  aria-controls="collapseSeven">
+                  Loan Default Settings
+                </a>
+              </h4>
+            </div>
+            <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
+              <div class="panel-body">
+                <form #default="ngForm" novalidate>
+                  <ul class="list list_border sm">
+                    <li class="text-left">
+                      <span> Loan Late Duration(days)</span>
+                      <div class="pull-right">
+                        <input type="text" name="LOAN_LATE_DURATION" name="LOAN_LATE_DURATION" [(ngModel)]="loandefault.LOAN_LATE_DURATION">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span> Loan Default Duration(days)</span>
+                      <div class="pull-right">
+                        <input type="text" name="LOAN_DEFAULT_DURATION" name="LOAN_DEFAULT_DURATION" [(ngModel)]="loandefault.LOAN_DEFAULT_DURATION">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span> Loan Deliquent </span>
+                      <div class="pull-right">
+                        <input type="text" name="LOAN_DELIQUENT_DURATION" name="LOAN_DELIQUENT_DURATION" [(ngModel)]="loandefault.LOAN_DELIQUENT_DURATION">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span> Autorollover Loan</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="AUTOROLLOVER" name="AUTOROLLOVER" [(ngModel)]="loandefault.AUTOROLLOVER">
+                      </div>
+                    </li>
+                    <li class="text-left" *ngIf="loandefault.AUTOROLLOVER">
+                      <span> Rollover Duration</span>
+                      <div class="pull-right">
+                        <input type="text" name="ROLLOVERDURATION" name="ROLLOVERDURATION" [(ngModel)]="loandefault.ROLLOVERDURATION">
+                      </div>
+                    </li>
+                    <li class="text-left" *ngIf="loandefault.AUTOROLLOVER">
+                      <span> Rollover Fees (%)</span>
+                      <div class="pull-right">
+                        <input type="text" name="ROLLOVERFEESPERCENT" name="ROLLOVERFEESPERCENT" [(ngModel)]="loandefault.ROLLOVERFEESPERCENT">
+                      </div>
+                    </li>
+                    <li class="text-left" *ngIf="loandefault.AUTOROLLOVER">
+                      <span> Rollover Fees Flat</span>
+                      <div class="pull-right">
+                        <input type="text" name="ROLLOVERFEESFLAT" name="ROLLOVERFEESFLAT" [(ngModel)]="loandefault.ROLLOVERFEESFLAT">
+                      </div>
+                    </li>
+                  </ul>
+                  <button type="submit" (click)="saveRollover(default.value, default.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <span *ngIf="!loading">Submit</span>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingThree">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false"
+                  aria-controls="collapseThree">
+                  Approvals
+                </a>
+              </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+              <div class="panel-body">
+                <button class="btn btn-xs btn-white pull-right" (click)="overlayOpen=true">Add New Level</button>
+              </div>
+              <div class="panel-body">
+
+              </div>
+              <div class="pivots_app">
+                <article *ngFor="let level of loan_approvals" class="media" style="margin: 5px 0px;background: #fff;padding: 5px;cursor:pointer; margin-bottom:0px">
+
+                  <a class="btn btn-white btn-xs pull-right moveUp" href="javascript:;">
+                    <i class="fa fa-arrow-up"></i>
+                  </a>
+                  <a class="btn btn-white btn-xs pull-right moveDown" href="javascript:;">
+                    <i class="fa fa-arrow-down"></i>
+                  </a>
+                  <a (click)="deleteLevel(level)" class="pull-right btn btn-white btn-xs btn-dl">
+                    <i class="fa fa-trash"></i> Delete</a>
+                  <a class="btn btn-white btn-xs pull-right viewpivot" (click)="update(level)">View</a>
+                  <div class="media-body">
+                    <div class=" p-head pull-left" href="#">
+                      <span style="color:green;">{{level?.LEVEL_NAME}}</span>
+                      <div style="display:block">
+                        <a href="javascript:;" class="open-ben" data-ben="app_2">Executors</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingFour">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false"
+                  aria-controls="collapseFour">
+                  Customer Routing
+                </a>
+              </h4>
+            </div>
+            <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+              <div class="panel-body">
+                <div *ngIf="addingAutoRouter">
+                  <div style="width:50%; margin:0px auto;margin-top:20px">
+                    <app-empsearch (lenderChosen)="chooseLender($event)"></app-empsearch>
+                  </div>
+                </div>
+                <form #autorouting="ngForm" novalidate *ngIf="!addingAutoRouter">
+                  <ul class="list list_border sm">
+
+                    <li class="text-left">
+                      <span> Enable Autorouting</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="enableautorouting" name="enableautorouting" [(ngModel)]="backend.enableautorouting">
+                      </div>
+                    </li>
+                    <li class="text-left sub_list" *ngIf="!backend.enableautorouting">
+                      <span> Routing Officer</span>
+                      <div class="pull-right" *ngIf="backend.autorouter_size!='0'">
+                        <a *ngFor="let arouter of backend.autorouter">
+                          <img style="width:30px; height:30px; border-radius: 50%" src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{arouter?.FILE_NAME | imagenotfound}}?q=auto">
+                        </a>
+                        <button class="btn btn-xs btn-white">Change</button>
+                      </div>
+                      <div class="pull-right" *ngIf="backend.autorouter_size===0">
+
+                        <button class="btn btn-xs btn-white" (click)="addingAutoRouter=!addingAutoRouter">Add</button>
+                      </div>
+                    </li>
+
+                  </ul>
+                  <button type="submit" (click)="saveautorouting(autorouting.value, autorouting.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <span *ngIf="!loading">Submit</span>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingEight">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="false"
+                  aria-controls="collapseEight">
+                  Customer Account Number Settings
+                </a>
+              </h4>
+            </div>
+            <div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
+              <div class="panel-body">
+                <form #customeraccount="ngForm" novalidate>
+                  <div class="panel-body">
+
+                    <div class="form-group row">
+                      <label for="" class="control-label col-md-5">Customer Account Sections</label>
+                      <label for="" class="control-label col-md-7">[Prefix/Branch Code] | [Number Range] | [Account Type]</label>
+                    </div>
+                    <div class="form-group row">
+                      <label for="" class="control-label col-md-5">Account Prefix/Branch Code</label>
+                      <div class="col-md-7">
+                        <input type="text" class="form-control" (ngModelChange)="changeSampleCA()" name="CUSTOMER_ACCOUNT_PART_ONE" [(ngModel)]="customeraccountsettings.CUSTOMER_ACCOUNT_PART_ONE"
+                          id="CUSTOMER_ACCOUNT_PART_ONE">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="" class="control-label col-md-5">Number Range</label>
+                      <div class="col-md-7">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <input type="number" min="100000" class="form-control" (change)="changeSampleCA()" [(ngModel)]="customeraccountsettings.CUSTOMER_ACCOUNT_RANGE_ONE"
+                              name="CUSTOMER_ACCOUNT_RANGE_ONE" id="CUSTOMER_ACCOUNT_RANGE_ONE">
+                          </div>
+                          <div class="col-md-6">
+                            <input type="number" max="999999" class="form-control" id="CUSTOMER_ACCOUNT_RANGE_TWO" [(ngModel)]="customeraccountsettings.CUSTOMER_ACCOUNT_RANGE_TWO"
+                              name="CUSTOMER_ACCOUNT_RANGE_TWO">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="" class="control-label col-md-5">Include Branch Code/ Prefix</label>
+                      <div class="col-md-7">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" (change)="changeSampleCA()" [(ngModel)]="customeraccountsettings.INCLUDE_BRANCH_CODE_PREFIX" name="INCLUDE_BRANCH_CODE_PREFIX"
+                              id="INCLUDE_BRANCH_CODE_PREFIX">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="" class="control-label col-md-5">Include Account Type Code</label>
+                      <div class="col-md-7">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" (change)="changeSampleCA()" [(ngModel)]="customeraccountsettings.INCLUDE_ACCOUNT_TYPE_CODE" name="INCLUDE_ACCOUNT_TYPE_CODE"
+                              id="INCLUDE_ACCOUNT_TYPE_CODE">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="" class="control-label col-md-5">Sample</label>
+                      <div class="col-md-7">
+                        <input type="text" class="form-control" id="SAMPLE_CA" [disabled]="true" id="SAMPLE_CA" name="SAMPLE_CA" [(ngModel)]="customeraccountsettings.SAMPLE_CA">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <button type="submit" (click)="saveCustomerSettings(customeraccount.value, customeraccount.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                          <span *ngIf="!loading">Submit</span>
+                          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAccounting">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAccounting" aria-expanded="false"
+                  aria-controls="collapseAccounting">
+                  Accounting
+                </a>
+              </h4>
+            </div>
+            <div id="collapseAccounting" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAccounting">
+              <div class="panel-body">
+                <form #accounting="ngForm" novalidate>
+                  <ul class="list list_border sm">
+
+                    <li class="text-left">
+                      <span> Enable Accounting</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="enable_accounting" name="enable_accounting" [(ngModel)]="backend.enable_accounting">
+                      </div>
+                    </li>
+
+                  </ul>
+                  <button type="submit" (click)="saveAccPeer(accounting.value, accounting.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <span *ngIf="!loading">Submit</span>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingP2P">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseP2P" aria-expanded="false"
+                  aria-controls="collapseP2P">
+                  P2p
+                </a>
+              </h4>
+            </div>
+            <div id="collapseP2P" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingP2P">
+              <div class="panel-body">
+                <form #peertopeer="ngForm" novalidate>
+                  <ul class="list list_border sm">
+
+                    <li class="text-left" style=" border-bottom:0px">
+                      <span> Enable P2P</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="enable_p2p" name="enable_p2p" [(ngModel)]="backend.enable_p2p">
+                      </div>
+                    </li>
+                    <li class="text-left" style=" border-bottom:0px">
+                      <div class="form-group row" *ngIf="backend.enable_p2p">
+
+
+                        <label class="col-md-6">
+                          Maximum Duration for Loan Market (days)
+                        </label>
+                        <div class="col-md-6">
+
+                          <input name="MAX_DURATION_FOR_LOAN_MARKET" [(ngModel)]="backend.MAX_DURATION_FOR_LOAN_MARKET" type="text" class="form-control">
+
+                        </div>
+                      </div>
+                    </li>
+                    <li class="text-left" style=" border-bottom:0px">
+                      <div class="form-group row" *ngIf="backend.enable_p2p">
+                        <label class="control-label col-md-6">Action if funding duration elapses</label>
+                        <div class="col-md-6">
+                          <select name="NOT_FUNDED_ACTION" [(ngModel)]="backend.NOT_FUNDED_ACTION" class="form-control">
+                            <option *ngFor="let action of notactions" [value]="action.value">{{action.display}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="text-left" style=" border-bottom:0px">
+                      <div class="form-group row" *ngIf="backend.enable_p2p && backend.NOT_FUNDED_ACTION=='2'">
+                        <label class="control-label col-md-6">Message</label>
+                        <div class="col-md-6">
+                          <textarea name="CANCELLATION_MESSAGE" class="form-control" [(ngModel)]="backend.CANCELLATION_MESSAGE"></textarea>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="text-left" style=" border-bottom:0px">
+                      <div class="form-group row" *ngIf="backend.enable_p2p">
+
+
+                        <label class="col-md-6">
+                          Make everyone anonymous
+                        </label>
+                        <div class="col-md-6">
+                          <input type="checkbox" name="MAKE_EVERYONE_ANONYMOUS" name="MAKE_EVERYONE_ANONYMOUS" [(ngModel)]="backend.MAKE_EVERYONE_ANONYMOUS">
+                        </div>
+                      </div>
+                    </li>
+
+                  </ul>
+                  <button type="submit" (click)="saveAccPeer(peertopeer.value, peertopeer.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <span *ngIf="!loading">Submit</span>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default hide">
+            <div class="panel-heading" role="tab" id="headingEligibility">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEligibility" aria-expanded="false"
+                  aria-controls="collapseEligibility">
+                  Eligibility
+                </a>
+              </h4>
+            </div>
+            <div id="collapseEligibility" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEligibility">
+              <div class="panel-body">
+                <form #eligibility="ngForm" novalidate>
+                  <ul class="list list_border sm">
+
+                    <li class="text-left">
+                      <span> Profile</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="PROFILE_ELIGIBILITY" name="PROFILE_ELIGIBILITY" [(ngModel)]="backend.PROFILE_ELIGIBILITY">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span> Bank Account/Profile Name Match</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="BANK_ACCOUNT_ELIGIBILITY" name="BANK_ACCOUNT_ELIGIBILITY" [(ngModel)]="backend.BANK_ACCOUNT_ELIGIBILITY">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span> Income</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="INCOME_ELIGIBILITY" name="INCOME_ELIGIBILITY" [(ngModel)]="backend.INCOME_ELIGIBILITY">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span> Rating</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="RATING_ELIGIBILITY" name="RATING_ELIGIBILITY" [(ngModel)]="backend.RATING_ELIGIBILITY">
+                      </div>
+                    </li>
+                    <li class="text-left" *ngIf="backend.RATING_ELIGIBILITY">
+                      <span> Minimum Ratings ( 0-5 )</span>
+                      <div class="pull-right">
+                        <input type="text" name="MINIMUM_RATINGS_ID" name="MINIMUM_RATINGS_ID" [(ngModel)]="backend.MINIMUM_RATINGS_ID">
+                      </div>
+                    </li>
+                    <li class="text-left hide">
+                      <span> Default Amount</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="DEFAULT_AMOUNT_ELIGIBILITY" name="DEFAULT_AMOUNT_ELIGIBILITY" [(ngModel)]="backend.DEFAULT_AMOUNT_ELIGIBILITY">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span> BVN</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="BVN_ELIGIBILITY" name="BVN_ELIGIBILITY" [(ngModel)]="backend.BVN_ELIGIBILITY">
+                      </div>
+                    </li>
+                    <li class="text-left hide">
+                      <span> Card</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="CARD_ELIGIBILITY" name="CARD_ELIGIBILITY" [(ngModel)]="backend.CARD_ELIGIBILITY">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span> Suspend if eligibility fails</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="SUSPEND_IF_FAIL_ELIGIBILITY" name="SUSPEND_IF_FAIL_ELIGIBILITY" [(ngModel)]="backend.SUSPEND_IF_FAIL_ELIGIBILITY">
+                      </div>
+                    </li>
+                  </ul>
+
+
+                  <div *ngIf="backend.SUSPEND_IF_FAIL_ELIGIBILITY">
+
+                    <div class="form-group row" id="loan_interval_container">
+                      <div class="col-md-6">
+                        <label class="no-margin control-label">Duration (Hours)</label>
+
+                      </div>
+                      <div class="col-md-6">
+
+                        <div class="input-group btn-block">
+                          <input type="text" class="form-control btn-block" name="SUSPEND_FOR_HOW_LONG" [(ngModel)]="backend.SUSPEND_FOR_HOW_LONG">
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <button type="submit" (click)="saveEligibility(eligibility.value, eligibility.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <span *ngIf="!loading">Submit</span>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAutodisburse">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAutodisburse" aria-expanded="false"
+                  aria-controls="collapseAutodisburse">
+                  Disbursements
+                </a>
+              </h4>
+            </div>
+            <div id="collapseAutodisburse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAutodisburse">
+              <div class="panel-body">
+                <form #autodisburse="ngForm" novalidate>
+                  <ul class="list list_border sm">
+
+
+                    <li class="text-left">
+                      <span> Allow Autodisbursement</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="ALLOW_AUTO_DISBURSE" name="ALLOW_AUTO_DISBURSE" [(ngModel)]="backend.ALLOW_AUTO_DISBURSE">
+                      </div>
+                    </li>
+                    <li class="text-left" *ngIf="backend.ALLOW_AUTO_DISBURSE">
+                      <span> Maximum Autodisurse Amount</span>
+                      <div class="pull-right">
+                        <input type="text" name="AUTO_DISBURSE_AMOUNT" name="AUTO_DISBURSE_AMOUNT" [(ngModel)]="backend.AUTO_DISBURSE_AMOUNT">
+                      </div>
+                    </li>
+                    <li class="text-left" *ngIf="backend.ALLOW_AUTO_DISBURSE">
+                      <span> Successful Loans</span>
+                      <div class="pull-right">
+                        <input type="text" name="SUCCESSFUL_LOANS" name="SUCCESSFUL_LOANS" [(ngModel)]="backend.SUCCESSFUL_LOANS">
+                      </div>
+                    </li>
+                    <li class="text-left" *ngIf="backend.ALLOW_AUTO_DISBURSE">
+                      <span> Only users with verified BVN</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="BVN_DONE_AUTODISBURSE" name="BVN_DONE_AUTODISBURSE" [(ngModel)]="backend.BVN_DONE_AUTODISBURSE">
+                      </div>
+                    </li>
+                    <li class="text-left" *ngIf="backend.ALLOW_AUTO_DISBURSE">
+                      <span> Cancel after failed</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="CANCEL_AFTER_FAILED" name="CANCEL_AFTER_FAILED" [(ngModel)]="backend.CANCEL_AFTER_FAILED">
+                      </div>
+                    </li>
+                    <li class="text-left" *ngIf="backend.ALLOW_AUTO_DISBURSE && !backend.CANCEL_AFTER_FAILED">
+                      <span> Retry When documents provided</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="RETRY_OTP" name="RETRY_OTP" [(ngModel)]="backend.RETRY_OTP">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span> Enable Bulk Disbursement</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="ENABLE_BULK_DISBURSEMENT" name="ENABLE_BULK_DISBURSEMENT" [(ngModel)]="backend.ENABLE_BULK_DISBURSEMENT">
+                      </div>
+                    </li>
+                  </ul>
+                  <button type="submit" (click)="saveAutodisburse(autodisburse.value, autodisburse.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <span *ngIf="!loading">Submit</span>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAccounts">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAccounts" aria-expanded="false"
+                  aria-controls="collapseAccounts">
+                  Accounts
+                </a>
+              </h4>
+            </div>
+            <div id="collapseAccounts" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAccounts">
+              <div class="panel-body">
+                <form #accounts="ngForm" novalidate>
+                  <ul class="list list_border sm">
+
+
+                    <li class="text-left">
+                      <span> Disburse From Loan</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="DISBURSEMENT_FROM_LOAN" name="DISBURSEMENT_FROM_LOAN" [(ngModel)]="accounts.DISBURSEMENT_FROM_LOAN">
+                      </div>
+                    </li>
+
+                  </ul>
+                  <button type="submit" (click)="saveAccounts(accounts.value, accounts.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <span *ngIf="!loading">Submit</span>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+          </div>
+          <div class="panel panel-default hide">
+            <div class="panel-heading" role="tab" id="headingQB">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseQB" aria-expanded="false"
+                  aria-controls="collapseQB">
+                  Qualified Borrowers
+                </a>
+              </h4>
+            </div>
+            <div id="collapseQB" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingQB">
+              <div class="panel-body">
+                <form #qb="ngForm" novalidate>
+                  <div class="form-group row">
+                    <label class="control-label col-md-6">Minimum Age</label>
+                    <div class="col-md-6">
+                      <input type="text" name="MIN_AGE" #MIN_AGE="ngModel" [(ngModel)]="qualified_borrowers.MIN_AGE" id="MIN_AGE" class="form-control"
+                        required>
+
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="control-label col-md-6">Maximum Age</label>
+                    <div class="col-md-6">
+                      <input type="text" name="MAX_AGE" #MAX_AGE="ngModel" [(ngModel)]="qualified_borrowers.MAX_AGE" id="MAX_AGE" class="form-control"
+                        required>
+
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="control-label col-md-4">Preferred Marital Status</label>
+                    <div class="col-md-8">
+                      <div class="row">
+                        <div class="col-md-6" *ngFor="let occ of marital_statuses;let i = index" style="padding-right:5px !important">
+                          <div class="form-group" style="margin-bottom:0px">
+                            <span class="pull-left text-primary">{{occ?.display}}</span>
+                            <span class="pull-right">
+                              <div class="checkbox" style="margin:0px !important">
+                                <label>
+                                  <input type="checkbox" [checked]="isMaritalStatusAvailable(occ?.value,i)" name="mstat_{{occ?.value}}" (change)="checkMaritalStatus(occ,$event.target.checked,i)">
+
+                                </label>
+                              </div>
+                            </span>
+                            <div class="clearfix"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="control-label col-md-4">Allowed Address States</label>
+                    <div class="col-md-8">
+                      <div class="row">
+                        <div class="col-md-6" *ngFor="let state of states;let i = index" style="padding-right:5px !important">
+                          <div class="form-group" style="margin-bottom:0px">
+                            <span class="pull-left text-primary">{{state?.state_name}}</span>
+                            <span class="pull-right">
+                              <div class="checkbox" style="margin:0px !important">
+                                <label>
+                                  <input type="checkbox" [checked]="isStateAvailable(state?.state_id,i)" name="tat_{{state?.state_name}}" (change)="checkAllowedState(state,$event.target.checked,i)">
+
+                                </label>
+                              </div>
+                            </span>
+                            <div class="clearfix"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="control-label col-md-6">Minimum Salary</label>
+                    <div class="col-md-6">
+                      <input type="text" name="MIN_SALARY_ACCEPTABLE" #MIN_SALARY_ACCEPTABLE="ngModel" [(ngModel)]="qualified_borrowers.MIN_SALARY_ACCEPTABLE"
+                        id="MIN_SALARY_ACCEPTABLE" class="form-control" required>
+                      <input type="hidden" name="LOAN_PRODUCT_ID" #LOAN_PRODUCT_ID="ngModel" [(ngModel)]="qualified_borrowers.LOAN_PRODUCT_ID"
+                        id="LOAN_PRODUCT_ID">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="control-label col-md-4">Preferred Occupation</label>
+                    <div class="col-md-8">
+                      <div class="row">
+                        <div class="col-md-6" *ngFor="let occ of occupations;let i = index" style="padding-right:5px !important">
+                          <div class="form-group" style="margin-bottom:0px">
+                            <span class="pull-left text-primary">{{occ?.DESCRIPTION}}</span>
+                            <span class="pull-right">
+                              <div class="checkbox" style="margin:0px !important">
+                                <label>
+                                  <input type="checkbox" [checked]="isAvailable(occ?.OCCUPATION_ID,'occupation',i)" name="role_{{occ?.OCCUPATION_ID}}" (change)="checkOccupation(role,$event.target.checked,i)">
+
+                                </label>
+                              </div>
+                            </span>
+                            <div class="clearfix"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="control-label col-md-4">Preferred Sector</label>
+                    <div class="col-md-8">
+                      <div class="row">
+                        <div class="col-md-6" *ngFor="let occ of sectors;let i = index" style="padding-right:5px !important">
+                          <div class="form-group" style="margin-bottom:0px">
+                            <span class="pull-left text-primary">{{occ?.DESCRIPTION}}</span>
+                            <span class="pull-right">
+                              <div class="checkbox" style="margin:0px !important">
+                                <label>
+                                  <input type="checkbox" [checked]="isAvailable(occ?.OCCUPATION_ID,'sector',i)" name="role_{{occ?.OCCUPATION_ID}}" (change)="checkSector(role,$event.target.checked,i)">
+
+                                </label>
+                              </div>
+                            </span>
+                            <div class="clearfix"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" (click)="saveQualifiedBorrowers(qb.value, qb.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <span *ngIf="!loading">Submit</span>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingGuarantor">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseGuarantor" aria-expanded="false"
+                  aria-controls="collapseQB">
+                  Guarantor Requirements
+                </a>
+              </h4>
+            </div>
+            <div id="collapseGuarantor" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingGuarantor">
+              <div class="panel-body">
+                <form #gb="ngForm" novalidate>
+                  <ul class="list list_border sm">
+
+
+                    <li class="text-left">
+                      <span> Send Guarantor Requests</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="SEND_GUARANTOR_INVITES" [(ngModel)]="guarantor_requirements.SEND_GUARANTOR_INVITES">
+                        <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="product.LOAN_PRODUCT_ID">
+                      </div>
+                    </li>
+
+                  </ul>
+                  <div class="form-group row">
+                    <label class="control-label col-md-4">Guarantor Requirements</label>
+                    <div class="col-md-8">
+                      <div class="row">
+                        <div class="col-md-6" *ngFor="let occ of guarantors;let i = index" style="padding-right:5px !important">
+                          <div class="form-group" style="margin-bottom:0px">
+                            <span class="pull-left text-primary">{{occ?.display}}</span>
+                            <span class="pull-right">
+                              <div class="checkbox" style="margin:0px !important">
+                                <label>
+                                  <input type="checkbox" [checked]="isGuarantorRequirementAvailable(occ?.value,i)" name="gua_{{occ?.value}}" (change)="checkGuarantorRequirement($event.target.checked,i)">
+
+                                </label>
+                              </div>
+                            </span>
+                            <div class="clearfix"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" (click)="saveGuarantorRequirements(gb.value, gb.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <span *ngIf="!loading">Submit</span>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingContract">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseContract" aria-expanded="true" aria-controls="collapseContract">
+                  Contract Settings
+                </a>
+              </h4>
+            </div>
+            <div id="collapseContract" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingContract">
+              <div class="panel-body">
+                <div class="panel-body">
+                  <form #contractForm="ngForm" novalidate>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Borrower must accept contract</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="MUST_ACCEPT_CONTRACT" name="MUST_ACCEPT_CONTRACT" [(ngModel)]="contract.MUST_ACCEPT_CONTRACT">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Send contract documents</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="SEND_CONTRACT_DOCS" name="SEND_CONTRACT_DOCS" [(ngModel)]="contract.SEND_CONTRACT_DOCS">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Request for BVN</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="REQUEST_FOR_BVN" name="REQUEST_FOR_BVN" [(ngModel)]="contract.REQUEST_FOR_BVN">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Request for Card</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="REQUEST_FOR_CARD" name="REQUEST_FOR_CARD" [(ngModel)]="contract.REQUEST_FOR_CARD">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Request for Account</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="REQUEST_FOR_ACCOUNT" name="REQUEST_FOR_ACCOUNT" [(ngModel)]="contract.REQUEST_FOR_ACCOUNT">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Enable Signature</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="ENABLE_CONTRACT_SIGNATURE" name="ENABLE_CONTRACT_SIGNATURE" [(ngModel)]="contract.ENABLE_CONTRACT_SIGNATURE">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Enable Contract Date Adjustment</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="ADJUST_CONTRACT_DATE" name="ADJUST_CONTRACT_DATE" [(ngModel)]="contract.ADJUST_CONTRACT_DATE">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <button type="submit" (click)="saveContract(contractForm.value, contractForm.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                      <span *ngIf="!loading">Submit</span>
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingMail">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMail" aria-expanded="true" aria-controls="collapseMail">
+                  Mail Settings
+                </a>
+              </h4>
+            </div>
+            <div id="collapseMail" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingMail">
+              <div class="panel-body">
+                <div class="panel-body">
+                  <form #mail="ngForm" novalidate>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> SMTP Available</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="HAS_SMTP" name="HAS_SMTP" [(ngModel)]="mail_settings.HAS_SMTP">
+                              <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="product.LOAN_PRODUCT_ID">
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="mail_settings.HAS_SMTP">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Use SendGrid&trade;</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="USE_SENDGRID" name="USE_SENDGRID" [(ngModel)]="mail_settings.USE_SENDGRID">
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div *ngIf="mail_settings.HAS_SMTP && !mail_settings.USE_SENDGRID">
+
+                      <div class="form-group row" id="loan_interval_container">
+                        <div class="col-md-6">
+                          <label class="no-margin control-label">SMTP Address</label>
+                          <div class="input-group btn-block">
+                            <input type="text" class="form-control btn-block" name="SMTP_SERVER" [(ngModel)]="mail_settings.SMTP_SERVER">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="no-margin control-label">SMTP Username</label>
+                          <div class="">
+                            <input type="text" class="form-control" name="SMTP_USERNAME" [ngModel]="mail_settings.SMTP_USERNAME">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row" id="loan_interval_container">
+                        <div class="col-md-6">
+                          <label class="no-margin control-label">SMTP Password</label>
+                          <div class="input-group btn-block">
+                            <input type="text" class="form-control btn-block" name="SMTP_PASSWORD" [(ngModel)]="mail_settings.SMTP_PASSWORD">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-md-12">
+                          <ul>
+                            <li class="text-left">
+                              <span> Use SSL</span>
+                              <div class="pull-right">
+                                <input type="checkbox" name="USE_SSL" name="USE_SSL" [(ngModel)]="mail_settings.USE_SSL">
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="form-group row" *ngIf="mail_settings.USE_SSL">
+                        <div class="col-md-6">
+                          <label class="no-margin control-label">SSL Port</label>
+
+                        </div>
+                        <div class="col-md-6">
+
+                          <div class="">
+                            <input type="text" class="form-control" name="SMTP_PORT" [ngModel]="mail_settings.SMTP_PORT">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row" *ngIf="!mail_settings.USE_SSL">
+                        <div class="col-md-6">
+                          <label class="no-margin control-label">Non SSL Port</label>
+
+                        </div>
+                        <div class="col-md-6">
+
+                          <div class="">
+                            <input type="text" class="form-control" name="SMTP_PORT_" [ngModel]="mail_settings.SMTP_PORT_">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="mail_settings.HAS_SMTP && mail_settings.USE_SENDGRID">
+
+                      <div class="form-group row" id="loan_interval_container">
+                        <div class="col-md-6">
+                          <label class="no-margin control-label">SendGrid Username</label>
+                          <div class="input-group btn-block">
+                            <input type="text" class="form-control btn-block" name="SG_USERNAME" [(ngModel)]="mail_settings.SG_USERNAME">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="no-margin control-label">SendGrid Email</label>
+                          <div class="">
+                            <input type="text" class="form-control" name="SG_EMAIL" [ngModel]="mail_settings.SG_EMAIL">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row" id="loan_interval_container">
+                        <div class="col-md-6">
+                          <label class="no-margin control-label">SendGrid APIKey</label>
+                          <div class="input-group btn-block">
+                            <input type="text" class="form-control btn-block" name="SG_API" [(ngModel)]="mail_settings.SG_API">
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <button type="submit" (click)="saveMailSettings(mail.value, mail.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                      <span *ngIf="!loading">Submit</span>
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingSMS">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSMS" aria-expanded="true" aria-controls="collapseSMS">
+                  SMS Settings
+                </a>
+              </h4>
+            </div>
+            <div id="collapseSMS" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSMS">
+              <div class="panel-body">
+                <div class="panel-body">
+                  <form #sms="ngForm" novalidate>
+
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="no-margin control-label">SMS Display Name (10)</label>
+
+                      </div>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" minlength="5" maxlength="10" name="SMS_DISPLAY_NAME" [ngModel]="mail_settings.SMS_DISPLAY_NAME">
+
+                      </div>
+                    </div>
+
+
+                    <button type="submit" (click)="saveSMSSettings(sms.value, sms.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                      <span *ngIf="!loading">Submit</span>
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingReminder">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseReminder" aria-expanded="true" aria-controls="collapseReminder">
+                  Repayment Reminders
+                </a>
+              </h4>
+            </div>
+            <div id="collapseReminder" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingReminder">
+              <div class="panel-body">
+                <div class="panel-body">
+                  <form #remind="ngForm" novalidate>
+
+                    <div class="form-group row" id="loan_interval_container">
+                      <div class="col-md-6">
+                        <label class="no-margin control-label">Send Reminders When(days)</label>
+                        <div class="input-group btn-block">
+                          <input type="text" class="form-control btn-block" name="DAYS_TO" [(ngModel)]="reminders.DAYS_TO">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="no-margin control-label">How frequent daily</label>
+                        <div class="">
+                          <input type="text" class="form-control" name="REMINDER_INTERVAL" [ngModel]="reminders.REMINDER_INTERVAL">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row" id="loan_interval_container">
+                      <div class="col-md-6">
+                        <label class="no-margin control-label">Autodebit Interval</label>
+
+                      </div>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" name="AUTODEBIT_INTERVAL" [ngModel]="reminders.AUTODEBIT_INTERVAL">
+                      </div>
+                    </div>
+                    <button type="submit" (click)="saveReminders(remind.value, remind.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                      <span *ngIf="!loading">Submit</span>
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingSecurity">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSecurity" aria-expanded="false"
+                  aria-controls="collapseSecurity">
+                  Security
+                </a>
+              </h4>
+            </div>
+            <div id="collapseSecurity" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSecurity">
+              <div class="panel-body">
+                <form #securtiyform="ngForm" novalidate>
+                  <ul class="list list_border sm">
+
+
+                    <li class="text-left">
+                      <span> Require Security Question</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="REQUIRE_SECURITY_QUESTION" name="REQUIRE_SECURITY_QUESTION" [(ngModel)]="security.REQUIRE_SECURITY_QUESTION">
+                      </div>
+                    </li>
+
+                  </ul>
+                  <button type="submit" (click)="saveSecurity(securtiyform.value, securtiyform.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <span *ngIf="!loading">Submit</span>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingReferral">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseReferral" aria-expanded="false"
+                  aria-controls="collapseReferral">
+                  Referral Setting
+                </a>
+              </h4>
+            </div>
+            <div id="collapseReferral" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingReferral">
+              <div class="panel-body">
+                <form #referralform="ngForm" novalidate>
+                  <div class="form-group row">
+                    <div class="col-md-12">
+                      <ul>
+                        <li class="text-left">
+                          <span> Enable referral </span>
+                          <div class="pull-right">
+                            <input type="checkbox" name="ENABLE_REFERRAL" [(ngModel)]="referral_settings.ENABLE_REFERRAL">
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <ul class="list list_border sm" *ngIf="referral_settings.ENABLE_REFERRAL">
+                    <li class="text-left">
+                      <span>Referral Type</span>
+                    </li>
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <span>Cash Based </span>
+                      <div class="pull-right">
+                        <input type="radio" name="REFERRAL_TYPE" [value]="1" [(ngModel)]="referral_settings.REFERRAL_TYPE">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span>Referral bonus earned when?</span>
+                    </li>
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <span>Origination</span>
+                      <div class="pull-right">
+                        <input type="radio" name="REFERRAL_BONUS_EARNED_WHEN" [value]="1" [(ngModel)]="referral_settings.REFERRAL_BONUS_EARNED_WHEN">
+                      </div>
+                    </li>
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <span>Paid loan </span>
+                      <div class="pull-right">
+                        <input type="radio" name="REFERRAL_BONUS_EARNED_WHEN" [value]="2" [(ngModel)]="referral_settings.REFERRAL_BONUS_EARNED_WHEN">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span>Referral Bonus type</span>
+                    </li>
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <span>Flat </span>
+                      <div class="pull-right">
+                        <input type="radio" name="REFERRAL_BONUS_TYPE" [value]="1" [(ngModel)]="referral_settings.REFERRAL_BONUS_TYPE">
+                      </div>
+                    </li>
+                    <li class="text-left" style="padding-left: 60px" *ngIf="referral_settings.REFERRAL_BONUS_TYPE=='1'">
+                      <span>Amount per Referral</span>
+                      <div class="pull-right">
+                        <input type="text" name="AMOUNT_PER_REFERRAL_CASH" [(ngModel)]="referral_settings.AMOUNT_PER_REFERRAL_CASH">
+                      </div>
+                    </li>
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <span>Percentage </span>
+                      <div class="pull-right">
+                        <input type="radio" name="REFERRAL_BONUS_TYPE" [value]="2" [(ngModel)]="referral_settings.REFERRAL_BONUS_TYPE">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span>Referral Bonus Percentage</span>
+                    </li>
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <span>On Principal </span>
+                      <div class="pull-right">
+                        <input type="radio" name="REFERRAL_PERCENTAGE_ON" [value]="1" [(ngModel)]="referral_settings.REFERRAL_PERCENTAGE_ON">
+                      </div>
+                    </li>
+                    <li class="text-left" style="padding-left: 60px" *ngIf="referral_settings.REFERRAL_PERCENTAGE_ON=='1'">
+                      <span>% On Principal </span>
+                      <div class="pull-right">
+                        <input type="text" name="REFERRAL_AMOUNT_PERCENTAGE_ON_PRINCIPAL" [(ngModel)]="referral_settings.REFERRAL_AMOUNT_PERCENTAGE_ON_PRINCIPAL">
+                      </div>
+                    </li>
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <span>On Interest </span>
+                      <div class="pull-right">
+                        <input type="radio" name="REFERRAL_PERCENTAGE_ON" [value]="2" [(ngModel)]="referral_settings.REFERRAL_PERCENTAGE_ON">
+                      </div>
+                    </li>
+                    <li class="text-left" style="padding-left: 60px" *ngIf="referral_settings.REFERRAL_PERCENTAGE_ON=='2'">
+                      <span>% On Interest </span>
+                      <div class="pull-right">
+                        <input type="text" name="REFERRAL_AMOUNT_PERCENTAGE_ON_INTEREST" [(ngModel)]="referral_settings.REFERRAL_AMOUNT_PERCENTAGE_ON_INTEREST">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span>Referral Conversion Type</span>
+                    </li>
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <span>Cash Out </span>
+                      <div class="pull-right">
+                        <input type="radio" name="REFERRAL_CONVERSION_TYPE" [value]="1" [(ngModel)]="referral_settings.REFERRAL_CONVERSION_TYPE">
+                      </div>
+                    </li>
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <span>Fund Interest </span>
+                      <div class="pull-right">
+                        <input type="radio" name="REFERRAL_CONVERSION_TYPE" [value]="2" [(ngModel)]="referral_settings.REFERRAL_CONVERSION_TYPE">
+                      </div>
+                    </li>
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <span>Both </span>
+                      <div class="pull-right">
+                        <input type="radio" name="REFERRAL_CONVERSION_TYPE" [value]="3" [(ngModel)]="referral_settings.REFERRAL_CONVERSION_TYPE">
+                      </div>
+                    </li>
+                  </ul>
+                  <button type="submit" (click)="saveReferral(referralform.value, referralform.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <span *ngIf="!loading">Submit</span>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAnalytics">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAnalytics" aria-expanded="false"
+                  aria-controls="collapseAnalytics">
+                  Analytics weight Setting
+                </a>
+              </h4>
+            </div>
+            <div id="collapseAnalytics" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAnalytics">
+              <div class="panel-body">
+                <form #analyticsform="ngForm" novalidate>
+                  <ul class="list list_border sm">
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <div class="row">
+                        <div class="col-md-3" style="vertical-align: bottom;">
+                          <p style="margin:20px 0 0">profile</p>
+                        </div>
+                        <div class="col-md-9">
+                          <ion-range-slider [from]="analytics_settings?.profile" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'profile')"></ion-range-slider>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <div class="row">
+                        <div class="col-md-3" style="vertical-align: bottom;">
+                          <p style="margin:20px 0 0">address</p>
+                        </div>
+                        <div class="col-md-9">
+                          <ion-range-slider [from]="analytics_settings?.address" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'address')"></ion-range-slider>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <div class="row">
+                        <div class="col-md-3" style="vertical-align: bottom;">
+                          <p style="margin:20px 0 0">income</p>
+                        </div>
+                        <div class="col-md-9">
+                          <ion-range-slider [from]="analytics_settings?.income" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'income')"></ion-range-slider>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <div class="row">
+                        <div class="col-md-3" style="vertical-align: bottom;">
+                          <p style="margin:20px 0 0">work</p>
+                        </div>
+                        <div class="col-md-9">
+                          <ion-range-slider [from]="analytics_settings?.work" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'work')"></ion-range-slider>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <div class="row">
+                        <div class="col-md-3" style="vertical-align: bottom;">
+                          <p style="margin:20px 0 0">Guarantor</p>
+                        </div>
+                        <div class="col-md-9">
+                          <ion-range-slider [from]="analytics_settings?.guarantor" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'guarantor')"></ion-range-slider>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li class="text-left" style="padding-left: 20px">
+                      <div class="row">
+                        <div class="col-md-3" style="vertical-align: bottom;">
+                          <p style="margin:20px 0 0">Account</p>
+                        </div>
+                        <div class="col-md-9">
+                          <ion-range-slider [from]="analytics_settings?.account" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'account')"></ion-range-slider>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li class="text-left" style="padding-left: 20px">
+                      <div class="row">
+                        <div class="col-md-3" style="vertical-align: bottom;">
+                          <p style="margin:20px 0 0">Education</p>
+                        </div>
+                        <div class="col-md-9">
+                          <ion-range-slider [from]="analytics_settings?.education" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'education')"></ion-range-slider>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <div class="row">
+                        <div class="col-md-3" style="vertical-align: bottom;">
+                          <p style="margin:20px 0 0">Call logs</p>
+                        </div>
+                        <div class="col-md-9">
+                          <ion-range-slider [from]="analytics_settings?.call_log" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'call_log')"></ion-range-slider>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li class="text-left sub_list" style="padding-left: 20px">
+                      <div class="row">
+                        <div class="col-md-3" style="vertical-align: bottom;">
+                          <p style="margin:20px 0 0">Linkedln</p>
+                        </div>
+                        <div class="col-md-9">
+                          <ion-range-slider [from]="analytics_settings?.linkedln" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'linkedln')"></ion-range-slider>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <button type="submit" (click)="saveAnalytics(analyticsform.value, analyticsform.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <span *ngIf="!loading">Submit</span>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingGeneralAnalytics">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseGeneralAnalytics" aria-expanded="false"
+                  aria-controls="collapseGeneralAnalytics">
+                  General Analytics Setting
+                </a>
+              </h4>
+            </div>
+            <div id="collapseGeneralAnalytics" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingGeneralAnalytics">
+              <div class="panel-body">
+                <ul class="list list_border sm">
+                  <li class="text-left">
+                    <span>Enable Analytics </span>
+                    <div class="pull-right">
+                      <input type="checkbox" name="ENABLE_ANALYTICS" [(ngModel)]="general_analytics_settings.ENABLE_ANALYTICS">
+                    </div>
+                  </li>
+                </ul>
+                <div *ngIf="general_analytics_settings.ENABLE_ANALYTICS == '1'">
+                  <div class="row">
+                    <div class="col-md-4" style="font-size: 14px;">
+                      Excluded Call Countries
+                    </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <select (change)="addToExcludedCountries($event)" name="EXCLUDED_CALL_COUNTRY" id="" class="form-control">
+                          <option value="0">Select Country</option>
+                          <option [value]="country.dial_code" *ngFor="let country of callingcodes">
+                            {{country.name}}
+                          </option>
+                        </select>
+                      </div>
+                      <div>
+                        <ul>
+                          <li *ngFor="let country of callingcodes" style="float:left;margin-bottom:5px;">
+                            <div style="border:1px solid grey;margin-right:4px;padding:3px;border-radius:4px" *ngIf="isAvailableInexcludedCountries(country.dial_code)">{{country.name}}
+                              <button class="btn btn-white btn-xs" (click)="removeFromExcludedCountries(country.dial_code)">X</button>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4" style="font-size: 14px;">
+                      Accepted Call Countries
+                    </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <select (change)="addToAcceptedCountries($event)" name="ACCEPTED_CALL_COUNTRY" id="" class="form-control">
+                          <option value="0">Select Country</option>
+                          <option [value]="country.dial_code" *ngFor="let country of callingcodes">
+                            {{country.name}}
+                          </option>
+                        </select>
+                      </div>
+                      <div>
+                        <ul>
+                          <li *ngFor="let country of callingcodes" style="float:left;margin-bottom:5px">
+                            <div style="border:1px solid grey;margin-right:4px;padding:3px;border-radius:4px" *ngIf="isAvailableInacceptedCountries(country.dial_code)">{{country.name}}
+                              <button class="btn btn-white btn-xs" (click)="removeFromAcceptedCountries(country.dial_code)">X</button>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4" style="font-size: 14px;">
+                      Accepted Banks
+                    </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <select (change)="addToAcceptedBanks($event)" name="ACCEPTED_BANKS" id="" class="form-control">
+                          <option value="0">Select banks</option>
+                          <option [value]="bank.bank_id" *ngFor="let bank of banks">
+                            {{bank.bank_name}}
+                          </option>
+                        </select>
+                      </div>
+                      <div>
+                        <ul>
+                          <li *ngFor="let bank of banks" style="float:left;margin-bottom:5px">
+                            <div style="border:1px solid grey;margin-right:4px;padding:3px;border-radius:4px" *ngIf="isAvailableInacceptedBanks(bank.bank_id)">{{bank.bank_name}}
+                              <button class="btn btn-white btn-xs" (click)="removeFromAcceptedBanks(bank.bank_id)">X</button>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4" style="font-size: 14px;">
+                      Preferred Ownership Status
+                    </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <select (change)="addToOwnership($event)" name="PREFERRED_OWNERSHIP_STATUS" id="" class="form-control">
+                          <option value="0">Select Ownership status</option>
+                          <option [value]="ownership_stat.id" *ngFor="let ownership_stat of ownership_status">
+                            {{ownership_stat.name}}
+                          </option>
+                        </select>
+                      </div>
+                      <div>
+                        <ul>
+                          <li *ngFor="let ownership_stat of ownership_status" style="float:left;margin-bottom:5px">
+                            <div style="border:1px solid grey;margin-right:4px;padding:3px;border-radius:4px" *ngIf="isAvailableInOwnership(ownership_stat.id)">{{ownership_stat.name}}
+                              <button class="btn btn-white btn-xs" (click)="removeFromOwnership(ownership_stat.id)">X</button>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4" style="font-size: 14px;">
+                      Accepted card banks
+                    </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <select (change)="addToCardBanks($event)" name="ACCEPTED_CARD_BANKS" id="" class="form-control">
+                          <option value="0">Select card banks</option>
+                          <option [value]="bank.bank_id" *ngFor="let bank of banks">
+                            {{bank.bank_name}}
+                          </option>
+                        </select>
+                      </div>
+                      <div>
+                        <ul>
+                          <li *ngFor="let bank of banks" style="float:left;margin-bottom:5px">
+                            <div style="border:1px solid grey;margin-right:4px;padding:3px;border-radius:4px" *ngIf="isAvailableInCardBanks(bank.bank_id)">{{bank.bank_name}}
+                              <button class="btn btn-white btn-xs" (click)="removeFromCardBanks(bank.bank_id)">X</button>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4" style="font-size: 14px;">
+                      Acceptable card types
+                    </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <select (change)="addToCardType($event)" name="ACCEPTED_CARD_TYPE" id="" class="form-control">
+                          <option value="0">Select card types</option>
+                          <option [value]="card_type.value" *ngFor="let card_type of card_types">
+                            {{card_type.name}}
+                          </option>
+                        </select>
+                      </div>
+                      <div>
+                        <ul>
+                          <li *ngFor="let card_type of card_types" style="float:left;margin-bottom:5px">
+                            <div style="border:1px solid grey;margin-right:4px;padding:3px;border-radius:4px" *ngIf="isAvailableInCardType(card_type.value)">{{card_type.name}}
+                              <button class="btn btn-white btn-xs" (click)="removeFromCardType(card_type.value)">X</button>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4" style="font-size: 14px;">
+                      Preferred guarantor Ownership Status
+                    </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <select (change)="addToGuarantorOwnership($event)" name="PREFERRED_GUARANTOR_OWNERSHIP_STATUS" id="" class="form-control">
+                          <option value="0">Select Ownership status</option>
+                          <option [value]="ownership_stat.id" *ngFor="let ownership_stat of ownership_status">
+                            {{ownership_stat.name}}
+                          </option>
+                        </select>
+                      </div>
+                      <div>
+                        <ul>
+                          <li *ngFor="let ownership_stat of ownership_status" style="float:left;margin-bottom:5px">
+                            <div style="border:1px solid grey;margin-right:4px;padding:3px;border-radius:4px" *ngIf="isAvailableInGuarantorOwnership(ownership_stat.id)">{{ownership_stat.name}}
+                              <button class="btn btn-white btn-xs" (click)="removeFromGuarantorOwnership(ownership_stat.id)">X</button>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4" style="font-size: 14px;">
+                      Allowable guarantor Job Sector
+                    </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <select (change)="addToGuarantorJobSector($event)" name="ALLOWABLE_GUARANTOR_JOB_SECTOR" id="" class="form-control">
+                          <option value="0">Select Job Sector</option>
+                          <option [value]="job_sector.OCCUPATION_ID" *ngFor="let job_sector of job_sectors">
+                            {{job_sector.DESCRIPTION}}
+                          </option>
+                        </select>
+                      </div>
+                      <div>
+                        <ul>
+                          <li *ngFor="let job_sector of job_sectors" style="float:left;margin-bottom:5px">
+                            <div style="border:1px solid grey;margin-right:4px;padding:3px;border-radius:4px" *ngIf="isAvailableInGuarantorJobSector(job_sector.OCCUPATION_ID)">{{job_sector.DESCRIPTION}}
+                              <button class="btn btn-white btn-xs" (click)="removeFromGuarantorJobSector(job_sector.OCCUPATION_ID)">X</button>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4" style="font-size: 14px;">
+                      Accepted Outgoing Timebelt
+                    </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <select (change)="addToOutgoingTimebelt($event)" name="ACCEPTED_OUTGOING_TIMEBELT" id="" class="form-control">
+                          <option value="0">Select Timebelt</option>
+                          <option [value]="timebelt.value" *ngFor="let timebelt of timebelts">
+                            {{timebelt.display}}
+                          </option>
+                        </select>
+                      </div>
+                      <div>
+                        <ul>
+                          <li *ngFor="let timebelt of timebelts" style="float:left;margin-bottom:5px">
+                            <div style="border:1px solid grey;margin-right:4px;padding:3px;border-radius:4px" *ngIf="isAvailableInOutgoingTimebelt(timebelt.value)">{{timebelt.display}}
+                              <button class="btn btn-white btn-xs" (click)="removeFromOutgoingTimebelt(timebelt.value)">X</button>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4" style="font-size: 14px;">
+                      Accepted Incoming Timebelt
+                    </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <select (change)="addToIncomingTimebelt($event)" name="ACCEPTED_INCOMING_TIMEBELT" id="" class="form-control">
+                          <option value="0">Select Timebelt</option>
+                          <option [value]="timebelt.value" *ngFor="let timebelt of timebelts">
+                            {{timebelt.display}}
+                          </option>
+                        </select>
+                      </div>
+                      <div>
+                        <ul>
+                          <li *ngFor="let timebelt of timebelts" style="float:left;margin-bottom:5px">
+                            <div style="border:1px solid grey;margin-right:4px;padding:3px;border-radius:4px" *ngIf="isAvailableInIncomingTimebelt(timebelt.value)">{{timebelt.display}}
+                              <button class="btn btn-white btn-xs" (click)="removeFromIncomingTimebelt(timebelt.value)">X</button>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <form #generalanalyticsform="ngForm" novalidate>
+                    <ul class="list list_border sm">
+                      <li class="text-left">
+                        <span>Minimum no of children</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_NO_OF_CHILDREN" [(ngModel)]="general_analytics_settings.MIN_NO_OF_CHILDREN">
+                        </div>
+                      </li>
+
+                      <li class="text-left">
+                        <span>Maximum no of children</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_NO_OF_CHILDREN" [(ngModel)]="general_analytics_settings.MAX_NO_OF_CHILDREN">
+                        </div>
+                      </li>
+
+                      <li class="text-left">
+                        <span>Minimum dependants</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_DEPENDANTS" [(ngModel)]="general_analytics_settings.MIN_DEPENDANTS">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum dependants</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_DEPENDANTS" [(ngModel)]="general_analytics_settings.MAX_DEPENDANTS">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Minimum no of residence yrs </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_NO_OF_RESIDENCE_YR" [(ngModel)]="general_analytics_settings.MIN_NO_OF_RESIDENCE_YR">
+                        </div>
+                      </li>
+
+                      <li class="text-left">
+                        <span>Minimum Qualification </span>
+                        <div class="pull-right">
+                          <select name="MIN_QUALIFICATION" [(ngModel)]="general_analytics_settings.MIN_QUALIFICATION" class="form-control">
+                            <option value="0">Select Qualifications</option>
+                            <option [value]="education_qualification.EDUCATION_LEVEL_ID" *ngFor="let education_qualification of education_qualifications">
+                              {{education_qualification.EDUCATION_LEVEL}}
+                            </option>
+                          </select>
+                        </div>
+                      </li>
+
+                      <li class="text-left">
+                        <span>Minimum # years since graduation</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_YRS_SINCE_GRADUATION" [(ngModel)]="general_analytics_settings.MIN_YRS_SINCE_GRADUATION">
+                        </div>
+                      </li>
+
+                      <li class="text-left">
+                        <span>Maximum no of education update </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_NO_EDUCATION_UPDATE" [(ngModel)]="general_analytics_settings.MAX_NO_EDUCATION_UPDATE">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Minimum yrs in current employment </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_YRS_IN_CURRENT_EMP" [(ngModel)]="general_analytics_settings.MIN_YRS_IN_CURRENT_EMP">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Minimum Job Grade </span>
+                        <div class="pull-right">
+                          <select name="MIN_JOB_GRADE" [(ngModel)]="general_analytics_settings.MIN_JOB_GRADE" class="form-control">
+                            <option value="0">Select Job Grade</option>
+                            <option [value]="job_grade.OCCUPATION_ID" *ngFor="let job_grade of job_grades">
+                              {{job_grade.DESCRIPTION}}
+                            </option>
+                          </select>
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Minimum total expense </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_TOTAL_EXPENSES" [(ngModel)]="general_analytics_settings.MIN_TOTAL_EXPENSES">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum total expense</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_TOTAL_EXPENSES" [(ngModel)]="general_analytics_settings.MAX_TOTAL_EXPENSES">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Minimum monthly rent expense</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_MONTHLY_RENT_EXPENSE" [(ngModel)]="general_analytics_settings.MIN_MONTHLY_RENT_EXPENSE">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum monthly rent expense </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_MONTHLY_RENT_EXPENSE" [(ngModel)]="general_analytics_settings.MAX_MONTHLY_RENT_EXPENSE">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Minimum monthly telephone internet </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_MONTHLY_TEL_INTERNET" [(ngModel)]="general_analytics_settings.MIN_MONTHLY_TEL_INTERNET">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum monthly telephone internet</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_MONTHLY_TEL_INTERNET" [(ngModel)]="general_analytics_settings.MAX_MONTHLY_TEL_INTERNET">
+                        </div>
+                      </li>
+
+                      <li class="text-left">
+                        <span>Minimum monthly transport</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_MONTHLY_TRANSPORT" [(ngModel)]="general_analytics_settings.MIN_MONTHLY_TRANSPORT">
+                        </div>
+                      </li>
+
+                      <li class="text-left">
+                        <span>Maximum monthly transport</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_MONTHLY_TRANSPORT" [(ngModel)]="general_analytics_settings.MAX_MONTHLY_TRANSPORT">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Minimum school fees expenses</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_SCH_FEES_EXPENSES" [(ngModel)]="general_analytics_settings.MIN_SCH_FEES_EXPENSES">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum school fees expenses </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_SCH_FEES_EXPENSES" [(ngModel)]="general_analytics_settings.MAX_SCH_FEES_EXPENSES">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Minimum feeding expenses </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_FEEDING_EXPENSES" [(ngModel)]="general_analytics_settings.MIN_FEEDING_EXPENSES">
+                        </div>
+                      </li>
+
+                      <li class="text-left">
+                        <span>Maximum feeding expenses</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_FEEDING_EXPENSES" [(ngModel)]="general_analytics_settings.MAX_FEEDING_EXPENSES">
+                        </div>
+                      </li>
+
+                      <li class="text-left">
+                        <span>Maximum % monthly_deductions</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_MONTHLY_DEDUCTIONS" [(ngModel)]="general_analytics_settings.MAX_MONTHLY_DEDUCTIONS">
+                        </div>
+                      </li>
+
+                      <li class="text-left">
+                        <span>Maximum % total expenses to income </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_TOTAL_EXPENSES_2_INCOME" [(ngModel)]="general_analytics_settings.MAX_TOTAL_EXPENSES_2_INCOME">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum % annual rent to annual income </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_ANNUAL_RENT_3_ANNUAL_INCCOME" [(ngModel)]="general_analytics_settings.MAX_ANNUAL_RENT_3_ANNUAL_INCCOME">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum % tfare to income </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_TFARE_2_INCOME" [(ngModel)]="general_analytics_settings.MAX_TFARE_2_INCOME">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum % feeding to income </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_FEEDING_2_INCOME" [(ngModel)]="general_analytics_settings.MAX_FEEDING_2_INCOME">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum % internet to income</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_INTERNET_2_INCOME" [(ngModel)]="general_analytics_settings.MAX_INTERNET_2_INCOME">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum % school to income</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_SCH_2_INCOME" [(ngModel)]="general_analytics_settings.MAX_SCH_2_INCOME">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Minimum guarantor job grade </span>
+                        <div class="pull-right">
+                          <select name="MIN_GUARANTOR_JOB_GRADE" [(ngModel)]="general_analytics_settings.MIN_GUARANTOR_JOB_GRADE" class="form-control">
+                            <option value="0">Select Job Grade</option>
+                            <option [value]="job_grade.OCCUPATION_ID" *ngFor="let job_grade of job_grades">
+                              {{job_grade.DESCRIPTION}}
+                            </option>
+                          </select>
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum guarantor respond time </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_GUARANTOR_RESPOND_TIME" [(ngModel)]="general_analytics_settings.MAX_GUARANTOR_RESPOND_TIME">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum guarantor % loan income ratio </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_GUARANTOR_LOAN_INCOME_RATIO" [(ngModel)]="general_analytics_settings.MAX_GUARANTOR_LOAN_INCOME_RATIO">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Minimum guarantor residence years </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_GUARANTOR_RESIDENCE_YRS" [(ngModel)]="general_analytics_settings.MIN_GUARANTOR_RESIDENCE_YRS">
+                        </div>
+                      </li>
+
+                      <li class="text-left">
+                        <span>Minimum provided accounts</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_PROVIDED_ACCOUNTS" [(ngModel)]="general_analytics_settings.MIN_PROVIDED_ACCOUNTS">
+                        </div>
+                      </li>
+
+                      <li class="text-left">
+                        <span>Maximum provided accounts</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_PROVIDED_ACCOUNTS" [(ngModel)]="general_analytics_settings.MAX_PROVIDED_ACCOUNTS">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum no of outgoing international calls monthly</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_NO_OF_OUTGOING_INT_CALLS_MONTHLY" [(ngModel)]="general_analytics_settings.MAX_NO_OF_OUTGOING_INT_CALLS_MONTHLY">
+                        </div>
+                      </li>
+
+                      <li class="text-left">
+                        <span>Maximum no of incoming international calls monthly</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_NO_OF_INCOMING_INT_CALLS_MONTHLY" [(ngModel)]="general_analytics_settings.MAX_NO_OF_INCOMING_INT_CALLS_MONTHLY">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum call cost </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_CALL_COST" [(ngModel)]="general_analytics_settings.MAX_CALL_COST">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Call charges kobo per seconds</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="CALL_CHARGES_KOBO_PER_SECOND" [(ngModel)]="general_analytics_settings.CALL_CHARGES_KOBO_PER_SECOND">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Minimum distance home to office</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_DISTANCE_HOME_2_OFFICE" [(ngModel)]="general_analytics_settings.MIN_DISTANCE_HOME_2_OFFICE">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum distance home to office</span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_DISTANCE_HOME_2_OFFICE" [(ngModel)]="general_analytics_settings.MAX_DISTANCE_HOME_2_OFFICE">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Minimum distance home to application point </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_DISTANCE_HOME_2_APPLICATION_POINT" [(ngModel)]="general_analytics_settings.MIN_DISTANCE_HOME_2_APPLICATION_POINT">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum distance home to application point </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_DISTANCE_HOME_2_APPLICATION_POINT" [(ngModel)]="general_analytics_settings.MAX_DISTANCE_HOME_2_APPLICATION_POINT">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Minimum distance office to application point </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MIN_DISTANCE_OFFICE_2_APPLICATION_POINT" [(ngModel)]="general_analytics_settings.MIN_DISTANCE_OFFICE_2_APPLICATION_POINT">
+                        </div>
+                      </li>
+                      <li class="text-left">
+                        <span>Maximum distance office to application point </span>
+                        <div class="pull-right">
+                          <input type="text" class="form-control" name="MAX_DISTANCE_OFFICE_2_APPLICATION_POINT" [(ngModel)]="general_analytics_settings.MAX_DISTANCE_OFFICE_2_APPLICATION_POINT">
+                        </div>
+                      </li>
+                    </ul>
+                    <button type="submit" (click)="saveGeneralAnalytics(generalanalyticsform.value, generalanalyticsform.valid)" [disabled]="loading"
+                      class="btn btn-white pull-right">
+                      <span *ngIf="!loading">Submit</span>
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-3" *ngIf="!is_dashboard">
+      <div class="panel-body text-center b_grey crd_theme">
+        <div class="text-center crd_top" style="margin-top: 5px; margin-bottom: 15px;">
+          <p class="t_lh1">
+            <img src="assets/images/phone_blue.PNG">
+          </p>
+        </div>
+        <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline">Back</a>
+      </div>
+
+      <section class="box panel">
+        <div class="panel-body">
+          <ul class="list list_border">
+            <li>
+              <a class="txt_l4" [routerLink]="['../mobile']">Mobile App</a>
+            </li>
+            <li>
+              <a class="txt_l4" [routerLink]="['../backend']">Backend</a>
+            </li>
+            <li>
+              <a class="txt_l4" [routerLink]="['../ussd']">USSD</a>
+            </li>
+            <li>
+              <a class="txt_l4" [routerLink]="['../decision-engine']">Decision Engine</a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+
+  </div>
+</div>
+<div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayOpen">
+
+  <div class="col-md-12">
+    <a class="dismiss cancel_treat_ close" role="button" (click)="overlayOpen=false">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </a>
+  </div>
+  <div class=" overpanel-content container" role="document" style="text-align:left;width:600px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+    <app-levelform (saveLevel)="saveLevel($event)" [employees]="employees" [loading]="loading" [level]="level" [APPROVAL_LEVEL_ID_]="APPROVAL_LEVEL_ID_"
+      [isedit]="isedit"></app-levelform>
+  </div>
+</div>

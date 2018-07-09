@@ -1,0 +1,49 @@
+<section class="panel">
+  <header class="panel-heading">
+      Contractual Schedule
+      
+  </header>
+  <div class="panel-body">
+    <div class="row invoice-list">
+
+        <div class="col-lg-4 col-sm-4">
+            <h4>CLIENT INFO</h4>
+            <p>Client : {{data?.LEGAL_NAME}}</p>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <h4>REQUEST INFO</h4>
+            <p>Amount : {{data?.request_lender.BID_PRINCIPAL| number:'.2-2'}}</p>
+            <p>Tenor : {{data?.BID_TENOR}} {{data?.LOAN_DURATION}}</p>
+            <p>Rate : {{data?.request_lender.BID_RATE}} {{data?.INTEREST_DURATION}}</p>
+            <p>Value Date : {{data?.DISBURSEMENT_DATE}}</p>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            &nbsp;
+        </div>
+    </div>
+
+</div>
+<table class="table table-striped">
+    <thead> 
+        <th>Date</th>
+        <th>Start Balance</th>
+        <th>Interest</th>
+        <th>Fees</th>
+        <th>Total Collection</th>
+        <th>Paid</th> 
+        <th>Remaining</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let repayment of data?.REPAYMENT_SCHEDULE"> 
+            <td>{{repayment?.SCHEDULE_DATE|date}}</td>
+            <td>{{repayment?.START_BALANCE| number:'.2-2'}}</td>
+            <td>{{repayment?.INTEREST | number:'.2-2'}}</td>
+            <td>{{repayment?.WITHHOLDING_TAX| number:'.2-2'}}</td>
+            <td>{{repayment?.TOTAL_COLLECTION| number:'.2-2'}}</td>
+            <td>{{repayment?.HOW_MUCH_COLLECTED| number:'.2-2'}}</td> 
+            <td>{{repayment?.HOW_MUCH_REMAINING| number:'.2-2'}}</td>
+        </tr>
+    </tbody>
+
+</table>
+</section>

@@ -1,0 +1,161 @@
+<section class="panel">
+    <header class="panel-heading">
+        <p class="txt pull-left"><input type="checkbox" [checked]="type_of_view=='2'" name="default_view" (change)="setAsDefaultView($event)"> Set as default view</p>
+        <span class="tools pull-right">
+            Sort by: 
+            <div class="btn-group">
+                <a class="dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="    /* color: #fff; */
+                font-size: 15px;
+                /* line-height: 1; */
+                cursor: pointer;
+                padding: 3px 5px;
+                border: 1px solid #ccc;
+                border-radius: 15px;
+                /* color: black; */">
+                    {{orderingText}}
+                    
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                    <li><a (click)="orderingBy('1')">Most Recent</a></li>
+                    <li><a (click)="orderingBy('2')">Name A - Z</a></li>
+                    <li><a (click)="orderingBy('3')">Name Z - A</a></li> 
+                    <li><a (click)="orderingBy('4')">Amount High - Low</a></li> 
+                    <li><a (click)="orderingBy('5')">Amount Low - High</a></li> 
+                    <li><a (click)="orderingBy('6')">Duration High - Low</a></li> 
+                    <li><a (click)="orderingBy('7')">Duration Low - High</a></li> 
+                </ul>
+            </div>
+            
+        </span>
+        <div class="clearfix"></div>  
+    </header>
+    <div class="panel-body" style="padding:0px">
+            <ul class="list list_border no-padding-right box requests_list_view">
+                    <li *ngFor="let disburse of loans.loans | orderBy: ordering:reverse">
+                        <div class="row hover_toggle_desc">
+                           <div class="col-md-4">
+                               <div class="media">
+                                    <div class="pull-left thumb p-thumb">
+                                        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{disburse?.FILE_NAME | imagenotfound}}?q=auto" style="border-radius: 50%">
+                                    </div>
+                                    <div class="media-body">
+                                        <p class="t_l4 t_cool" style="margin-bottom: 5px;"><strong>{{disburse?.LEGAL_NAME}}</strong></p>
+                                        <p class="no-margin" style="font-size: 13px">{{disburse.OCCUPATION ? disburse.OCCUPATION : '--' }} / {{disburse?.WORKSECTOR ? disburse.WORKSECTOR : '--'}}</p>
+                                    </div>
+                                </div>
+                           </div>
+                           <div class="col-md-8">
+                               <div class="row">
+                                   <div class="col-md-3">
+                                       <p class="rq_mid"><span *ngIf="disburse?.LOAN_STATUS>2">N{{disburse?.LOAN_BALANCE|number:'.2-2'}}</span><span *ngIf="disburse?.LOAN_STATUS<=2">N{{disburse?.REQUEST_PRINCIPAL|number:'.2-2'}}</span><br>
+                                            <span class="badge no-margin" style="padding-left:0px">{{disburse?.REQUEST_TENOR}}{{disburse?.LOAN_DURATION}}</span>
+                                       </p>
+                                   </div>
+                                   <div class="col-md-6">
+                                       <div>
+                                           <p  *ngIf="disburse?.IS_PEER_TO_PEER==='1'" style="margin-bottom: 5px; font-size: 13px;">{{disburse?.LOAN_STATUS | loanStatusText}} 
+                                                <span class="pull-right"><i class="fa fa-file-o"></i> {{disburse?.LENDERS.COUNT}}</span>
+                                                <!-- <span class="pull-right" style="margin-right: 12px;"><i class="fa fa-user"></i> 10</span> -->
+                                           </p>    
+                                           <p  *ngIf="disburse?.IS_PEER_TO_PEER!='1'" style="margin-bottom: 5px; font-size: 13px;">{{disburse?.LOAN_STATUS | loanStatusText}}
+                                               
+                                           </p>  
+                                           <hr *ngIf="disburse?.IS_PEER_TO_PEER!='1'||disburse?.LOAN_STATUS>2" style="margin:5px 0px !important">
+                                           <div *ngIf="disburse?.LOAN_STATUS>2">
+                                           <p style="margin-bottom:0; font-size: 12px">{{disburse?.TOTAL_PAID|money}} ({{disburse.PERCENT_PAID}}%) Paid </p>
+                                           </div>                    
+                                           
+                                            <div *ngIf="disburse?.LOAN_STATUS<=2">
+                                                    <div *ngIf="disburse?.IS_PEER_TO_PEER==='1'" class="progress progress-xs" style="margin-bottom: 2px;height: 5px;">
+                                                
+                                                            <div aria-valuemax="100" aria-valuemin="0" role="progressbar" [style.width]="percent_funded(disburse.PERCENTAGE_FUNDED)" class="progress-bar below w0.00" aria-valuenow="below w0.00"></div>
+                                                        </div>
+                                           <p *ngIf="disburse?.IS_PEER_TO_PEER!='1'" style="margin-bottom:0; font-size: 12px">{{disburse?.REQUEST_RATE}}% {{disburse?.INTEREST_DURATION}}| N{{disburse?.TOTAL_REPAYMENT|number:'.2-2'}}</p>
+                                           <p *ngIf="disburse?.IS_PEER_TO_PEER==='1'" style="margin-bottom:0; font-size: 12px">{{getTotalFunded(disburse?.PERCENTAGE_FUNDED,disburse?.REQUEST_PRINCIPAL)|number:'.2-2'}} Funded | {{getTotalRemaining(disburse?.REQUEST_PRINCIPAL,getTotalFunded(disburse?.PERCENTAGE_FUNDED,disburse?.REQUEST_PRINCIPAL))|number:'.2-2'}} Left</p>
+                                            </div>
+                                       </div>
+                                   </div>
+                                   <div class="col-md-3 text-right hover_hide">
+                                       <p *ngIf="disburse?.IS_PEER_TO_PEER!='1'" class="py_back">{{applyMethod[disburse?.WHERE_FROM]}} Expires {{disburse?.EXPIRATION_DATE | amTimeAgo}}</p>
+                                       <p *ngIf="disburse?.IS_PEER_TO_PEER==='1'" class="py_back">{{applyMethod[disburse?.WHERE_FROM]}}<br> Expires {{disburse?.EXPIRATION_DATE | amTimeAgo}}</p>
+                                   </div>
+                                   <div class="col-md-3 text-right hover_show" style="margin: -15px 0;padding-top: 15px;padding-bottom: 15px;">
+                                        
+                                        <div *ngIf="magic_filter.loan_status=='2'">
+                                            <a class="btn btn-orange btn-block edged_box" style="padding: 0" [routerLink]="['/statement',disburse?.REQUEST_ID]">About</a>
+                                            <button class="btn btn-block btn-block edged_box" style="padding: 0"  (click)="view_state='4';dontshownext=1;open_loan_(disburse?.REQUEST_ID)">View</button>
+                                        </div>
+                                        <div *ngIf="magic_filter.loan_status=='1' || magic_filter.loan_status=='-4'">
+                                            <button class="btn btn-orange btn-block edged_box" style="padding: 0" (click)="viewTheLoan(disburse)">View</button>
+                                            <button *ngIf="!enable_bulk_disbursements" class="btn btn-block btn-block edged_box" (click)="openTheLoan(disburse?.REQUEST_ID)" style="padding: 0">Preview</button>
+                                            <div *ngIf="enable_bulk_disbursements">
+                                                <a class="btn btn-white btn-block edged_box" *ngIf="!addedToBulkPay(disburse.REQUEST_ID)" (click)="addToBulkPay(disburse.REQUEST_ID,true,disburse)">Bulk Pay</a>
+                                                <a class="btn btn-white btn-block edged_box" *ngIf="addedToBulkPay(disburse.REQUEST_ID)" (click)="addToBulkPay(disburse.REQUEST_ID,false,disburse)">Remove</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+                           </div> 
+                        </div>
+                    </li>
+                </ul>
+        
+<article   class="media hide" [ngClass]="{'portborder':  loan_status=='2', 'histborder':  loan_status=='3'}" style=" margin: 5px 0px;background: #fff;padding: 5px;cursor:pointer; margin-bottom:0px">
+    <div class="pull-left thumb p-thumb">
+        <a>
+            <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{disburse?.FILE_NAME | imagenotfound}}?q=auto"
+                style="width:50px; height:50px">
+            
+        </a>
+    
+    </div>
+    
+    <span class="tools pull-right">
+    
+        <a (click)="openSec(disburse?.REQUEST_ID)">
+            <span class="tools pull-right" style="padding: 5px;border: 1px solid #eaeaea;border-radius: 50px;">
+                <i class="fa fa-chevron-down" style="padding:5px"></i>
+            </span>
+        </a>
+    </span>
+    <div class="media-body">
+        <div class="row">
+            <div class="col-md-4">
+                <h4 class=""></h4>
+            </div>
+            <div class="col-md-8">
+                <div class="row" style="margin-top:15px"> 
+                    <div class="col-md-4">
+                        <p class="small">AMOUNT</p>
+                        <h4 class="m5"></h4>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="small">TENOR</p>
+                        <h4 class="m5"></h4>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="small">INTEREST</p>
+                        <h4 class="m5">{{disburse?.REQUEST_RATE}}% {{disburse?.INTEREST_DURATION}}</h4>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    <div class="clearfix" style="margin-bottom:15px"></div>
+    <div class="media-body" style="background:#f9f9f9" *ngIf="secOpen==disburse?.REQUEST_ID">
+        <div class="panel-body" style="border-top:1px solid #ccc">
+            <div style="width:50%; margin:0px auto;margin-top:20px">
+              
+                 
+            </div> 
+    
+        </div>
+    </div>
+    </article>
+    </div>
+    <footer class="panel-footer" *ngIf="loans?.complete == false">
+            <a (click)="loadMoreRecords(loans?.start)">View More</a>
+    </footer>
+</section>

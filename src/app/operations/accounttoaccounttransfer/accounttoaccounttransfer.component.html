@@ -1,0 +1,80 @@
+<!-- <section class="panel">
+    <header class="panel-heading">New Bank</header>
+
+    <div class="panel-body" *ngIf="showForm">  
+      <div style="padding-top: 20px; width: 80%; margin: 0px auto;" *ngIf="confirming">
+        <div class="form-area animated">
+            <form #transfer="ngForm" (ngSubmit)="doAccountTransfer()">
+
+                <h3>Specify Source Account</h3>
+
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Bank</label>
+                  <select class="form-control" [(ngModel)]="transfer_request.LENDER_BANK_ACCOUNT_ID" name="LENDER_BANK_ACCOUNT_ID"
+                    id="LENDER_BANK_ACCOUNT_ID" required>
+                    <option value="0"></option>
+                    <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
+                  </select>
+                </div>
+
+                <h3>Specify Destination Account</h3>
+
+
+            </form>
+                                              
+        </div>
+      </div>
+      <div style="padding-top: 20px; width: 80%; margin: 0px auto;" *ngIf="!confirming">
+          <div class="otp-form animated fadeIn" *ngIf="!otpHBSFC">
+            <h4><p>{{fresponse}}</p></h4>
+             <div class="form-group row">
+                                                      
+                                                      <label class="control-label col-md-6">OTP</label>
+                                                          <div class="col-md-6">
+                                                              <input type="text" class="form-control" id="CONFIRM_OTP_CODE" [(ngModel)]="otp.CONFIRM_OTP_CODE" name="CONFIRM_OTP_CODE" value="">
+                                                               
+                                                          </div>
+                                                  </div>
+                                      <div class="row form-group">
+                                              <div class="col-md-12">
+                                                  <button [disabled]="loading" class="btn btn-block btn-white" (click)="confirmOTPForTransfer()">Submit <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                                              </div> 
+                                             
+                                            </div>        
+                                      <div class="row form-group">
+                                              <div class="col-md-12">
+                                                  <a href="javascript:;" class="btn btn-block btn-danger btn-cancel-transfer">Cancel</a>
+                                              </div> 
+                                             
+                                            </div>
+                                      <div class="form-group row f-net-error" *ngIf="!otpConfirmed&&otpHBSFC">
+                                                  <div class="col-md-12">
+                                                      <div class="error  alert alert-block alert-danger fade in f-net-error_" style="margin:10px 0px !important">
+                                                      Unable to perform request
+                                                  </div>
+                                                  
+                                                  </div>
+                                                  </div>
+          </div>
+           <div class="otp-success animated text-center" *ngIf="!confirming&&otpConfirmed&&otpHBSFC">
+                                    <h4>Account is confirmed</h4>
+                                        <p>
+                                          <span style="font-size: 68px;color: green;"><i class="fa fa-check"></i></span>
+                                        </p>
+                                    <h3>Account Details</h3>
+                                    <ul class="l_summary_wrapper " style="border:1px solid #eaeaea;border-radius:5px; font-size:12px; text-align:left">
+                  
+                                                                <li style="padding: 14px 28px;border-bottom: solid 1px #e5e5e5;">Account Name<span style="float:right;font-weight: 700;">{{bank.LENDER_BANK_ACCOUNT_NAME}}</span></li>
+               <li style="padding: 14px 28px;border-bottom: solid 1px #e5e5e5;">Account Number<span style="float:right;font-weight: 700;">{{bank.LENDER_ACCOUNT_NUMBER}}</span></li>
+                  
+                                                                       
+              
+              </ul>
+              <div class="row">
+              <div class="col-md-6"> <button [disabled]="loading" class="btn btn-block btn-white" (click)="saveLenderBank()">Save <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button></div>
+              <div class="col-md-6"> <button [disabled]="loading" class="btn btn-block btn-white" (click)="cancelOperation()">Submit </button></div>
+              </div>
+                                  </div>
+      </div>
+  </div>
+  </section> -->

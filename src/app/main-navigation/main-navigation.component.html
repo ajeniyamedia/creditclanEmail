@@ -1,0 +1,257 @@
+<div style="position: fixed; width: 100%; z-index: 5;">
+
+  <!-- Top Menu -->
+  <header class="header bg" style="">
+      <div class="container-fluid">
+          <a class="logo bold pull-left" style="margin-right:15px" (click)="overlayOpen=true">
+              <img src="assets/img/CC_small_colour_1.png" style="width: 35px">
+          </a>
+
+          <div class="pull-left book_loan_button">
+              <!-- Search Field -->
+              <div class="hide">
+                  <input type="hidden" id="USER_DEFINED_ACTORS">
+                  <input (keypress)="search()" type="text" [(ngModel)] ="searchTerm" class="form-control input-sm" placeholder="Search" style=" margin-top:0;width: 260px;border-top-right-radius: 0;border-bottom-right-radius: 0;">
+              </div>
+
+              <!-- New Search -->
+              <div class="search_box" style="padding-top: 3px;padding-bottom: 3px;padding-right: 3px;background: #fff;">
+                  <input name="lender_name" placeholder="" (keypress)="search()" [(ngModel)] ="searchTerm" style="width: 85% !important" type="text">
+                  <span style="display:inline-block; vertical-align:top; margin:-3px;padding: 3px; background: #FAFAFA; cursor: pointer;" (click)="search()">
+                      <img src="assets/images/search.PNG">
+                  </span>
+              </div>
+
+              <!-- Search Results -->
+              <div style="width: 560px;background: #fff;position: absolute;z-index: 1; max-height: 400px;overflow-y: scroll;">
+                   <div style="position: relative;" *ngIf='viewOptions'>
+
+                       <div class="search_list"  *ngFor="let customer of customers?.a">
+                           <div class="float_items">                        
+                               <div style="margin-right: 10px"><img alt="" src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{customer?.FILE_NAME | imagenotfound}}" width="50px"></div>
+                               <div>
+                                   <a class="txt" href="#"><span class="t_cool t_l4">{{customer.LEGAL_NAME}}</span></a>
+                                   <p class="txt t_lh1">{{customer.COMPANY_OF_WORK_ID}}</p>
+                                   <p class="txt t_lh1"></p>
+                               </div>
+                           </div>
+                           <div class="float_btn" style="margin-right: 25px;"><button (click)="openLoanForm(customer)" class="btn btn-primary">Create Request</button></div>
+                       </div>
+                       <span style="position: absolute; right: 5; top: 15px; left: 25px" class="txt t_l4">Individual</span>
+                   </div>
+               </div>
+          </div>
+
+
+          <!-- search button -->
+          <input type="button" class="btn btn-primary hide" value="Search" (click)="search()" style="
+               padding-top: 5px;
+               padding-bottom: 5px;
+               line-height: 18px;
+               margin-top: 2px;
+               border-top-left-radius: 0;
+               border-bottom-left-radius: 0;
+               margin-left: -1px;
+               background-color: #f3a535 !important;
+               border-color: #f5a534 !important;
+           ">
+
+          <!-- Right side Icon Links -->
+          <div class="nav notify-row pull-right" id="top_menu" style="margin-top:0px !important">          
+              <ul class="nav top-menu " style=" margin-top: 0;">
+                  <li class="">
+                      <a class="i"  [routerLink]="['/credit/creditdashboard']" title="Home"><i class="fa fa-home"></i></a>
+                  </li>
+                  <li *ngIf="!is_company_staff" class="">
+                      <a class="i" [routerLink]="['/chat']" title="Chat"><i class="fa fa-comment"></i></a>
+                  </li>
+                  <li *ngIf="!is_company_staff" class="">
+                      <a class="i"  [routerLink]="['/requests/market']" title="Loan Market"><i class="fa fa-shopping-cart"></i></a>
+                  </li>
+                  <li *ngIf="!is_company_staff" class="">
+                      <a class="i"  [routerLink]="['/kyc']" title="KYC"><i class="fa fa-street-view"></i></a>
+                  </li>
+                  
+                  <li *ngIf="!is_company_staff" class="dropdown">
+                      <a class="i" style="cursor:pointer;font-size:20px !important" data-toggle="dropdown" class="dropdown-toggle " href="#" title="Wallet"><i class="fa fa-dollar"></i>
+                       <!-- <span class="badge bg-white">{{dashboarddata?.DASHBOARD_BL.WALLET_BALANCES.LENDER_WALLET_BALANCE| money}}</span>--></a> 
+                      <ul class="dropdown-menu extended" style="left:5px !important">
+                          <li>
+                               <div class="wallet_summary">
+                                   <h6>Actual Balance : {{dashboarddata?.data.LENDER_WALLET_BALANCE| money}}</h6>
+                                   <h6>Book Balance : {{dashboarddata?.data.LENDER_WALLET_BOOK_BALANCE| money}}</h6>
+                                   <p>WALLET BALANCE</p>
+                               </div>
+                          </li>
+                      </ul>
+                  </li>   
+                  <li *ngIf="!is_company_staff" id="header_notification_bar" [ngClass]="{'dropdown': notifications?.count != '0'}">
+                      <a data-toggle="dropdown" [ngClass]="{'dull': notifications?.count === '0','dropdown-toggle':notifications?.count != '0'}" style="cursor:pointer;font-size:20px !important" class=""  aria-expanded="true">
+
+                          <i class="fa fa-bell-o"></i>
+                          <span class="badge bg-warning" *ngIf="notifications?.count != '0'">{{notifications?.count}}</span>
+                      </a>
+                      <ul class="dropdown-menu extended notification" style="left:0px !important">
+                          <!-- <div class="notify-arrow notify-arrow-yellow"></div> -->
+                          <li *ngIf="notifications?.count != '0'">
+                              <p class="yellow">You have {{notifications?.count}} new notifications</p>
+                          </li>
+                          <li *ngFor="let notify of notifications?.notifications">
+                              <a href="#">
+                                  <span class="label label-danger">
+                                      <i class="fa fa-bolt"></i>
+                                  </span>
+                                  Server #3 overloaded.
+                                  <span class="small italic">34 mins</span>
+                              </a>
+                          </li>
+                          
+                          <li *ngIf="notifications?.count > 5">
+                              <a href="#">See all notifications</a>
+                          </li>
+                      </ul>
+                  </li>
+                  
+                  <li class="dropdown" style="margin-top: 5px">
+                      <a data-toggle="dropdown" class="dropdown-toggle " href="#">
+                          <img alt="" class="tiny" src="assets/img/avatar-mini.png">
+                          <span class="username" style="color:#fff;">{{currentUser?.legal_name}}</span>
+                          <b class="caret"></b>
+                      </a>
+                      <ul class="dropdown-menu extended logout">
+                          <li>
+                              <a [routerLink]="['/password']">Change Password</a>
+                          </li>
+                          <li>
+                              <a [routerLink]="['/helpdesk']">Help Desk</a>
+                          </li>
+                          <li>
+                              <a [routerLink]="['/documentation']">Documentation</a>
+                          </li>
+                          <li>
+                              <a [routerLink]="['/setup']">Getting Started</a>
+                          </li>
+                          <li *ngIf="test_mode">
+                                <a [routerLink]="['/helpdesk']">Web Preview</a>
+                            </li>
+                            <li *ngIf="test_mode">
+                                <a href="javascript:;" (click)="webussd = !webussd">USSD Preview</a>
+                            </li>
+                            <li *ngIf="test_mode">
+                                <a [routerLink]="['/getting-started']">Mobile Preview</a>
+                            </li>
+                          <li>
+                              <a [routerLink]="['/login']">
+                                  <i class="fa fa-key"></i> Log Out</a>
+                          </li>
+                      </ul>
+                  </li>
+
+              </ul>
+          </div>
+            <!-- Book Loan Button -->
+      <div class="pull-right ">
+          <button *ngIf="!is_company_staff" class="edged_box big_btn wd_btn btn-orange t_l4" style="padding: 5px; margin: 0; margin-right: 25px" (click)="overlayOpen=true">Book Loan</button>
+          <button *ngIf="is_company_staff" class="edged_box big_btn wd_btn btn-orange t_l4" style="padding: 5px; margin: 0; margin-right: 25px" (click)="newLoanOpen=true">Book Loan</button>
+          <button *ngIf="test_mode && !is_company_staff" class="edged_box big_btn wd_btn btn-orange t_l4" style="padding: 5px; margin: 0; margin-right: 25px" (click)="webussd = !webussd">Go Live</button>
+          <button *ngIf="test_mode" class="edged_box big_btn wd_btn btn-orange t_l4" style="padding: 5px; margin: 0; margin-right: 25px" onclick="event.preventDefault(); CreditClan.open('iFNvz2BhpgddcgjybqDFNUAmHDYcTleACv99G8hZ')">Go Live</button>
+      </div> 
+      </div>
+    
+  </header>
+  
+  <!-- Sub Menu -->
+  <div *ngIf="!is_company_staff" class="sub text-center" style="clear:both;background:#fff;color:#fff; padding:10px 0px;box-shadow: 0px 2px 6px #ccc;position:relative !important">
+      <ul class="nav nav_" style="display: inline-block;">
+       <li><a [routerLink]="['/requests']" class="requests_active">Requests</a></li>
+       <li><a [routerLink]="['/requests/portfolio']" class="requests_portfolio">Portfolio</a></li>
+
+       <li *ngIf="enable_peer=='1'"><a [routerLink]="['/investments']" class="invest_active">P2P Funding</a></li>
+       <li><a [routerLink]="['/crm']" class="customers_active">Customers</a></li>
+       <!-- <li><a [routerLink]="['/operations/calendar']" class="schedule_active">Schedule</a></li> -->
+       <li><a [routerLink]="['/operations']" class="ops_active">Operations</a></li>
+       <!-- <li><a [routerLink]="['/settings']" class="settings_active">Settings</a></li>
+       <li><a [routerLink]="['/chat']" class="chat_active">Chat</a></li> -->
+       <li *ngIf="accounting=='1'"><a [routerLink]="['/reports']" class="reports_active">Reports</a></li> 
+      </ul> 
+     </div>
+ 
+  <div *ngIf="overlayOpen">
+      <div class="overlay_ app_overlay animated" style="overflow:auto;background:#fff;">
+
+          <div class="col-md-12">
+              <a class="dismiss cancel_treat_ close" role="button" (click)="overlayOpen=false">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+              </a>
+          </div>
+          <div class=" overpanel-content container" role="document" style="text-align:left; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+              <app-loanform [selectedCustomer]="selectedCustomer" [sub]="2" [customerSelected]="customerSelected" [from]="1"></app-loanform>
+          </div>
+      </div>
+  </div>
+  <div *ngIf="newLoanOpen">
+      <div class="overlay_ app_overlay animated" style="overflow:auto;background:#fff;">
+
+          <div class="col-md-12">
+              <a class="dismiss cancel_treat_ close" role="button" (click)="newLoanOpen=false">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+              </a>
+          </div>
+          <div class=" overpanel-content container" role="document" style="text-align:left; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+              <app-requestform></app-requestform>
+          </div>
+      </div>
+  </div>
+  <div *ngIf="webussd">
+    <div class="overlay_ app_overlay animated" style="overflow:auto;background:#fff;">
+
+        <div class="col-md-12">
+            <a class="dismiss cancel_treat_ close" role="button" (click)="webussd=false">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class=" overpanel-content container" role="document" style="text-align:left; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+            <app-web-ussd></app-web-ussd>
+        </div>
+    </div>
+</div>
+  <div class="overlay_ app_overlay animated ln_mdl" style="overflow:hidden" *ngIf="openShowInterest">
+
+      <div class="col-md-12">
+          <a class="dismiss cancel_treat_ close" role="button" (click)="closeShowInterest()">
+              <i class="fa fa-times" aria-hidden="true"></i>
+          </a>
+      </div>
+  
+      <div class=" overpanel-content container  animated bounceIn" role="document" style="background:rgba(255, 255, 255, 0.95); height:100%; text-align:left;width:650px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden">
+  
+          <div class="modl text-center">
+
+              <div class="modl_title" style="margin-bottom: 50px">
+                  <h2>
+                      <span class="text-success">Show Interest</span>
+                      
+                  </h2>
+              </div>
+  
+              <div style="width: 500px; margin: 0 auto 25px">
+  
+              </div>
+  
+              <div style="width: 200px; margin: 0 auto">
+                  <div style="margin-bottom: 30px"> 
+                      <button class="text-center txt t_l4 btn-block" [ngClass]="{'btn-danger': is_done=='0', 'btn-success': is_done=='1'}" style="padding-top: 12px; padding-bottom: 12px"
+                          (click)="makeOfferToAdvertisedLoan()" [disabled]="loading||is_done=='1'">
+                          <strong *ngIf="is_done=='0'">Make Offer</strong>
+                          <i class="fa fa-spinner fa-spin" *ngIf="loading && is_done=='0'"></i>
+                          <i class="fa fa-check" *ngIf="!loading && is_done=='1'"></i>
+                      </button>
+                  </div>
+  
+              </div>
+          </div>
+  
+  
+      </div>
+  </div>
+</div>

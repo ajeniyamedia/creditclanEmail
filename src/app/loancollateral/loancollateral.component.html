@@ -1,0 +1,54 @@
+<div class="profile_area animated fadeIn">
+
+      <section class="panel contract_area hideable_area" style="margin-bottom: 10px">
+        <header class="panel-heading">
+          <span class="tools pull-right">
+            <ul class="list-inline">
+                <li><a [routerLink]="['../contract']">Summary</a></li>
+                <li><a [routerLink]="['../repayments']">Schedule</a></li>
+                <li><a [routerLink]="['../more']">More</a></li>                    
+            </ul>
+          </span>
+          <span>Collateral</span>
+        </header>
+      </section>
+
+      <section class="panel">        
+            <div class="panel-body">
+                   
+                    <div class="pull-right">
+                        <button class="btn btn-white" [disabled]="loading" (click)="saveCollaterals()"><span *ngIf="!loading">Save</span><i *ngIf="loading" class="fa fa-spinner fa-spin"></i> </button>
+                    </div>
+                </div>  
+          <div class="colla_box">
+              <table class="table table-striped">
+                  <thead>
+                      <tr>
+                          <th>Collateral</th>
+                          <th>Provided</th>
+                          <th>Verified</th>
+                          <th class="text-right">Est. Current Value</th>
+                          <!-- <th class="text-right">Depreciation Factor</th> -->
+                          <th class="text-right">Est. Liquidation Value</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let collateral of collaterals">
+                          <td>{{collateral?.COLLATERAL_NAME}}</td> 
+                          <td><input type="checkbox" [(ngModel)]="collateral.IS_PROVIDED" name="IS_PROVIDED"></td>
+                          <td><input type="checkbox" [(ngModel)]="collateral.IS_VERIFIED" name="IS_VERIFIED"></td>
+                          <td class="text-right"><input (keyup)="calculateTotal_($event)" [(ngModel)]="collateral.EST_CURRENT_VALUE" type="text" name="EST_CURRENT_VALUE"></td>
+                          <!-- <td class="text-right"><input  [(ngModel)]="collateral.DEPRECIATION_FACTOR" type="text" name="DEPRECIATION_FACTOR"></td> -->
+                          <td class="text-right"><input (keyup)="calculateTotal_($event)"  [(ngModel)]="collateral.EST_LIQUIDATION_VALUE" type="text" name="EST_LIQUIDATION_VALUE"></td>
+                      </tr> 
+                      <tr>
+                          <td colspan="3"><strong>Total</strong></td>
+                          <td class="text-right" ><strong>{{loan?.TOTAL_COLLATERAL_CURRENT_VALUE}}</strong></td>
+                          <td class="text-right" ><strong>{{loan?.TOTAL_COLLATERAL_EST_LIQUIDATION_VALUE}}</strong></td>
+                      </tr>
+                  </tbody>
+              </table> 
+          </div>
+      </section>
+
+</div>

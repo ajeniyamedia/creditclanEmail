@@ -1,0 +1,2088 @@
+<section class="panel" style="overflow:hidden;" *ngIf="record_type=='2'">
+  <div style="padding:24px 20px; overflow: auto;">
+    <div class="text-center borrower-info">
+      <a [routerLink]="['/customer',disbursement?.PEOPLE_CUSTOMERS_ID]" class="pull-left" style="margin-right: 25px">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{disbursement?.FILE_NAME | imagenotfound}}?q=auto"
+          style="width:50px; height:50px">
+      </a>
+      <div class="borrower-text pull-left" style="text-align:left">
+        <p class="" style="margin-bottom: 0px">{{disbursement?.LEGAL_NAME}}</p>
+        <p class="" style="font-weight: bold">{{disbursement?.HOW_MUCH_WAS_GIVEN | number:'.2-2'}}</p>
+
+      </div>
+    </div>
+  </div>
+  <!-- <div class="text-center"><p class="" style="font-weight: bold">{{payment_type}}</p></div> -->
+  <div *ngIf="withdrawal_step=='0'" class="paytype-switch" style="position: relative;z-index: 10;background: white; overflow: auto;width:100% !important">
+    <a class="paystack-switch-confirm active" style="width:100% !important">Withdrawal</a>
+  </div>
+  <div *ngIf="withdrawal_step=='0'">
+    <div class="form-group">
+      <h4 class="control-label" style="margin:15px !important">Have you transferred to the investor?</h4>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-6">
+        <div class="checkbox">
+          <label>
+            <input type="radio" (ngModelChange)="changewithtype($event)" name="record_type_" [(ngModel)]="record_type_" [value]="1"> Yes</label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="checkbox">
+          <label>
+            <input type="radio" (ngModelChange)="changewithtype($event)" name="record_type_" [(ngModel)]="record_type_" [value]="2"> No</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="withdrawal_step=='1'&&withdrawal_option=='1'">
+    <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto;width:100% !important">
+      <a class="paystack-switch-confirm active" style="width:100% !important">Confirm Payment</a>
+    </div>
+    <div class="panel-body animated">
+      <form [formGroup]="investorConfirmPayment" (ngSubmit)="doPaymentConfirm(investorConfirmPayment.value)">
+        <h4>Transaction Details</h4>
+        <p>Please confirm that the payment has been made.</p>
+        <div class="form-group" [ngClass]="{'has-error':!investorConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID'].valid && investorConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
+          style="margin-bottom:15px">
+          <label for="exampleInputEmail1">Disbursement Bank</label>
+          <select class="form-control" [formControl]="investorConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
+            id="LENDER_BANK_ACCOUNT_ID">
+            <option value="0"></option>
+            <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
+          </select>
+        </div>
+        <div class="form-group" [ngClass]="{'has-error':!investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].valid && investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].touched}"
+          style="margin-bottom:15px">
+          <label for="exampleInputEmail1">{{security_question}}</label>
+          <input [formControl]="investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
+            name="SECURITY_QUESTION_ANSWER">
+          <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+            Wrong answer.
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <button class="btn btn-block btn-white btn-block" [disabled]="!investorConfirmPayment.valid" type="submit">Confirm Payment
+              <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+            </button>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-block btn-danger btn-block" type="button" (click)="withdrawal_step='0'">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div *ngIf="withdrawal_step=='2'||withdrawal_step=='3'">
+    <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="paymentHasBeenProcessed&&paymentConfirmed">
+      <a href="javascript:;" style="font-size:40px">
+        <i class="fa fa-check"></i>
+      </a>
+      <span style="display: block;">Payment Successful</span>
+      <!-- <button type="button" class="btn btn-white" (click)="withdrawal_step='0'">Close</button> -->
+    </div>
+    <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="paymentHasBeenProcessed&&!paymentConfirmed">
+      <a href="javascript:;" style="font-size:40px">
+        <i class="fa fa-info"></i>
+      </a>
+      <span style="display: block;">Payment Unsuccessful</span>
+      <!-- <button type="button" class="btn btn-white" (click)="withdrawal_step='0'">Close</button> -->
+    </div>
+  </div>
+  <div *ngIf="withdrawal_step=='1'&&withdrawal_option=='2'">
+    <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto;width:100% !important">
+      <a class="paystack-switch-confirm active" style="width:100% !important">Make Payment</a>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <button class="btn btn-white btn-pay-wallet" (click)="withdrawal_step='3'">
+          <i class="fa fa-briefcase"></i>
+          <span style="text-align: center; display: block; font-size: 15px">
+            Credit Wallet
+          </span>
+        </button>
+      </div>
+      <div class="col-md-6 hide">
+        <button class="btn btn-white btn-pay-bank" (click)="withdrawal_step='4'">
+          <i class="fa fa-bank"></i>
+          <span style="text-align: center; display: block; font-size: 15px">
+            Bank Payment
+          </span>
+        </button>
+
+      </div>
+    </div>
+    <div class="row" style="margin:10px 0px">
+      <div class="col-md-12 text-center">
+        <button class="btn btn-danger" type="button" (click)="withdrawal_step='0'">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="withdrawal_step=='4'">
+    <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto;width:100% !important">
+      <a class="paystack-switch-confirm active" style="width:100% !important">Make Payment</a>
+    </div>
+    <div class="panel-body animated">
+      <div *ngIf="!choosingPayProcess">
+        <div *ngIf="!disbursement?.BORROWER_ACCOUNT_DETAILS||addingAccount">
+          <div *ngIf="!addingAccount" style="background:#FFFFFF;padding:15px">
+            <div class="text-center">
+              <a href="javascript:;" style="font-size:40px">
+                <i class="fa fa-meh-o"></i>
+              </a>
+              <h3>No accounts found</h3>
+              <button class="btn btn-white" (click)="addingAccount=!addingAccount">Add Account
+                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+              </button>
+            </div>
+          </div>
+          <form *ngIf="addingAccount" [formGroup]="newAccountForm" (ngSubmit)="doAddNewBorrowerAccount(newAccountForm.value)">
+            <div class="form-group" [ngClass]="{'has-error':!newAccountForm.controls['BANK_ID'].valid && newAccountForm.controls['BANK_ID'].touched}"
+              style="margin-bottom:15px">
+              <label for="exampleInputEmail1">Account Bank</label>
+              <select class="form-control" [formControl]="newAccountForm.controls['BANK_ID']" name="BANK_ID" id="BANK_ID">
+                <option value="0"></option>
+                <option *ngFor="let nb of nigerian_banks" [ngValue]="nb">{{nb.BANK_NAME}}</option>
+              </select>
+            </div>
+            <div class="form-group" [ngClass]="{'has-error':!newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].valid && newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].touched}"
+              style="margin-bottom:15px">
+              <label for="exampleInputEmail1">Account Number</label>
+              <input [formControl]="newAccountForm.controls['LENDER_ACCOUNT_NUMBER']" type="text" class="form-control" id="LENDER_ACCOUNT_NUMBER"
+                name="LENDER_ACCOUNT_NUMBER">
+              <div class="error phone_error alert alert-block alert-danger fade in hide" style="margin:10px 0px !important">
+
+              </div>
+            </div>
+            <div class="form-group" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
+
+              <label class="control-label">Account Name</label>
+              <input [formControl]="newAccountForm.controls['LENDER_BANK_ACCOUNT_NAME']" type="text" disabled="" class="form-control" id="LENDER_BANK_ACCOUNT_NAME"
+                name="LENDER_BANK_ACCOUNT_NAME">
+            </div>
+            <div class="form-group" *ngIf="!newaccountconfirmed&&VERIFY_STATUS">
+              <div class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                Account could not be confirmed.
+              </div>
+            </div>
+
+            <div class="row" *ngIf="!continuetosave">
+              <div class="col-md-6">
+                <button class="btn btn-block btn-white" [disabled]="!newAccountForm.valid" type="submit">Add Account
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-block btn-white" type="button" (click)="addingAccount=!addingAccount">Cancel</button>
+              </div>
+            </div>
+            <div class="form-group row" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
+              <div class="col-md-12">
+                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="saveBorrowerAccount()">Use Account
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                </button>
+              </div>
+            </div>
+            <div class="row" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
+              <div class="col-md-12">
+                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="doNotUseAccount()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div *ngIf="disbursement?.BORROWER_ACCOUNT_DETAILS && !addingAccount">
+          <h4>{{account_type}}
+            <span class="tools pull-right">
+              <button class="btn btn-white btn-xs" (click)="addNewCustomerAccount()">
+                <i class="fa fa-plus"></i>
+              </button>
+            </span>
+          </h4>
+          <div class="beachacc" *ngFor="let acc of disbursement?.BORROWER_ACCOUNT_DETAILS">
+            <div class="beachacc-details" (click)="setAsConnectedAccountId(acc.ACCOUNT_CARD_ID,disbursement?.REQUEST_ID,record_type=='2'?disbursement?.INVESTMENT_QUEUE_ID:disbursement?.PAYMENT_QUEUE_ID)">
+              <p style="margin-bottom: 0px">{{acc.BANK_NAME}}</p>
+              <p style="margin-bottom: 0px">{{acc.CARD_NAME}}</p>
+              <p>{{acc.LAST_FOUR_DIGITS}}</p>
+            </div>
+            <div class="beachacc-status" *ngIf="acc.ACCOUNT_CARD_ID==disbursement?.CONNECTED_ACCOUNT_ID">
+              <a>
+                <i class="fa fa-check-square"></i>
+              </a>
+            </div>
+
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-6">
+              <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="choosingPayProcess=!choosingPayProcess">Make Payment
+                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+              </button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="withdrawal_step=='1'">Cancel Payment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="choosingPayProcess">
+        <div class="panel-body animated">
+          <form [formGroup]="investorConfirmPayment_" (ngSubmit)="payInvestorWithBank(investorConfirmPayment_.value)">
+            <h4>Transaction Details</h4>
+            <div class="beachacc" *ngIf="disbursement?.CONNECTED_ACCOUNT">
+              <div class="beachacc-details">
+                <p style="margin-bottom: 0px">{{disbursement?.CONNECTED_ACCOUNT.BANK_NAME}}</p>
+                <p style="margin-bottom: 0px">{{disbursement?.CONNECTED_ACCOUNT.CARD_NAME}}</p>
+                <p>{{disbursement?.CONNECTED_ACCOUNT.LAST_FOUR_DIGITS}}</p>
+              </div>
+
+
+            </div>
+            <div class="form-group" [ngClass]="{'has-error':!investorConfirmPayment_.controls['LENDER_BANK_ACCOUNT_ID'].valid && investorConfirmPayment_.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
+              style="margin-bottom:15px">
+              <label for="exampleInputEmail1">Disbursement Bank</label>
+              <select class="form-control" [formControl]="investorConfirmPayment_.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
+                id="LENDER_BANK_ACCOUNT_ID">
+                <option value="0"></option>
+                <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
+              </select>
+            </div>
+            <div class="form-group" [ngClass]="{'has-error':!investorConfirmPayment_.controls['SECURITY_QUESTION_ANSWER'].valid && investorConfirmPayment_.controls['SECURITY_QUESTION_ANSWER'].touched}"
+              style="margin-bottom:15px">
+              <label for="exampleInputEmail1">{{security_question}}</label>
+              <input [formControl]="investorConfirmPayment_.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+                id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
+              <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                {{inv_error}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <button class="btn btn-block btn-white btn-block" [disabled]="!investorConfirmPayment_.valid" type="submit">Confirm Payment
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-block btn-danger btn-block" type="button" (click)="withdrawal_step='0'">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div *ngIf="withdrawal_step=='3'">
+    <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto;width:100% !important">
+      <a class="paystack-switch-confirm active" style="width:100% !important">Make Payment</a>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <h4 class="control-label" style="margin:15px !important">Transfer to Wallet?</h4>
+        </div>
+        <div style="margin:0px 0px 15px 15px">
+          <h3 style="margin:0px 0px 5px 0px">Wallet Balance</h3>
+          <h4 style="margin:0px 0px 5px 0px">{{disburse?.WALLET_BALANCE | number:'.2-2'}}</h4>
+
+        </div>
+        <div style="margin:15px">
+          <form [formGroup]="investorConfirmPayment" (ngSubmit)="doTransferToWallet(investorConfirmPayment.value)">
+            <div class="form-group" [ngClass]="{'has-error':!investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].valid && investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].touched}"
+              style="margin-bottom:15px">
+              <label for="exampleInputEmail1">{{security_question}}</label>
+              <input [formControl]="investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
+                name="SECURITY_QUESTION_ANSWER">
+              <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                Wrong answer.
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <button class="btn btn-block btn-white btn-block" type="submit">Confirm Payment
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-block btn-danger btn-block" type="button" (click)="withdrawal_step='1'">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="panel" style="overflow:hidden;" *ngIf="record_type=='3'">
+  <div style="padding:24px 20px; overflow: auto;">
+    <div class="text-center borrower-info">
+      <a class="pull-left" style="margin-right: 25px">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{disbursement?.FILE_NAME | imagenotfound}}?q=auto"
+          style="width:50px; height:50px">
+      </a>
+      <div class="borrower-text pull-left" style="text-align:left">
+        <p class="" style="margin-bottom: 0px">{{disbursement?.LEGAL_NAME}}</p>
+        <p class="" style="font-weight: bold">{{disbursement?.BID_PRINCIPAL | number:'.2-2'}}</p>
+
+      </div>
+    </div>
+  </div>
+  <div *ngIf="is_cancel=='1'">
+    <div class="text-center">
+      <p class="" style="font-weight: bold">Cancel {{payment_type}}</p>
+    </div>
+    <!-- <app-queuecancel [currentUser]="currentUser" (rejectRequest)="rejectRequest($event)" (moveToLevel)="moveToLevel($event)" [disburse]="disburse" [record_type]="record_type" [schedule_type]="schedule_type"></app-queuecancel> -->
+  </div>
+  <div *ngIf="is_cancel=='0'">
+    <div *ngIf="withdrawal_step=='0'">
+      <!-- <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto;width:100% !important">
+        <a class="paystack-switch-confirm active" style="width:100% !important">Confirm Repayment</a>
+      </div> -->
+      <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
+          <a class="paystack-switch-confirm {{paytype=='confirm'?'active':''}}" (click)="switchpay('confirm')">Confirm Repayment</a>
+          <a class="paystack-switch-make {{paytype=='card_make'?'active':''}}" (click)="switchpay('card_make')">Card Autodebit</a>
+        </div>
+        <div *ngIf="paytype=='confirm'">
+            <div class="panel-body animated">
+                <form [formGroup]="repaymentConfirmPayment" (ngSubmit)="doPaymentConfirm(repaymentConfirmPayment.value)">
+                  <h4>Transaction Details</h4>
+                  <p>Please confirm that the payment has been made.</p>
+                  <div class="form-group" [ngClass]="{'has-error':!repaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID'].valid && repaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
+                    style="margin-bottom:15px">
+                    <label for="exampleInputEmail1">Repayment Bank</label>
+                    <select class="form-control" [formControl]="repaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
+                      id="LENDER_BANK_ACCOUNT_ID">
+                      <option value="0"></option>
+                      <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group" [ngClass]="{'has-error':!repaymentConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].valid && repaymentConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].touched}"
+                    style="margin-bottom:15px">
+                    <label for="exampleInputEmail1">{{security_question}}</label>
+                    <input [formControl]="repaymentConfirmPayment.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+                      id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
+                    <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                      Wrong answer.
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <button class="btn btn-block btn-white btn-block" [disabled]="!repaymentConfirmPayment.valid" type="submit">Confirm Payment
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                      </button>
+                    </div>
+                    <div class="col-md-6">
+                      <button class="btn btn-block btn-danger btn-block" type="button" (click)="closeModal()">Cancel</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+          </div>
+          <div *ngIf="paytype=='card_make'">
+
+              <div class="panel-body">
+                  <div>
+                    <div *ngIf="cards?.total=='0'">
+                      <div style="background:#FFFFFF;padding:15px">
+                        <div class="text-center">
+                          <a href="javascript:;" style="font-size:40px">
+                            <i class="fa fa-meh-o"></i>
+                          </a>
+                          <h3>No cards found</h3>
+        
+                        </div>
+                      </div>
+        
+                    </div>
+                    <div *ngIf="cards?.total!='0'">
+                      <div *ngIf="!confirmCardAD">
+                        <h4>Choose card</h4>
+                        <div class="beachacc" *ngFor="let acc of cards?.cards">
+        
+                          <div class="media x-mod" style="cursor: pointer" (click)="setAsDebitAllCard(acc)" *ngIf="acc?.TYPE_OF=='2'&& acc?.CARD_VALIDATED_THROUGH=='1'">
+                            <div class="pull-left thumb" style="width: 75px">
+                            </div>
+                            <div class="media-body hover_toggle">
+                              <div class="pull-left" style="margin-top: 5px">
+                                <p class="t_cool t_l4">{{acc?.CARD_NAME}}</p>
+                                <small style="font-size: 13px">*********{{acc?.LAST_FOUR_DIGITS}}</small>
+                                <small *ngIf="acc?.CARD_CHECK_ID.status=='success'">
+                                  <span>{{acc?.CARD_CHECK_ID.data.cardName}}</span>
+                                </small>
+                                <small *ngIf="acc?.CARD_CHECK_ID.status=='success'">
+                                  <span>{{acc?.CARD_CHECK_ID.data.country}}</span> |
+                                  <span *ngIf="acc?.IS_GUARANTOR">Guarantor</span>
+                                </small>
+                              </div>
+        
+                              <span class="pull-right" *ngIf="debit_all_card?.ACCOUNT_CARD_ID == acc?.ACCOUNT_CARD_ID">
+                                <img src="assets/images/check.PNG" class="tick">
+                              </span>
+                            </div>
+                          </div>
+                          <div class="media x-mod" style="cursor: pointer" (click)="setAsDebitAllCard(acc)" *ngIf="acc?.TYPE_OF=='2'&& acc?.CARD_VALIDATED_THROUGH=='2'">
+                            <div class="pull-left thumb" style="width: 75px">
+                              <!-- <img src="assets/images/{{acc?.BANK_LOGO}}"> -->
+                            </div>
+                            <div class="media-body hover_toggle">
+                              <div class="pull-left" style="margin-top: 5px">
+                                <p class="t_cool t_l4">{{acc?.PAYSTACK_CHECK_ID.authorization.bank}}|{{acc?.PAYSTACK_CHECK_ID.authorization.card_type}}</p>
+                                <small style="font-size: 13px">*********{{acc?.LAST_FOUR_DIGITS}}</small>
+        
+                                <small>
+                                  <span>{{acc?.PAYSTACK_CHECK_ID.authorization.country_code}}</span> |
+                                  <span *ngIf="acc?.IS_GUARANTOR=='1'">Guarantor</span>
+                                </small>
+                              </div>
+        
+                              <span class="pull-right" *ngIf="debit_all_card?.ACCOUNT_CARD_ID == acc?.ACCOUNT_CARD_ID">
+                                <img src="assets/images/check.PNG" class="tick">
+                              </span>
+                            </div>
+                          </div>
+        
+                        </div>
+        
+                        <div class="form-group row">
+                          <div class="col-md-6">
+                            <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="confirmCardAD=!confirmCardAD">Make Payment
+                              <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                            </button>
+                          </div>
+                          <div class="col-md-6">
+                            <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="confirmCardAD">
+                        <form [formGroup]="debitAllForm" (ngSubmit)="doPaymentConfirmDebitAll(debitAllForm.value)">
+                          <h4>Transaction Details</h4>
+        
+                          <div class="form-group" [ngClass]="{'has-error':!debitAllForm.controls['SECURITY_QUESTION_ANSWER'].valid && debitAllForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
+                            style="margin-bottom:15px">
+                            <label for="exampleInputEmail1">{{security_question}}</label>
+                            <input [formControl]="debitAllForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
+                              name="SECURITY_QUESTION_ANSWER">
+                            <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                              Wrong answer.
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <button class="btn btn-block btn-white" [disabled]="!debitAllForm.valid" type="submit">Confirm Payment
+                                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </form>
+        
+        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+    </div>
+    <div *ngIf="withdrawal_step=='2'">
+      <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="paymentHasBeenProcessed&&paymentConfirmed">
+        <a href="javascript:;" style="font-size:40px">
+          <i class="fa fa-check"></i>
+        </a>
+        <span style="display: block;">Payment Successful</span>
+        <button type="button" class="btn btn-white" (click)="closeModal()">Close</button>
+      </div>
+      <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="paymentHasBeenProcessed&&!paymentConfirmed">
+        <a href="javascript:;" style="font-size:40px">
+          <i class="fa fa-info"></i>
+        </a>
+        <span style="display: block;">Payment Unsuccessful</span>
+        <button type="button" class="btn btn-white" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+    <div *ngIf="withdrawal_step=='1'&&withdrawal_option=='2'">
+      <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto;width:100% !important">
+        <a class="paystack-switch-confirm active" style="width:100% !important">Make Payment</a>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <button class="btn btn-white btn-pay-wallet" (click)="payWithWallet()">
+            <i class="fa fa-briefcase"></i>
+            <span style="text-align: center; display: block; font-size: 15px">
+              Credit Wallet
+            </span>
+          </button>
+        </div>
+        <div class="col-md-6">
+          <button class="btn btn-white btn-pay-bank" (click)="payWithBank()">
+            <i class="fa fa-bank"></i>
+            <span style="text-align: center; display: block; font-size: 15px">
+              Bank Payment
+            </span>
+          </button>
+
+        </div>
+      </div>
+      <div class="row" style="margin:10px 0px">
+        <div class="col-md-12 text-center">
+          <button class="btn btn-danger" type="button" (click)="closeModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="panel" style="overflow:hidden;" *ngIf="record_type=='1'">
+  <div style="padding:24px 20px; overflow: auto;">
+    <div class="text-center borrower-info">
+      <a class="pull-left" style="margin-right: 25px">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{disbursement?.FILE_NAME | imagenotfound}}?q=auto"
+          style="width:50px; height:50px">
+      </a>
+      <div class="borrower-text pull-left" style="text-align:left">
+        <p class="" style="margin-bottom: 0px">{{disbursement?.LEGAL_NAME}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP!='8'&&disburse?.IS_TOP_UP!='6'">{{disbursement?.HOW_MUCH_WAS_GIVEN | number:'.2-2'}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='8'">{{disbursement?.TOP_UP_AMOUNT | number:'.2-2'}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='6'">{{disbursement?.REQUEST_PRINCIPAL | number:'.2-2'}}</p>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="is_cancel=='0'">
+    <div class="text-center">
+      <p class="" style="font-weight: bold">{{payment_type}}</p>
+    </div>
+    <div *ngIf="disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'" class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
+      <a class="paystack-switch-confirm {{paytype=='confirm'?'active':''}}" (click)="switchpay('confirm')">Confirm Payment</a>
+      <a class="paystack-switch-make {{paytype=='make'?'active':''}}" (click)="switchpay('make')">Make Payment</a>
+    </div>
+    <div *ngIf="disbursement?.IS_TOP_UP=='6'" class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
+      <a class="paystack-switch-confirm {{paytype=='confirm'?'active':''}}" (click)="switchpay('confirm')">Confirm Payment</a>
+      <a class="paystack-switch-make {{paytype=='card_make'?'active':''}}" (click)="switchpay('card_make')">Card Autodebit</a>
+    </div>
+    <div *ngIf="makingFinalPayment">
+      <div *ngIf="paytype=='make'">
+        <div class="panel-body" style="padding-bottom: 0px">
+          <div class="text-center" style="padding: 20px 0px; padding-bottom: 0px" *ngIf="makingFinalPayment&&!paymentHasBeenProcessed">
+            <a href="javascript:;" style="font-size:40px">
+              <i class="fa fa-hourglass fa-spin"></i>
+            </a>
+            <span style="display: block;">processing payment...</span>
+
+          </div>
+          <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="makingFinalPayment&&paymentHasBeenProcessed&&paymentConfirmed">
+            <div *ngIf="payment_status">
+              <a href="javascript:;" style="font-size:40px">
+                <i class="fa fa-check"></i>
+              </a>
+              <span style="display: block;">Payment Successful</span>
+            </div>
+            <div *ngIf="!payment_status">
+              <a href="javascript:;" style="font-size:40px">
+                <i class="fa fa-check"></i>
+              </a>
+              <span style="display: block;">Payment Pending</span>
+              <p>Check back for transaction status in 10mins</p>
+            </div>
+            <button type="button" class="btn btn-white" (click)="paymentProcessDone()">Close</button>
+          </div>
+          <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="makingFinalPayment&&paymentHasBeenProcessed&&!paymentConfirmed">
+            <a href="javascript:;" style="font-size:40px">
+              <i class="fa fa-info"></i>
+            </a>
+            <span style="display: block;">Payment Unsuccessful</span>
+            <button type="button" class="btn btn-white" (click)="paymentProcessDone()">Close</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="paytype=='confirm'">
+        <div class="panel-body" style="padding-bottom: 0px">
+          <div class="text-center" style="padding: 20px 0px; padding-bottom: 0px" *ngIf="makingFinalPayment&&!paymentHasBeenProcessed">
+            <a href="javascript:;" style="font-size:40px">
+              <i class="fa fa-hourglass fa-spin"></i>
+            </a>
+            <span style="display: block;">processing payment...</span>
+
+          </div>
+          <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="makingFinalPayment&&paymentHasBeenProcessed&&paymentConfirmed">
+            <div>
+              <a href="javascript:;" style="font-size:40px">
+                <i class="fa fa-check"></i>
+              </a>
+              <span style="display: block;">Payment Successful</span>
+            </div>
+
+            <button type="button" class="btn btn-white" (click)="paymentProcessDone()">Close</button>
+          </div>
+          <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="makingFinalPayment&&paymentHasBeenProcessed&&!paymentConfirmed">
+            <a href="javascript:;" style="font-size:40px">
+              <i class="fa fa-info"></i>
+            </a>
+            <span style="display: block;">Payment Unsuccessful</span>
+            <button type="button" class="btn btn-white" (click)="paymentProcessDone()">Close</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="otp-form animated fadeIn" *ngIf="makingFinalPayment&&otpHBR">
+      <div class="panel-body">
+        <h6>
+          <p>{{fresponse}}</p>
+        </h6>
+        <div class="form-group row">
+
+          <label class="control-label col-md-6">OTP</label>
+          <div class="col-md-6">
+            <input type="text" class="form-control" id="CONFIRM_OTP_CODE" [(ngModel)]="otp.CONFIRM_OTP_CODE" name="CONFIRM_OTP_CODE"
+              value="">
+
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-12">
+            <button [disabled]="loading" class="btn btn-block btn-white" (click)="confirmOTPForTransfer()">Submit
+              <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+            </button>
+          </div>
+
+        </div>
+        <div class="row form-group">
+          <div class="col-md-12">
+            <button [disabled]="loading" (click)="cancelPayment_()" class="btn btn-block btn-danger">Cancel</button>
+          </div>
+
+        </div>
+        <div class="form-group row f-net-error" *ngIf="!otpConfirmed&&otpHBSFC">
+          <div class="col-md-12">
+            <div class="error  alert alert-block alert-danger fade in f-net-error_" style="margin:10px 0px !important">
+              {{otpErrorMessage}}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!makingFinalPayment">
+      <div class="panel-body animated" *ngIf="paytype=='confirm'">
+        <form [formGroup]="complexForm" (ngSubmit)="doPaymentConfirm(complexForm.value)">
+          <h4>Transaction Details</h4>
+          <p>Please confirm that the payment has been made.</p>
+          <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['LENDER_BANK_ACCOUNT_ID'].valid && complexForm.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
+            style="margin-bottom:15px">
+            <label for="exampleInputEmail1">Disbursement Bank</label>
+            <select class="form-control" [formControl]="complexForm.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
+              id="LENDER_BANK_ACCOUNT_ID">
+              <option value="0"></option>
+              <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
+            </select>
+          </div>
+          <div *ngIf="disburse?.ADJUST_CONTRACT_DATE && disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'" class="form-group"
+            style="margin-bottom:15px">
+            <div class="checkbox">
+              <label class="control_label">
+                <input [formControl]="complexForm.controls['ADJUST_CONTRACT_DATE']" type="checkbox" name="ADJUST_CONTRACT_DATE"> Adjust Contract Date</label>
+            </div>
+
+          </div>
+          <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['SECURITY_QUESTION_ANSWER'].valid && complexForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
+            style="margin-bottom:15px">
+            <label for="exampleInputEmail1">{{security_question}}</label>
+            <input [formControl]="complexForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
+              name="SECURITY_QUESTION_ANSWER">
+            <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+              Wrong answer.
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <button class="btn btn-block btn-white" [disabled]="!complexForm.valid" type="submit">Confirm Payment
+                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="panel-body animated" *ngIf="paytype=='make'">
+        <div *ngIf="!choosingPayProcess">
+          <div *ngIf="!disbursement?.BORROWER_ACCOUNT_DETAILS||addingAccount">
+            <div *ngIf="!addingAccount" style="background:#FFFFFF;padding:15px">
+              <div class="text-center">
+                <a href="javascript:;" style="font-size:40px">
+                  <i class="fa fa-meh-o"></i>
+                </a>
+                <h3>No accounts found</h3>
+                <button class="btn btn-white" (click)="addingAccount=!addingAccount">Add Account
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                </button>
+              </div>
+            </div>
+            <form *ngIf="addingAccount" [formGroup]="newAccountForm" (ngSubmit)="doAddNewBorrowerAccount(newAccountForm.value)">
+              <div class="form-group" [ngClass]="{'has-error':!newAccountForm.controls['BANK_ID'].valid && newAccountForm.controls['BANK_ID'].touched}"
+                style="margin-bottom:15px">
+                <label for="exampleInputEmail1">Account Bank</label>
+                <select class="form-control" [formControl]="newAccountForm.controls['BANK_ID']" name="BANK_ID" id="BANK_ID">
+                  <option value="0"></option>
+                  <option *ngFor="let nb of nigerian_banks" [ngValue]="nb">{{nb.BANK_NAME}}</option>
+                </select>
+              </div>
+              <div class="form-group" [ngClass]="{'has-error':!newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].valid && newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].touched}"
+                style="margin-bottom:15px">
+                <label for="exampleInputEmail1">Account Number</label>
+                <input [formControl]="newAccountForm.controls['LENDER_ACCOUNT_NUMBER']" type="text" class="form-control" id="LENDER_ACCOUNT_NUMBER"
+                  name="LENDER_ACCOUNT_NUMBER">
+                <div class="error phone_error alert alert-block alert-danger fade in hide" style="margin:10px 0px !important">
+
+                </div>
+              </div>
+              <div class="form-group" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
+
+                <label class="control-label">Account Name</label>
+                <input [formControl]="newAccountForm.controls['LENDER_BANK_ACCOUNT_NAME']" type="text" disabled="" class="form-control" id="LENDER_BANK_ACCOUNT_NAME"
+                  name="LENDER_BANK_ACCOUNT_NAME">
+              </div>
+              <div class="form-group" *ngIf="!newaccountconfirmed&&VERIFY_STATUS">
+                <div class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                  Account could not be confirmed.
+                </div>
+              </div>
+
+              <div class="row" *ngIf="!continuetosave">
+                <div class="col-md-12">
+                  <button class="btn btn-block btn-white" [disabled]="!newAccountForm.valid" type="submit">Add Account
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-group row" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
+                <div class="col-md-12">
+                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="saveBorrowerAccount()">Use Account
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="row" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
+                <div class="col-md-12">
+                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="doNotUseAccount()">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div *ngIf="disbursement?.BORROWER_ACCOUNT_DETAILS && !addingAccount">
+            <h4>{{account_type}}
+              <span class="tools pull-right">
+                <button class="btn btn-white btn-xs" (click)="addNewCustomerAccount()">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </span>
+            </h4>
+            <div class="beachacc" *ngFor="let acc of disbursement?.BORROWER_ACCOUNT_DETAILS">
+              <div class="beachacc-details" (click)="setAsConnectedAccountId(acc.ACCOUNT_CARD_ID,disbursement?.REQUEST_ID,record_type=='2'?disbursement?.INVESTMENT_QUEUE_ID:disbursement?.PAYMENT_QUEUE_ID)">
+                <p style="margin-bottom: 0px">{{acc.BANK_NAME}}</p>
+                <p style="margin-bottom: 0px">{{acc.CARD_NAME}}</p>
+                <p>{{acc.LAST_FOUR_DIGITS}}</p>
+              </div>
+              <div class="beachacc-status" *ngIf="acc.ACCOUNT_CARD_ID==disbursement?.CONNECTED_ACCOUNT_ID">
+                <a>
+                  <i class="fa fa-check-square"></i>
+                </a>
+              </div>
+
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-6">
+                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="payBorrower()">Make Payment
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="choosingPayProcess">
+          <div class="row" *ngIf="!payProcessChosen">
+            <div class="col-md-6">
+              <button class="btn btn-white btn-pay-wallet" (click)="payWithWallet()">
+                <i class="fa fa-briefcase"></i>
+                <span style="text-align: center; display: block; font-size: 15px">
+                  Wallet
+                </span>
+              </button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-white btn-pay-bank" (click)="payWithBank()">
+                <i class="fa fa-bank"></i>
+                <span style="text-align: center; display: block; font-size: 15px">
+                  Bank
+                </span>
+              </button>
+
+            </div>
+          </div>
+          <div class="row" *ngIf="payProcessChosen&&walletChosen">
+            <div class="col-md-12">
+              <form [formGroup]="walletPaymentForm" (ngSubmit)="confirmBorrowerHasBeenPaid(walletPaymentForm.value)">
+                <h4>Pay with Wallet</h4>
+                <h4>Wallet Balance</h4>
+                <h1>{{wallet_balance}}</h1>
+                <div *ngIf="wallet_status">
+                  <div class="form-group" [ngClass]="{'has-error':!walletPaymentForm.controls['SECURITY_QUESTION_ANSWER'].valid && walletPaymentForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
+                    style="margin-bottom:15px">
+                    <label for="exampleInputEmail1">{{security_question}}</label>
+                    <input [formControl]="walletPaymentForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
+                      name="SECURITY_QUESTION_ANSWER">
+                    <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                      {{otpmessage}}
+                    </div>
+                  </div>
+                  <div *ngIf="disburse?.ADJUST_CONTRACT_DATE" class="form-group" style="margin-bottom:15px">
+                    <div class="checkbox">
+                      <label class="control_label">
+                        <input [formControl]="walletPaymentForm.controls['ADJUST_CONTRACT_DATE']" type="checkbox" name="ADJUST_CONTRACT_DATE"> Adjust Contract Date</label>
+                    </div>
+
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <button class="btn btn-block btn-white" [disabled]="!walletPaymentForm.valid||loading" type="submit">Confirm Payment
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                      </button>
+                    </div>
+                    <div class="col-md-6">
+                      <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="!wallet_status">
+                  <p>You don't have enough funds in your wallet.</p>
+                  <div class="form-group row">
+                    <div class="col-md-12">
+                      <button class="btn btn-block btn-white" (click)="fundWalet()">Fund Your Wallet</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row" *ngIf="payProcessChosen&&bankChosen">
+            <div class="col-md-12">
+              <form [formGroup]="bankPaymentForm" (ngSubmit)="payBorrowerWithBank(bankPaymentForm.value)">
+                <div class="form-group" style="margin-bottom:15px">
+                  <label for="exampleInputEmail1">Borrower Account</label>
+                </div>
+                <div class="beachacc" *ngIf="disbursement?.CONNECTED_ACCOUNT">
+                  <div class="beachacc-details">
+                    <p style="margin-bottom: 0px">{{disbursement?.CONNECTED_ACCOUNT.BANK_NAME}}</p>
+                    <p style="margin-bottom: 0px">{{disbursement?.CONNECTED_ACCOUNT.CARD_NAME}}</p>
+                    <p>{{disbursement?.CONNECTED_ACCOUNT.LAST_FOUR_DIGITS}}</p>
+                  </div>
+
+
+                </div>
+                <div class="form-group" [ngClass]="{'has-error':!bankPaymentForm.controls['LENDER_BANK_ACCOUNT_ID'].valid && bankPaymentForm.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
+                  style="margin-bottom:15px">
+                  <label for="exampleInputEmail1">Disbursement Bank</label>
+                  <select class="form-control" [formControl]="bankPaymentForm.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
+                    id="LENDER_BANK_ACCOUNT_ID">
+                    <option value="0"></option>
+                    <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
+                  </select>
+                </div>
+                <div *ngIf="disburse?.ADJUST_CONTRACT_DATE" class="form-group" style="margin-bottom:15px">
+                  <div class="checkbox" style="margin:0px !important">
+                    <label style="padding-left:0px !important" class="control_label">
+                      <input [formControl]="bankPaymentForm.controls['ADJUST_CONTRACT_DATE']" type="checkbox" name="ADJUST_CONTRACT_DATE"> Adjust Contract Date</label>
+                  </div>
+
+                </div>
+                <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                  {{otpErrorMessage}}
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <button class="btn btn-block btn-white" [disabled]="!bankPaymentForm.valid||loading" type="submit">Pay
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </div>
+                  <div class="col-md-6">
+                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div *ngIf="paytype=='card_make'">
+        <div class="panel-body">
+          <div>
+            <div *ngIf="cards?.total=='0'">
+              <div style="background:#FFFFFF;padding:15px">
+                <div class="text-center">
+                  <a href="javascript:;" style="font-size:40px">
+                    <i class="fa fa-meh-o"></i>
+                  </a>
+                  <h3>No cards found</h3>
+
+                </div>
+              </div>
+
+            </div>
+            <div *ngIf="cards?.total!='0'">
+              <div *ngIf="!confirmCardAD">
+                <h4>Choose card</h4>
+                <div class="beachacc" *ngFor="let acc of cards?.cards">
+
+                  <div class="media x-mod" style="cursor: pointer" (click)="setAsDebitAllCard(acc)" *ngIf="acc?.TYPE_OF=='2'&& acc?.CARD_VALIDATED_THROUGH=='1'">
+                    <div class="pull-left thumb" style="width: 75px">
+                    </div>
+                    <div class="media-body hover_toggle">
+                      <div class="pull-left" style="margin-top: 5px">
+                        <p class="t_cool t_l4">{{acc?.CARD_NAME}}</p>
+                        <small style="font-size: 13px">*********{{acc?.LAST_FOUR_DIGITS}}</small>
+                        <small *ngIf="acc?.CARD_CHECK_ID.status=='success'">
+                          <span>{{acc?.CARD_CHECK_ID.data.cardName}}</span>
+                        </small>
+                        <small *ngIf="acc?.CARD_CHECK_ID.status=='success'">
+                          <span>{{acc?.CARD_CHECK_ID.data.country}}</span> |
+                          <span *ngIf="acc?.IS_GUARANTOR">Guarantor</span>
+                        </small>
+                      </div>
+
+                      <span class="pull-right" *ngIf="debit_all_card?.ACCOUNT_CARD_ID == acc?.ACCOUNT_CARD_ID">
+                        <img src="assets/images/check.PNG" class="tick">
+                      </span>
+                    </div>
+                  </div>
+                  <div class="media x-mod" style="cursor: pointer" (click)="setAsDebitAllCard(acc)" *ngIf="acc?.TYPE_OF=='2'&& acc?.CARD_VALIDATED_THROUGH=='2'">
+                    <div class="pull-left thumb" style="width: 75px">
+                      <!-- <img src="assets/images/{{acc?.BANK_LOGO}}"> -->
+                    </div>
+                    <div class="media-body hover_toggle">
+                      <div class="pull-left" style="margin-top: 5px">
+                        <p class="t_cool t_l4">{{acc?.PAYSTACK_CHECK_ID.authorization.bank}}|{{acc?.PAYSTACK_CHECK_ID.authorization.card_type}}</p>
+                        <small style="font-size: 13px">*********{{acc?.LAST_FOUR_DIGITS}}</small>
+
+                        <small>
+                          <span>{{acc?.PAYSTACK_CHECK_ID.authorization.country_code}}</span> |
+                          <span *ngIf="acc?.IS_GUARANTOR=='1'">Guarantor</span>
+                        </small>
+                      </div>
+
+                      <span class="pull-right" *ngIf="debit_all_card?.ACCOUNT_CARD_ID == acc?.ACCOUNT_CARD_ID">
+                        <img src="assets/images/check.PNG" class="tick">
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="confirmCardAD=!confirmCardAD">Make Payment
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </div>
+                  <div class="col-md-6">
+                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="confirmCardAD">
+                <form [formGroup]="debitAllForm" (ngSubmit)="doPaymentConfirmDebitAll(debitAllForm.value)">
+                  <h4>Transaction Details</h4>
+
+                  <div class="form-group" [ngClass]="{'has-error':!debitAllForm.controls['SECURITY_QUESTION_ANSWER'].valid && debitAllForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
+                    style="margin-bottom:15px">
+                    <label for="exampleInputEmail1">{{security_question}}</label>
+                    <input [formControl]="debitAllForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
+                      name="SECURITY_QUESTION_ANSWER">
+                    <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                      Wrong answer.
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <button class="btn btn-block btn-white" [disabled]="!debitAllForm.valid" type="submit">Confirm Payment
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="is_cancel=='1'">
+    <div class="text-center">
+      <p class="" style="font-weight: bold">Cancel {{payment_type}}</p>
+    </div>
+    <!-- <app-queuecancel [currentUser]="currentUser" (close)="closeOverlay()" (rejectRequest)="rejectRequest($event)" (moveToLevel)="moveToLevel($event)" [disburse]="disburse" [record_type]="record_type" [schedule_type]="schedule_type"></app-queuecancel> -->
+  </div>
+</section>
+<section class="panel" style="overflow:hidden;" *ngIf="record_type=='4'">
+  <div style="padding:24px 20px; overflow: auto;">
+    <div class="text-center borrower-info">
+      <a class="pull-left" style="margin-right: 25px">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{disburse?.FILE_NAME | imagenotfound}}?q=auto"
+          style="width:50px; height:50px">
+      </a>
+      <div class="borrower-text pull-left" style="text-align:left">
+        <p class="" style="margin-bottom: 0px">{{disburse?.LEGAL_NAME}}</p>
+        <p class="" style="font-weight: bold">{{disburse?.HOW_MUCH_WAS_GIVEN | number:'.2-2'}}</p>
+
+      </div>
+    </div>
+  </div>
+  <div *ngIf="is_cancel=='0'">
+    <div class="text-center">
+      <p class="" style="font-weight: bold">WALLET WITHDRAWAL</p>
+    </div>
+    <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
+      <a class="paystack-switch-confirm {{paytype=='make'?'active':''}}" style="width:100%">Make Payment</a>
+
+    </div>
+    <div *ngIf="makingFinalPayment">
+      <div class="panel-body" style="padding-bottom: 0px">
+        <div class="text-center" style="padding: 20px 0px; padding-bottom: 0px" *ngIf="makingFinalPayment&&!paymentHasBeenProcessed">
+          <a href="javascript:;" style="font-size:40px">
+            <i class="fa fa-hourglass fa-spin"></i>
+          </a>
+          <span style="display: block;">processing payment...</span>
+
+        </div>
+        <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="makingFinalPayment&&paymentHasBeenProcessed&&paymentConfirmed">
+          <a href="javascript:;" style="font-size:40px">
+            <i class="fa fa-check"></i>
+          </a>
+          <span style="display: block;">Payment Successful</span>
+          <button type="button" class="btn btn-white" (click)="paymentProcessDone()">Close</button>
+        </div>
+        <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="makingFinalPayment&&paymentHasBeenProcessed&&!paymentConfirmed">
+          <a href="javascript:;" style="font-size:40px">
+            <i class="fa fa-info"></i>
+          </a>
+          <span style="display: block;">Payment Unsuccessful</span>
+          <button type="button" class="btn btn-white" (click)="paymentProcessDone()">Close</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!makingFinalPayment">
+
+      <div class="panel-body animated" *ngIf="paytype=='make'">
+        <div *ngIf="!choosingPayProcess">
+          <div *ngIf="!disburse?.BORROWER_ACCOUNT_DETAILS||addingAccount">
+            <div *ngIf="!addingAccount" style="background:#FFFFFF;padding:15px">
+              <div class="text-center">
+                <a href="javascript:;" style="font-size:40px">
+                  <i class="fa fa-meh-o"></i>
+                </a>
+                <h3>No accounts found</h3>
+                <button class="btn btn-white" (click)="addingAccount=!addingAccount">Add Account
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                </button>
+              </div>
+            </div>
+            <form *ngIf="addingAccount" [formGroup]="newAccountForm" (ngSubmit)="doAddNewBorrowerAccount(newAccountForm.value)">
+              <div class="form-group" [ngClass]="{'has-error':!newAccountForm.controls['BANK_ID'].valid && newAccountForm.controls['BANK_ID'].touched}"
+                style="margin-bottom:15px">
+                <label for="exampleInputEmail1">Account Bank</label>
+                <select class="form-control" [formControl]="newAccountForm.controls['BANK_ID']" name="BANK_ID" id="BANK_ID">
+                  <option value="0"></option>
+                  <option *ngFor="let nb of nigerian_banks" [ngValue]="nb">{{nb.BANK_NAME}}</option>
+                </select>
+              </div>
+              <div class="form-group" [ngClass]="{'has-error':!newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].valid && newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].touched}"
+                style="margin-bottom:15px">
+                <label for="exampleInputEmail1">Account Number</label>
+                <input [formControl]="newAccountForm.controls['LENDER_ACCOUNT_NUMBER']" type="text" class="form-control" id="LENDER_ACCOUNT_NUMBER"
+                  name="LENDER_ACCOUNT_NUMBER">
+                <div class="error phone_error alert alert-block alert-danger fade in hide" style="margin:10px 0px !important">
+
+                </div>
+              </div>
+              <div class="form-group" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
+
+                <label class="control-label">Account Name</label>
+                <input [formControl]="newAccountForm.controls['LENDER_BANK_ACCOUNT_NAME']" type="text" disabled="" class="form-control" id="LENDER_BANK_ACCOUNT_NAME"
+                  name="LENDER_BANK_ACCOUNT_NAME">
+              </div>
+              <div class="form-group" *ngIf="!newaccountconfirmed&&VERIFY_STATUS">
+                <div class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                  Account could not be confirmed.
+                </div>
+              </div>
+
+              <div class="row" *ngIf="!continuetosave">
+                <div class="col-md-12">
+                  <button class="btn btn-block btn-white" [disabled]="!newAccountForm.valid" type="submit">Add Account
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-group row" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
+                <div class="col-md-12">
+                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="saveBorrowerAccount()">Use Account
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="row" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
+                <div class="col-md-12">
+                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="doNotUseAccount()">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div *ngIf="disburse?.BORROWER_ACCOUNT_DETAILS && !addingAccount">
+            <h4>{{account_type}}
+              <span class="tools pull-right">
+                <button class="btn btn-white btn-xs" (click)="addNewCustomerAccount()">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </span>
+            </h4>
+            <div class="beachacc" *ngFor="let acc of disburse?.BORROWER_ACCOUNT_DETAILS">
+              <div class="beachacc-details" (click)="setAsWithdrawalAccount(acc.ACCOUNT_CARD_ID,disburse?.WALLET_WITHDRAWAL_REQUEST_ID)">
+                <p style="margin-bottom: 0px">{{acc.BANK_NAME}}</p>
+                <p style="margin-bottom: 0px">{{acc.CARD_NAME}}</p>
+                <p>{{acc.LAST_FOUR_DIGITS}}</p>
+              </div>
+              <div class="beachacc-status" *ngIf="acc.ACCOUNT_CARD_ID==disburse?.CONNECTED_ACCOUNT_ID">
+                <a>
+                  <i class="fa fa-check-square"></i>
+                </a>
+              </div>
+
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-6">
+                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="doWithdrawal()">Make Payment
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="choosingPayProcess">
+          <div class="row" *ngIf="!payProcessChosen">
+            <div class="col-md-6">
+              <button class="btn btn-white btn-pay-wallet" (click)="payWithWallet()">
+                <i class="fa fa-briefcase"></i>
+                <span style="text-align: center; display: block; font-size: 15px">
+                  Wallet
+                </span>
+              </button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-white btn-pay-bank" (click)="payWithBank()">
+                <i class="fa fa-bank"></i>
+                <span style="text-align: center; display: block; font-size: 15px">
+                  Bank
+                </span>
+              </button>
+
+            </div>
+          </div>
+          <div class="row" *ngIf="payProcessChosen&&walletChosen">
+            <div class="col-md-12">
+              <form [formGroup]="walletWithdrawalForm" (ngSubmit)="confirmwalletWithdrawalForm(walletWithdrawalForm.value)">
+
+                <div>
+                  <div class="form-group">
+                    <label class="control-label">Charges : 52.5</label>
+                  </div>
+                  <div class="form-group" [ngClass]="{'has-error':!walletWithdrawalForm.controls['SECURITY_QUESTION_ANSWER'].valid && walletWithdrawalForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
+                    style="margin-bottom:15px">
+                    <label for="exampleInputEmail1">{{security_question}}</label>
+                    <input [formControl]="walletWithdrawalForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
+                      name="SECURITY_QUESTION_ANSWER">
+                    <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                      {{otpmessage}}
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <button class="btn btn-block btn-white" [disabled]="!walletWithdrawalForm.valid||loading" type="submit">Confirm Payment
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                      </button>
+                    </div>
+                    <div class="col-md-6">
+                      <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row" *ngIf="payProcessChosen&&bankChosen">
+            <div class="col-md-12">
+              <form [formGroup]="bankPaymentForm" (ngSubmit)="payBorrowerWithBank(bankPaymentForm.value)">
+                <div class="form-group" style="margin-bottom:15px">
+                  <label for="exampleInputEmail1">Borrower Account</label>
+                </div>
+                <div class="beachacc" *ngIf="disbursement?.CONNECTED_ACCOUNT">
+                  <div class="beachacc-details">
+                    <p style="margin-bottom: 0px">{{disbursement?.CONNECTED_ACCOUNT.BANK_NAME}}</p>
+                    <p style="margin-bottom: 0px">{{disbursement?.CONNECTED_ACCOUNT.CARD_NAME}}</p>
+                    <p>{{disbursement?.CONNECTED_ACCOUNT.LAST_FOUR_DIGITS}}</p>
+                  </div>
+
+
+                </div>
+                <div class="form-group" [ngClass]="{'has-error':!bankPaymentForm.controls['LENDER_BANK_ACCOUNT_ID'].valid && bankPaymentForm.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
+                  style="margin-bottom:15px">
+                  <label for="exampleInputEmail1">Disbursement Bank</label>
+                  <select class="form-control" [formControl]="bankPaymentForm.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
+                    id="LENDER_BANK_ACCOUNT_ID">
+                    <option value="0"></option>
+                    <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
+                  </select>
+                </div>
+                <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                  {{otpErrorMessage}}
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <button class="btn btn-block btn-white" [disabled]="!bankPaymentForm.valid||loading" type="submit">Pay
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </div>
+                  <div class="col-md-6">
+                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="is_cancel=='1'">
+    <div class="text-center">
+      <p class="" style="font-weight: bold">Cancel {{payment_type}}</p>
+    </div>
+    <!-- <app-queuecancel [currentUser]="currentUser" (close)="closeOverlay()" (rejectRequest)="rejectRequest($event)" (moveToLevel)="moveToLevel($event)" [disburse]="disburse" [record_type]="record_type" [schedule_type]="schedule_type"></app-queuecancel> -->
+  </div>
+</section>
+<section class="panel" style="overflow:hidden;" *ngIf="record_type=='5'">
+  <div style="padding:24px 20px; overflow: auto;">
+    <div class="text-center borrower-info">
+      <a class="pull-left" style="margin-right: 25px">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{disburse?.FILE_NAME | imagenotfound}}?q=auto"
+          style="width:50px; height:50px">
+      </a>
+      <div class="borrower-text pull-left" style="text-align:left">
+        <p class="" style="margin-bottom: 0px">{{disburse?.LEGAL_NAME}}</p>
+        <p class="" style="font-weight: bold">{{disburse?.HOW_MUCH_WAS_GIVEN | number:'.2-2'}}</p>
+
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    <p class="" style="font-weight: bold">CUSTOMER WALLET FUNDING</p>
+  </div>
+  <!-- <div *ngIf="disburse?.WALLET_FUNDING_FROM=='2'" class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
+    <a class="paystack-switch-confirm {{paytype=='confirm'?'active':''}}" (click)="switchpay('confirm')">Confirm Funding</a>
+    <a class="paystack-switch-make {{paytype=='make'?'active':''}}" (click)="switchpay('make')">Make Payment</a>
+  </div> -->
+  <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
+    <a class="paystack-switch-confirm {{paytype=='make'?'active':''}}" style="width:100%">Confirm</a>
+  </div>
+  <div *ngIf="makingFinalPayment">
+    <div class="panel-body" style="padding-bottom: 0px">
+      <div class="text-center" style="padding: 20px 0px; padding-bottom: 0px" *ngIf="makingFinalPayment&&!paymentHasBeenProcessed">
+        <a href="javascript:;" style="font-size:40px">
+          <i class="fa fa-hourglass fa-spin"></i>
+        </a>
+        <span style="display: block;">processing payment...</span>
+
+      </div>
+      <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="makingFinalPayment&&paymentHasBeenProcessed&&paymentConfirmed">
+        <a href="javascript:;" style="font-size:40px">
+          <i class="fa fa-check"></i>
+        </a>
+        <span style="display: block;">Payment Successful</span>
+        <button type="button" class="btn btn-white" (click)="paymentProcessDone()">Close</button>
+      </div>
+      <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="makingFinalPayment&&paymentHasBeenProcessed&&!paymentConfirmed">
+        <a href="javascript:;" style="font-size:40px">
+          <i class="fa fa-info"></i>
+        </a>
+        <span style="display: block;">Payment Unsuccessful</span>
+        <button type="button" class="btn btn-white" (click)="paymentProcessDone()">Close</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!makingFinalPayment">
+    <div class="panel-body animated">
+      <div class="row">
+        <div class="col-md-12">
+          <form [formGroup]="walletFundingForm" (ngSubmit)="walletFundingComplete(walletFundingForm.value)">
+
+            <div>
+              <div class="form-group" [ngClass]="{'has-error':!walletFundingConfimForm.controls['LENDER_BANK_ACCOUNT_ID'].valid && walletFundingConfimForm.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
+                style="margin-bottom:15px">
+                <label for="exampleInputEmail1">Funding Bank</label>
+                <select class="form-control" [formControl]="walletFundingForm.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
+                  id="LENDER_BANK_ACCOUNT_ID">
+                  <option value="0"></option>
+                  <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
+                </select>
+              </div>
+              <div class="form-group" [ngClass]="{'has-error':!walletFundingForm.controls['DATE_ADDED'].valid && walletFundingForm.controls['DATE_ADDED'].touched}"
+                style="margin-bottom:15px">
+                <label for="exampleInputEmail1">Date</label>
+                <input [formControl]="walletFundingForm.controls['DATE_ADDED']" type="text" class="form-control" id="DATE_ADDED" name="DATE_ADDED"
+                  ngui-datetime-picker date-only="true">
+
+              </div>
+              <div class="form-group" [ngClass]="{'has-error':!walletFundingForm.controls['SECURITY_QUESTION_ANSWER'].valid && walletFundingForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
+                style="margin-bottom:15px">
+                <label for="exampleInputEmail1">{{security_question}}</label>
+                <input [formControl]="walletFundingForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
+                  name="SECURITY_QUESTION_ANSWER">
+                <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                  {{otpmessage}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <button class="btn btn-block btn-white" [disabled]="!walletFundingForm.valid||loading" type="submit">Confirm Payment
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </div>
+                <div class="col-md-6">
+                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                </div>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+
+    </div>
+    <!-- <div class="panel-body animated" *ngIf="paytype=='confirm'">
+      <form [formGroup]="walletFundingConfimForm" (ngSubmit)="doWalletFundingConfirm(walletFundingConfimForm.value)">
+        <h4>Transaction Details</h4>
+        <p>Please confirm that the payment has been received.</p>
+        <div class="form-group" [ngClass]="{'has-error':!walletFundingConfimForm.controls['LENDER_BANK_ACCOUNT_ID'].valid && walletFundingConfimForm.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
+          style="margin-bottom:15px">
+          <label for="exampleInputEmail1">Funding Bank</label>
+          <select class="form-control" [formControl]="walletFundingConfimForm.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
+            id="LENDER_BANK_ACCOUNT_ID">
+            <option value="0"></option>
+            <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
+          </select>
+        </div>
+        <div class="form-group" [ngClass]="{'has-error':!walletFundingConfimForm.controls['SECURITY_QUESTION_ANSWER'].valid && walletFundingConfimForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
+          style="margin-bottom:15px">
+          <label for="exampleInputEmail1">{{security_question}}</label>
+          <input [formControl]="walletFundingConfimForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+            id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
+          <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+            Wrong answer.
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <button class="btn btn-block btn-white" [disabled]="!walletFundingConfimForm.valid" type="submit">Confirm Payment
+              <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div> -->
+  </div>
+</section>
+<section class="panel" style="overflow:hidden;" *ngIf="record_type=='6'">
+  <div style="padding:24px 20px; overflow: auto;">
+    <div class="text-center borrower-info">
+      <a class="pull-left" style="margin-right: 25px">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{disburse?.FILE_NAME | imagenotfound}}?q=auto"
+          style="width:50px; height:50px">
+      </a>
+      <div class="borrower-text pull-left" style="text-align:left">
+        <p class="" style="margin-bottom: 0px">{{disburse?.LEGAL_NAME}}</p>
+        <p class="" style="font-weight: bold">{{disburse?.AMOUNT_PAID | number:'.2-2'}}</p>
+
+      </div>
+
+    </div>
+
+  </div>
+  <div *ngIf="withdrawal_step=='0'">
+    <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto;width:100% !important">
+      <a class="paystack-switch-confirm active" style="width:100% !important">Confirm Repayment</a>
+    </div>
+    
+    <div class="panel-body animated">
+      <form [formGroup]="customerrepaymentConfirmPayment" (ngSubmit)="doCustomerPaymentConfirm(customerrepaymentConfirmPayment.value)">
+        <h4>Transaction Details</h4>
+        <p>Please confirm that the payment has been made.</p>
+
+        <div class="form-group" [ngClass]="{'has-error':!customerrepaymentConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].valid && customerrepaymentConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].touched}"
+          style="margin-bottom:15px">
+          <label for="exampleInputEmail1">{{security_question}}</label>
+          <input [formControl]="customerrepaymentConfirmPayment.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+            id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
+          <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+            Wrong answer.
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <button class="btn btn-block btn-white btn-block" [disabled]="!customerrepaymentConfirmPayment.valid" type="submit">Confirm Payment
+              <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+            </button>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-block btn-danger btn-block" type="button" (click)="closeModal()">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div *ngIf="withdrawal_step=='2'">
+    <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="paymentHasBeenProcessed&&paymentConfirmed">
+      <a href="javascript:;" style="font-size:40px">
+        <i class="fa fa-check"></i>
+      </a>
+      <span style="display: block;">Payment Successful</span>
+      <button type="button" class="btn btn-white" (click)="withdrawal_step='0'">Close</button>
+    </div>
+    <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="paymentHasBeenProcessed&&!paymentConfirmed">
+      <a href="javascript:;" style="font-size:40px">
+        <i class="fa fa-info"></i>
+      </a>
+      <span style="display: block;">Payment Unsuccessful</span>
+      <button type="button" class="btn btn-white" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+
+</section>
+<section class="panel" style="overflow:hidden;" *ngIf="record_type=='7'">
+  <div style="padding:24px 20px; overflow: auto;">
+    <div class="text-center borrower-info">
+      <a [routerLink]="['/customer',disbursement?.PEOPLE_CUSTOMERS_ID]" class="pull-left" style="margin-right: 25px">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{disbursement?.FILE_NAME | imagenotfound}}?q=auto"
+          style="width:50px; height:50px">
+      </a>
+      <div class="borrower-text pull-left" style="text-align:left">
+        <p class="" style="margin-bottom: 0px">{{disbursement?.LEGAL_NAME}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP!='8'&&disburse?.IS_TOP_UP!='6'">{{disbursement?.HOW_MUCH_WAS_GIVEN | number:'.2-2'}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='8'">{{disbursement?.TOP_UP_AMOUNT | number:'.2-2'}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='6'">{{disbursement?.REQUEST_PRINCIPAL | number:'.2-2'}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    <p class="" style="font-weight: bold">{{payment_type}}</p>
+  </div>
+  <div *ngIf="paymentHasBeenProcessed">
+    <div *ngIf="result.status==true">
+      <div style="width: 120px;margin:20px auto;">
+        <svg style="width: 100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
+          y="0px" viewBox="0 0 100 125" enable-background="new 0 0 100 100" xml:space="preserve">
+          <g>
+            <circle fill="none" stroke="#1CA261" stroke-width="6" stroke-miterlimit="10" cx="50" cy="50" r="47" />
+            <polygon style="color:#1CA261" points="72,25 42,71 27,56 23,60 43,80 77,28  " />
+          </g>
+        </svg>
+      </div>
+
+
+      <p class="text-center">
+        <small>Rollback successful</small>
+      </p>
+    </div>
+    <div *ngIf="result.status==false">
+      <div style="width: 120px;margin:20px auto;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" x="0px" y="0px">
+          <path d="M50,8A42,42,0,1,1,8,50,42,42,0,0,1,50,8m0-3A45,45,0,1,0,95,50,45,45,0,0,0,50,5Z"></path>
+          <path d="M47.08,46.44q-.79-4-1.18-6.42t-.51-3.54q-.11-1.15-.11-2a4.3,4.3,0,0,1,1.29-3.25,5.36,5.36,0,0,1,6.84,0,4.3,4.3,0,0,1,1.29,3.25q0,.84-.11,2T54.1,40q-.39,2.38-1.18,6.42T50.79,57.1H49.21Q47.87,50.48,47.08,46.44Zm-.34,15.88a4.6,4.6,0,0,1,7.85,3.25,4.16,4.16,0,0,1-1.35,3.17,4.82,4.82,0,0,1-6.51,0,4.16,4.16,0,0,1-1.35-3.17A4.43,4.43,0,0,1,46.75,62.31Z"></path>
+        </svg>
+      </div>
+
+
+      <p class="text-center">
+        <small>Unable to process request.</small>
+      </p>
+    </div>
+  </div>
+  <div *ngIf="!paymentHasBeenProcessed">
+    <div *ngIf="disbursement?.IS_TOP_UP!='7'&&disbursement?.IS_TOP_UP!='6'" class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
+      <a class="paystack-switch-confirm {{paytype=='confirm'?'active':''}}" (click)="switchpay('confirm')">Confirm Payment</a>
+      <a class="paystack-switch-make {{paytype=='make'?'active':''}}" (click)="switchpay('make')">Make Payment</a>
+    </div>
+
+    <div>
+      <div class="panel-body animated" *ngIf="paytype=='confirm'">
+        <form [formGroup]="paymentConfirmRollbackForm" (ngSubmit)="dopaymentConfirmRollbackForm(paymentConfirmRollbackForm.value)">
+          <h4>Transaction Details</h4>
+          <p>Please confirm that the payment has been made.</p>
+          <div class="form-group" [ngClass]="{'has-error':!paymentConfirmRollbackForm.controls['LENDER_BANK_ACCOUNT_ID'].valid && paymentConfirmRollbackForm.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
+            style="margin-bottom:15px">
+            <label for="exampleInputEmail1">Disbursement Bank</label>
+            <select class="form-control" [formControl]="paymentConfirmRollbackForm.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
+              id="LENDER_BANK_ACCOUNT_ID">
+              <option value="0"></option>
+              <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
+            </select>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error':!paymentConfirmRollbackForm.controls['SECURITY_QUESTION_ANSWER'].valid && paymentConfirmRollbackForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
+            style="margin-bottom:15px">
+            <label for="exampleInputEmail1">{{security_question}}</label>
+            <input [formControl]="paymentConfirmRollbackForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+              id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
+            <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+              Wrong answer.
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-12">
+              <button class="btn btn-block btn-white" [disabled]="!paymentConfirmRollbackForm.valid" type="submit">Confirm Payment
+                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- <div class="panel-body animated" *ngIf="paytype=='make'">
+            <div *ngIf="!choosingPayProcess">
+              <div *ngIf="!disbursement?.BORROWER_ACCOUNT_DETAILS||addingAccount">
+                <div *ngIf="!addingAccount" style="background:#FFFFFF;padding:15px">
+                  <div class="text-center">
+                    <a href="javascript:;" style="font-size:40px">
+                      <i class="fa fa-meh-o"></i>
+                    </a>
+                    <h3>No accounts found</h3>
+                    <button class="btn btn-white" (click)="addingAccount=!addingAccount">Add Account
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </div>
+                </div>
+                <form *ngIf="addingAccount" [formGroup]="newAccountForm" (ngSubmit)="doAddNewBorrowerAccount(newAccountForm.value)">
+                  <div class="form-group" [ngClass]="{'has-error':!newAccountForm.controls['BANK_ID'].valid && newAccountForm.controls['BANK_ID'].touched}"
+                    style="margin-bottom:15px">
+                    <label for="exampleInputEmail1">Account Bank</label>
+                    <select class="form-control" [formControl]="newAccountForm.controls['BANK_ID']" name="BANK_ID" id="BANK_ID">
+                      <option value="0"></option>
+                      <option *ngFor="let nb of nigerian_banks" [ngValue]="nb">{{nb.BANK_NAME}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group" [ngClass]="{'has-error':!newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].valid && newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].touched}"
+                    style="margin-bottom:15px">
+                    <label for="exampleInputEmail1">Account Number</label>
+                    <input [formControl]="newAccountForm.controls['LENDER_ACCOUNT_NUMBER']" type="text" class="form-control" id="LENDER_ACCOUNT_NUMBER"
+                      name="LENDER_ACCOUNT_NUMBER">
+                    <div class="error phone_error alert alert-block alert-danger fade in hide" style="margin:10px 0px !important">
+      
+                    </div>
+                  </div>
+                  <div class="form-group" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
+      
+                    <label class="control-label">Account Name</label>
+                    <input [formControl]="newAccountForm.controls['LENDER_BANK_ACCOUNT_NAME']" type="text" disabled="" class="form-control" id="LENDER_BANK_ACCOUNT_NAME"
+                      name="LENDER_BANK_ACCOUNT_NAME">
+                  </div>
+                  <div class="form-group" *ngIf="!newaccountconfirmed&&VERIFY_STATUS">
+                    <div class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                      Account could not be confirmed.
+                    </div>
+                  </div>
+      
+                  <div class="row" *ngIf="!continuetosave">
+                    <div class="col-md-12">
+                      <button class="btn btn-block btn-white" [disabled]="!newAccountForm.valid" type="submit">Add Account
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
+                    <div class="col-md-12">
+                      <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="saveBorrowerAccount()">Use Account
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
+                    <div class="col-md-12">
+                      <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="doNotUseAccount()">Cancel</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div *ngIf="disbursement?.BORROWER_ACCOUNT_DETAILS && !addingAccount">
+                <h4>{{account_type}}
+                  <span class="tools pull-right">
+                    <button class="btn btn-white btn-xs" (click)="addNewCustomerAccount()">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </span>
+                </h4>
+                <div class="beachacc" *ngFor="let acc of disbursement?.BORROWER_ACCOUNT_DETAILS">
+                  <div class="beachacc-details" (click)="setAsConnectedAccountId(acc.ACCOUNT_CARD_ID,disbursement?.REQUEST_ID,record_type=='2'?disbursement?.INVESTMENT_QUEUE_ID:disbursement?.PAYMENT_QUEUE_ID)">
+                    <p style="margin-bottom: 0px">{{acc.BANK_NAME}}</p>
+                    <p style="margin-bottom: 0px">{{acc.CARD_NAME}}</p>
+                    <p>{{acc.LAST_FOUR_DIGITS}}</p>
+                  </div>
+                  <div class="beachacc-status" *ngIf="acc.ACCOUNT_CARD_ID==disbursement?.CONNECTED_ACCOUNT_ID">
+                    <a>
+                      <i class="fa fa-check-square"></i>
+                    </a>
+                  </div>
+      
+                </div>
+      
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="payBorrower()">Make Payment
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </div>
+                  <div class="col-md-6">
+                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="choosingPayProcess">
+              <div class="row" *ngIf="!payProcessChosen">
+                <div class="col-md-6">
+                  <button class="btn btn-white btn-pay-wallet" (click)="payWithWallet()">
+                    <i class="fa fa-briefcase"></i>
+                    <span style="text-align: center; display: block; font-size: 15px">
+                      Wallet
+                    </span>
+                  </button>
+                </div>
+                <div class="col-md-6">
+                  <button class="btn btn-white btn-pay-bank" (click)="payWithBank()">
+                    <i class="fa fa-bank"></i>
+                    <span style="text-align: center; display: block; font-size: 15px">
+                      Bank
+                    </span>
+                  </button>
+      
+                </div>
+              </div>
+              <div class="row" *ngIf="payProcessChosen&&walletChosen">
+                <div class="col-md-12">
+                  <form [formGroup]="walletPaymentForm" (ngSubmit)="confirmBorrowerHasBeenPaid(walletPaymentForm.value)">
+                    <h4>Pay with Wallet</h4>
+                    <h4>Wallet Balance</h4>
+                    <h1>{{wallet_balance}}</h1>
+                    <div *ngIf="wallet_status">
+                      <div class="form-group" [ngClass]="{'has-error':!walletPaymentForm.controls['SECURITY_QUESTION_ANSWER'].valid && walletPaymentForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
+                        style="margin-bottom:15px">
+                        <label for="exampleInputEmail1">{{security_question}}</label>
+                        <input [formControl]="walletPaymentForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
+                          name="SECURITY_QUESTION_ANSWER">
+                        <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                          {{otpmessage}}
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-md-6">
+                          <button class="btn btn-block btn-white" [disabled]="!walletPaymentForm.valid||loading" type="submit">Confirm Payment
+                            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                          </button>
+                        </div>
+                        <div class="col-md-6">
+                          <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="!wallet_status">
+                      <p>You don't have enough funds in your wallet.</p>
+                      <div class="form-group row">
+                        <div class="col-md-12">
+                          <button class="btn btn-block btn-white" (click)="fundWalet()">Fund Your Wallet</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="row" *ngIf="payProcessChosen&&bankChosen">
+                <div class="col-md-12">
+                  <form [formGroup]="bankPaymentForm" (ngSubmit)="payBorrowerWithBank(bankPaymentForm.value)">
+                    <div class="form-group" style="margin-bottom:15px">
+                      <label for="exampleInputEmail1">Borrower Account</label>
+                    </div>
+                    <div class="beachacc" *ngIf="disbursement?.CONNECTED_ACCOUNT">
+                      <div class="beachacc-details">
+                        <p style="margin-bottom: 0px">{{disbursement?.CONNECTED_ACCOUNT.BANK_NAME}}</p>
+                        <p style="margin-bottom: 0px">{{disbursement?.CONNECTED_ACCOUNT.CARD_NAME}}</p>
+                        <p>{{disbursement?.CONNECTED_ACCOUNT.LAST_FOUR_DIGITS}}</p>
+                      </div>
+      
+      
+                    </div>
+                    <div class="form-group" [ngClass]="{'has-error':!bankPaymentForm.controls['LENDER_BANK_ACCOUNT_ID'].valid && bankPaymentForm.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
+                      style="margin-bottom:15px">
+                      <label for="exampleInputEmail1">Disbursement Bank</label>
+                      <select class="form-control" [formControl]="bankPaymentForm.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
+                        id="LENDER_BANK_ACCOUNT_ID">
+                        <option value="0"></option>
+                        <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
+                      </select>
+                    </div>
+                    <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                      {{otpErrorMessage}}
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <button class="btn btn-block btn-white" [disabled]="!bankPaymentForm.valid||loading" type="submit">Pay
+                          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        </button>
+                      </div>
+                      <div class="col-md-6">
+                        <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+      
+          </div> -->
+    </div>
+  </div>
+</section>
+<section class="panel" style="overflow:hidden;" *ngIf="record_type=='8'">
+  <div style="padding:24px 20px; overflow: auto;">
+    <div class="text-center borrower-info">
+      <a class="pull-left" style="margin-right: 25px">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{repayment?.FILE_NAME | imagenotfound}}?q=auto"
+          style="width:50px; height:50px">
+      </a>
+      <div class="borrower-text pull-left" style="text-align:left">
+        <p class="" style="margin-bottom: 0px">{{repayment?.LEGAL_NAME}}</p>
+        <p class="" style="font-weight: bold">{{repayment?.HOW_MUCH_REMAINING | number:'.2-2'}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    <p class="" style="font-weight: bold">Repayment</p>
+  </div>
+  <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
+    <a class="paystack-switch-confirm {{paytype=='send_email'?'active':''}}" (click)="switchpay('send_email')">Send Link</a>
+    <a class="paystack-switch-make {{paytype=='charge_card'?'active':''}}" (click)="switchpay('charge_card')">Card Autodebit</a>
+  </div>
+  <div *ngIf="processDone=='1'">
+    <h4 class="text-center">Autodebit Successful</h4>
+
+    <div style="width: 120px;margin:20px auto;">
+      <svg style="width: 100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
+        y="0px" viewBox="0 0 100 125" enable-background="new 0 0 100 100" xml:space="preserve">
+        <g>
+          <circle fill="none" stroke="#1CA261" stroke-width="6" stroke-miterlimit="10" cx="50" cy="50" r="47" />
+          <polygon style="color:#1CA261" points="72,25 42,71 27,56 23,60 43,80 77,28  " />
+        </g>
+      </svg>
+    </div>
+
+
+    <p class="text-center">
+      <small>Autodebit Successfull</small>
+    </p>
+  </div>
+  <div *ngIf="processDone=='2'">
+    <h4 class="text-center error">Error Processing Payment</h4>
+
+    <div style="width: 120px;margin:20px auto;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" x="0px" y="0px">
+        <path d="M50,8A42,42,0,1,1,8,50,42,42,0,0,1,50,8m0-3A45,45,0,1,0,95,50,45,45,0,0,0,50,5Z"></path>
+        <path d="M47.08,46.44q-.79-4-1.18-6.42t-.51-3.54q-.11-1.15-.11-2a4.3,4.3,0,0,1,1.29-3.25,5.36,5.36,0,0,1,6.84,0,4.3,4.3,0,0,1,1.29,3.25q0,.84-.11,2T54.1,40q-.39,2.38-1.18,6.42T50.79,57.1H49.21Q47.87,50.48,47.08,46.44Zm-.34,15.88a4.6,4.6,0,0,1,7.85,3.25,4.16,4.16,0,0,1-1.35,3.17,4.82,4.82,0,0,1-6.51,0,4.16,4.16,0,0,1-1.35-3.17A4.43,4.43,0,0,1,46.75,62.31Z"></path>
+      </svg>
+    </div>
+
+
+    <p class="text-center">
+      <small>Please try again</small>
+    </p>
+  </div>
+  <div *ngIf="processDone=='3'">
+    <h4 class="text-center error">Autodebit successful</h4>
+
+    <div style="width: 120px;margin:20px auto;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" x="0px" y="0px">
+        <path d="M50,8A42,42,0,1,1,8,50,42,42,0,0,1,50,8m0-3A45,45,0,1,0,95,50,45,45,0,0,0,50,5Z"></path>
+        <path d="M47.08,46.44q-.79-4-1.18-6.42t-.51-3.54q-.11-1.15-.11-2a4.3,4.3,0,0,1,1.29-3.25,5.36,5.36,0,0,1,6.84,0,4.3,4.3,0,0,1,1.29,3.25q0,.84-.11,2T54.1,40q-.39,2.38-1.18,6.42T50.79,57.1H49.21Q47.87,50.48,47.08,46.44Zm-.34,15.88a4.6,4.6,0,0,1,7.85,3.25,4.16,4.16,0,0,1-1.35,3.17,4.82,4.82,0,0,1-6.51,0,4.16,4.16,0,0,1-1.35-3.17A4.43,4.43,0,0,1,46.75,62.31Z"></path>
+      </svg>
+    </div>
+
+
+    <p class="text-center">
+      <small>Amount Debited - {{amount_debited}}</small>
+    </p>
+  </div>
+  <div *ngIf="processDone=='0'">
+    <div *ngIf="makingFinalPayment">
+      <div class="panel-body" style="padding-bottom: 0px">
+        <div class="text-center" style="padding: 20px 0px; padding-bottom: 0px" *ngIf="makingFinalPayment&&!paymentHasBeenProcessed">
+          <a href="javascript:;" style="font-size:40px">
+            <i class="fa fa-hourglass fa-spin"></i>
+          </a>
+          <span style="display: block;">processing payment...</span>
+
+        </div>
+        <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="makingFinalPayment&&paymentHasBeenProcessed&&paymentConfirmed">
+          <a href="javascript:;" style="font-size:40px">
+            <i class="fa fa-check"></i>
+          </a>
+          <span style="display: block;">{{otpmessage}}</span>
+          <button type="button" class="btn btn-white" (click)="paymentProcessDone()">Close</button>
+        </div>
+        <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="makingFinalPayment&&paymentHasBeenProcessed&&!paymentConfirmed">
+          <a href="javascript:;" style="font-size:40px">
+            <i class="fa fa-info"></i>
+          </a>
+          <span style="display: block;">{{otpmessage}}</span>
+          <button type="button" class="btn btn-white" (click)="paymentProcessDone()">Close</button>
+        </div>
+      </div>
+    </div>
+    <div class="otp-form animated fadeIn" *ngIf="makingFinalPayment&&otpHBR">
+      <div class="panel-body">
+        <h6>
+          <p>{{fresponse}}</p>
+        </h6>
+        <div class="form-group row">
+
+          <label class="control-label col-md-6">OTP</label>
+          <div class="col-md-6">
+            <input type="text" class="form-control" id="CONFIRM_OTP_CODE" [(ngModel)]="otp.CONFIRM_OTP_CODE" name="CONFIRM_OTP_CODE"
+              value="">
+
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-12">
+            <button [disabled]="loading" class="btn btn-block btn-white" (click)="confirmOTPForTransfer()">Submit
+              <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+            </button>
+          </div>
+
+        </div>
+        <div class="row form-group">
+          <div class="col-md-12">
+            <button [disabled]="loading" (click)="cancelPayment_()" class="btn btn-block btn-danger">Cancel</button>
+          </div>
+
+        </div>
+        <div class="form-group row f-net-error" *ngIf="!otpConfirmed&&otpHBSFC">
+          <div class="col-md-12">
+            <div class="error  alert alert-block alert-danger fade in f-net-error_" style="margin:10px 0px !important">
+              {{otpErrorMessage}}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!makingFinalPayment">
+      <div class="panel-body animated" *ngIf="paytype=='send_email'">
+        <form [formGroup]="sendRepaymentLink" (ngSubmit)="doSendRepaymentLink(sendRepaymentLink.value)">
+          <h4>Send repayment link</h4>
+          <p>An email will be forwarded with the link to repay.</p>
+          <div class="form-group" [ngClass]="{'has-error':!sendRepaymentLink.controls['WHEN_TO_SEND'].valid && sendRepaymentLink.controls['WHEN_TO_SEND'].touched}"
+            style="margin-bottom:15px">
+            <label for="exampleInputEmail1">Time to send</label>
+            <select class="form-control" [formControl]="sendRepaymentLink.controls['WHEN_TO_SEND']" name="WHEN_TO_SEND" id="WHEN_TO_SEND">
+              <option value="0"></option>
+              <option [value]="1">Immediately</option>
+              <option [value]="2">Today @ 4pm</option>
+              <option [value]="2">Tomorrow @ 8am</option>
+            </select>
+          </div>
+          <div class="form-group" [ngClass]="{'has-error':!sendRepaymentLink.controls['SECURITY_QUESTION_ANSWER'].valid && sendRepaymentLink.controls['SECURITY_QUESTION_ANSWER'].touched}"
+            style="margin-bottom:15px">
+            <label for="exampleInputEmail1">{{security_question}}</label>
+            <input [formControl]="sendRepaymentLink.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
+              name="SECURITY_QUESTION_ANSWER">
+            <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+              Wrong answer.
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <button class="btn btn-block btn-white" [disabled]="!sendRepaymentLink.valid" type="submit">Confirm Payment
+                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="panel-body animated" *ngIf="paytype=='charge_card'">
+        <div>
+          <div *ngIf="cards?.total=='0'">
+            <div style="background:#FFFFFF;padding:15px">
+              <div class="text-center">
+                <a href="javascript:;" style="font-size:40px">
+                  <i class="fa fa-meh-o"></i>
+                </a>
+                <h3>No cards found</h3>
+
+              </div>
+            </div>
+
+          </div>
+          <div *ngIf="cards?.total!='0'">
+            <div *ngIf="!confirmCardAD">
+              <h4>Choose card</h4>
+              <div class="beachacc" *ngFor="let acc of cards?.cards">
+
+                <div class="media x-mod" style="cursor: pointer" (click)="setAsConnectedCard(acc?.ACCOUNT_CARD_ID,loan?.REQUEST_ID)" *ngIf="acc?.TYPE_OF=='2'&& acc?.CARD_VALIDATED_THROUGH=='1'">
+                  <div class="pull-left thumb" style="width: 75px">
+                  </div>
+                  <div class="media-body hover_toggle">
+                    <div class="pull-left" style="margin-top: 5px">
+                      <p class="t_cool t_l4">{{acc?.CARD_NAME}}</p>
+                      <small style="font-size: 13px">*********{{acc?.LAST_FOUR_DIGITS}}</small>
+                      <small *ngIf="acc?.CARD_CHECK_ID.status=='success'">
+                        <span>{{acc?.CARD_CHECK_ID.data.cardName}}</span>
+                      </small>
+                      <small *ngIf="acc?.CARD_CHECK_ID.status=='success'">
+                        <span>{{acc?.CARD_CHECK_ID.data.country}}</span> | |
+                        <span *ngIf="acc?.IS_GUARANTOR">Guarantor</span>
+                      </small>
+                    </div>
+
+                    <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID == acc?.ACCOUNT_CARD_ID">
+                      <img src="assets/images/check.PNG" class="tick">
+                    </span>
+                  </div>
+                </div>
+                <div class="media x-mod" style="cursor: pointer" (click)="setAsConnectedCard(acc?.ACCOUNT_CARD_ID,loan?.REQUEST_ID)" *ngIf="acc?.TYPE_OF=='2'&& acc?.CARD_VALIDATED_THROUGH=='2'">
+                  <div class="pull-left thumb" style="width: 75px">
+                    <!-- <img src="assets/images/{{acc?.BANK_LOGO}}"> -->
+                  </div>
+                  <div class="media-body hover_toggle">
+                    <div class="pull-left" style="margin-top: 5px">
+                      <p class="t_cool t_l4">{{acc?.PAYSTACK_CHECK_ID.authorization.bank}}|{{acc?.PAYSTACK_CHECK_ID.authorization.card_type}}</p>
+                      <small style="font-size: 13px">*********{{acc?.LAST_FOUR_DIGITS}}</small>
+
+                      <small>
+                        <span>{{acc?.PAYSTACK_CHECK_ID.authorization.country_code}}</span> |
+                        <span *ngIf="acc?.IS_GUARANTOR">Guarantor</span>
+                      </small>
+                    </div>
+
+                    <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID == acc?.ACCOUNT_CARD_ID">
+                      <img src="assets/images/check.PNG" class="tick">
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="confirmCardAD=!confirmCardAD">Make Payment
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </div>
+                <div class="col-md-6">
+                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="confirmCardAD">
+              <h4>Autodebit Request</h4>
+              <p></p>
+              <div class="form-group" style="margin-bottom:15px">
+                <label for="exampleInputEmail1">{{security_question}}</label>
+                <input [(ngModel)]="autodebit_form.SECURITY_QUESTION_ANSWER" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
+                  name="SECURITY_QUESTION_ANSWER">
+                <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                  Wrong answer.
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <button class="btn btn-block btn-white" [disabled]="autodebit_form.SECURITY_ANSWER==''||loading" (click)="initiateAutodebit()">Confirm Payment
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<section class="panel" style="overflow:hidden;" *ngIf="record_type=='20'">
+  <div style="padding:24px 20px; overflow: auto;">
+    <div class="text-center borrower-info">
+      <a class="pull-left" style="margin-right: 25px">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{disbursement?.FILE_NAME | imagenotfound}}?q=auto"
+          style="width:50px; height:50px">
+      </a>
+      <div class="borrower-text pull-left" style="text-align:left">
+        <p class="" style="margin-bottom: 0px">{{disbursement?.LEGAL_NAME}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP!='8'&&disburse?.IS_TOP_UP!='6'">{{disbursement?.HOW_MUCH_WAS_GIVEN | number:'.2-2'}}</p>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="is_cancel=='0'">
+    <div class="text-center">
+      <p class="" style="font-weight: bold">Verifying Transaction</p>
+    </div>
+    <div *ngIf="makingFinalPayment">
+      <div class="panel-body" style="padding-bottom: 0px">
+        <div class="text-center" style="padding: 20px 0px; padding-bottom: 0px" *ngIf="makingFinalPayment&&!paymentHasBeenProcessed">
+          <a href="javascript:;" style="font-size:40px">
+            <i class="fa fa-hourglass fa-spin"></i>
+          </a>
+          <span style="display: block;">confirming transaction...</span>
+
+        </div>
+        <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="makingFinalPayment&&paymentHasBeenProcessed&&paymentConfirmed">
+          <div>
+            <a href="javascript:;" style="font-size:40px">
+              <i class="fa fa-check"></i>
+            </a>
+            <span style="display: block;">Payment Successful</span>
+          </div>
+          <button type="button" class="btn btn-white" (click)="paymentProcessDone()">Close</button>
+        </div>
+        <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="makingFinalPayment&&paymentHasBeenProcessed&&!paymentConfirmed">
+          <a href="javascript:;" style="font-size:40px">
+            <i class="fa fa-info"></i>
+          </a>
+          <span style="display: block;">Payment Unsuccessful</span>
+          <button type="button" class="btn btn-white" (click)="retryToPayBorrower()">Retry Transaction</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div *ngIf="is_cancel=='1'">
+    <div class="text-center">
+      <p class="" style="font-weight: bold">Cancel {{payment_type}}</p>
+    </div>
+    <!-- <app-queuecancel [currentUser]="currentUser" (close)="closeOverlay()" (rejectRequest)="rejectRequest($event)" (moveToLevel)="moveToLevel($event)" [disburse]="disburse" [record_type]="record_type" [schedule_type]="schedule_type"></app-queuecancel> -->
+  </div>
+</section>

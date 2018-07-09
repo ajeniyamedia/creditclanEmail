@@ -1,0 +1,43 @@
+<div class="offer_form" style="text-align: left;
+                                        width: 75%;
+                                        margin: 0px auto;">
+
+  <h4>Search Employees</h4>
+
+  <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
+    <input type="text" name="" placeholder="" (keyup)="lookforlenders()" name="lender_name" [(ngModel)]="lender_name" style="max-width: 85%">
+    <img src="assets/images/search.PNG" (click)="lookforlenders()">
+  </div>
+
+
+  <div *ngIf="slenders.length > 0 && !lender_selected" style="height:300px; overflow-y:scroll; border: 1px solid #ccc">
+    <article class="media" *ngFor="let lender of slenders" (click)="chooseLender(lender)" style="padding: 10px">
+      <div class="pull-left thumb p-thumb">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{lender?.FILE_NAME | imagenotfound}}?q=auto"
+          style=" width: 40px; height: 40px;">
+      </div>
+      <div class="media-body">
+        <p class="txt t_l4 t_lh1 t_cool" style="word-wrap:break-word;">{{lender?.LEGAL_NAME}}</p>
+        <!-- <p>{{lender?.EMAIL|limitto:20}}</p> -->
+      </div>
+    </article>
+  </div>
+
+
+  <div *ngIf="lender_selected" class="selected_inv" style="padding: 20px 0; border-bottom: 1px solid #ccc;">
+
+
+    <article class="media pad0" style="height: 40px; overflow: hidden;">
+      <div class="pull-left thumb">
+        <!-- <img src="assets/attachments/{{selected?.CUSTOMER_TYPE | imagenotfound}}" style=" width: 40px; height: 40px;"> -->
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{selected?.FILE_NAME | imagenotfound}}?q=auto"
+          style=" width: 40px; height: 40px;">
+      </div>
+      <div class="pull-left">
+        <p class="txt t_l3 t_lh1" style="word-wrap:break-word;">{{selected?.LEGAL_NAME}}</p>
+        <!-- <p>{{lender?.EMAIL|limitto:20}}</p> -->
+      </div>
+    </article>
+  </div>
+
+</div>

@@ -1,0 +1,9 @@
+.colla_box input[type=text]{
+	max-width: 80px;
+}
+label{
+	font-weight: 700;
+}
+.mbot5 {
+	margin-bottom: 15px;
+}

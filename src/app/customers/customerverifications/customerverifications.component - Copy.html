@@ -1,0 +1,218 @@
+<div class="row">
+    <div class="col-md-12">
+
+        <!-- Hidden Section -->
+        <section class="panel hide">
+            <div class="panel-body">
+                <article class="media">
+                    <div class="pull-left thumb">
+                        <a>
+                            <img src="http://app.creditclan.com/creditclan_demo/pub/attachments/avatar-mini.jpg" class="img-circle" style="width:70px; height:70px">
+                        </a>
+                    </div>
+                    <div class="pull-left">
+                        <h4 class="no-margin blue_c" style="color: blue; word-wrap:break-word">{{cust?.LEGAL_NAME}}</h4>
+                        <!-- <p class="no-margin">Date Started: {{cust?.DATE_ADDED}}</p> -->
+                        <p class="no-margin">Manged By: {{cust?.ACCOUNT_OFFICER_NAME}}</p>
+                    </div>
+                    <a [routerLink]="['/customer/',userType,userId]" class="pull-right btn btn-white">View</a>
+                </article>
+            </div>
+        </section>
+        <!-- Hidden Section -->
+
+        <!-- New Header -->
+        <section class="panel panl" style="margin-bottom: 5px">
+          <div class="panel-body">
+              <article class="media">
+                  <div class="pull-left thumb">
+                    <img src="assets/images/file.PNG">
+                  </div>
+                  <div class="pull-left" style="margin-top: 5px">
+                    <h4 class="no-margin" style="word-wrap:break-word; margin-bottom: 10px">Verification</h4>
+                  </div>
+              </article>                  
+          </div>
+        </section>
+        <!-- // New Header -->
+
+
+        <section class="panel" *ngIf="!locked&&showingFinancials&&financialsOpen=='bvn'">
+            <header class="panel-heading">
+                BVN
+                <span class="tools pull-right">
+
+          </span>
+            </header>
+            <div class="panel-body">
+                <div id="uploadedAttachment" class="artcles" style="width:100%;max-width:350px;margin:0 auto;">
+                    <div class="bvn_image">
+                        <article class="media">
+                            <div class="pull-right thumb">
+                                <a>
+                                    <img class="img-circle" src="http://app.creditclan.com/creditclan_demo/pub/attachments/avatar-mini.jpg" style="width:70px; height:70px">
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="bvn_image">
+                        <ul>
+                            <li class="text-left black_c sub_title ">
+                                <span class="small"> BVN</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust?.BVN_UPDATE_DETAILS.flutter_response.data.bvn}}</p>
+                            </li>
+                            <li class="text-left black_c sub_title ">
+                                <span class="small"> Name</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust?.BVN_UPDATE_DETAILS.flutter_response.data.lastName}} {{cust?.BVN_UPDATE_DETAILS.flutter_response.data.middleName}} {{cust?.BVN_UPDATE_DETAILS.flutter_response.data.firstName}}</p>
+                            </li>
+                            <li class="text-left black_c sub_title ">
+                                <span class="small"> Address</span>
+                                <p class="no-margin black_c pull-right" style=""></p>
+                            </li>
+                            <li class="text-left black_c sub_title ">
+                                <span class="small"> Bank</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust?.BVN_UPDATE_DETAILS.bankName}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bvn_image">
+                        <a class="btn btn-white pull-right">Retry</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="panel" *ngIf="!locked&&financialsOpen=='bank_accounts'">
+            <header class="panel-heading">
+                Bank Accounts
+                <span class="tools pull-right">
+
+          </span>
+            </header>
+            <div class="panel-body">
+                <div id="uploadedAttachment" class="artcles" style="width:100%;max-width:350px;margin:0 auto;">
+                    <article class="media x-mod" style="border-bottom: 1px solid #d9d9d9;padding: 10px 0;" *ngFor="let record of cust?.BORROWER_ACCOUNT_DETAILS">
+                        <a class="pull-left thumb p-thumb">
+                            <i class="fa fa-bank" style="font-size: 3em"></i>
+                        </a>
+                        <div class="media-body">
+                            <div class="pull-left">
+                                <a class="text-primary" style="float: none;" target="_blank">{{record.BANK_NAME}}</a>
+                                <small>{{record.LAST_FOUR_DIGITS}}</small>
+                                <small>{{record.DATE_ADDED | amDateFormat:'LL'}}</small>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <section class="panel" *ngIf="!locked&&financialsOpen=='address'">
+            <header class="panel-heading">
+                Address
+                <span class="tools pull-right">
+
+          </span>
+            </header>
+            <div class="panel-body">
+                <div id="uploadedAttachment" class="artcles" style="width:100%;max-width:350px;margin:0 auto;">
+                </div>
+            </div>
+        </section>
+        <section class="panel" *ngIf="!locked&&financialsOpen=='others'">
+            <header class="panel-heading">
+                Credit Check + Log Tracker + Messages
+                <span class="tools pull-right">
+
+          </span>
+            </header>
+            <div class="panel-body">
+                <div id="uploadedAttachment" class="artcles" style="width:100%;max-width:350px;margin:0 auto;">
+                </div>
+            </div>
+        </section>
+
+        <!-- Hidden Section -->
+        <section class="panel hide" style=" min-height:405px" *ngIf="!showingFinancials">
+            <header class="panel-heading" style="background: #fff;">
+                Verifications
+                <span class="tools pull-right col-md-2">
+                <!-- <a href="javascript:;" class="btn btn-white btn-save-acc btn-block btn-xs" data-id="w96uVvlUX4W9L2LfkG2962BIwBwzkUvLlknf14iye33e7/4v5XsRw4PKExatlWSW0NJeiJGgcvt5o4Khj9Z1Hw==" data-type="1">Add</a> -->
+              </span>
+            </header>
+            <div class="panel-body">
+                <div class="text-center" style="min-height:304px; padding-top:70px" *ngIf="locked">
+                    <h5 class="text-primary no-margin" style="margin-bottom: 0">Everything From Bank Statement to Expense Report</h5>
+                    <a href="javascript:;" style="font-size:9em"><i class="fa fa-lock blue_c"></i></a>
+                    <br>
+                    <!-- <a href="javascript:;" data-id="v+F6R1YrJtd57Jv0IcC1dIon+oSYSD/S5JV/bGt03oepLNCTnFCXbjZjGHypk2k/TMlTN4lOrNAGn8h4aEP75g==" data-hsh="tbd_new_contract" class="btn btn-white">view</a> -->
+                    <button class="btn btn-orange wid_20 tbda_" style=" " (click)="locked=!locked">View</button>
+                </div>
+                <!-- Template: This is peocfically testing the view financials popup-->
+                <div id="_view_financials" *ngIf="!locked">
+                    <section class="panel" style="background: transparent;" *ngIf="!locked&&!showingFinancials">
+                        <div class="panel-body" style="padding:40px 60px;">
+                            <ul class="xgv">
+                                <li class="text-left black_c sub_title ">
+                                    <a href="#" class="pull-left">BVN</a>
+                                    <a class="btn btn-white pull-right" (click)="openFinance('bvn')">View</a>
+                                </li>
+                                <li class="text-left black_c sub_title ">
+                                    <a href="#" class="pull-left">Bank Accounts</a>
+                                    <a class="btn btn-white pull-right" (click)="openFinance('bank_accounts')">View</a>
+                                </li>
+                                <li class="text-left black_c sub_title ">
+                                    <a href="#" class="pull-left">Address</a>
+                                    <a class="btn btn-white pull-right" (click)="openFinance('address')">View</a>
+                                </li>
+                                <li class="text-left black_c sub_title ">
+                                    <a href="#" class="pull-left">Credit Check + Log Tracker + Messages</a>
+                                    <a class="btn btn-white pull-right" (click)="openFinance('others')">View</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+        <!-- // Hidden Section -->
+
+        <!-- New Body Section -->
+        <div>
+          <div class="row">
+
+              <div class="col-md-6" style="padding-right: 0;">
+                  <a class="box mason" href="#" style=" border-right-color: transparent; padding: 120px 0"><span class="txt t_l2">BVN Details</span></a>
+
+                  <a class="box mason mason2" href="#" style="border-top: 0; border-right-color: transparent; padding: 65px 0">
+                    <span class="txt t_l2">Social</span></a>
+              </div>
+
+              <div class="col-md-6" style="padding-left: 0">
+                  <div>
+                    <a class="box mason mason2" href="#" style="padding: 65px 0; border-bottom: 0"><span class="txt t_l2">Address</span></a>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-6" style="padding-right: 0">
+                          <a class="box mason text-left" href="#" style="
+                              text-align: left;                         
+                              border-right-color: transparent;
+                              padding: 15px;
+                              padding-bottom: 225px;">
+                          <span class="txt t_l2">Income</span></a>
+                      </div>
+                      <div class="col-md-6" style="padding-left: 0">
+                         <a class="box mason text-right" href="#" style="
+                              text-align: right;                         
+                              padding: 15px;
+                              padding-top: 225px;">
+                            <span class="txt t_l2">Social</span></a>
+                      </div>
+                  </div>                                
+              </div>
+          </div>
+        </div>
+        <!-- // New Body Section -->
+
+
+    </div>
+</div>
