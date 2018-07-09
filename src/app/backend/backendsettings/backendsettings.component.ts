@@ -251,6 +251,7 @@ export class BackendsettingsComponent implements OnInit {
   public loan_currency = "NGN";
   public loan_duration = 'Months';
   public max_loan_duration = 'Months';
+<<<<<<< HEAD
   public currentUser: any;
   isedit = false;
   loading = false;
@@ -262,6 +263,14 @@ export class BackendsettingsComponent implements OnInit {
     ;
   public interest_duration = 'Per Month';
   public special_interest_duration = 'Per Day';
+=======
+  
+  countries: any;
+  public currentUser: any;
+  isedit = false;
+  loading = false;
+  
+>>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
   public acc_off: any;
   public app_levels: any;
   public loan_approvals: any;
@@ -347,6 +356,16 @@ export class BackendsettingsComponent implements OnInit {
     { value: '3', display: 'Divorced' },
     { value: '4', display: 'Widowed' }
   ];
+<<<<<<< HEAD
+=======
+  public loan_durations = [{ "LOAN_INTEREST_DURATION_ID": '1', "LOAN_DURATION": "Days", "INTEREST_DURATION": "Per Day", "ADJECTIVAL": "Daily", "ABBREV": "d" },
+  { "LOAN_INTEREST_DURATION_ID": '2', "LOAN_DURATION": "Months", "INTEREST_DURATION": "Per Month", "ADJECTIVAL": "Monthly", "ABBREV": "Mo" },
+  { "LOAN_INTEREST_DURATION_ID": '3', "LOAN_DURATION": "Years", "INTEREST_DURATION": "Per Year", "ADJECTIVAL": "Yearly", "ABBREV": "Yr" },
+  { "LOAN_INTEREST_DURATION_ID": '4', "LOAN_DURATION": "Weeks", "INTEREST_DURATION": "Per Week", "ADJECTIVAL": "Weekly", "ABBREV": "Wk" }]
+    ;
+  public interest_duration = 'Per Month';
+  public special_interest_duration = 'Per Day';
+>>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
   companyaccounts = [];
   constructor(public toastr: ToastrService, vcr: ViewContainerRef, public loansService: LoansService, public optionsService: OptionsserviceService,
     private router: Router, public storageService: StorageService,
@@ -787,6 +806,12 @@ export class BackendsettingsComponent implements OnInit {
 
     }
   }
+<<<<<<< HEAD
+=======
+  saveForm(event) {
+    this.save(event.value, event.valid);
+  }
+>>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
   saveFRFrom(event){
     this.saveSpecialLoanInterest(event.value, event.valid)
   }
@@ -796,23 +821,18 @@ export class BackendsettingsComponent implements OnInit {
   saveOFFrom(event){
     this.saveFee(event.value, event.valid);
   }
+<<<<<<< HEAD
   saveSpecialLoanInterest(value, valid) {
 
     this.loading = true;
     this.operationsService.saveLoanProduct(this.currentUser.token, value)
-      .subscribe(data => {
-        this.loading = false;
-        if (data.status === '1') {
-          this.showSuccess(data.message)
-        } else {
-          this.showError(data.message)
-        }
-      });
-  }
+=======
+  
   saveContract(value, valid) {
 
     this.loading = true;
     this.operationsService.saveContract(this.currentUser.token, value)
+>>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
       .subscribe(data => {
         this.loading = false;
         if (data.status === '1') {
@@ -822,7 +842,33 @@ export class BackendsettingsComponent implements OnInit {
         }
       });
   }
+<<<<<<< HEAD
+  saveContract(value, valid) {
+
+    this.loading = true;
+    this.operationsService.saveContract(this.currentUser.token, value)
+=======
+ 
+  
+  saveInvestor(value, valid) {
+
+    this.loading = true;
+    this.operationsService.saveInvestor(this.currentUser.token, value)
+>>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
+      .subscribe(data => {
+        this.loading = false;
+        if (data.status === '1') {
+          this.showSuccess(data.message)
+        } else {
+          this.showError(data.message)
+        }
+      });
+  }
+<<<<<<< HEAD
   save(value, valid) {
+=======
+  saveSpecialLoanInterest(value, valid) {
+>>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
 
     this.loading = true;
     this.operationsService.saveLoanProduct(this.currentUser.token, value)
@@ -835,6 +881,7 @@ export class BackendsettingsComponent implements OnInit {
         }
       });
   }
+<<<<<<< HEAD
   saveForm(event) {
     this.save(event.value, event.valid);
   }
@@ -842,6 +889,12 @@ export class BackendsettingsComponent implements OnInit {
 
     this.loading = true;
     this.operationsService.saveInvestor(this.currentUser.token, value)
+=======
+  saveFee(value, valid) {
+
+    this.loading = true;
+    this.operationsService.saveFee(this.currentUser.token, value)
+>>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
       .subscribe(data => {
         this.loading = false;
         if (data.status === '1') {
@@ -851,10 +904,17 @@ export class BackendsettingsComponent implements OnInit {
         }
       });
   }
+<<<<<<< HEAD
   saveFee(value, valid) {
 
     this.loading = true;
     this.operationsService.saveFee(this.currentUser.token, value)
+=======
+  save(value, valid) {
+
+    this.loading = true;
+    this.operationsService.saveLoanProduct(this.currentUser.token, value)
+>>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
       .subscribe(data => {
         this.loading = false;
         if (data.status === '1') {
