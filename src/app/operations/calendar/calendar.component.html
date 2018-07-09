@@ -1,0 +1,75 @@
+<section id="main-content">
+    <div class="container" style="min-height:850px;width:70%;">
+      <div class="row"  style="margin-top:120px;">
+              <div class="col-md-9" style="padding:0;">
+                
+                <app-calendarview [showSwitch]=true (changeTheScheduleType)="onChange($event)" [calendarOptions___]="calendarOptions___" [calendarOptions__]="calendarOptions__" [calendarOptions]="calendarOptions" [calendarOptions_]="calendarOptions_" [schedule_type]="schedule_type" [record_type]="record_type" ></app-calendarview>
+              </div>
+              <div class="col-md-3">
+                <section class="panel" [ngClass]="{'greenb': schedule_type, 'blueb':  !schedule_type}">
+                  <div class="panel-body text-center">
+                    <img src="assets/img/bell.png" style="width:60px;margin:15px 0px">
+                    <h2>{{state?.total}}</h2>
+                    <h4 style="margin:0px !important">{{state?.current_month}}</h4>
+                    <div style="height:1px;border-bottom:1px solid #fff;margin:30px">&nbsp;</div>
+                  </div>
+                </section>
+                <section class="panel" style="margin-bottom:15px">
+                  <div class="panel-body">
+                      <div class="input-group">
+                          <input type="text" class="form-control" name="searchText" required [(ngModel)]="magic_filter.searchText" #searchText="ngModel">
+                          <span class="input-group-btn">
+                            <button [disabled]="loading" (click)="searchForLoans()" class="btn btn-white" type="button"><i class="fa fa-search"></i></button>
+                          </span>
+                      </div>
+                       
+                  </div>
+                </section>
+                <div style="margin-bottom:5px">
+                    <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 5px;" *ngFor="let record of record_types">
+                        
+                         <div class="form-group" style="margin-bottom:0px">
+                           <span class="pull-left text-primary">{{record.display}}</span>
+                           <span class="pull-right">
+                              <div class="checkbox">
+                                  <label> 
+                                    <input type="radio" (ngModelChange)="reloadrecord($event)" name="record_type" [(ngModel)]="record_type" [value]="record.value">
+                                  </label>
+                              </div>
+                           </span>
+                           <div class="clearfix"></div>
+                         </div>
+                     </div>
+                     <!-- <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 5px;">
+                        
+                         <div class="form-group" style="margin-bottom:0px">
+                           <span class="pull-left text-primary">Due</span>
+                           <span class="pull-right">
+                              <div class="checkbox">
+                                  <label>
+                                                      <input type="radio"  (change)="filterLoans()" name="record_type" [(ngModel)]="record_type_">
+                                                  </label>
+                              </div>
+                           </span>
+                           <div class="clearfix"></div>
+                         </div>
+                     </div> -->
+                </div>
+                <a class="btn btn-white btn-block" routerLink='../../portfolio'>Active Loans</a>
+              </div>
+      </div>
+    </div>
+</section>      
+<div *ngIf="overlayOpen">
+  <div class="overlay_ app_overlay animated" style="overflow:auto;background:#fff;" >
+      
+          <div class="col-md-12">
+              <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+                         <i class="fa fa-times" aria-hidden="true"></i>
+                         </a>
+          </div>
+          <div class=" overpanel-content container" role="document" style="text-align:left;width:800px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">  
+            <app-calendardetails [schedule_type]="schedule_type" [record_type]="record_type" [datechosen]="datechosen"  ></app-calendardetails> 
+  </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+.chats li{
+	padding: 20px;
+}
+
+.chats img{
+	border-radius: 50%;
+	 width: 40px; height: 40px;
+}
+
+.chat_middle .labels li{
+	margin: 0px 15px;
+}
+
+.chat_container{
+	background-color: #fff;
+	box-shadow: 291px 0px #FAFAFA inset, 292px 0px #E6E7E8 inset, 876px 0px #FFF inset, 877px 0px #E6E7E8 inset
+}
+
+
+.chat_msg{
+	position: relative;
+	margin-bottom: 75px
+}
+.chat_msg .msg{
+	overflow: hidden;
+	margin-bottom: -30px;
+}
+.chat_msg .msg .msg_comment{
+	background-color: #BDE6FA; 
+	padding: 10px 30px 20px 20px; 
+	float: right; 
+	border-radius: 21px; 
+	font-size: 14px; 
+	max-width: 80%
+}
+
+.chat_msg .profile{
+	position: absolute;
+	border: 10px solid #fff;
+	border-radius: 50%;
+	right: -30px;
+}
+.chat_msg .profile img{
+	width: 40px; 
+	height: 40px; 
+	border-radius: 50%
+}
+
+.chat_msg .time{
+	position: absolute;
+	bottom: -21px; 
+	right: 30px;
+	color: #ccc;
+}
+
+
+/* Left Comment */
+.left .chat_msg .msg .msg_comment{
+	float: left;
+	padding-left: 30px;
+    padding-right: 20px;
+}
+.left .chat_msg .profile{
+	left: -30px;
+    right: auto;
+}
+.left .chat_msg .time{
+	left: 30px;
+    right: auto;
+}
+.link {
+    cursor: pointer;
+}

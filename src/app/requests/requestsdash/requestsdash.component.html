@@ -1,0 +1,359 @@
+<app-main-navigation class="requests_active"></app-main-navigation>
+
+<div style="width: 80%; margin: 0px auto; margin-top:50px">
+    <div class="row">
+        <div class="col-md-12">
+            &nbsp;
+        </div>
+    </div>
+
+    <section id="main-content">
+        <div class="" style="min-height:600px">
+            <div class="row" style="margin-top:50px;">
+                <div class="col-md-12" style="padding:0;">
+                    <div id="ajax_view">
+
+                        <div>
+
+                            <div style="box-sizing: border-box;float: left;margin-right: -1px;width: 70%;" role="main" class="requests_list closed_view">
+                                <!-- Filter Options -->
+                                <div class="row">
+                                    <section class="panel box" style="margin-bottom: 0; border-bottom: 0;">
+                                        <header class="panel-heading" style="padding: 15px">
+                                            <small class="pull-right">
+                                                <ul class="list-inline">
+                                                    <li>
+                                                        <a href="javascript:;">Analytics</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">Sort</a>
+                                                    </li>
+                                                    <li *ngIf="!calendarView && type_of_view=='1'">
+                                                        <a (click)="showListView()">List</a>
+                                                    </li>
+                                                    <li *ngIf="!calendarView && type_of_view=='2'">
+                                                        <a (click)="showGridView()">Grid</a>
+                                                    </li>
+                                                </ul>
+                                            </small>
+                                            <button *ngIf="enable_bulk_disbursements && canDisburse" (click)="prepareBulkPay()" style="margin: 0px 10px" class="btn btn-small btn-xs pull-right">{{total_bulk_pay_amount}}</button>
+                                            <button *ngIf="total_bulk_pay_amount>0" (click)="downloadList()" style="margin: 0px 10px" class="btn btn-small btn-xs pull-right">Download</button>
+                                            <span>Loan Request</span>
+                                        </header>
+                                    </section>
+                                </div>
+
+                                <router-outlet></router-outlet>
+                            </div>
+
+                            <aside class="sidemenu" style="float: left;margin-right: -1px;width: 20%;box-sizing: border-box;margin-bottom: 24px;margin-left: calc((576px * 0) - 24px + 49px);">
+                                <div class="sticky" [ngClass]="{'stuck': summaryOpen,'':!summaryOpen}" style="    height: 399px;width: calc((444px * .29167) + 144px);margin: 0px auto;">
+                                    <div class="rrc" style="margin-bottom: 0;margin-left: calc((576px * 0) - 24px + 24px);float: left;margin-right: -1px;width: calc((444px * .29167) + 144px);box-sizing: border-box;">
+                                        <div *ngIf="searchView">
+                                            <div class="panel-body text-center b_grey crd_theme">
+                                                <div class="text-center crd_top">
+                                                    <p class="txt t_l2 t_lh1">{{loans?.summary.count}}</p>
+                                                    <p class="txt">Request(s)</p>
+                                                </div>
+                                                <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" (click)="getLoans()">Filter</a>
+                                            </div>
+                                            <a (click)="closeSearchView()" class="btn btn-white btn-block pointer edged_box">Back</a>
+                                        </div>
+                                        <!-- Initital Search -->
+                                        <div *ngIf="!miniSearch && !searchView" class="req_panl animated fadeInDown">
+                                            <!-- Status Panel -->
+                                            <!-- <div style="position:relative" class="panel-body text-center crd_theme_o" [ngClass]="{'greenb': magic_filter.loan_status=='1'||magic_filter.loan_status=='100', 
+                           'blueb':  magic_filter.loan_status=='2', 
+                           'brownb':  magic_filter.loan_status=='3'||magic_filter.loan_status=='4'}"> -->
+                                            <div style="position:relative" class="panel-body text-center crd_theme_o greenb">
+                                                <img src="assets/img/bell.png" style="width:80px; margin:30px 0px 15px;">
+                                                <div class="text-center">
+                                                    <p class="txt t_l2 t_lh1">{{loans?.summary.principal|money}}</p>
+                                                    <p class="txt">{{loans?.summary.count}}{{loans?.summary.status}}</p>
+                                                    <!-- <p><div class="checkbox"><label><input type="checkbox" name="my_acc" (change)="myAccounts($event)"> My Accounts</label></div></p> -->
+                                                </div>
+                                                <div class="btn-group" style="position:absolute;top:10px;right:5px;">
+                                                    <a class="dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="color: #fff;font-size: 24px;line-height:  1;cursor:  pointer;padding: 10px;">
+                                                        <i class="fa fa-ellipsis-v"></i>
+                                                    </a>
+                                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                        <li *ngIf="!calendarView && magic_filter.loan_status=='2'">
+                                                            <a (click)="showCalendar()">Calendar</a>
+                                                        </li>
+                                                        <li>
+                                                            <a (click)="resetFilters()">Clear Filter</a>
+                                                        </li>
+                                                        <ng-container *ngFor="let status of statuses; let i=index">
+                                                            <li *ngIf="displayCondition(i)">
+                                                                <a (click)="getLoanLink(status.value)">{{status.display}}</a>
+                                                            </li>
+                                                        </ng-container>
+                                                        <li style="border-top: 1px solid #ccc; padding-top: 5px; margin-top: 5px;">
+                                                            <a (click)="myAccounts(magic_filter.account_officer=!magic_filter.account_officer)">My Accounts</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!-- Radio Checkbox -->
+                                            <div class="stacked_boxes_parent" *ngIf="magic_filter.loan_status==='1'">
+                                                <div class="stacked_boxes">
+                                                    <p class="txt t_l4" style="display: inline-block; width: 100%; max-width: 80%">My Accounts</p>
+                                                    <input type="checkbox" [checked]="magic_filter.my_approvals" name="my_approvals" (change)="myApprovals($event)" style="margin-left: 15px">
+                                                </div>
+                                            </div>
+                                            <div *ngIf="calendarView" class="text-center txt t_l4 t_cool" style="background: #FFF; border: 1px solid #ccc;padding: 12px; border-color: #718FC8; margin-top: 5px; cursor: pointer;"
+                                                (click)="showActiveRequests()">
+                                                Active Requests
+                                            </div>
+                                            <div style="background: #FAFAFA; border: 1px solid #ccc;padding: 12px; margin-top: 5px">
+                                                <input type="text" name="" style="border: none; background: none; font-size: 16px; width: 100%; width: 83% !important;" placeholder="Search Here"
+                                                    [(ngModel)]="magic_filter.searchText" #searchText="ngModel" (keyup.enter)="searchForLoans()">
+                                                <img src="assets/images/search.PNG" style="vertical-align: top;" (click)="searchForLoans()">
+                                            </div>
+                                            <div class="text-center txt t_l4 t_cool" style="background: #FFF; border: 1px solid #ccc;padding: 12px; border-color: #718FC8; margin-top: 5px; cursor: pointer; overflow: hidden; line-height: 34px"
+                                                (click)="miniSearch=true">
+                                                <button class="btn btn-default edged_box pull-left">
+                                                    <i class="glyphicon glyphicon-plus"></i>
+                                                </button>
+                                                More filter options
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Display Filter - mini -->
+                                        <div class="req_frm animated fadeInUp" *ngIf="miniSearch && !searchView">
+                                            <div class="text-center txt t_l4 t_cool box" style="background: #FFF; border: 1px solid #ccc;padding: 12px; cursor: pointer; line-height: 34px; overflow: hidden;"
+                                                (click)="miniSearch=false">
+                                                <button class="btn btn-default edged_box pull-left">
+                                                    <i class="glyphicon glyphicon-minus"></i>
+                                                </button>
+                                                Less Filter Options
+                                            </div>
+
+                                            <div class="" id="accordion" role="tablist" style="margin-bottom: 5px">
+                                                <div class="panel panel-default mbot0 edged_box hide">
+                                                    <div class="panel-heading" id="headingSecurity" role="tab">
+                                                        <h4 class="panel-title">
+                                                            <a aria-controls="collapseSecurity" aria-expanded="true" class="" data-parent="#accordion" data-toggle="collapse" href="#collapseSecurity"
+                                                                role="button">
+                                                                Security
+                                                                <span class="pull-right">
+                                                                    <i class="fa fa-chevron-down"></i>
+                                                                </span>
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div aria-labelledby="headingSecurity" class="panel-collapse collapse in" id="collapseSecurity" role="tabpanel" aria-expanded="true"
+                                                        style="">
+                                                        <div class="panel-body">
+                                                            <select (change)="getLoans()" name="magic_filter.loan_status" class="form-control" [(ngModel)]="magic_filter.loan_status">
+                                                                <option *ngFor="let status of statuses" [value]="status.value">{{status.display}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default mbot0 edged_box">
+                                                        <div class="panel-heading" id="headingCo" role="tab">
+                                                            <h4 class="panel-title">
+                                                                <a aria-controls="collapseCo" aria-expanded="true" class="" data-parent="#accordion" data-toggle="collapse" href="#collapseCo"
+                                                                    role="button">
+                                                                    Companies
+                                                                    <span class="pull-right">
+                                                                        <i class="fa fa-chevron-down"></i>
+                                                                    </span>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div aria-labelledby="headingCo" class="panel-collapse collapse in" id="collapseCo" role="tabpanel" aria-expanded="true"
+                                                            style="">
+                                                            <div class="panel-body">
+                                                                <select (change)="getLoans()" name="magic_filter.company_id" class="form-control" [(ngModel)]="magic_filter.company_id">
+                                                                    <option *ngFor="let company of companies?.a" [value]="company.PEOPLE_CUSTOMERS_ID">{{company.LEGAL_NAME}}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <div class="panel panel-default mbot0 edged_box">
+                                                    <div class="panel-heading" id="headingSecurity" role="tab">
+                                                        <h4 class="panel-title">
+                                                            <a aria-controls="collapseAmount" aria-expanded="true" class="" data-parent="#accordion" data-toggle="collapse" href="#collapseAmount"
+                                                                role="button">
+                                                                Amount
+                                                                <span class="pull-right">
+                                                                    <i class="fa fa-chevron-down"></i>
+                                                                </span>
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div aria-labelledby="headingSecurity" class="panel-collapse collapse" id="collapseAmount" role="tabpanel" aria-expanded="true"
+                                                        style="">
+                                                        <div class="panel-body">
+                                                            <ion-range-slider [from_min]="0" [min]="min_" [max]="max_" (onChange)="update__(simpleSlider_, $event)"></ion-range-slider>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default mbot0 edged_box">
+                                                    <div class="panel-heading" id="headingSecurity" role="tab">
+                                                        <h4 class="panel-title">
+                                                            <a aria-controls="collapseTenor" aria-expanded="true" class="" data-parent="#accordion" data-toggle="collapse" href="#collapseTenor"
+                                                                role="button">
+                                                                Tenor(months)
+                                                                <span class="pull-right">
+                                                                    <i class="fa fa-chevron-down"></i>
+                                                                </span>
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div aria-labelledby="headingSecurity" class="panel-collapse collapse" id="collapseTenor" role="tabpanel" aria-expanded="true"
+                                                        style="">
+                                                        <div class="row">
+                                                            <div class="col-md-6" *ngFor="let duration of durations;let i = index" style="">
+                                                                <div class="form-group" style="margin-bottom:0px">
+                                                                    <span class="pull-left text-primary">{{duration.display}}</span>
+                                                                    <span class="pull-right">
+                                                                        <div class="checkbox" style="margin:0px !important">
+                                                                            <label>
+                                                                                <input type="checkbox" name="duration_{{duration.value}}" (change)="checkLevel(duration,$event.target.checked,i)">
+                                                                            </label>
+                                                                        </div>
+                                                                    </span>
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <section class="panel mbot0 hide">
+                                                <div class="panel-body">
+                                                    <label class="control-label">Funding Status</label>
+                                                    <div class="row">
+                                                        <div class="col-md-12" *ngIf="magic_filter.loan_status=='1'">
+                                                            <div class="form-group" style="margin-bottom:0px">
+                                                                <span class="pull-left text-primary">Applied</span>
+                                                                <span class="pull-right">
+                                                                    <div class="checkbox" style="margin:0px !important">
+                                                                        <label>
+                                                                            <input type="checkbox" name="funding_status_applied" [(ngModel)]="magic_filter.funding_status_applied">
+                                                                        </label>
+                                                                    </div>
+                                                                </span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12" *ngIf="magic_filter.loan_status=='1'">
+                                                            <div class="form-group" style="margin-bottom:0px">
+                                                                <span class="pull-left text-primary">Funded</span>
+                                                                <span class="pull-right">
+                                                                    <div class="checkbox" style="margin:0px !important">
+                                                                        <label>
+                                                                            <input type="checkbox" name="funding_status_funded" [(ngModel)]="magic_filter.funding_status_funded">
+                                                                        </label>
+                                                                    </div>
+                                                                </span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12" *ngIf="magic_filter.loan_status=='1'">
+                                                            <div class="form-group" style="margin-bottom:0px">
+                                                                <span class="pull-left text-primary">Contract</span>
+                                                                <span class="pull-right">
+                                                                    <div class="checkbox" style="margin:0px !important">
+                                                                        <label>
+                                                                            <input type="checkbox" name="funding_status_contract_created" [(ngModel)]="magic_filter.funding_status_contract_created">
+                                                                        </label>
+                                                                    </div>
+                                                                </span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12" *ngIf="magic_filter.loan_status=='1'">
+                                                            <div class="form-group" style="margin-bottom:0px">
+                                                                <span class="pull-left text-primary">Disbursement</span>
+                                                                <span class="pull-right">
+                                                                    <div class="checkbox" style="margin:0px !important">
+                                                                        <label>
+                                                                            <input type="checkbox" name="funding_status_disbursement" [(ngModel)]="magic_filter.funding_status_disbursement">
+                                                                        </label>
+                                                                    </div>
+                                                                </span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="panel" style="margin-bottom:5px">
+                                                <footer class="panel-footer" style="background: #fff !important;">
+                                                    <button (click)="getLoans()" class="btn btn-primary btn-block edged_box">Apply Filter</button>
+                                                </footer>
+                                            </section>
+                                            <div class="text-center txt t_l4 t_cool box" style="background: #FFF; border: 1px solid #ccc;padding: 12px; cursor: pointer;"
+                                                (click)="openSearchView()">
+                                                More Filter Options
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div *ngIf="viewing_loan">
+    <app-loansummary *ngIf="overlayType=='0'" (showMessage)="showMessage($event)" [loan_status]='loan_status' [loan_viewed]="loan_viewed"
+        [view_state]="view_state" [dontshownext]="dontshownext" (modalClosed)="closeOverlay($event)"></app-loansummary>
+</div>
+<div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="queueModal">
+
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+        <app-bulkpayment *ngIf="overlayType=='0'" [bulkpayrequests]='bulkpayrequests' (modalClosed)="closeOverlay($event)"></app-bulkpayment>
+    </div>
+</div>
+
+<div *ngIf="overlayOpen">
+    <div class="overlay_ app_overlay animated" style="overflow:auto;background:#fff;">
+
+        <div class="col-md-12">
+            <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class=" overpanel-content container" role="document" style="text-align:left;width:800px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+            <app-calendardetails [schedule_type]=false [record_type]="1" [datechosen]="datechosen"></app-calendardetails> 
+        </div>
+    </div>
+</div>
+<div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="reverseModal">
+
+        <div class="col-md-12">
+            <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+            <app-reversetransaction [loan]='loan_reverse' ></app-reversetransaction>
+        </div>
+    </div>
+    <div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayOpenPayConfirm">
+
+        <div class="col-md-12">
+            <a class="dismiss cancel_treat_ close" role="button" (click)="overlayOpenPayConfirm=!overlayOpenPayConfirm">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+            <app-payment  [record_type]="20" [schedule_type]="1" [sub]="1" [disburse]="disburse"></app-payment>
+        </div>
+    </div>

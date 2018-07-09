@@ -1,0 +1,173 @@
+<section id="main-content">
+  <div class="container" style="min-height:600px; width:900px !important">
+    <div class="row"  style="margin-top:120px;">
+            <div class="col-md-12" style="padding:0;">
+                    <div id="ajax_view">
+                        <div class="row" >
+                            <div class="col-md-8">
+<section class="panel panl" style="margin-bottom: 5px">
+  <div class="panel-body">
+      <article class="media">
+          <div class="pull-left thumb">
+            <img src="assets/images/file.PNG">
+          </div>
+          <div class="pull-left" style="margin-top: 5px">
+            <h4 class="no-margin" style="word-wrap:break-word; margin-bottom: 10px">Journal</h4>
+          </div>
+          <a class="pull-right btn btn-white wd_btn" style="border-radius: 0" (click)="newJournal()">New Journal</a>
+          <a class="pull-right btn btn-white wd_btn" style="border-radius: 0" (click)="issearching=!issearching">Search</a>
+      </article>                  
+  </div>
+</section>
+
+<section class="panel">
+    <div class="panel-body" *ngIf="issearching">
+        <form class="form-inline" [formGroup]="searchForm" (ngSubmit)="searchJournal(searchForm.value)">
+                            
+                            <div class="form-group" [ngClass]="{'has-error':!searchForm.controls['BATCH_ID'].valid && searchForm.controls['BATCH_ID'].touched}">
+                                  <label class="control-label" style="display:block" for="exampleInputEmail2">Journal No</label>
+                                  <input  [formControl]="searchForm.controls['BATCH_ID']"  type="text" class="form-control" id="BATCH_ID" name="BATCH_ID">
+                              </div>
+                            <button class="btn btn-normal mtop10 mleft5"  [disabled]="!searchForm.valid" type="submit">Search <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                            
+                        </form>
+           <hr>
+           <form class="form-inline" [formGroup]="searchForm_" (ngSubmit)="searchJournal_(searchForm_.value)">
+
+                            <div class="form-group" [ngClass]="{'has-error':!searchForm_.controls['START_DATE'].valid && searchForm_.controls['START_DATE'].touched}" >
+                                <label class="control-label" style="display:block" for="exampleInputEmail2">Start Date</label>
+                                <my-date-picker  name="START_DATE" [formControl]="searchForm_.controls['START_DATE']" [options]="myDatePickerOptions"></my-date-picker> 
+                            </div>
+                            <div class="form-group" [ngClass]="{'has-error':!searchForm_.controls['END_DATE'].valid && searchForm_.controls['END_DATE'].touched}" >
+                                <label class="control-label" style="display:block" for="exampleInputEmail2">End Date</label>
+                                <my-date-picker name="END_DATE" [formControl]="searchForm_.controls['END_DATE']" [options]="myDatePickerOptions"></my-date-picker> 
+                            </div>
+                            <div class="form-group"  [ngClass]="{'has-error':!searchForm_.controls['SOURCE'].valid && searchForm_.controls['SOURCE'].touched}" style="margin-bottom:15px">
+                      <label class="control-label" style="display:block" for="exampleInputEmail2">Source</label>
+                      <select class="form-control"  [formControl]="searchForm_.controls['SOURCE']" name="SOURCE" id="SOURCE" >
+                        <option value="0"></option>
+                                  <option value="1">All</option>
+                                  <option value="2">Journal</option>
+                                  <option value="3">Loans</option>
+                                  <option value="4">Investments</option>
+                      </select>
+                    </div>
+                           <button class="btn btn-normal mtop10 mleft5"  [disabled]="!searchForm_.valid" type="submit">Search <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button> 
+                     
+                        </form>
+      </div>
+    <div class="panel-body" style="padding:0px">
+      <article *ngIf="preloading" class="media" style="margin: 5px 0px;background: #fff;padding: 5px;cursor:pointer;margin-bottom:0px">
+        <div class="pull-left thumb p-thumb">
+        <div class="sd_bt">&nbsp;</div>
+        </div>
+      </article>
+        <div *ngIf="!preloading">
+        <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th class="bapp hide">
+                            <input type="checkbox" id="checkAll_">  
+                            </th>
+                            <th>#</th>
+                            <th>Narrative</th>
+                            <th>Date</th> 
+                            
+                            <!--<th>Amount</th> -->
+                            <th>Status</th>
+                            <th>Approved By</th>
+                            <th>Date Approved</th>
+                            <th></th> 
+                        </tr>
+                         </thead>
+                        <tbody style="font-size:11px">
+<tr *ngFor="let journal of journals">
+                            <td class="bapp" *ngIf="bulkApproveClick||bulkDeleteClick">
+                            <input *ngIf="journal?.IS_APPROVED==''||journal?.IS_APPROVED=='0'"  type="checkbox" name="bapp_check" value="journal?.JOURNAL_ENTRY_ID">
+                              
+                              </td>
+                              <td>{{journal?.JOURNAL_ENTRY_ID}}</td>
+                              <td>{{journal?.NARRATIVE}}<br>
+              <small>Posted By[{{journal?.LEGAL_NAME}}]</small></td>
+                              <td>{{approval?.JOURNAL_DATE | amDateFormat:'LL'}}</td>
+                              <td>{{approval?.IS_APPROVED | journalapproved}}</td>
+                              
+                              <td>{{approval?.LEGAL_NAME_APPROVED}}</td>
+                              <td>{{approval?.DATE_APPROVED | amDateFormat:'LL'}}</td>
+                              
+                               <td>
+                                  <a (click)="updateJournal(journal)" class="btn btn-white btn-xs">Open</a>
+                                  <!-- <a [routerLink]="['/operations/journal',journal?.JOURNAL_ENTRY_ID]" class="btn btn-white btn-xs">Open</a>    -->
+                              </td> 
+                        </tr>
+                        </tbody>
+          </table>    
+        </div>  
+        
+        
+    </div>
+  </section>
+  <section class="panel" *ngIf="!state?.complete">
+      <header class="panel-heading" style="padding:15px">
+        &nbsp;
+        <!-- <span class="tools pull-right">
+          <button class="btn btn-white btn-xs" (click)="loadNext(state.start)">Next</button>
+          
+        </span> -->
+        <span class="tools  pull-right" *ngIf="COUNTAB>20">
+          <a (click)="prevRecords()" class="btn btn-white btn-xs" *ngIf="index!='1'">Prev</a>
+          <a (click)="nextRecords()" class="btn btn-white btn-xs" *ngIf="next<COUNTAB">Next</a>
+        </span>
+      </header>
+  </section>
+</div>
+<div class="col-md-3 ">
+<section style="border-radius:10px" class="panel text-center greenb">
+  <div class="panel-body" style="padding: 63px 15px;">
+    
+    <div>
+        <h3 style="font-size:34px">{{COUNTAB}} 
+        </h3> 
+        <p>Postings</p>
+    </div> 
+</div>
+</section>
+ 
+<section class="panel">
+  <div class="panel-body">
+    <ul class="list list_border largewidth">
+      <li>
+        <a class="txt_l4 active" [routerLink]="['/operations/wallet']">Wallet</a>
+      </li>
+      <li>
+        <a class="txt_l4" [routerLink]="['/operations/chart_of_accounts']">Chart Of Accounts</a>
+      </li>
+      <li>
+        <a class="txt_l4" [routerLink]="['/operations/journal']">Journal</a>
+      </li>
+      <li>
+        <a class="txt_l4" [routerLink]="['/operations/banks']">Bank Accounts</a>
+      </li>
+    </ul>
+  </div>
+</section>
+</div>
+<div class="col-md-1">&nbsp;</div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayWithdrawal">
+  
+           <div class="col-md-12">
+               <a class="dismiss cancel_treat_ close" role="button" (click)="overlayWithdrawal=false">
+                 <i class="fa fa-times" aria-hidden="true"></i>
+                 </a> 
+             </div>
+         <div class=" overpanel-content container" role="document" style="text-align:left;width:850px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+          <app-newjournal [edit]="edit" [journals]="journal" [loading]="loading"(approveTheJournal)="approveJournal($event)"(rejectTheJournal)="rejectJournal($event)" (saveTheJournal)="saveJournal($event)" [currentUser]="currentUser" [com_accounts]="com_accounts" [people_customers]="people_customers"></app-newjournal>
+        </div>
+</div> 

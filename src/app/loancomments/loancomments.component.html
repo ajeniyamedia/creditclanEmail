@@ -1,0 +1,87 @@
+<section class="panel" style="margin-bottom:0px">
+	<header class="panel-heading">
+		Comments
+			<span class="tools pull-right">
+					<div class="btn-group">
+						<a [routerLink]="['../contract']" class="btn btn-white btn-xs nob" type="button">Contract</a>
+						<a [routerLink]="['../repayments']" class="btn btn-white btn-xs btd" type="button">Repayment</a>
+						<a [routerLink]="['../approvals']" class="btn btn-white btn-xs btd" type="button">Workflow</a>
+						<a  [routerLink]="['../comments']" class="btn btn-white btn-xs btd" type="button">Comment</a>
+						<a  [routerLink]="['../guarantors']" class="btn btn-white btn-xs btd" type="button">Guarantors</a>
+						<a class="btn btn-white btn-xs nob" style="border-left:1px !important" type="button">More</a>
+					</div>
+				</span>
+	</header>
+</section>
+<div style="padding-top:0px">
+	<div class="row">
+        <div class="col-md-12" id="post-feeds">
+        	<div class="content-holder">
+        		<div style="overflow:auto">
+                        	<div class="img-holder" style="float:left">
+                                <div class="user-thumb">
+									
+                                    <img *ngIf="loan?.FILE_NAME !=''" width="80px" height="80px" src="assets/attachments/{{loan?.FILE_NAME || 1 | imagenotfound}}" alt="">
+
+                                    <div *ngIf="loan?.FILE_NAME ==''" class="user-img-blk text-center">
+                                            <span>{{loan?.LEGAL_NAME | slice:0:1}}</span>
+                                            <span>{{loan?.LEGAL_NAME | slice:1:1}}</span>
+                                        </div> 
+                                </div>
+                            </div>
+                        	<div style="float:left">
+                            	 <div class="content-meta">
+		                    <div class="fb-user-details">
+		                        <h3><a href="#" class="#">{{loan?.LEGAL_NAME}}</a></h3>
+		                        <!-- <p>add new work place</p> -->
+		                    </div>
+		                    <div class="content-timeline">
+                            	<h5><i class="small fa fa-money"></i> {{loan?.REQUEST_PRINCIPAL | number:'.2-2'}} | <i class="small fa fa-clock-o"></i> {{loan?.REQUEST_TENOR}} {{loan?.LOAN_DURATION}}</h5>
+                            	<h5>{{loan?.LOAN_PURPOSE}}</h5>
+		                        <p>{{loan?.DATE_ADDED | amTimeAgo | dateinvalid}}</p>
+		                    </div>
+		                    <div class="clearfix"></div>
+		                </div>
+                            </div>
+                        </div>
+                <div class="content-post">
+		                    <p class="fb-user-status">&nbsp;
+		                    			                    </p>
+		        <div class="fb-status-container fb-border fb-gray-bg">
+                   <ul class="fb-comments">
+                   	<li class="commentPost">
+                   	<form #f="ngForm" novalidate>
+                                          <div class="row">
+                                          		<a href="#" class="col-xs-1">
+	                                              <img src="assets/attachments/avatar-mini.jpg" alt="" style="width:32px;height:32px;">
+	                                          </a>
+	                                          <div class="col-xs-11">
+	                                          <textarea class="form-control" placeholder="Write a comment..." name="COMMENT" [(ngModel)]="c.COMMENT"></textarea>
+	                                          <input type="hidden" name="IS_INV" value="0" [(ngModel)]="c.IS_INV" >
+                                              <label><input type="checkbox"  [(ngModel)]="c.COMMENTS_FOR_" name="COMMENTS_FOR_"> For admin only</label><br>
+                                              <button (click)="submitComment(f.value)" class="btn btn-white btn-xs mtop5">Send</button>
+                                              <label class="pull-right item-text-counter2">160</label>
+	                                          </div>
+                                          </div>
+                                          </form>
+                                      </li>
+                     <li class="commentList" *ngFor="let comment of comments">
+	                                          <div class="row">
+	                                          		<a href="#" class="col-xs-1">
+	                                          		<img src="assets/pub/attachments/avatar-mini.jpg" alt="" style="width:32px;height:32px;">
+		                                             
+		                                          </a>
+		                                          <div class="col-xs-11">
+		                                              <a href="#">{{comment?.LEGAL_NAME}}</a>
+		                                              <span>{{comment?.POST_CONTENT}}</span>
+		                                              <p>{{comment?.DATE_POSTED | amTimeAgo | dateinvalid}}</p>
+		                                          </div>
+	                                          </div>
+	                                        </li>
+                   </ul>
+                </div>             
+		        </div>
+        	</div>
+        </div>
+    </div>
+</div>

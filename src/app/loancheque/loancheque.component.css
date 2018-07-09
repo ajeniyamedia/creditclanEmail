@@ -1,0 +1,12 @@
+.colla_box input[type=text]{
+	max-width: 80px;
+}
+label{
+	font-weight: 700;
+}
+td {
+	padding:5px !important;
+}
+input {
+	max-width:100% !important;
+}

@@ -1,0 +1,710 @@
+<app-main-navigation></app-main-navigation>
+<div style="width: 80%; margin: 0px auto; margin-top:50px">
+    <div class="row">
+        <div class="col-md-12">
+            &nbsp;
+        </div>
+    </div>
+    <div class="row placeholder" *ngIf="loading" style=" margin-top:50px">
+        <div class="col-md-3">
+            <a href="javascript:;" class="">
+                <section class="panel chH sd_bt">
+                    &nbsp;
+                </section>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="javascript:;" class="">
+                <section class="panel chH sd_bt">&nbsp;
+                </section>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="javascript:;" class="">
+                <section class="panel chH sd_bt">&nbsp;
+                </section>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="javascript:;" class="">
+                <section class="panel chH sd_bt">&nbsp;
+                </section>
+            </a>
+        </div>
+    </div>
+    <section id="main-content">
+        <div class="" style="min-height:600px">
+            <div class="row" style="margin-top:50px;">
+                <div class="col-md-12" style="padding:0;">
+                    <div id="ajax_view">
+                        <div *ngIf="!loading && searchView">
+                            <div class="row req_frm">
+                                <div class="col-md-3">
+                                    
+                                    <div class="text-center txt t_l4 t_cool box" style="background: #FFF; border: 1px solid #ccc;padding: 12px; cursor: pointer;" (click)="searchView=false">
+                                        Less Filters
+                                    </div>
+                                    <section class="panel mbot0">
+                                        <div class="panel-body">
+                                  
+                                            <div class="form-group">
+                                                <label class="control-label">Request Category</label>
+                                                <select (change)="getLoans_()" name="magic_filter.loan_status" class="form-control" [(ngModel)]="magic_filter.loan_status">
+                                                    <option *ngFor="let status of statuses" [value]="status.value">{{status.display}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section class="panel mbot0">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label class="control-label">Amount</label>
+                                            </div>
+                                    
+                                        </div>
+                                    </section>
+                                    <section class="panel mbot0">
+                                        <div class="panel-body">
+                                            <label class="control-label">Tenor(months)</label>
+                                            <div class="row">
+                                                <div class="col-md-6" style="padding-right:5px !important" *ngFor="let duration of durations;let i = index">
+                                                    <div class="form-group" style="margin-bottom:0px">
+                                                        <span class="pull-left text-primary">{{duration.display}}</span>
+                                                        <span class="pull-right">
+                                                            <div class="checkbox" style="margin:0px !important">
+                                                                <label>
+                                                                    <input type="checkbox" name="duration_{{duration.value}}" (change)="checkLevel(duration,$event.target.checked,i)">
+                                                                    <!-- <input type="checkbox"  (change)="$event.target.checked? (magic_filter.loan_status = statuses[0].value) : (magic_filter.loan_status = statuses[1].value)" [checked]="status.value===magic_filter.loan_status" name="magic_filter.loan_status" [(ngModel)]="magic_filter.loan_status"> -->
+                                                                </label>
+                                                            </div>
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section class="panel mbot0" *ngIf="magic_filter.loan_status=='1'">
+                                        <div class="panel-body">
+                                            <label class="control-label">Funding Status</label>
+                                            <div class="row">
+                                                <div class="col-md-6" style="padding-right: 5px">
+                                                    <div class="form-group" style="margin-bottom:0px">
+                                                        <span class="pull-left text-primary">Applied</span>
+                                                        <span class="pull-right">
+                                                            <div class="checkbox" style="margin:0px !important">
+                                                                <label>
+                                                                    <input type="checkbox" name="funding_status_applied" [(ngModel)]="magic_filter.funding_status_applied">
+                                                                </label>
+                                                            </div>
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" style="padding-right: 5px">
+                                                    <div class="form-group" style="margin-bottom:0px">
+                                                        <span class="pull-left text-primary">Funded</span>
+                                                        <span class="pull-right">
+                                                            <div class="checkbox" style="margin:0px !important">
+                                                                <label>
+                                                                    <input type="checkbox" name="funding_status_funded" [(ngModel)]="magic_filter.funding_status_funded">
+                                                                </label>
+                                                            </div>
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6" style="padding-right: 5px">
+                                                    <div class="form-group" style="margin-bottom:0px">
+                                                        <span class="pull-left text-primary">Contract</span>
+                                                        <span class="pull-right">
+                                                            <div class="checkbox" style="margin:0px !important">
+                                                                <label>
+                                                                    <input type="checkbox" name="funding_status_contract_created" [(ngModel)]="magic_filter.funding_status_contract_created">
+                                                                </label>
+                                                            </div>
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="col-md-3">
+                                    <section class="panel mbot0">
+                                        <div class="panel-body">
+                                            <label class="control-label">% Funding</label>
+                                            <!-- <ion-range-slider [from_min]="0" [min]="min" [max]="max" (onChange)="update_(simpleSlider, $event)"></ion-range-slider> -->
+                                        </div>
+                                    </section>
+                                    <section class="panel mbot0">
+                                        <div class="panel-body">
+                                            <label class="control-label">Borrower Sector</label>
+                                            <div class="row">
+                                                <div class="col-md-12" *ngFor="let sector of sectors;let i = index" style="padding-right:5px !important">
+                                                    <div class="form-group" style="margin-bottom:0px">
+                                                        <span class="pull-left text-primary">{{sector?.DESCRIPTION}}</span>
+                                                        <span class="pull-right">
+                                                            <div class="checkbox" style="margin:0px !important">
+                                                                <label>
+                                                                    <input type="checkbox" name="section_{{sector?.OCCUPATION_ID}}" (change)="checkSector(sector,$event.target.checked,i)">
+
+                                                                </label>
+                                                            </div>
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </section>
+                                    <section class="panel mbot0">
+                                        <div class="panel-body">
+                                            <label class="control-label">Ratings</label>
+                                            <div class="row">
+                                                <div class="col-md-6" style="padding-right:5px !important">
+                                                    <div class="form-group" style="margin-bottom:0px">
+                                                        <span class="pull-left text-primary">1</span>
+                                                        <span class="pull-right">
+                                                            <div class="checkbox" style="margin:0px !important">
+                                                                <label>
+                                                                    <input type="checkbox" name="ratings_one" [(ngModel)]="magic_filter.ratings_one">
+                                                                </label>
+                                                            </div>
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" style="padding-right:5px !important">
+                                                    <div class="form-group" style="margin-bottom:0px">
+                                                        <span class="pull-left text-primary">2</span>
+                                                        <span class="pull-right">
+                                                            <div class="checkbox" style="margin:0px !important">
+                                                                <label>
+                                                                    <input type="checkbox" name="ratings_two" [(ngModel)]="magic_filter.ratings_two">
+                                                                </label>
+                                                            </div>
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6" style="padding-right:5px !important">
+                                                    <div class="form-group" style="margin-bottom:0px">
+                                                        <span class="pull-left text-primary">3</span>
+                                                        <span class="pull-right">
+                                                            <div class="checkbox" style="margin:0px !important">
+                                                                <label>
+                                                                    <input type="checkbox" name="ratings_three" [(ngModel)]="magic_filter.ratings_three">
+                                                                </label>
+                                                            </div>
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" style="padding-right:5px !important">
+                                                    <div class="form-group" style="margin-bottom:0px">
+                                                        <span class="pull-left text-primary">4</span>
+                                                        <span class="pull-right">
+                                                            <div class="checkbox" style="margin:0px !important">
+                                                                <label>
+                                                                    <input type="checkbox" name="ratings_four" [(ngModel)]="magic_filter.ratings_four">
+                                                                </label>
+                                                            </div>
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6" style="padding-right:5px !important">
+                                                    <div class="form-group" style="margin-bottom:0px">
+                                                        <span class="pull-left text-primary">5</span>
+                                                        <span class="pull-right">
+                                                            <div class="checkbox" style="margin:0px !important">
+                                                                <label>
+                                                                    <input type="checkbox" name="ratings_five" [(ngModel)]="magic_filter.ratings_five">
+                                                                </label>
+                                                            </div>
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="col-md-3">
+                                    <section class="panel mbot0">
+                                        <div class="panel-body">
+                                            <label class="control-label">Approvals</label>
+                                            <div class="row">
+                                            <div class="col-md-12" *ngFor="let level of approval_levels;let i = index" style="padding-right:5px !important">
+                                                <div class="form-group" style="margin-bottom:0px">
+                                                    <span class="pull-left text-primary">{{level?.LEVEL_TITLE}}</span>
+                                                    <span class="pull-right">
+                                                        <div class="checkbox" style="margin:0px !important">
+                                                            <label>
+                                                                <input type="checkbox" name="level_{{level?.APPROVAL_LEVEL_ID}}" (change)="checkLevel_(level,$event.target.checked,i)">
+
+                                                            </label>
+                                                        </div>
+                                                    </span>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section class="panel mbot0">
+                                        <div class="panel-body">
+                                            <label class="control-label">Request Date</label>
+                                            <div class="row">
+                                                <div class="col-md-12" style="padding-right:5px !important" *ngFor="let dt of request_date;let i = index">
+                                                    <div class="form-group" style="margin-bottom:0px">
+                                                        <span class="pull-left text-primary">{{dt.display}}</span>
+                                                        <span class="pull-right">
+                                                            <div class="checkbox" style="margin:0px !important">
+                                                                <label>
+                                                                    <input type="checkbox" name="dt_{{dt.value}}" (change)="checkDate(dt,$event.target.checked,i)">
+
+                                                                </label>
+                                                            </div>
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <section style="border-radius:10px" class="panel" [ngClass]="{'greenb': magic_filter.loan_status=='1', 'blueb':  magic_filter.loan_status=='2', 'brownb':  magic_filter.loan_status=='3'}">
+                                        <div class="panel-body text-center">
+                                            <h2 style="font-size:100px">{{loans?.summary.count}}</h2>
+                                            <button (click)="getLoans()" [disabled]="loading" class="btn btn-white btn-block">Filter</button>
+                                        </div>
+                                    </section>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <a (click)="searchView=false" class="btn btn-white btn-block pointer">Back</a>
+                                        </div>
+                                    </div> -->
+                                    
+                                    <div class="panel-body text-center b_grey crd_theme">
+                                        <div class="text-center crd_top">
+                                          <p class="txt t_l2 t_lh1">{{loans?.summary.count}}</p>
+                                          <p class="txt">Request(s)</p>
+                                        </div>
+                                        <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" (click)="getLoans()">Filter</a>
+                                    </div>
+                                    <a (click)="searchView=false" class="btn btn-white btn-block pointer edged_box">Back</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!loading && !searchView">
+                            <div style="box-sizing: border-box;
+                      float: left;
+                      margin-right: -1px;
+                      width: 70%;" role="main" class="requests_list">
+                                <div class="row">
+                                    <div *ngIf="loans?.summary.count!='0'">
+                                        <div class="col-md-4" style="padding-left: 10px; padding-right: 10px" *ngFor="let loan of loans.loans">
+
+                                            <a href="javascript:;">
+
+
+
+        <!-- Hover View -->
+        <section class="panel chH ch_back box" *ngIf="slaveOpen==loan?.REQUEST_ID" (mouseleave)="openSlave(0)">
+            <div class="panel-body" style="padding:16px 32px">
+
+                <div *ngIf="magic_filter.loan_status=='1'">         
+                    <ul class="list list_border text-center">
+                        <li class="txt_l4 {{loan.LOAN_STATUS | loanStatus}}">
+                            {{loan.LOAN_STATUS | loanStatusText}}</li>
+                        <li class="txt_l4">
+                            Expires {{loan?.EXPIRATION_DATE | amTimeAgo}}</li>
+                        <li class="txt_l4" *ngIf="loan?.LEVEL_TITLE!= null">
+                            {{loan?.LEVEL_TITLE}}</li>
+                    </ul>
+                    <div class="act_btns">
+                        <a class="btn btn-white btn-block edged_box t_cool" *ngIf="loan?.IS_PEER_TO_PEER!='1'" [routerLink]="['/loan',loan.REQUEST_ID]" style="border-color: #718FC8">View Loan</a>
+                        
+                        <a class="btn btn-white btn-block edged_box t_cool" *ngIf="loan?.IS_PEER_TO_PEER=='1'" [routerLink]="['/loan',loan.REQUEST_ID,'p2p']" style="border-color: #718FC8">View Loan</a>
+
+                        <a class="btn btn-white btn-block edged_box" (click)="open_loan(loan.REQUEST_ID)">Preview Loan</a>
+                    </div>
+                </div>
+
+                <div *ngIf="magic_filter.loan_status=='2'">         
+                    <ul class="list list_border text-center">
+                        <li class="txt_l4">
+                            {{loan.LOAN_STATUS | loanStatusText}}</li>
+                        <li class="txt_l4">
+                            {{loan?.repayment?.TOTAL_PAID | money}} Repaid</li>
+                        <li class="txt_l4">
+                            {{loan?.repayment?.LOAN_BALANCE | money}} Balance</li>
+                    </ul>
+                    <div class="act_btns">
+                        <a class="btn btn-white btn-block edged_box" (click)="about_contract(loan?.REQUEST_ID)">About Contract</a>
+                        <a class="btn btn-white btn-block edged_box" (click)="view_state='4';dontshownext=1;open_loan(loan.REQUEST_ID)">View Loan</a>
+                    </div>
+                </div>
+
+                <div *ngIf="magic_filter.loan_status=='3'">                         
+                    <div class="act_btns">
+                            <a class="btn btn-white btn-block edged_box" (click)="about_contract(loan?.REQUEST_ID)">About Contract</a>
+                    </div>
+                </div>
+
+            </div> 
+        </section>
+
+        <!-- Front View -->
+        <section class="panel chH ch_front box" *ngIf="masterClosed!=loan?.REQUEST_ID" (mouseenter)="openSlave(loan.REQUEST_ID)">
+            <div class="panel-body text-center" style="padding-bottom:0;">
+
+                <h3 class="no-margin txt t_cool" style="word-wrap:break-word; font-size:13px; letter-spacing: 0.08em; margin-top: 10px">{{loan?.LEGAL_NAME}}</h3>
+                <p class="txt t_dull" style="font-size: 12px">
+                    <span *ngIf="loan?.LOAN_STATUS<=2"> {{loan.OCCUPATION ? loan.OCCUPATION : '--' }} / {{loan.WORK_SECTOR ? loan.WORK_SECTOR  : '--'}}
+                    </span>
+                    <span *ngIf="loan?.LOAN_STATUS>2">
+                        {{loan?.REQUEST_PRINCIPAL | money}} | {{loan?.REQUEST_TENOR}}{{loan?.LOAN_DURATION}}
+                    </span>
+                </p>               
+                <app-rating *ngIf="loan?.LOAN_STATUS<=2" [rating]='loan?.PEOPLE_RATING_ID'></app-rating>
+
+
+                <div class="" style="margin:25px auto;">
+                    <img class="{{loan.LOAN_STATUS | loanStatus}}" src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{loan?.FILE_NAME | imagenotfound}}?q=auto" style=" width: 80px; height: 80px; border-radius: 50%; border-width: 3px !important; ">
+                </div>
+
+
+                <div *ngIf="loan?.LOAN_STATUS<=2">
+                    <div>
+                        <p class="t_l4 t_cool" style="margin-bottom: 5px">N{{loan.TOTAL_REMAINING}} 
+                            <small class="t_dull" style="font-size: 12px;margin-left: 5px;">Left</small>
+                        </p>
+                        <div class="progress progress-xs" style="">
+                            <div class="progress-bar {{loan.PERCENTAGE_FUNDED|safe}}" role="progressbar" attr.aria-valuenow="{{loan.PERCENTAGE_FUNDED|safe}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small class="t_dull" style="display:block; font-size:12px">{{loan.PERCENTAGE_FUNDED}}% funded &nbsp; | &nbsp;{{loan.TOTAL_FUNDED}}</small>
+                    </div>
+
+                    <div class="foot_stat t_dull">
+                        <div class="row">
+                            <div class="col-sm-5 text-center" style="border-right:1px solid #eaeaea">
+                                <p class="headline">{{loan.REQUESTED}}<br>
+                                    <span>Requested</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-4 text-center" style="border-right:1px solid #eaeaea">
+                                <p class="headline">{{loan.REQUEST_TENOR}}<br>
+                                    <span>{{loan.LOAN_DURATION}}</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-3 text-center">
+                                <p style="font-size: 18px; margin: 0">
+                                    <i class="fa {{loan.IS_PEER_TO_PEER|peertopeer}}" style="margin-left: -15px"></i>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div *ngIf="loan?.LOAN_STATUS>2">
+                    <div class="">
+                        <h4 class="" style="margin-top: 165px;font-size:13px">{{loan?.repayment_summary.TOTAL_PAID|money}} ({{loan.repayment_summary.PERCENT_PAID}}%)
+                            Paid
+                        </h4>
+                        <div class="progress progress-xs" style="">
+                            <div class="progress-bar {{loan.repayment_summary.PERCENT_PAID|safe}}" role="progressbar" attr.aria-valuenow="{{loan.repayment_summary.PERCENT_PAID|safe}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+                                            </a>
+                                        </div>
+                                        <div class="col-md-4" *ngIf="loans?.complete == false">
+                                            <section class="panel chH">
+                                                <div class="panel-body" style="padding-bottom: 31px; position: relative;">
+                                                    <div style="padding: 25px 0px; text-align: center;padding-bottom:142px">
+                                                        <h1 style="margin-bottom: 0px; font-size:110px">{{loans?.remaining}}</h1>
+                                                        <span class="small" style="display: block;font-size:125%">Remaining</span>
+                                                    </div>
+                                                    <a (click)="loadMoreRecords(loans?.start)" class="btn btn-normal btn-block ld_btn_portfolio egded-box" style="padding: 10px; position: absolute; left: 15px; right: 15px; bottom: 15px; width: auto; background: #fd8900">View More</a>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+        <div *ngIf="loans?.summary.count=='0'">
+            <!-- <div>
+                <div style="padding-bottom: 121px">
+                    <div class="text-center">
+                        <a href="javascript:;" style="font-size:40px">
+                            <i class="fa fa-meh-o"></i>
+                        </a>
+                        <h3 style="margin-bottom: 0px; text-align: center;">No records</h3>
+                    </div>
+                </div>
+            </div> -->
+            <div class="panel panel-body box" style="position: relative; padding: 30px">
+
+                <div style="margin-top: 100px"></div>
+
+                <div class="row">
+                    <div class="col-md-4">                        
+                        <ul class="list list_border" id="no-padding-right">
+                            <li>
+                              <p class="txt t_l2 t_cool">No Records</p>
+                            </li>
+                            <li>
+                              <a class="txt_l4 t_dull" >Book Loan</a>
+                            </li>
+                            <!-- <li>
+                              <a class="txt_l4 t_dull">Create and Send Contract</a>
+                            </li>
+                            <li>
+                              <a class="txt_l4 t_dull">Send to Market</a>
+                            </li> -->
+                            <!-- <li>
+                              <a class="btn btn-orange wd_btn" style="border-radius: 0" href="/customer/update/individual/6927">Update</a>
+                            </li> -->
+                        </ul>
+                    </div>
+                    <div class="col-md-8"></div>
+                </div>
+              </div>
+
+        </div>
+
+
+
+
+
+
+
+                                </div>
+                            </div>
+                            <aside class="sidemenu" style="float: left;
+                      margin-right: -1px;
+                      width: 20%;
+                      box-sizing: border-box;margin-bottom: 24px;
+                      margin-left: calc((576px * 0) - 24px + 49px);">
+                                <div class="sticky" [ngClass]="{'stuck': summaryOpen,'':!summaryOpen}" style="    height: 399px;
+                        width: calc((444px * .29167) + 144px);
+                        margin: 0px auto;">
+                                    <div class="rrc" style="    margin-bottom: 0;
+                            margin-left: calc((576px * 0) - 24px + 24px);float: left;
+                            margin-right: -1px;
+                            width: calc((444px * .29167) + 144px);
+                            box-sizing: border-box;">
+
+
+            <!-- Initital Search -->
+            <div *ngIf="!miniSearch" class="req_panl">
+
+                <!-- Status Panel -->
+                <div class="panel-body text-center crd_theme_o" 
+                [ngClass]="{'greenb': magic_filter.loan_status=='1', 
+                           'blueb':  magic_filter.loan_status=='2', 
+                           'brownb':  magic_filter.loan_status=='3'}">
+                    <img src="assets/img/bell.png" style="width:80px; margin:30px 0px 15px;">
+                    <div class="text-center">
+                      <p class="txt t_l2 t_lh1">{{loans?.summary.principal|money}}</p>
+                      <p class="txt">{{loans?.summary.status}}</p>
+                    </div>                    
+                </div>
+
+                <!-- Radio Checkbox -->
+                <div *ngFor="let status of statuses; let i=index" class="stacked_boxes_parent">
+                    <div *ngIf="displayCondition(i)" class="stacked_boxes">
+                        <p class="txt t_l4" style="display: inline-block; width: 100%; max-width: 80%">{{status.display}}</p>                    
+                        <input type="radio" (change)="getLoans_()" name="magic_filter.loan_status" [(ngModel)]="magic_filter.loan_status" [value]="status.value" style="margin-left: 15px">
+                    </div>
+                </div>
+
+                <div class="text-center txt t_l4 t_cool" style="background: #FFF; border: 1px solid #ccc;padding: 12px; border-color: #718FC8; margin-top: 5px; cursor: pointer;" (click)="miniSearch=true">
+                    More filter options
+                </div>
+
+                <!-- Search -->
+               <!--  <section class="panel" style="margin-bottom:15px">
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="searchText" required [(ngModel)]="magic_filter.searchText" #searchText="ngModel">
+                            <span class="input-group-btn">
+                                <button [disabled]="loading" (click)="searchForLoans()" class="btn btn-white" type="button">Search !</button>
+                            </span>
+                        </div>
+                    </div>
+                </section>-->
+
+                <div style="background: #FAFAFA; border: 1px solid #ccc;padding: 12px; margin-top: 5px">
+                    <input type="text" name="" style="border: none; background: none; font-size: 16px; width: 100%; max-width: 83%;" placeholder="Search Here" [(ngModel)]="magic_filter.searchText" #searchText="ngModel" (keyup.enter)="searchForLoans()">
+                    <img src="assets/images/search.PNG" style="vertical-align: top;" (click)="searchForLoans()">
+                </div>
+
+            </div>
+
+
+
+            <!-- Display Filter - mini -->
+            <div class="req_frm" *ngIf="miniSearch">
+
+                <div class="text-center txt t_l4 t_cool box" style="background: #FFF; border: 1px solid #ccc;padding: 12px; cursor: pointer;" (click)="miniSearch=false">
+                    Less Filter Options
+                </div>
+
+
+
+                <section class="panel mbot0">
+                    <div class="panel-body">                        
+                        <div class="form-group">
+                            <label class="control-label">Request Category</label>
+                            <select (change)="getLoans_()" name="magic_filter.loan_status" class="form-control" [(ngModel)]="magic_filter.loan_status">
+                                <option *ngFor="let status of statuses" [value]="status.value">{{status.display}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+                <section class="panel mbot0">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="control-label">Amount</label>
+                        </div>
+                        <!-- <ion-range-slider [from_min]="0" [min]="min_" [max]="max_" (onChange)="update__(simpleSlider_, $event)"></ion-range-slider> -->
+                    </div>
+                </section>
+                <section class="panel mbot0">
+                    <div class="panel-body">
+                        <label class="control-label">Tenor(months)</label>
+                        <div class="row">
+                            <div class="col-md-6"  *ngFor="let duration of durations;let i = index" style="">
+                                <div class="form-group" style="margin-bottom:0px">
+                                    <span class="pull-left text-primary">{{duration.display}}</span>
+                                    <span class="pull-right">
+                                        <div class="checkbox" style="margin:0px !important">
+                                            <label>
+                                                <input type="checkbox" name="duration_{{duration.value}}" (change)="checkLevel(duration,$event.target.checked,i)">
+                                                <!-- <input type="checkbox"  (change)="$event.target.checked? (magic_filter.loan_status = statuses[0].value) : (magic_filter.loan_status = statuses[1].value)" [checked]="status.value===magic_filter.loan_status" name="magic_filter.loan_status" [(ngModel)]="magic_filter.loan_status"> -->
+                                            </label>
+                                        </div>
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="panel mbot0" *ngIf="magic_filter.loan_status=='1'">
+                    <div class="panel-body">
+                        <label class="control-label">Funding Status</label>
+                        <div class="row">
+                            <div class="col-md-12" *ngIf="magic_filter.loan_status=='1'">
+                                <div class="form-group" style="margin-bottom:0px">
+                                    <span class="pull-left text-primary">Applied</span>
+                                    <span class="pull-right">
+                                        <div class="checkbox" style="margin:0px !important">
+                                            <label>
+                                                <input type="checkbox" name="funding_status_applied" [(ngModel)]="magic_filter.funding_status_applied">
+                                            </label>
+                                        </div>
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" *ngIf="magic_filter.loan_status=='1'">
+                                <div class="form-group" style="margin-bottom:0px">
+                                    <span class="pull-left text-primary">Funded</span>
+                                    <span class="pull-right">
+                                        <div class="checkbox" style="margin:0px !important">
+                                            <label>
+                                                <input type="checkbox" name="funding_status_funded" [(ngModel)]="magic_filter.funding_status_funded">
+                                            </label>
+                                        </div>
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" *ngIf="magic_filter.loan_status=='1'">
+                                <div class="form-group" style="margin-bottom:0px">
+                                    <span class="pull-left text-primary">Contract</span>
+                                    <span class="pull-right">
+                                        <div class="checkbox" style="margin:0px !important">
+                                            <label>
+                                                <input type="checkbox" name="funding_status_contract_created" [(ngModel)]="magic_filter.funding_status_contract_created">
+                                            </label>
+                                        </div>
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" *ngIf="magic_filter.loan_status=='1'">
+                                <div class="form-group" style="margin-bottom:0px">
+                                    <span class="pull-left text-primary">Disbursement</span>
+                                    <span class="pull-right">
+                                        <div class="checkbox" style="margin:0px !important">
+                                            <label>
+                                                <input type="checkbox" name="funding_status_disbursement" [(ngModel)]="magic_filter.funding_status_disbursement">
+                                            </label>
+                                        </div>
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="panel-footer" style="background: #fff !important;">
+                        <button (click)="getLoans()" class="btn btn-primary btn-block edged_box">Apply Filter</button>
+                    </footer>
+                </section>
+                
+                <div class="text-center txt t_l4 t_cool box" style="background: #FFF; border: 1px solid #ccc;padding: 12px; cursor: pointer;" (click)="searchView=true">
+                    More Filter Options
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div *ngIf="viewing_loan">
+    <app-loansummary *ngIf="overlayType=='0'" [loan_viewed]="loan_viewed" [view_state]="view_state" [dontshownext]="dontshownext" (modalClosed)="closeOverlay($event)"></app-loansummary>
+</div>

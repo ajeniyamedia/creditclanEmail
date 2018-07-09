@@ -1,0 +1,381 @@
+<app-main-navigation></app-main-navigation>
+<div class="right-arrow" style="z-index:1;" *ngIf="next?.status">
+    <app-nextcustomer [customer]="next"></app-nextcustomer>
+</div>
+<div class="left-arrow" style="z-index:1;" *ngIf="prev?.status">
+    <app-prevcustomer [customer]="prev"></app-prevcustomer>
+</div>
+<div class="container" style="width:70%; padding-top:130px; margin-bottom: 50px">
+    <div class="col-md-9" style="padding-right: 5px">
+        <section class="">
+            <div class="tbds">
+                <div class="tbd_profile tbd active">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-3" style="padding-left:0px">
+        <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'home_corporate'">
+            <div class="text-center crd_top">
+                <p class="txt t_l3 t_lh1">
+                    <strong>Home</strong>
+                </p>
+            </div>
+            
+            <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/','corporate',userId]">Back</a>
+        </div>
+
+        <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'home'">
+            <div class="text-center crd_top">
+                <p class="txt t_l3 t_lh1">
+                    <strong>Home</strong>
+                </p>
+            </div>
+            <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
+        </div>
+
+        <!-- Card laoded is based on the section navigated to -->
+        <div class="panel-body text-center b_grey crd_theme_o" *ngIf="section.location == 'profile'">
+            <div class="text-center crd_top" *ngIf="enable_peer=='1'">
+                <p class="txt t_l2 t_lh1 t_hot">N{{section?.ledger?.cu}}</p>
+                <p class="txt t_dull">Wallet Balance</p>
+            </div>
+            <a *ngIf="enable_peer=='1'" class="btn btn-white btn-full egded-box" style="display: inline" [routerLink]="['/customer/',userType,userId,'wallet']">View History</a>
+        </div>
+        <div class="panel-body text-center b_grey crd_theme_o" *ngIf="section.location == 'referrals'">
+            <div class="text-center crd_top" style="margin-bottom:6px;">
+                <p class="txt t_l2 t_lh1 t_hot">N{{section?.data.referral_balance}}</p>
+                <p class="txt t_dull">Referral Balance</p>
+                <a class="btn btn-primary btn-sm text-center">Pay</a>
+            </div>
+            
+            <a class="btn btn-white btn-full egded-box" style="display: inline" (click)="overlayOpen = true">View Statement</a>
+        </div>
+        <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'loans'">
+            <div class="text-center crd_top">
+                <p class="txt t_l2 t_lh1">N{{section.data.total}}</p>
+                <p class="txt">In Loans Taken</p>
+            </div>
+            <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
+        </div>
+
+        <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'finance'">
+            <div class="text-center crd_top">
+                <p class="txt t_l3 t_lh1">
+                    <strong>Financials</strong>
+                </p>
+                <p class="txt">
+                    <strong>{{section.data['cust']['LAST_UPDATED_INCOME']}}</strong>
+                </p>
+            </div>
+            <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
+        </div>
+
+        <div class="text-center" style="color: #fff; background: #718FC8;padding: 30px; margin-bottom: 5px" *ngIf="section.location == 'verification'">
+            <div style=" margin-bottom: 10px;">
+                <img src="assets/images/time.PNG">
+            </div>
+            <div style="margin-bottom: 25px">
+                <p class="txt t_lh1" style="font-size: 14px">
+                    <strong>Last Updated
+                        <br />23 Minutes ago</strong>
+                </p>
+            </div>
+            <div>
+                <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline-block; width: auto" [routerLink]="['/customer/',userType,userId]">Back</a>
+            </div>
+        </div>
+
+        <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'social_links'">
+            <div class="text-center" style="padding: 15px 0px; margin-top: 20px; margin-bottom: 25px;">
+                <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data.added_social}}</p>
+                <p class="txt">
+                    <strong>Socials</strong>
+                </p>
+            </div>
+            <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
+        </div>
+
+        <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'investments'">
+            <div class="text-center crd_top">
+                <p class="txt t_l2 t_lh1">N{{section.data.total_investments | money}}</p>
+                <p class="txt">Investments</p>
+            </div>
+            <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
+        </div>
+
+        <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'accounts'">
+            <div class="text-center" style="padding: 15px 0px; margin-top: 20px; margin-bottom: 25px;">
+                <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data.length}}</p>
+                <p class="txt">
+                    <strong>Accounts</strong>
+                </p>
+            </div>
+            <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
+        </div>
+
+        <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'statement'">
+            <div class="text-center" style="padding: 15px 0px; margin-top: 20px; margin-bottom: 25px;">
+                <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data}}</p>
+                <p class="txt">
+                    <strong>Statements</strong>
+                </p>
+            </div>
+            <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
+        </div>
+
+        <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'payslip'">
+            <div class="text-center" style="padding: 15px 0px; margin-top: 20px; margin-bottom: 25px;">
+                <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data}}</p>
+                <p class="txt">
+                    <strong>Payslips</strong>
+                </p>
+            </div>
+            <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
+        </div>
+
+        <!-- <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'messages'">
+            <div class="text-center" style="padding: 15px 0px; margin-top: 20px; margin-bottom: 25px;">
+                <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data.count}}</p>
+                <p class="txt">
+                    <strong>Messages</strong>
+                </p>
+            </div>
+            <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
+        </div> -->
+        <div class="text-center" style="margin-bottom:15px" *ngIf="section.location == 'schedule'">
+            <section class="panel" [ngClass]="{'greenb': section?.schedule_type, 'blueb':  !section?.schedule_type}">
+                <div class="panel-body text-center">
+                    <img src="assets/img/bell.png" style="width:60px;margin:15px 0px">
+                    <h2>{{section?.state?.total}}</h2>
+                    <h4 style="margin:0px !important">{{section?.state?.current_month}}</h4>
+                    <div style="height:1px;border-bottom:1px solid #fff;margin:30px">&nbsp;</div>
+                </div>
+            </section>
+            <!-- <section class="panel" style="margin-bottom:15px">
+                        <div class="panel-body">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="searchText" required [(ngModel)]="magic_filter.searchText" #searchText="ngModel">
+                                <span class="input-group-btn">
+                                  <button [disabled]="loading" (click)="searchForLoans()" class="btn btn-white" type="button"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
+                             
+                        </div>
+                      </section> -->
+            <div style="margin-bottom:5px">
+                <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 5px;" *ngFor="let record of section?.record_types">
+
+                    <div class="form-group" style="margin-bottom:0px">
+                        <span class="pull-left text-primary">{{record.display}}</span>
+                        <span class="pull-right">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="radio" (click)="reloadrecord($event)" name="record_type" [(ngModel)]="record_type" [value]="record.value">
+                                </label>
+                            </div>
+                        </span>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <a class="btn btn-white btn-block">More Filters</a>
+        </div>
+        <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'guarantors'">
+            <div class="text-center" style="padding: 15px 0px; margin-top: 20px; margin-bottom: 25px;">
+              <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data}}</p>
+              <p class="txt"><strong>Guarantors</strong></p>
+            </div>
+            <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
+        </div>
+
+        <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'photos'">
+            <div class="text-center" style="padding: 15px 0px; margin-top: 20px; margin-bottom: 25px;">
+              <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data}}</p>
+              <p class="txt"><strong>Photos</strong></p>
+            </div>
+            <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
+        </div>
+
+        <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'attachment'">
+            <div class="text-center" style="padding: 15px 0px; margin-top: 20px; margin-bottom: 25px;">
+              <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data}}</p>
+              <p class="txt"><strong>Attachments</strong></p>
+            </div>
+            <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
+        </div>
+
+        <section class="panel" style="border: 1px solid #E6E7E8" *ngIf="userType=='corporate'">
+            <div class="panel-body" style="padding: 10px 25px">
+                <ul class="list list_border">
+                    <li>
+                        <a [routerLink]="['/customer/','corporate',userId,'upload']" class="txt_l4">Upload</a>
+                    </li>
+                  
+                </ul>
+            </div>
+        </section>
+
+
+        <!-- Bottom Navigation -->
+        <section class="panel" style="border: 1px solid #E6E7E8" *ngIf="userType=='individual'">
+            <div class="panel-body" style="padding: 10px 25px">
+                <ul class="list list_border">
+                    <li>
+                        <a [routerLink]="['/customer/',userType,userId,'financials']" class="txt_l4">Financials</a>
+                    </li>
+                    <!-- <li>
+                    <a [routerLink]="['/customer/',userType,userId,'verifications']"  class="txt_l4">Verification</a>
+                  </li> -->
+                    <!-- <li>
+                    <a href="javascript:;" class="txt_l4">Verification</a>
+                  </li> -->
+                    <li>
+                        <a class="txt_l4" [routerLink]="['/customer/',userType,userId,'guarantors']">Guarantors</a>
+                    </li>
+                    <!-- <li>
+                        <a [routerLink]="['/customer/',userType,userId,'messages']" class="txt_l4">Messages</a>
+                    </li> -->
+
+                    <li>
+                        <a [routerLink]="['/customer/',userType,userId,'attachments']" class="txt_l4">Attachments</a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/customer/',userType,userId,'photos']" class="txt_l4">Photos</a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/customer/',userType,userId,'referrals']" class="txt_l4">Referrals</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</div>
+<div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayOpen">
+
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class=" overpanel-content container" role="document" style="text-align:left;width:1000px;min-height:500px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+        <!-- <app-payment [record_type]="record_type" [schedule_type]="schedule_type" [disburse]="disburse" [security_question]="state?.security_question.QUESTION"></app-payment> -->
+        <app-referral-statement  [customer_id]="userId"></app-referral-statement>
+    </div>
+</div>
+<!-- Request To Get Paid -->
+<div class="overlay_ app_overlay animated ln_mdl" style="overflow:hidden" *ngIf="deleteCustomer">
+
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
+
+
+    <div class=" overpanel-content animated bounceIn  container" role="document" style="background:rgba(255, 255, 255, 0.95); height:100%; text-align:left;width:650px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden">
+
+        <div class="modl text-center">
+
+            <div class="modl_title" style="margin-bottom: 50px">
+                <h2>
+                    <span class="text-success">Delete Customer</span>
+                    <br>
+                    <small class="modl_sub">Remove all records</small>
+
+
+
+                </h2>
+            </div>
+
+
+
+            <div style="width: 500px; margin: 0 auto 25px">
+
+            </div>
+
+            <div style="width: 200px; margin: 0 auto">
+                <div style="margin-bottom: 30px">
+                    <!-- <button class="text-center txt t_l4 t_cool big_btn btn-block good"><strong>Accept Contract</strong>
+                        </button> -->
+                    <button class="text-center txt t_l4 btn-block" [ngClass]="{'btn-danger': is_done=='0', 'btn-success': is_done=='1'}" style="padding-top: 12px; padding-bottom: 12px"
+                        (click)="deleteBorrower()" [disabled]="loading||is_done=='1'">
+                        <strong *ngIf="is_done=='0'">Confirm</strong>
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading && is_done=='0'"></i>
+                        <i class="fa fa-check" *ngIf="!loading && is_done=='1'"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- Request To Get Paid -->
+<div class="overlay_ app_overlay animated ln_mdl" style="overflow:hidden" *ngIf="resendCustomerEmail">
+
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
+
+
+    <div class=" overpanel-content animated bounceIn  container" role="document" style="background:rgba(255, 255, 255, 0.95); height:100%; text-align:left;width:650px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden">
+
+        <div class="modl text-center">
+
+            <div class="modl_title" style="margin-bottom: 50px">
+                <h2>
+                    <span class="text-success">Resend Welcome Email</span>
+                    <br>
+                     
+
+                </h2>
+            </div>
+
+
+
+            <div style="width: 500px; margin: 0 auto 25px">
+
+            </div>
+
+            <div style="width: 200px; margin: 0 auto">
+                <div style="margin-bottom: 30px">
+                    <!-- <button class="text-center txt t_l4 t_cool big_btn btn-block good"><strong>Accept Contract</strong>
+                        </button> -->
+                    <button class="text-center txt t_l4 btn-block" [ngClass]="{'btn-danger': is_done=='0', 'btn-success': is_done=='1'}" style="padding-top: 12px; padding-bottom: 12px"
+                        (click)="sendMail()" [disabled]="loading||is_done=='1'">
+                        <strong *ngIf="is_done=='0'">Confirm</strong>
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading && is_done=='0'"></i>
+                        <i class="fa fa-check" *ngIf="!loading && is_done=='1'"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- <div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="addNewCompanyUser">
+      
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+          </a> 
+      </div>
+  <div class=" overpanel-content container" role="document" style="text-align:left;width:600px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+   <app-newempform (saveTheEmployee)="saveEmployeeCompany($event)" [roles]="nce?.roles" [loading]="nce?.loading" [employee]="nce?.employee" [isedit]="nce?.isedit"></app-newempform>
+ </div>
+</div>  -->
+<div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayOpenLedger">
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="overlayOpenLedger=false">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class=" overpanel-content container" role="document" style="text-align:left;width:1000px;min-height:500px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+        <app-ledger (dateChanged)="handledateChanged($event)" [account_details]="account_details"></app-ledger>
+    </div>
+</div>

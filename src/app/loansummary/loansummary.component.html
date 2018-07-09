@@ -1,0 +1,689 @@
+<div class="overlay_ app_overlay animated" style="overflow:auto;background:#fdfdfd;overflow-y:hidden">
+    <div class="row" style="background-color: #fbfbfb;">
+        <div class="col-md-12">
+            <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+    <a class="left-arrows" *ngIf="prev?.status&&loan?.IS_REJECTED!='1'" (click)="nextLoan(prev?.batch_id)" style="z-index:1;">
+        <i class="fa fa-arrow-left"></i>
+    </a>
+    <a class="right-arrows" *ngIf="next?.status&&loan?.IS_REJECTED!='1'" (click)="nextLoan(next?.batch_id)" style="z-index:1;">
+        <i class="fa fa-arrow-right"></i>
+    </a>
+    <div class=" overpanel-content " style="    padding-top: 0px !important;" role="document">
+        <div style="z-index: 3;
+            background-color: #fbfbfb;
+            /* background-size: cover; */
+            /* background-position: center; */
+            height: 278px;
+            color: rgba(255, 255, 255, 1)">&nbsp;</div>
+        <div class="container" style="text-align: left;
+            width: 700px;
+            padding-top: 0px;
+            padding-left: 0px;
+            padding-right: 0px;
+            overflow: hidden;
+            border-radius: 5px;
+            margin-top: -280px;
+            z-index: 6;">
+            <div class="row text-center" *ngIf="is_approval">
+                <div class="col-md-12">
+                    <p>You have {{pending_approvals}} approvals</p>
+                </div>
+            </div>
+            <div style="z-index: 1;
+                /* margin-top: -100px; */
+                background-color: none;
+                margin-bottom: 48px;
+                /*-webkit-box-shadow: 0 1px 4px 0 rgba(0,0,0,0.37);
+                box-shadow: 0 1px 4px 0 rgba(0,0,0,0.37);*/
+                word-wrap: break-word;">
+                <div style="display:block;height:8px;background-color: rgb(3, 175, 223);
+                color: rgba(0, 0, 0, 1);"></div>
+                
+                <section class="panel bd" style="border: none !important; background: none">
+
+
+                    <div class="panel-body" style="padding:15px 30px !important; padding-top:30px !important;height:473px; border:1px solid #ddd; border-bottom: none; background-color: #fff"
+                        *ngIf="view_state!='2'">
+
+
+                        <div *ngIf="view_state=='7'">
+                            <app-makepayment (paymentHasBeenQueued)="paymentHasBeenQueued($event)" [makingPayment]=true [loan_viewed]="loan_viewed"></app-makepayment>
+                        </div>
+
+
+
+                        <div *ngIf="view_state=='4'">
+                            <div class="row">
+                                <div class="col-md-5">
+
+                                    <!-- New View -->
+                                    <section class="panel box" style="border-radius:15px; margin-right: 30px">
+                                        <div class="panel-body text-center portf_summ">
+                                            <h3 class="no-margin txt t_cool t_l4" style="word-wrap:break-word; margin-top: 10px; margin-bottom: 15px">{{loan?.LEGAL_NAME}}</h3>
+
+                                            <div style="margin:10px auto;">
+                                                <img class="{{loan?.LOAN_STATUS | loanStatus}}" src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{loan?.FILE_NAME | imagenotfound}}?q=auto"
+                                                    style=" width: 60px;   height: 60px; border-radius: 50%; ">
+                                            </div>
+
+                                            <div class="sm_rating" style="margin-bottom: 70px">
+                                                <app-rating [rating]='loan?.PEOPLE_RATING_ID'></app-rating>
+                                            </div>
+
+                                            <a class="btn btn-orange edged_box wd_btn btn-block" style="display: inline-block; margin-bottom: 10px" (click)="view_loan(loan?.REQUEST_ID)">View Contract</a>
+                                            <a class="btn btn-orange edged_box wd_btn btn-block" style="display: inline-block; margin-bottom: 10px" (click)="view_state='7'">Register Payment</a>
+                                        </div>
+                                    </section>
+
+
+
+
+
+
+                                </div>
+                                <div class="col-md-7">
+                                    <div style="margin-left: -30px">
+                                        <app-schedule *ngIf="post_state=='4'" [sub_summary]="1" [parentRouteId]="loan_viewed"></app-schedule>
+                                        <app-schedule *ngIf="post_state=='5'" [sub_summary]="3" [parentRouteId]="loan_viewed"></app-schedule>
+                                        <!-- <app-makepayment *ngIf="post_state=='6'" [loan_viewed]="loan_viewed"></app-makepayment> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Loan Information -->
+                        <div *ngIf="view_state=='0'">
+                            <div class="row">
+
+                                <div class="col-md-5">
+                                
+                                    <section class="panel box" style="border-radius:15px;">
+                                        <div class="panel-body text-center">
+
+                                            <h3 class="no-margin txt t_cool t_l4" style="word-wrap:break-word; margin-top: 10px; margin-bottom: 20px">{{loan?.LEGAL_NAME}}</h3>
+
+                                            <div style="margin:10px auto;">
+                                                <img class="{{loan?.LOAN_STATUS | loanStatus}}" src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{loan?.FILE_NAME | imagenotfound}}?q=auto"
+                                                    style=" width: 80px;   height: 80px; border-radius: 50%; ">
+                                            </div>
+
+                                            <div class="sm_rating">
+                                                <app-rating [rating]='loan?.PEOPLE_RATING_ID'></app-rating>
+                                            </div>
+
+                                            <div class="" style="margin-bottom:40px">
+                                                <div class="progress progress-xs" style="margin:0 30px 20px">
+                                                    <div class="progress-bar {{loan?.PERCENTAGE_FUNDED|safe}}" role="progressbar" attr.aria-valuenow="{{loan?.PERCENTAGE_FUNDED|safe}}"
+                                                        aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <p class="t_lh1">
+                                                    <span class="t_cool">{{loan?.TOTAL_REMAINING}} Left</span>
+                                                    <br>
+                                                    <span style="font-size: 13px">({{loan?.PERCENTAGE_FUNDED}}% Funded)</span>
+                                                </p>
+                                            </div>
+
+                                            <a *ngIf="loan?.LOAN_STATUS !='-3'" class="btn btn-orange edged_box wd_btn" style="display: inline-block; margin-bottom: 10px" (click)="view_loan(loan?.REQUEST_ID)">View Loan</a>
+                                            <button *ngIf="loan?.LOAN_STATUS =='-3'" class="btn btn-orange edged_box wd_btn" style="display: inline-block; margin-bottom: 10px" (click)="moveToRequests(loan?.REQUEST_ID)">Move to requests<i class="fa fa-spinner fa-spin" *ngIf="loading && is_done=='0'"></i></button>
+                                            
+                                        </div>
+                                    </section>
+                                </div>
+
+
+
+                                <div class="col-md-7">
+                                    <app-approvalview [model_a]="model_a" [model_r]="model_r" [prev_levels]="prev_levels" [queue_disbursement]="queue_disbursement" [pay_from_loan]="pay_from_loan" [loan]="loan" [loanapprovals]="loanapprovals" *ngIf="is_approval"></app-approvalview>
+                                    <div *ngIf="!is_approval" class="loanterms" style="width: 100%;max-width: 450px;margin: 20px auto;margin-top:0px; font-size:13px !important">
+                                        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Loan Terms</span>
+                                                <span class="pull-right">
+                                                    {{loan?.LOAN_ID}} 
+                                                </span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div style="">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Required Credit</span>
+                                                <span class="pull-right">
+                                                    {{loan?.REQUEST_PRINCIPAL | number:'.2-2'}}
+                                                </span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Duration</span>
+                                                <span class="pull-right">
+                                                    {{loan?.REQUEST_TENOR}} {{loan?.LOAN_DURATION}}
+                                                </span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <!-- <div class="form-group">
+                                            <span class="pull-left text-primary">Fees & Charges</span>
+                                            <span class="pull-right">
+                                  {{loan?.TOTAL_FEES_CHARGES | number:'.2-2'}}
+                               </span>
+                                            <div class="clearfix"></div>
+                                        </div> -->
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary">Total Interest</span>
+                                                <span class="pull-right">
+                                                    {{loan?.TOTAL_INTERESTS | number:'.2-2'}}
+                                                </span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary ">Total Repayment</span>
+                                                <span class="pull-right">
+                                                    {{loan?.TOTAL_REPAYMENT | number:'.2-2'}}
+                                                </span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+
+
+                                        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary ">Loan Purpose</span>
+                                                <span class="pull-right">
+                                                    {{loanPurpose[loan?.LOAN_PURPOSE_ID]}}
+                                                </span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary ">Request Time</span>
+                                                <span class="pull-right">
+                                                    {{loan?.DATE_ADDED | amTimeAgo}}
+                                                </span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary ">Time to Expire</span>
+                                                <span class="pull-right">{{loan?.EXPIRATION_DATE | amTimeAgo}}</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary ">Mode of Application</span>
+                                                <span class="pull-right">{{applyMethod[loan?.WHERE_FROM]}}</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div *ngIf="view_state=='1'">
+                            <app-customersummary [loan_status]='loan_status' (modalClosed)="gotoloan($event)" [customer_viewed]="loan?.PEOPLE_ID"></app-customersummary>
+                        </div>
+
+                    </div>
+
+
+                    <!-- If its in loan market -->
+                    <div *ngIf="view_state==='2'" class="">
+                        <div *ngIf="view_state==='2'">
+
+                            <section class="panel hide">
+                                <div class="panel-body" *ngIf="offer_area">
+                                    <div class="offer_form" style="width: 80%;margin: 0px auto; margin-bottom:100px">
+                                        <h3>Make an offer</h3>
+                                        <form #f="ngForm" novalidate>
+                                            <!-- We'll add our form controls here -->
+                                            <div class="form-group">
+                                                <label class="control-label">Amount</label>
+                                                <div class="input-group ">
+                                                    <input type="text" name="BID_PRINCIPAL" class="form-control" required [(ngModel)]="platformOffer.BID_PRINCIPAL">
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                                            <span class="sel_cur">{{loan_currency}}</span>
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li *ngFor="let c of countries">
+                                                                <a href="javascript:;" (click)="changeCurrency(c)">{{c.currency[0]}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <!-- <small [hidden]="platformOffer.BID_PRINCIPAL.valid" class="text-danger">
+                                            Amount is required.
+                                          </small> -->
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Interest</label>
+                                                <div class="input-group ">
+                                                    <input type="text" name="BID_RATE" class="form-control" required [(ngModel)]="platformOffer.BID_RATE">
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                                            <span class="sel_cur">{{interest_duration}}</span>
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li *ngFor="let d of loan_durations">
+                                                                <a href="javascript:;" (click)="changeDuration(d,2)">{{d.INTEREST_DURATION}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Duration</label>
+                                                <div class="input-group ">
+                                                    <input type="text" name="BID_TENOR" class="form-control" required [(ngModel)]="platformOffer.BID_TENOR">
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                                            <span class="sel_cur">{{loan_duration}}</span>
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li *ngFor="let d of loan_durations">
+                                                                <a href="javascript:;" (click)="changeDuration(d,1)">{{d.LOAN_DURATION}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <button *ngIf="loan?.ADDED_TO_PAYMENT_QUEUE!=1" [disabled]="loading||!f.valid" type="submit" class="btn btn-white btn-block"
+                                                        (click)="submitOffer(f.value)">Save Offer</button>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <a (click)="offer_area=!offer_area" class="btn btn-white btn-block">Cancel</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="panel bd hide" style="margin-bottom:100px" *ngIf="loan?.PLATFORM_HAS_MADE_OFFER=='1'&&!offer_area">
+                                <div class="panel-body" style="padding:15px 30px !important">
+                                    <div class="row" style="margin-bottom:80px">
+                                        <div class="col-md-7">
+                                            <div class="loanterms" style="width: 100%;max-width: 450px;margin: 20px auto;">
+                                                <div style="">
+                                                    <div class="form-group" style="border-bottom: 1px solid #d9d9d9;">
+                                                        <span class="pull-left text-primary">Offered Amount</span>
+                                                        <span class="pull-right">
+                                                            {{loan?.PLATFORM_OFFER.BID_PRINCIPAL | number:'.2-2'}}
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="form-group" style="border-bottom: 1px solid #d9d9d9;">
+                                                        <span class="pull-left text-primary">Tenor</span>
+                                                        <span class="pull-right">
+                                                            {{loan?.PLATFORM_OFFER.BID_TENOR}}{{loan?.PLATFORM_OFFER.BID_PERIOD}}
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="form-group" style="border-bottom: 1px solid #d9d9d9;">
+                                                        <span class="pull-left text-primary">Interest Rate</span>
+                                                        <span class="pull-right">
+                                                            {{loan?.PLATFORM_OFFER.BID_RATE}}%
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="form-group" style="border-bottom: 1px solid #d9d9d9;">
+                                                        <span class="pull-left text-primary">Offered When</span>
+                                                        <span class="pull-right">
+                                                            {{loan?.PLATFORM_OFFER.AGO}}
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <span class="pull-left text-primary">&nbsp;</span>
+                                                        <span class="pull-right">
+                                                            <a (click)="view_state='0'" class="btn btn-normal btn-block ld_btn_portfolio" style="padding: 10px; ">View Loan</a>
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <section class="panel" style="border:1px solid #eee">
+                                                <div class="panel-body">
+                                                    <div class="text-center" style="padding:15px">
+                                                        <a>
+                                                            <img class="thumb" style="width:100px; height:100px" src="assets/img/handshake.png">
+                                                        </a>
+                                                        <h3>Offer Made</h3>
+                                                        <a (click)="offer_area = !offer_area" class="btn btn-white btn-block">Modify Offer</a>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="panel bd hide" style="margin-bottom:100px" *ngIf="loan?.PLATFORM_HAS_MADE_OFFER!='1'&&!offer_area">
+                                <div class="panel-body" style="padding:15px 30px !important">
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div class="loanterms" style="width: 100%;max-width: 450px;margin: 20px auto;">
+                                                <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                                    <div class="form-group" style="border-bottom: 1px solid #d9d9d9;">
+                                                        <span class="pull-left text-primary">Offered Amount</span>
+                                                        <span class="pull-right">
+                                                            0
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="form-group" style="border-bottom: 1px solid #d9d9d9;">
+                                                        <span class="pull-left text-primary">Tenor</span>
+                                                        <span class="pull-right">
+                                                            0
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="form-group" style="border-bottom: 1px solid #d9d9d9;">
+                                                        <span class="pull-left text-primary">Interest Rate</span>
+                                                        <span class="pull-right">
+                                                            0
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="form-group" style="border-bottom: 1px solid #d9d9d9;">
+                                                        <span class="pull-left text-primary">Offered When</span>
+                                                        <span class="pull-right">
+
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <span class="pull-left text-primary">&nbsp;</span>
+                                                        <span class="pull-right">
+                                                            <a (click)="view_state='0'" class="btn btn-normal btn-block ld_btn_portfolio" style="padding: 10px; ">View Loan</a>
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <section class="panel" style="border:1px solid #eee; border-radius:15px">
+                                                <div class="panel-body">
+                                                    <div class="text-center" style="padding:15px">
+                                                        <h3>No Offers Yet</h3>
+                                                        <a>
+                                                            <img class="thumb" style="width:100px; height:100px" src="assets/img/cancel.png">
+                                                        </a>
+                                                        <div *ngIf="loan?.PLATFORM_HAS_MADE_OFFER == '0'&&loan?.LOAN_STATUS == '1'" style="padding-top:20px">
+                                                            <a (click)="offer_area = !offer_area" class="btn btn-white">Make Offer</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+
+                            <!-- New View - IF loan is in market-->
+                            <div *ngIf="loan?.IS_PEER_TO_PEER=='1'">
+                                <section class="panel" style="border: 1px solid #ddd; margin-bottom: 10px">
+                                    <div class="panel-body">
+                                        <div class="pull-left" style="margin-right: 10px">
+                                            <a>
+                                                <img class="" src="assets/img/people_circle.png" style="width:60px; height:60px">
+                                            </a>
+                                        </div>
+
+                                        <div class="pull-left">
+                                            <h4 style="margin-bottom: 2px">Funding Ongoing
+                                                <br>
+                                                <small>{{loan?.LENDERS.SUMMARY}}</small>
+                                            </h4>
+                                        </div>
+
+                                        <div class="pull-right col-md-4 text-right">
+                                            <h4 style="margin-bottom: 2px">
+                                                    <small *ngIf="loan?.ADDED_TO_PAYMENT_QUEUE==1">{{loan?.AMOUNT_TO_BE_RECEIVED | number:'.2-2'}} Funded</small>
+                                                    <small *ngIf="loan?.ADDED_TO_PAYMENT_QUEUE!=1">{{loan?.REMAINING | number:'.2-2'}} Pending</small>
+                                            </h4>
+                                            <div class="progress progress-xs" style="margin-bottom: 0px">
+                                                    <div class="progress-bar {{loan?.PERCENTAGE_FUNDED|safe}}" role="progressbar" attr.aria-valuenow="{{loan?.PERCENTAGE_FUNDED}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <div class="" style="border: 1px solid #ddd; margin-bottom: 10px; padding: 30px; background: #fff">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <section class="panel box" style="border-radius:15px;">
+                                                <div class="panel-body text-center">
+
+                                                    <h3 class="no-margin txt t_hot t_l5" style="word-wrap:break-word; margin-top: 10px; margin-bottom: 20px; font-size: 14px">Funding Summary</h3>
+
+                                                    <div style="margin-top: 50px; margin-bottom: 50px">
+                                                        <img class="" src="assets/images/save.PNG" style="width:60px; height:60px">
+                                                    </div>
+
+                                                    <a class="btn btn-orange edged_box wd_btn" style="display: inline-block; margin-bottom: 10px; width: 85%" (click)="view_loan(loan?.REQUEST_ID)">View Loan</a>
+
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <div class="col-md-7 col-md-offset-1">
+                                            <div class="loanterms" style="width: 100%;max-width: 450px;margin: 20px auto;margin-top:0px; font-size:13px !important">
+
+
+                                                <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                                    <div class="form-group">
+                                                        <span class="pull-left text-primary">#Lenders</span>
+                                                        <span class="pull-right">
+                                                            {{loan?.LENDERS.SUMMARY}}
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                                <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                                    <div class="form-group">
+                                                        <span class="pull-left text-primary"># Lenders Accepted</span>
+                                                        <span class="pull-right">
+                                                            {{loan?.LENDERS.COUNT}}
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                                <div style="">
+                                                    <div class="form-group">
+                                                        <span class="pull-left text-primary">Total Funded</span>
+                                                        <span class="pull-right">
+                                                            {{loan?.TOTAL_FUNDED | number:'.2-2'}}
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                                <div style="">
+                                                    <div class="form-group">
+                                                        <span class="pull-left text-primary"># No of Offers</span>
+                                                        <span class="pull-right">
+                                                            {{loan?.LENDERS.COUNT}}
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                                <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                                    <div class="form-group">
+                                                        <span class="pull-left text-primary">Total Amount Offered</span>
+                                                        <span class="pull-right">
+                                                            {{loan?.TOTAL_AMOUNT_OFFERED | number:'.2-2'}}
+                                                        </span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- New viewIf it's not in loan market -->
+                            <div class="panel-body" style="padding:15px 30px !important; padding-top:30px !important;height:473px; border:1px solid #ddd; border-bottom: none; background-color: #fff"
+                                *ngIf="loan?.IS_PEER_TO_PEER !='1' && enable_peer=='1' && loan?.LOAN_STATUS !='-3'">
+
+                                <div class="text-center">
+                                    <h3>Currently not in market</h3>
+
+                                    <div style="margin: 40px 0">
+                                        <img class="" src="assets/images/close.PNG">
+                                    </div>
+
+                                    <div class="text-center txt t_l4 t_hot" style="background: #FFF; border: 1px solid #ccc;padding: 12px; border-color: #F58634; margin-top: 5px; cursor: pointer; display: inline-block;padding: 12px 60px;"
+                                        (click)="sendtomarket()">
+                                        Send to Market</div>
+                                </div>
+                            </div>
+                            <!-- end New View -->
+
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <div style="border:1px solid #ddd; border-top: 0">
+                        <footer class="panel-footer" *ngIf="dontshownext==='1'">
+                            <div class="row text-center">
+                                <div class="col-md-4">
+                                    <!-- <article class="media pad0" (click)="view_state='4';post_state='4';">
+                                        <div class="pull-left thumb" style="padding-top:6px !important">
+                                            <a style="font-size: 30px">
+                                                <i class="fa fa-money"></i>
+                                            </a>
+                                        </div>
+                                        <div class="pull-left" style="font-size:13px">
+                                            <h4 class="no-margin blue_c" style="word-wrap:break-word; margin-top: 15px;font-size: 13px">Summary</h4>
+                                            <p class="no-margin" style="font-size: 13px">Total repayment</p>
+                                        </div> 
+                                    </article> -->
+                                    <p style="border-right: 1px solid #ccc; line-height: 1.2" (click)="view_state='4';post_state='4';">
+                                            <span class="t_cool">Summary</span><br />
+                                            <span style="font-size: 14px">Total Repayment</span>
+                                        </p>
+                                </div>
+                                <div class="col-md-4">
+                                    <!-- <article class="media pad0" (click)="post_state='5'">
+                                        <div class="pull-left thumb" style="padding-top:6px !important">
+                                            <a style="font-size: 30px">
+                                                <i class="fa fa-home"></i>
+                                            </a>
+                                        </div>
+                                        <div class="pull-left" style="font-size:13px">
+                                            <h4 class="no-margin blue_c" style="word-wrap:break-word; margin-top: 15px;font-size: 13px">Schedule</h4>
+                                            <p class="no-margin" style="font-size: 13px">Schedule summary</p>
+                                        </div> 
+                                    </article> -->
+                                    <p style="border-right: 1px solid #ccc; line-height: 1.2" (click)="post_state='5'">
+                                            <span class="t_cool">Schedule</span><br />
+                                            <span style="font-size: 14px">Interest Accrual</span>
+                                        </p>
+                                </div>
+                                <div class="col-md-4">
+                                    <!-- <article class="media pad0" (click)="view_state='1'">
+                                        <div class="pull-left thumb" style="padding-top:6px !important">
+                                            <a style="font-size: 30px">
+                                                <i class="fa fa-user"></i>
+                                            </a>
+                                        </div>
+                                        <div class="pull-left" style="font-size:13px">
+                                            <h4 class="no-margin blue_c" style="word-wrap:break-word; margin-top: 15px;font-size: 13px">Profile</h4>
+                                          
+                                        </div> 
+                                    </article> -->
+                                    <p  (click)="view_state='1'" style="line-height: 1.2">
+                                            <span class="t_cool">Profile</span><br />
+                                            <span style="font-size: 14px">Total Waivers</span>
+                                        </p>
+                                </div>
+                            </div>
+                        </footer>
+                        <footer class="panel-footer ln_sum_ft" *ngIf="dontshownext=='0'&&loan?.IS_REJECTED!='1'">
+                            <div class="row">
+                                <div style="padding-right: 0" class="col-md-4 ft_tb">
+                                    <article class="media pad0" (click)="view_state='0'">
+                                        <div class="pull-left thumb">
+                                            <img src="assets/images/profile2.PNG" width="35px">
+                                        </div>
+                                        <div class="pull-left">
+                                            <p class="txt t_l4 t_cool">Loan Summary</p>
+                                            <p class="txt t_l5">A snapshot of the contract</p>
+                                        </div>
+                                    </article>
+                                </div>
+
+
+                                <div class="col-md-4 ft_tb">
+                                    <article class="media pad0" (click)="view_state='1'" style="padding-left: 0">
+                                        <div class="pull-left thumb">
+                                            <img src="assets/images/profile2.PNG" width="35px">
+                                        </div>
+                                        <div class="pull-left">
+                                            <p class="txt t_l4 t_cool">Profile</p>
+                                            <p class="txt t_l5">A snapshot of the profile</p>
+                                        </div>
+                                    </article>
+                                </div>
+
+                                <div class="col-md-4 ft_tb" style="padding-left: 0" *ngIf="enable_peer=='1'&&loan?.LOAN_STATUS!='-3'">
+                                    <article class="media pad0" (click)="view_state='2'">
+                                        <div class="pull-left thumb">
+                                            <img src="assets/images/profile2.PNG" width="35px">
+                                        </div>
+                                        <div class="pull-left">
+                                            <p class="txt t_l4 t_cool">Funding</p>
+                                            <p class="txt t_l5">P2P Market</p>
+                                        </div>
+                                    </article>
+                                </div>
+                                <div class="col-md-4 ft_tb" style="padding-left: 0" *ngIf="loan?.LOAN_STATUS=='-3'">
+                                    <article class="media pad0" (click)="view_state='1'">
+                                        <div class="pull-left thumb">
+                                            <img src="assets/images/profile2.PNG" width="35px">
+                                        </div>
+                                        <div class="pull-left">
+                                            <p class="txt t_l4 t_cool">Ineligible</p>
+                                            <p class="txt t_l5">View Analysis</p>
+                                        </div>
+                                    </article>
+                                </div>
+
+                            </div>
+                        </footer>
+                    </div>
+
+
+
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

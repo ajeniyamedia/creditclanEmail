@@ -1,0 +1,1531 @@
+<app-main-navigation></app-main-navigation>
+<form #setupForm="ngForm" novalidate>
+    <div class="container con" [class.hidden]="currentView != 'dashboard'">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-1">
+                <div class="left-container" style="margin-top: 50px; line-height: 1.2">
+					<h2 style="margin-bottom: 30px;">One last thing. <br>Configure your Apps!</h2>
+					<div style="font-size: 16px; color: #666;">
+						<p>If you find any loan analytics tool on this side of the atlantic better than this, you are guaranteed one week in Ibiza 2035.</p>
+						<hr>
+						<p>Seriously, this is where everything comes together. <br>Receive analyze and ratify requests. <br>Disbursement, Collection, everything and more!</p>
+					</div>
+					<hr>
+					<button type="submit" class="btn btn-default padded orange-btn wide-btn" style="padding: 15px 100px">I am Interested</button>					
+				</div>
+            </div>
+            <div class="col-md-6">
+                <div class="mansry">
+                    <div style="width: 300px;height: 250px;">
+                        <div class="content">
+                            <a (click) = "displayBackendSettings()">
+                                <img src="assets/images/dashboard.png" style="margin-bottom: 10px;width: 175px;/* margin-left: -35px; */">
+                                <p style="margin-bottom:  0;">Backend Settings</p>
+                            </a>
+                        </div>
+                    </div>
+                    <div style="width: 255px;height: 250px;">
+                        <div class="content">
+                            <a (click) = "displayInvestorSettings()">
+                                <img src="assets/images/investor.jpg" style="margin-bottom: 10px;width: 140px;">
+                                <p style="margin-bottom:  0;">Investor Settings</p>
+                            </a>
+                        </div>
+                    </div>
+                                 
+                    <div style="width:  200px;height: 250px;"> 
+                        <div class="content">
+                            <a (click) = "displayWebSettings()">
+                                <img src="assets/images/web.png" style="margin-bottom: 10px;width: 114px;margin-left:  -10px;">
+                                <p style="margin-bottom:  0;">Web</p>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div style="width:  200px; height: 250px;">
+                        <div class="content">
+                            <a (click) = "displayUssdSettings()">
+                                <img src="assets/images/ussd.png" style="margin-bottom: 10px;width: 174px;">
+                                <p style="margin-bottom:  0;">USSD Settings</p>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div style="width: 155px;height: 250px;">
+                        <div class="content">
+                            <a (click) = "displayMobileSettings()">
+                                <img src="assets/images/app.png" style="margin-bottom: 10px;width: 175px;margin-left: -10px">
+                                <p style="margin-bottom:  0;">Mobile Settings</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container con" [class.hidden]="currentView != 'mobile'">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="text-right">
+                    <img src="assets/images/app.png" style="width: 630px;margin-top: -25px;">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <p class="arrow-back">
+                    <a (click) ="displayDashboard()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
+                </p>
+                <app-mobile [is_mobile] = true [view] = "displayView"></app-mobile>
+            </div>
+        </div>
+    </div>
+    <div class="container con" [class.hidden]="currentView != 'ussd'">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="text-right">
+                    <img src="assets/images/ussd.png" style="width: 630px;margin-top: -25px;">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <p class="arrow-back">
+                    <a (click)="displayDashboard()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
+                </p>
+                <app-mobile [is_mobile] = true [view] = "displayView"></app-mobile>
+            </div>
+        </div>
+    </div>
+    <div class="container con" [class.hidden]="currentView != 'web'">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="text-right">
+                    <img src="assets/images/web.png" style="width: 400px;">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <p class="arrow-back">
+                    <a (click) ="displayDashboard()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
+                </p>
+                <div>
+                    <div aria-multiselectable="true" class="panel-group" id="accordion" role="tablist">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingGen" role="tab">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseGen" aria-expanded="false" data-parent="#accordion" data-toggle="collapse" href="#collapseGen" role="button" class="collapsed"> General Settings </a>
+                                    <span class="pull-right"><img src="assets/images/down-arrow.png" style="width: 20px;"></span>
+                                        
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingGen" class="panel-collapse collapse" id="collapseGen" role="tabpanel" aria-expanded="false" style="height: 0px;">
+                                <div class="panel-body">
+                                    <div class="panel-body">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row hide">
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Category</label>
+                                                    <select class="form-control ng-valid" name="LOAN_TYPE">
+                                                        <option value="0">select</option>
+                                                        <option value="1">Retail</option>
+                                                        <option value="2">Commercial</option>
+                                                        <option value="3">Staff</option>
+                                                        <option value="9">CP</option>
+                                                        <option value="10">Lease</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Type</label>
+                                                    <select class="form-control ng-valid" name="LOAN_SUBTYPE_ID">
+                                                        <option value="1">Debt Consolidation </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Min amount</label>
+                                                    <div class="input-group btn-block">
+                                                        <input class="form-control ng-valid" name="LOAN_AMOUNT" type="text">
+                                                        <input name="LOAN_DURATION_TYPE" type="hidden" class="ng-valid" value="2">
+                                                        <input name="LOAN_CURRENCY" type="hidden" class="ng-valid" value="1">
+                                                        <input name="LOAN_INTEREST_TYPE" type="hidden" class="ng-valid" value="2">
+                                                        <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                        <div class="input-group-btn hide">
+                                                            <button class="btn btn-white dropdown-toggle" data-toggle="dropdown" type="button"><span class="sel_cur">NGN</span><span class="caret"></span></button>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <!---->
+                                                                <li><a href="javascript:;">AWG</a></li>
+                                                                <li><a href="javascript:;">AFN</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" id="loan_duration_container">
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Min Tenor</label>
+                                                    <div class="input-group btn-block">
+                                                        <input class="form-control btn-block ng-valid" name="LOAN_DURATION" type="text">
+                                                        <div class="input-group-btn hide">
+                                                            <button class="btn btn-white dropdown-toggle" data-toggle="dropdown" type="button"><span class="sel_cur">Months</span><span class="caret"></span></button>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <!---->
+                                                                <li><a>Days</a></li>
+                                                                <li><a>Months</a></li>
+                                                                <li><a>Years</a></li>
+                                                                <li><a>Weeks</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Max Tenor</label>
+                                                    <div class="input-group ">
+                                                        <input class="form-control ng-valid" name="MAX_LOAN_DURATION" type="text">
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-white dropdown-toggle" data-toggle="dropdown" type="button"><span class="sel_cur">Months</span><span class="caret"></span></button>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <ul class="dropdown-menu pull-right">
+                                                                    <!---->
+                                                                    <li><a>Days</a></li>
+                                                                    <li><a>Months</a></li>
+                                                                    <li><a>Years</a></li>
+                                                                    <li><a>Weeks</a></li>
+                                                                </ul>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" id="loan_interval_container">
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Loan Interval</label>
+                                                    <div class="input-group btn-block">
+                                                        <input class="form-control btn-block ng-valid" name="LOAN_INTERVAL" type="text">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Duration Interval</label>
+                                                    <div class="">
+                                                        <input class="form-control ng-valid" name="DURATION_INTERVAL" type="text">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="no-margin control-label col-md-6">How many days per year</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="DAYS_PER_YEAR" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="no-margin control-label col-md-6">Minimum no of days</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="MIN_LOAN_DURATION_DAYS" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="no-margin control-label col-md-6">Maximum no of days</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="MAX_LOAN_DURATION_DAYS" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="no-margin control-label col-md-6">Base Duration Type</label>
+                                                <div class="col-md-6">
+                                                    <select class="form-control ng-valid" name="BASE_DURATION_TYPE">
+                                                        <option value="0">Both</option>
+                                                        <option value="1">Days</option>
+                                                        <option value="2">Months</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row hide">
+                                                <div class="col-md-12">
+                                                    <label class="no-margin control-label">Title</label>
+                                                    <label class="pull-right item-text-counter2">25</label>
+                                                    <input class="form-control ng-valid" name="LOAN_TITLE" type="text" value="Salary Advance">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row hide">
+                                                <div class="col-md-12">
+                                                    <label class="no-margin control-label">Description</label>
+                                                    <label class="pull-right item-text-counter2">320</label>
+                                                    <textarea class="form-control ng-valid" name="LOAN_DESCRIPTION" rows="5"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row hide">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Borrower must accept contract </span>
+                                                            <div class="pull-right">
+                                                                <input name="MUST_ACCEPT_CONTRACT" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingOne" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseOne" aria-expanded="false" data-parent="#accordion" data-toggle="collapse" href="#collapseOne" role="button" class="collapsed"> Interest Settings </a></h4></div>
+                            <div aria-labelledby="headingOne" class="panel-collapse collapse" id="collapseOne" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-6">Interest Rate type</label>
+                                                <div class="col-md-6">
+                                                    <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                    <input name="LOAN_INTEREST_TYPE" type="hidden" class="ng-valid" value="2">
+                                                    <select class="form-control ng-valid" name="INTEREST_RATE_TYPE_ID">
+                                                        <option value="0"></option>
+                                                        <option selected="selected" value="1">Flat</option>
+                                                        <option value="2">Simple</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" id="loan_interest_container">
+                                                <label class="control-label col-md-6">Interest</label>
+                                                <div class="col-md-6">
+                                                    <div class="input-group ">
+                                                        <input class="form-control ng-valid" name="LOAN_INTEREST" type="text">
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-white dropdown-toggle  lockForCom" data-toggle="dropdown" type="button"><span class="sel_cur">Per Month</span><span class="caret"></span></button>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <!---->
+                                                                <li><a>Per Day</a></li>
+                                                                <li><a>Per Month</a></li>
+                                                                <li><a>Per Year</a></li>
+                                                                <li><a>Per Week</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="for-closed-end animated">
+                                                <div class="form-group row">
+                                                    <label class="col-md-6"> Installment Frequency </label>
+                                                    <div class="col-md-6">
+                                                        <select class="form-control ng-valid" name="INSTALLMENT_FREQUENCY">
+                                                            <option value="0"></option>
+                                                            <option value="1">One Off</option>
+                                                            <option value="2">Monthly</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-6"> Repayment type </label>
+                                                    <div class="col-md-6">
+                                                        <select class="form-control ng-valid" name="REPAYMENT_TYPE_ID">
+                                                            <option value="0"></option>
+                                                            <option value="1">EPI</option>
+                                                            <option value="2">Interest Alone</option>
+                                                            <option value="3">Bullet</option>
+                                                            <option value="6">Reducing Balance</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row ">
+                                                    <div class="col-md-6 rpVV animated ">
+                                                        <label class="control-label" for="RMI">Interest Applied When</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <select class="form-control ng-valid" name="RP_SET_TYPE">
+                                                            <option value="0">select</option>
+                                                            <option value="1">Immediate</option>
+                                                            <option value="2">Prorated</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!---->
+                                                <div class="form-group row ">
+                                                    <div class="col-md-6 rpVV animated ">
+                                                        <label class="control-label" for="RMI">Repayment Period</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <select class="form-control ng-valid" name="MONTHLY_PERIOD">
+                                                            <option value="1">Monthly</option>
+                                                            <option value="2">+28 days</option>
+                                                            <option value="3">+29 days</option>
+                                                            <option value="4">+30 days</option>
+                                                            <option value="5">+31 days</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingSLI" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseSLI" aria-expanded="false" data-parent="#accordion" data-toggle="collapse" href="#collapseSLI" role="button" class="collapsed"> Loan Amount Based Interest Settings </a></h4></div>
+                            <div aria-labelledby="headingSLI" class="panel-collapse collapse" id="collapseSLI" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Enable </span>
+                                                            <div class="pull-right">
+                                                                <input name="ENABLE_LOAN_INTEREST_ON_AMOUNT" type="checkbox" class="ng-valid">
+                                                                <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                                <input name="LOAN_INTEREST_ON_AMOUNT_TYPE" type="hidden" class="ng-valid" value="1">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-6">Loan Amount</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="LOAN_INTEREST_AMOUNT" type="text">
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-6">Loan Interest</label>
+                                                <div class="col-md-6">
+                                                    <div class="input-group ">
+                                                        <input class="form-control ng-valid" name="LOAN_INTEREST_ON_AMOUNT" type="text">
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-white dropdown-toggle  lockForCom" data-toggle="dropdown" type="button"><span class="sel_cur">Per Day</span><span class="caret"></span></button>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <!---->
+                                                                <li><a>Per Day</a></li>
+                                                                <li><a>Per Month</a></li>
+                                                                <li><a>Per Year</a></li>
+                                                                <li><a>Per Week</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingFIR" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseFIR" aria-expanded="false" data-parent="#accordion" data-toggle="collapse" href="#collapseFIR" role="button" class="collapsed"> Interest Rate Floor </a></h4></div>
+                            <div aria-labelledby="headingFIR" class="panel-collapse collapse" id="collapseFIR" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Enable </span>
+                                                            <div class="pull-right">
+                                                                <input name="ENABLE_FLOOR_INTEREST_RATE" type="checkbox" class="ng-valid">
+                                                                <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <!---->
+                                            <!---->
+                                            <!---->
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingTwo" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseTwo" aria-expanded="false" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseTwo" role="button"> Origination Fee </a></h4></div>
+                            <div aria-labelledby="headingTwo" class="panel-collapse collapse" id="collapseTwo" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-6">Fee type</label>
+                                                <div class="col-md-6">
+                                                    <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                    <select class="form-control ng-valid" name="FEE_TYPE">
+                                                        <option value="0">Upfront</option>
+                                                        <option value="1">Capitalize</option>
+                                                        <option value="2">Backend</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-6"> Percentage Value </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="FEE_PERCENT_VALUE" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-6"> Flat Value </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="FEE_FLAT_VALUE" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-6"> Card Request Fee </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="CARD_REQUEST_FEE" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row hide">
+                                                <label class="control-label col-md-6">Account</label>
+                                                <div class="col-md-6">
+                                                    <select class="form-control ng-valid" name="FEES_ACCOUNT">
+                                                        <!---->
+                                                        <option value="64151">Asset</option>
+                                                        <option value="64227">OKUNUGA, SOJI ORIYOMI</option>
+                                                        <option value="64437">SOJI ORIYOMI OKUNUGA</option>
+                                                        <option value="69079">OKUNUGA, SOJI ORIYOMI</option>
+                                                        <option value="64152">Liability</option>
+                                                        <option value="64156">Wallet</option>
+                                                        <option value="64153">Capital</option>
+                                                        <option value="64154">Income</option>
+                                                        <option value="64157">Interest Income</option>
+                                                        <option value="64155">Expenses</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default hide">
+                            <div class="panel-heading" id="headingInvestors" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseInvestors" aria-expanded="false" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseInvestors" role="button"> Investors </a></h4></div>
+                            <div aria-labelledby="headingInvestors" class="panel-collapse collapse" id="collapseInvestors" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-6">Maximum Investment</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="MAXIMUM_INVESTMENT_PERCENT">
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingF" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseF" aria-expanded="false" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseF" role="button"> Fines </a></h4></div>
+                            <div aria-labelledby="headingF" class="panel-collapse collapse" id="collapseF" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Enable Fines</span>
+                                                            <div class="pull-right">
+                                                                <input name="ENABLE_FINES" type="checkbox" class="ng-valid">
+                                                                <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <div class="form-group row">
+                                                <label class="col-md-6"> Percentage Value </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="FINES_PERCENT_VALUE" type="text">
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <div class="form-group row">
+                                                <label class="col-md-6"> Flat Value </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="FINES_FLAT_VALUE" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row hide">
+                                                <label class="control-label col-md-6">Account</label>
+                                                <div class="col-md-6">
+                                                    <select class="form-control ng-valid" name="FINES_ACCOUNT">
+                                                        <!---->
+                                                        <option value="64151">Asset</option>
+                                                        <option value="64227">OKUNUGA, SOJI ORIYOMI</option>
+                                                        <option value="64437">SOJI ORIYOMI OKUNUGA</option>
+                                                        <option value="69079">OKUNUGA, SOJI ORIYOMI</option>
+                                                        <option value="64152">Liability</option>
+                                                        <option value="64156">Wallet</option>
+                                                        <option value="64153">Capital</option>
+                                                        <option value="64154">Income</option>
+                                                        <option value="64157">Interest Income</option>
+                                                        <option value="64155">Expenses</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingBreak" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseBreak" aria-expanded="false" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseBreak" role="button"> Loan Breaking </a></h4></div>
+                            <div aria-labelledby="headingBreak" class="panel-collapse collapse" id="collapseBreak" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Enable Autobreak</span>
+                                                            <div class="pull-right">
+                                                                <input name="ALLOW_AUTOBREAK" type="checkbox" class="ng-valid">
+                                                                <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingThree" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseThree" aria-expanded="false" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseThree" role="button"> Approvals </a></h4></div>
+                            <div aria-labelledby="headingThree" class="panel-collapse collapse" id="collapseThree" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <button class="btn btn-xs btn-white pull-right">Add New Level</button>
+                                </div>
+                                <div class="panel-body"></div>
+                                <div class="pivots_app">
+                                    <!---->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingContract" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseContract" aria-expanded="false" data-parent="#accordion" data-toggle="collapse" href="#collapseContract" role="button" class="collapsed"> Contract Settings </a></h4></div>
+                            <div aria-labelledby="headingContract" class="panel-collapse collapse" id="collapseContract" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Borrower must accept contract</span>
+                                                            <div class="pull-right">
+                                                                <input name="MUST_ACCEPT_CONTRACT" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Send contract documents</span>
+                                                            <div class="pull-right">
+                                                                <input name="SEND_CONTRACT_DOCS" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Request for BVN</span>
+                                                            <div class="pull-right">
+                                                                <input name="REQUEST_FOR_BVN" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Request for Card</span>
+                                                            <div class="pull-right">
+                                                                <input name="REQUEST_FOR_CARD" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Request for Account</span>
+                                                            <div class="pull-right">
+                                                                <input name="REQUEST_FOR_ACCOUNT" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Enable Signature</span>
+                                                            <div class="pull-right">
+                                                                <input name="ENABLE_CONTRACT_SIGNATURE" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Enable Contract Date Adjustment</span>
+                                                            <div class="pull-right">
+                                                                <input name="ADJUST_CONTRACT_DATE" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingMail" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseMail" aria-expanded="false" data-parent="#accordion" data-toggle="collapse" href="#collapseMail" role="button" class="collapsed"> Mail Settings </a></h4></div>
+                            <div aria-labelledby="headingMail" class="panel-collapse collapse" id="collapseMail" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> SMTP Available</span>
+                                                            <div class="pull-right">
+                                                                <input name="HAS_SMTP" type="checkbox" class="ng-valid">
+                                                                <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Use SendGridâ„¢</span>
+                                                            <div class="pull-right">
+                                                                <input name="USE_SENDGRID" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <!---->
+                                            <div>
+                                                <div class="form-group row" id="loan_interval_container">
+                                                    <div class="col-md-6">
+                                                        <label class="no-margin control-label">SendGrid Username</label>
+                                                        <div class="input-group btn-block">
+                                                            <input class="form-control btn-block ng-valid" name="SG_USERNAME" type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="no-margin control-label">SendGrid Email</label>
+                                                        <div class="">
+                                                            <input class="form-control ng-valid" name="SG_EMAIL" type="text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" id="loan_interval_container">
+                                                    <div class="col-md-6">
+                                                        <label class="no-margin control-label">SendGrid APIKey</label>
+                                                        <div class="input-group btn-block">
+                                                            <input class="form-control btn-block ng-valid" name="SG_API" type="text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container con" [class.hidden]="currentView != 'backend'">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="text-right">
+                    <img src="assets/images/dashboard.png" style="width: 400px;">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <p class="arrow-back">
+                    <a (click) ="displayDashboard()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
+                </p>
+                <app-backendsettings [is_dashboard] = true></app-backendsettings>
+            </div>
+        </div>
+    </div>
+    <div class="container con" [class.hidden]="currentView != 'investor'">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="text-right">
+                    <img src="assets/images/investor.jpg" style="width: 400px;">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <p class="arrow-back">
+                    <a (click) ="displayDashboard()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
+                </p>
+                <div>
+                    <div aria-multiselectable="true" class="panel-group" id="accordion" role="tablist">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingGen" role="tab">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseGen" aria-expanded="false" data-parent="#accordion" data-toggle="collapse" href="#collapseGen" role="button" class="collapsed"> General Settings </a>
+                                    <span class="pull-right"><img src="assets/images/down-arrow.png" style="width: 20px;"></span>
+                                        
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingGen" class="panel-collapse collapse" id="collapseGen" role="tabpanel" aria-expanded="false" style="height: 0px;">
+                                <div class="panel-body">
+                                    <div class="panel-body">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row hide">
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Category</label>
+                                                    <select class="form-control ng-valid" name="LOAN_TYPE">
+                                                        <option value="0">select</option>
+                                                        <option value="1">Retail</option>
+                                                        <option value="2">Commercial</option>
+                                                        <option value="3">Staff</option>
+                                                        <option value="9">CP</option>
+                                                        <option value="10">Lease</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Type</label>
+                                                    <select class="form-control ng-valid" name="LOAN_SUBTYPE_ID">
+                                                        <option value="1">Debt Consolidation </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Min amount</label>
+                                                    <div class="input-group btn-block">
+                                                        <input class="form-control ng-valid" name="LOAN_AMOUNT" type="text">
+                                                        <input name="LOAN_DURATION_TYPE" type="hidden" class="ng-valid" value="2">
+                                                        <input name="LOAN_CURRENCY" type="hidden" class="ng-valid" value="1">
+                                                        <input name="LOAN_INTEREST_TYPE" type="hidden" class="ng-valid" value="2">
+                                                        <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                        <div class="input-group-btn hide">
+                                                            <button class="btn btn-white dropdown-toggle" data-toggle="dropdown" type="button"><span class="sel_cur">NGN</span><span class="caret"></span></button>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <!---->
+                                                                <li><a href="javascript:;">AWG</a></li>
+                                                                <li><a href="javascript:;">AFN</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" id="loan_duration_container">
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Min Tenor</label>
+                                                    <div class="input-group btn-block">
+                                                        <input class="form-control btn-block ng-valid" name="LOAN_DURATION" type="text">
+                                                        <div class="input-group-btn hide">
+                                                            <button class="btn btn-white dropdown-toggle" data-toggle="dropdown" type="button"><span class="sel_cur">Months</span><span class="caret"></span></button>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <!---->
+                                                                <li><a>Days</a></li>
+                                                                <li><a>Months</a></li>
+                                                                <li><a>Years</a></li>
+                                                                <li><a>Weeks</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Max Tenor</label>
+                                                    <div class="input-group ">
+                                                        <input class="form-control ng-valid" name="MAX_LOAN_DURATION" type="text">
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-white dropdown-toggle" data-toggle="dropdown" type="button"><span class="sel_cur">Months</span><span class="caret"></span></button>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <ul class="dropdown-menu pull-right">
+                                                                    <!---->
+                                                                    <li><a>Days</a></li>
+                                                                    <li><a>Months</a></li>
+                                                                    <li><a>Years</a></li>
+                                                                    <li><a>Weeks</a></li>
+                                                                </ul>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" id="loan_interval_container">
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Loan Interval</label>
+                                                    <div class="input-group btn-block">
+                                                        <input class="form-control btn-block ng-valid" name="LOAN_INTERVAL" type="text">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="no-margin control-label">Duration Interval</label>
+                                                    <div class="">
+                                                        <input class="form-control ng-valid" name="DURATION_INTERVAL" type="text">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="no-margin control-label col-md-6">How many days per year</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="DAYS_PER_YEAR" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="no-margin control-label col-md-6">Minimum no of days</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="MIN_LOAN_DURATION_DAYS" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="no-margin control-label col-md-6">Maximum no of days</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="MAX_LOAN_DURATION_DAYS" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="no-margin control-label col-md-6">Base Duration Type</label>
+                                                <div class="col-md-6">
+                                                    <select class="form-control ng-valid" name="BASE_DURATION_TYPE">
+                                                        <option value="0">Both</option>
+                                                        <option value="1">Days</option>
+                                                        <option value="2">Months</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row hide">
+                                                <div class="col-md-12">
+                                                    <label class="no-margin control-label">Title</label>
+                                                    <label class="pull-right item-text-counter2">25</label>
+                                                    <input class="form-control ng-valid" name="LOAN_TITLE" type="text" value="Salary Advance">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row hide">
+                                                <div class="col-md-12">
+                                                    <label class="no-margin control-label">Description</label>
+                                                    <label class="pull-right item-text-counter2">320</label>
+                                                    <textarea class="form-control ng-valid" name="LOAN_DESCRIPTION" rows="5"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row hide">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Borrower must accept contract </span>
+                                                            <div class="pull-right">
+                                                                <input name="MUST_ACCEPT_CONTRACT" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingOne" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseOne" aria-expanded="false" data-parent="#accordion" data-toggle="collapse" href="#collapseOne" role="button" class="collapsed"> Interest Settings </a></h4></div>
+                            <div aria-labelledby="headingOne" class="panel-collapse collapse" id="collapseOne" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-6">Interest Rate type</label>
+                                                <div class="col-md-6">
+                                                    <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                    <input name="LOAN_INTEREST_TYPE" type="hidden" class="ng-valid" value="2">
+                                                    <select class="form-control ng-valid" name="INTEREST_RATE_TYPE_ID">
+                                                        <option value="0"></option>
+                                                        <option selected="selected" value="1">Flat</option>
+                                                        <option value="2">Simple</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" id="loan_interest_container">
+                                                <label class="control-label col-md-6">Interest</label>
+                                                <div class="col-md-6">
+                                                    <div class="input-group ">
+                                                        <input class="form-control ng-valid" name="LOAN_INTEREST" type="text">
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-white dropdown-toggle  lockForCom" data-toggle="dropdown" type="button"><span class="sel_cur">Per Month</span><span class="caret"></span></button>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <!---->
+                                                                <li><a>Per Day</a></li>
+                                                                <li><a>Per Month</a></li>
+                                                                <li><a>Per Year</a></li>
+                                                                <li><a>Per Week</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="for-closed-end animated">
+                                                <div class="form-group row">
+                                                    <label class="col-md-6"> Installment Frequency </label>
+                                                    <div class="col-md-6">
+                                                        <select class="form-control ng-valid" name="INSTALLMENT_FREQUENCY">
+                                                            <option value="0"></option>
+                                                            <option value="1">One Off</option>
+                                                            <option value="2">Monthly</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-6"> Repayment type </label>
+                                                    <div class="col-md-6">
+                                                        <select class="form-control ng-valid" name="REPAYMENT_TYPE_ID">
+                                                            <option value="0"></option>
+                                                            <option value="1">EPI</option>
+                                                            <option value="2">Interest Alone</option>
+                                                            <option value="3">Bullet</option>
+                                                            <option value="6">Reducing Balance</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row ">
+                                                    <div class="col-md-6 rpVV animated ">
+                                                        <label class="control-label" for="RMI">Interest Applied When</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <select class="form-control ng-valid" name="RP_SET_TYPE">
+                                                            <option value="0">select</option>
+                                                            <option value="1">Immediate</option>
+                                                            <option value="2">Prorated</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!---->
+                                                <div class="form-group row ">
+                                                    <div class="col-md-6 rpVV animated ">
+                                                        <label class="control-label" for="RMI">Repayment Period</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <select class="form-control ng-valid" name="MONTHLY_PERIOD">
+                                                            <option value="1">Monthly</option>
+                                                            <option value="2">+28 days</option>
+                                                            <option value="3">+29 days</option>
+                                                            <option value="4">+30 days</option>
+                                                            <option value="5">+31 days</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingSLI" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseSLI" aria-expanded="false" data-parent="#accordion" data-toggle="collapse" href="#collapseSLI" role="button" class="collapsed"> Loan Amount Based Interest Settings </a></h4></div>
+                            <div aria-labelledby="headingSLI" class="panel-collapse collapse" id="collapseSLI" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Enable </span>
+                                                            <div class="pull-right">
+                                                                <input name="ENABLE_LOAN_INTEREST_ON_AMOUNT" type="checkbox" class="ng-valid">
+                                                                <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                                <input name="LOAN_INTEREST_ON_AMOUNT_TYPE" type="hidden" class="ng-valid" value="1">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-6">Loan Amount</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="LOAN_INTEREST_AMOUNT" type="text">
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-6">Loan Interest</label>
+                                                <div class="col-md-6">
+                                                    <div class="input-group ">
+                                                        <input class="form-control ng-valid" name="LOAN_INTEREST_ON_AMOUNT" type="text">
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-white dropdown-toggle  lockForCom" data-toggle="dropdown" type="button"><span class="sel_cur">Per Day</span><span class="caret"></span></button>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <!---->
+                                                                <li><a>Per Day</a></li>
+                                                                <li><a>Per Month</a></li>
+                                                                <li><a>Per Year</a></li>
+                                                                <li><a>Per Week</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingFIR" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseFIR" aria-expanded="false" data-parent="#accordion" data-toggle="collapse" href="#collapseFIR" role="button" class="collapsed"> Interest Rate Floor </a></h4></div>
+                            <div aria-labelledby="headingFIR" class="panel-collapse collapse" id="collapseFIR" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Enable </span>
+                                                            <div class="pull-right">
+                                                                <input name="ENABLE_FLOOR_INTEREST_RATE" type="checkbox" class="ng-valid">
+                                                                <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <!---->
+                                            <!---->
+                                            <!---->
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingTwo" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseTwo" aria-expanded="false" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseTwo" role="button"> Origination Fee </a></h4></div>
+                            <div aria-labelledby="headingTwo" class="panel-collapse collapse" id="collapseTwo" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-6">Fee type</label>
+                                                <div class="col-md-6">
+                                                    <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                    <select class="form-control ng-valid" name="FEE_TYPE">
+                                                        <option value="0">Upfront</option>
+                                                        <option value="1">Capitalize</option>
+                                                        <option value="2">Backend</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-6"> Percentage Value </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="FEE_PERCENT_VALUE" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-6"> Flat Value </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="FEE_FLAT_VALUE" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-6"> Card Request Fee </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="CARD_REQUEST_FEE" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row hide">
+                                                <label class="control-label col-md-6">Account</label>
+                                                <div class="col-md-6">
+                                                    <select class="form-control ng-valid" name="FEES_ACCOUNT">
+                                                        <!---->
+                                                        <option value="64151">Asset</option>
+                                                        <option value="64227">OKUNUGA, SOJI ORIYOMI</option>
+                                                        <option value="64437">SOJI ORIYOMI OKUNUGA</option>
+                                                        <option value="69079">OKUNUGA, SOJI ORIYOMI</option>
+                                                        <option value="64152">Liability</option>
+                                                        <option value="64156">Wallet</option>
+                                                        <option value="64153">Capital</option>
+                                                        <option value="64154">Income</option>
+                                                        <option value="64157">Interest Income</option>
+                                                        <option value="64155">Expenses</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default hide">
+                            <div class="panel-heading" id="headingInvestors" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseInvestors" aria-expanded="false" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseInvestors" role="button"> Investors </a></h4></div>
+                            <div aria-labelledby="headingInvestors" class="panel-collapse collapse" id="collapseInvestors" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-6">Maximum Investment</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="MAXIMUM_INVESTMENT_PERCENT">
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingF" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseF" aria-expanded="false" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseF" role="button"> Fines </a></h4></div>
+                            <div aria-labelledby="headingF" class="panel-collapse collapse" id="collapseF" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Enable Fines</span>
+                                                            <div class="pull-right">
+                                                                <input name="ENABLE_FINES" type="checkbox" class="ng-valid">
+                                                                <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <div class="form-group row">
+                                                <label class="col-md-6"> Percentage Value </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="FINES_PERCENT_VALUE" type="text">
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <div class="form-group row">
+                                                <label class="col-md-6"> Flat Value </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control ng-valid" name="FINES_FLAT_VALUE" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row hide">
+                                                <label class="control-label col-md-6">Account</label>
+                                                <div class="col-md-6">
+                                                    <select class="form-control ng-valid" name="FINES_ACCOUNT">
+                                                        <!---->
+                                                        <option value="64151">Asset</option>
+                                                        <option value="64227">OKUNUGA, SOJI ORIYOMI</option>
+                                                        <option value="64437">SOJI ORIYOMI OKUNUGA</option>
+                                                        <option value="69079">OKUNUGA, SOJI ORIYOMI</option>
+                                                        <option value="64152">Liability</option>
+                                                        <option value="64156">Wallet</option>
+                                                        <option value="64153">Capital</option>
+                                                        <option value="64154">Income</option>
+                                                        <option value="64157">Interest Income</option>
+                                                        <option value="64155">Expenses</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingBreak" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseBreak" aria-expanded="false" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseBreak" role="button"> Loan Breaking </a></h4></div>
+                            <div aria-labelledby="headingBreak" class="panel-collapse collapse" id="collapseBreak" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body toc-panel">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Enable Autobreak</span>
+                                                            <div class="pull-right">
+                                                                <input name="ALLOW_AUTOBREAK" type="checkbox" class="ng-valid">
+                                                                <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingThree" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseThree" aria-expanded="false" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseThree" role="button"> Approvals </a></h4></div>
+                            <div aria-labelledby="headingThree" class="panel-collapse collapse" id="collapseThree" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <button class="btn btn-xs btn-white pull-right">Add New Level</button>
+                                </div>
+                                <div class="panel-body"></div>
+                                <div class="pivots_app">
+                                    <!---->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingContract" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseContract" aria-expanded="false" data-parent="#accordion" data-toggle="collapse" href="#collapseContract" role="button" class="collapsed"> Contract Settings </a></h4></div>
+                            <div aria-labelledby="headingContract" class="panel-collapse collapse" id="collapseContract" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Borrower must accept contract</span>
+                                                            <div class="pull-right">
+                                                                <input name="MUST_ACCEPT_CONTRACT" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Send contract documents</span>
+                                                            <div class="pull-right">
+                                                                <input name="SEND_CONTRACT_DOCS" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Request for BVN</span>
+                                                            <div class="pull-right">
+                                                                <input name="REQUEST_FOR_BVN" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Request for Card</span>
+                                                            <div class="pull-right">
+                                                                <input name="REQUEST_FOR_CARD" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Request for Account</span>
+                                                            <div class="pull-right">
+                                                                <input name="REQUEST_FOR_ACCOUNT" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Enable Signature</span>
+                                                            <div class="pull-right">
+                                                                <input name="ENABLE_CONTRACT_SIGNATURE" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Enable Contract Date Adjustment</span>
+                                                            <div class="pull-right">
+                                                                <input name="ADJUST_CONTRACT_DATE" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="headingMail" role="tab">
+                                <h4 class="panel-title"><a aria-controls="collapseMail" aria-expanded="false" data-parent="#accordion" data-toggle="collapse" href="#collapseMail" role="button" class="collapsed"> Mail Settings </a></h4></div>
+                            <div aria-labelledby="headingMail" class="panel-collapse collapse" id="collapseMail" role="tabpanel" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="panel-body">
+                                        <form novalidate="" class="ng-valid">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> SMTP Available</span>
+                                                            <div class="pull-right">
+                                                                <input name="HAS_SMTP" type="checkbox" class="ng-valid">
+                                                                <input name="LOAN_PRODUCT_ID" type="hidden" class="ng-valid" value="129">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li class="text-left"><span> Use SendGridâ„¢</span>
+                                                            <div class="pull-right">
+                                                                <input name="USE_SENDGRID" type="checkbox" class="ng-valid">
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <!---->
+                                            <div>
+                                                <div class="form-group row" id="loan_interval_container">
+                                                    <div class="col-md-6">
+                                                        <label class="no-margin control-label">SendGrid Username</label>
+                                                        <div class="input-group btn-block">
+                                                            <input class="form-control btn-block ng-valid" name="SG_USERNAME" type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="no-margin control-label">SendGrid Email</label>
+                                                        <div class="">
+                                                            <input class="form-control ng-valid" name="SG_EMAIL" type="text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" id="loan_interval_container">
+                                                    <div class="col-md-6">
+                                                        <label class="no-margin control-label">SendGrid APIKey</label>
+                                                        <div class="input-group btn-block">
+                                                            <input class="form-control btn-block ng-valid" name="SG_API" type="text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-white pull-right" type="submit">
+                                                <!----><span>Submit</span>
+                                                <!---->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

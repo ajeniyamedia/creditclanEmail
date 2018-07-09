@@ -1,0 +1,33 @@
+<div class="profile_area animated fadeIn">
+
+    <section class="panel contract_area hideable_area" style="margin-bottom: 10px">
+      <header class="panel-heading">
+        <span class="tools pull-right">
+          <ul class="list-inline">
+              <li><a href="javascript:;" (click)="open('profile')">Profile</a></li>
+              <li><a href="javascript:;" (click)="open('financials')">Financials</a></li>
+              <li><a href="javascript:;" (click)="open('loans')">Loans</a></li>                    
+              <li><a href="javascript:;" (click)="open('invest')">Investments</a></li>                    
+          </ul>
+        </span>
+        <span>Profile</span>
+      </header>
+    </section>
+    
+
+    <div id="ln_prof_child">
+        <div *ngIf="view == 'profile' && borrower"> 
+            <app-customer-update [external]=true [userId]=borrower?.PEOPLE_ID></app-customer-update>       
+        </div>
+        <div *ngIf="view == 'financials'">
+            <app-customer-finance [external]=true [userId]=borrower?.PEOPLE_ID></app-customer-finance>
+        </div>
+        <div *ngIf="view == 'loans'">
+            <app-customer-loans [external]=true [userId]=borrower?.PEOPLE_ID></app-customer-loans>
+        </div>
+        <div *ngIf="view == 'invest'">
+            <app-customer-investments [external]=true [userId]=borrower?.PEOPLE_ID></app-customer-investments>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,297 @@
+<app-loanform [sub]="1" [request_id]="request_id" *ngIf="post_action"></app-loanform>
+<div class="row" *ngIf="!post_action">
+    <!-- <div class="col-md-3"></div> -->
+    <div class="col-md-12">
+        <div *ngIf="confirmingAction">
+                <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                        <div class="form-group">
+                            <span class="pull-left text-primary ">Balance</span>
+                            <span class="pull-right">
+                                &#8358;{{data?.loan.LOAN_BALANCE| number:'.2-2'}}
+                            </span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div *ngIf="break_loan?.IS_TOP_UP=='6'" style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                            <div class="form-group">
+                                <span class="pull-left text-primary ">Action</span>
+                                <span class="pull-right">
+                                    Break
+                                </span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div *ngIf="break_loan?.IS_TOP_UP=='6'" style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                <div class="form-group">
+                                    <span class="pull-left text-primary ">Breaking Date</span>
+                                    <span class="pull-right">
+                                        {{break_loan?.BREAKING_DATE.formatted}}
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        <div *ngIf="break_loan?.IS_TOP_UP=='7'" style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                <div class="form-group">
+                                    <span class="pull-left text-primary ">Action</span>
+                                    <span class="pull-right">
+                                        Rollover
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div *ngIf="break_loan?.IS_TOP_UP=='7'" style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                    <div class="form-group">
+                                        <span class="pull-left text-primary ">Breaking Date</span>
+                                        <span class="pull-right">
+                                            {{break_loan?.BREAKING_DATE.formatted}}
+                                        </span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            <div *ngIf="break_loan?.IS_TOP_UP=='8'" style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                    <div class="form-group">
+                                        <span class="pull-left text-primary ">Action</span>
+                                        <span class="pull-right">
+                                            Top Up
+                                        </span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                        <div *ngIf="break_loan?.IS_TOP_UP=='8'">
+                                <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                        <div class="form-group">
+                                            <span class="pull-left text-primary ">Required Principal</span>
+                                            <span class="pull-right">
+                                                {{break_loan?.REQUEST_PRINCIPAL}}
+                                            </span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                    <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                            <div class="form-group">
+                                                <span class="pull-left text-primary ">Duration</span>
+                                                <span class="pull-right">
+                                                    {{break_loan?.REQUEST_TENOR}}{{loan_duration}}
+                                                </span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                        </div>
+                <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-block btn-white" (click)="confirmingAction=!confirmingAction">Cancel</button>
+                        </div>
+                        <div class="col-md-6">
+                               
+                            <button (click)="sendBreakLoan()" [disabled]="loading || break_loan.IS_TOP_UP=='0'||(break_loan.IS_TOP_UP=='1'&&break_loan.BID_PRINCIPAL=='0')"
+                                class=" btn btn-block btn-white btn-cp-d">Save
+                                <i class="fa fa-spinner fa-spin" [ngClass]="{'hide': !loading}"></i>
+                            </button>
+                        </div>
+                    </div>
+        </div>
+        <div *ngIf="!confirmingAction">
+                <div *ngIf="canDoNothing" class="text-center">
+                        <h4 class="text-center error">Error </h4>
+        
+                        <div style="width: 120px;margin:20px auto;">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" x="0px" y="0px"><path d="M50,8A42,42,0,1,1,8,50,42,42,0,0,1,50,8m0-3A45,45,0,1,0,95,50,45,45,0,0,0,50,5Z"></path><path d="M47.08,46.44q-.79-4-1.18-6.42t-.51-3.54q-.11-1.15-.11-2a4.3,4.3,0,0,1,1.29-3.25,5.36,5.36,0,0,1,6.84,0,4.3,4.3,0,0,1,1.29,3.25q0,.84-.11,2T54.1,40q-.39,2.38-1.18,6.42T50.79,57.1H49.21Q47.87,50.48,47.08,46.44Zm-.34,15.88a4.6,4.6,0,0,1,7.85,3.25,4.16,4.16,0,0,1-1.35,3.17,4.82,4.82,0,0,1-6.51,0,4.16,4.16,0,0,1-1.35-3.17A4.43,4.43,0,0,1,46.75,62.31Z"></path></svg>
+                        </div>
+                        
+                
+                        <p class="text-center">
+                          <small>{{canDoNothingMessage}}</small>
+                        </p>
+                </div>
+                <div *ngIf="!canDoNothing">
+                        <div *ngIf="request_step=='3'">
+                                <section class="panel bround">
+                                    <div class="panel-body text-center">
+                                        <a style="margin:10px 0px">
+                                            <img style="width:100px" src="assets/img/check.png">
+                                        </a>
+                                        <div style="margin:40px 0px">
+                    
+                                            <h3 style="margin-top:0px">Request Succesful</h3>
+                                        </div>
+                                        <button class="btn btn-danger btn-block btn-pink" style="margin-bottom:35px" [routerLink]="['../../requests']">View Request</button>
+                    
+                                    </div>
+                                </section>
+                            </div>
+                            <div *ngIf="request_step=='0'">
+                                <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                    <div class="form-group">
+                                        <span class="pull-left text-primary ">Balance</span>
+                                        <span class="pull-right">
+                                            &#8358;{{data?.loan.LOAN_BALANCE| number:'.2-2'}}
+                                        </span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <div class="text-left">
+                    
+                    
+                                    <div class="form-group row">
+                    
+                                        <div class="col-md-4" *ngFor="let opt of pay_opt">
+                                            <label class="">
+                    
+                                                <input [(ngModel)]="break_loan.IS_TOP_UP" type="radio" name="IS_TOP_UP" id="inlineCheckbox1" [value]="opt.value"> {{opt.display}}
+                                            </label>
+                    
+                    
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="control-label col-md-6 bbL">Breaking Date</label>
+                    
+                                        <div class="col-md-6">
+                                            <my-date-picker [selDate]="selDate" name="BREAKING_DATE" (dateChanged)="onDateChanged($event)" [options]="myDatePickerOptions"
+                                                [(ngModel)]="break_loan.BREAKING_DATE"></my-date-picker>
+                                        </div>
+                                    </div>
+                                    <div class="form-group animated ro_act tu" *ngIf="break_loan.IS_TOP_UP=='8'">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label class="control-label">Required Financing</label>
+                    
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="input-group ">
+                                                    <input type="text" (blur)="new_principal()" class="form-control" name="REQUEST_PRINCIPAL" [(ngModel)]="break_loan.REQUEST_PRINCIPAL">
+                    
+                    
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                                            <span class="sel_cur">{{loan_currency}}</span>
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li *ngFor="let c of countries">
+                                                                <a href="javascript:;" (click)="changeCurrency(c)">{{c.currency[0]}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" *ngIf="break_loan.IS_TOP_UP=='8'">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label class="control-label">Duration</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="input-group ">
+                    
+                                                    <input type="text" class="form-control" [(ngModel)]="break_loan.REQUEST_TENOR" name="REQUEST_TENOR">
+                    
+                    
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                                            <span class="sel_cur">{{loan_duration}}</span>
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li *ngFor="let d of loan_durations;let i=index;">
+                                                                <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" *ngIf="break_loan.IS_TOP_UP=='8'">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label class="control-label">New Principal</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="input-group ">
+                    
+                                                    <input type="text" class="form-control" disabled [(ngModel)]="newprincipal" name="NEW_PRINCIPAL">
+                    
+                    
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                                            <span class="sel_cur">{{loan_currency}}</span>
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li *ngFor="let c of countries">
+                                                                <a href="javascript:;" (click)="changeCurrency(c)">{{c.currency[0]}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button class="btn btn-block btn-white" (click)="closeM()">Cancel</button>
+                                        </div>
+                                        <div class="col-md-6">
+                                                <button class="btn btn-block btn-white" (click)="confirmingAction=!confirmingAction">Confirm</button>
+                                            <!-- <button (click)="sendBreakLoan()" [disabled]="loading || break_loan.IS_TOP_UP=='0'||(break_loan.IS_TOP_UP=='1'&&break_loan.BID_PRINCIPAL=='0')"
+                                                class=" btn btn-block btn-white btn-cp-d">Save
+                                                <i class="fa fa-spinner fa-spin" [ngClass]="{'hide': !loading}"></i>
+                                            </button> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+        </div>
+    </div>
+    <!-- <div class="col-md-4">
+        <section class="panel bround" [ngClass]="{'active': request_step=='1', 'notactive':  request_step!='1'}">
+            <div class="panel-body">
+                <article class="media">
+                    <div class="pull-left thumb p-thumb">
+                        <img *ngIf="request_step=='1'" style="width:75px; height:75px;" src="assets/img/naira.png">
+                        <img *ngIf="request_step!='1'" style="width:75px; height:75px;" src="assets/img/naira_shade.png">
+                    </div>
+                    <div class="media-body">
+                        <h4 style="margin:0px; margin-top:10px" [ngClass]="{'heady': request_step=='1', 'notheady':  request_step!='1'}">1. Break Loan</h4>
+                        <p>Principal, Duration, Interest, Loan Product</p>
+
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section class="panel bround" [ngClass]="{'active': request_step=='2', 'notactive':  request_step!='2'}">
+            <div class="panel-body">
+                <article class="media">
+                    <div class="pull-left thumb p-thumb">
+                        <img *ngIf="request_step=='2'" style="width:75px; height:75px;" src="assets/img/pencil.png">
+                        <img *ngIf="request_step!='2'" style="width:75px; height:75px;" src="assets/img/pencil_shade.png">
+                    </div>
+                    <div class="media-body">
+                        <h4 style="margin:0px; margin-top:10px" [ngClass]="{'heady': request_step=='2', 'notheady':  request_step!='2'}">1. Review</h4>
+                        <p>Review the request summary</p>
+
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section class="panel bround" [ngClass]="{'active': request_step=='3', 'notactive':  request_step!='3'}">
+            <div class="panel-body">
+                <article class="media">
+                    <div class="pull-left thumb p-thumb">
+                        <img *ngIf="request_step=='3'" style="width:75px; height:75px;" src="assets/img/check_.png">
+                        <img *ngIf="request_step!='3'" style="width:75px; height:75px;" src="assets/img/check_shade.png">
+                    </div>
+                    <div class="media-body">
+                        <h4 style="margin:0px; margin-top:10px" [ngClass]="{'heady': request_step=='3', 'notheady':  request_step!='3'}">1. Done</h4>
+                        <p>Request created</p>
+
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div> -->
+</div>

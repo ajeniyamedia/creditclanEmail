@@ -1,0 +1,86 @@
+<section class="panel panl" style="margin-bottom: 5px">
+    <div class="panel-body">
+        <article class="media">
+            <div class="pull-left thumb">
+                <img src="assets/images/file.PNG">
+            </div>
+            <div class="pull-left" style="margin-top: 5px">
+                <h4 class="no-margin" style="word-wrap:break-word; margin-bottom: 10px">Guarantors</h4>
+            </div>
+        </article>
+    </div>
+</section>
+<div class="row">
+    <div class="col-md-12">
+        <section class="panel">
+            <!-- <header class="panel-heading">
+          Guarantors
+          <span class="tools pull-right">
+
+          </span>
+        </header> -->
+            <div class="panel-body">
+                <!-- <div id="uploadedAttachment" class="artcles" style="width:100%;max-width:430px;margin:0 auto;"> -->
+                <div id="uploadedAttachment" class="artcles">
+                    <div *ngIf="gua_count=='0'">
+                        <div>
+                      
+                          <div class="panel panel-body box" style="position: relative; padding: 30px">
+                  
+                              <div style="margin-top: 100px"></div>
+                  
+                              <div class="row">
+                                  <div class="col-md-4">
+                                      <ul class="list list_border" id="no-padding-right">
+                                          <li>
+                                              <p class="txt t_l2 t_cool">No Records</p>
+                                          </li>
+                                          
+                                      </ul>
+                                  </div>
+                                  <div class="col-md-8"></div>
+                              </div>
+                          </div>
+                  
+                      </div>
+                      </div>
+                    <div *ngFor="let guarantor of guarantors">
+                        <article class="media x-mod" style="border-bottom: 1px solid #d9d9d9;padding: 10px 0;">
+                            <a class="pull-left thumb">
+                                <img src="assets/attachments/avatar-mini.jpg" style="width:50px;">
+                            </a>
+                            <div class="media-body hover_toggle">
+                                <div class="pull-left">
+                                    <a class="text-primary t_l4 t_lh1" href="javaascript:;" style="float: none; display: inline-block; margin-bottom: 5px; ">{{guarantor?.GUARANTOR_NAME}}</a>
+                                    <p class="t_lh1" style="margin-bottom: 4px">{{guarantor?.GUARANTOR_PEOPLE_EMAIL}}</p>
+                                    <p class="t_lh1" style="font-style: italic;">{{guarantor?.GUARANTOR_PHONE}} | {{guarantor?.DATE_ADDED | date: 'yMMMMd'}}</p>
+                                </div>                        
+                                <!-- <a target="_blank" href="javascript:;" class="pull-right btn btn-white wd_btn hover_show" style="border-radius: 0">View</a> -->
+                                <div class="clearfix"></div>
+                            </div>
+                        </article>
+
+                        <!-- <article *ngIf="guarantorOpen==guarantor?.RG_ID" class="media animated ben" style="margin-top:0px; background:#fff; border-top:1px solid #eaeaea">
+                            <div *ngIf="fromcustomer != '0'">
+                                <div style="width: 80%; margin:10px auto;">
+                                    <ul>
+                                        <li class="text-left black_c sub_title ">
+                                            <span class="small"> Loan Amount</span>
+                                            <p class="no-margin black_c pull-right" style="">{{guarantor?.request_principal | number:'.2-2'}}</p>
+                                        </li>
+                                        <li class="text-left black_c sub_title " *ngIf="guarantor?.loan_status>1">
+                                            <span class="small"> Expiry Date</span>
+                                            <p class="no-margin black_c pull-right" style="">{{guarantor?.expiry_date | amDateFormat:'LL'}}</p>
+                                        </li>
+                                    </ul>
+                                    <a [routerLink]="['/loan',guarantor?.request_id]" class="btn btn-white pull-right">View Loan</a>
+                                </div>
+                            </div>
+                            <app-viewguarantor *ngIf="fromcustomer == '0'" (uploaded)="someMethod($event)" [guarantor_request_id]="guarantor?.RG_ID"></app-viewguarantor>
+                        </article> -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

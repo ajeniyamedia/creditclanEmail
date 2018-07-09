@@ -1,0 +1,30 @@
+#phone {
+    width: 467px;
+    height: 800px;
+    /* background: center top no-repeat url('assets/img/devices-sprite.jpg'); */
+    background-size: 467px;
+    margin: 0 auto;
+    position:relative;
+}
+#phone #screen {
+    background: whitesmoke;
+    content: "";
+    display: block;
+    position: absolute;
+    left: 73px;
+    top:85px;
+    width: 320px;
+    height: 568px;
+}
+
+label{
+    font-weight: 900;
+}
+
+.hidden{
+    display:none;
+}
+
+.show{
+    display:block;
+}

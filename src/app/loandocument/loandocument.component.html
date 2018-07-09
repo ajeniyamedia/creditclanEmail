@@ -1,0 +1,89 @@
+<div id="docsBlock" style="margin-bottom: 40px;border-bottom: 1px solid #d9d9d9">
+<form #f="ngForm" novalidate="">
+                            <div class="form-group">
+                                <div class="row">
+                                <div class="col-md-2"><label class="control-label">Documents</label></div>
+                                <div class="col-md-10">
+                                  
+		                            <select  class="form-control" name="ddlDocList" [(ngModel)]="doc.ddlDocList">
+		                                <option *ngFor="let document of product_documents" [value]="document.DOCUMENT_ID">  
+		                                {{document.DOCUMENT_NAME}}
+		                                </option>
+		                            </select>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-md-2"><label class="control-label">Add Header</label></div>
+                                <div class="col-md-10">
+                                 <select  class="form-control" name="ddlAddHeader" [(ngModel)]="doc.ddlAddHeader">
+                                   
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                  </select>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2"><label class="control-label">Add Signature</label></div>
+                                <div class="col-md-10">
+                                <select  class="form-control" name="ddlAddSignature" [(ngModel)]="doc.ddlAddSignature">
+                              
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                  </select>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2"><label class="control-label">When to send?</label></div>
+                                <div class="col-md-10">
+                                <select  class="form-control" name="ddlSendDateOption" [(ngModel)]="doc.ddlSendDateOption">
+                                
+                                    <option value="1">Immediately</option>
+                                    <option value="2">Today 12pm</option>
+                                    <option value="3">Today 4pm</option>
+                                    <option value="4">Tomorrow 8am</option>
+                                    <option value="5">Choose date</option>
+                                  </select>
+                                </div>
+                                </div>
+                            </div>
+
+                             
+
+                            <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2"><label class="control-label">Email to?</label></div>
+                                <div class="col-md-10">
+                                <select  class="form-control" name="ddlEmailReceiver" [(ngModel)]="doc.ddlEmailReceiver">
+                                 
+                                    <option value="1">Myself</option>
+                                    <option value="2">Borrower</option>
+                                  </select>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <button class="btn btn-block btn-white" id="btnDocPreview">Preview</button>
+                              </div>
+                              <div class="col-md-6">
+                                <button class="btn btn-block btn-white" id="btnDocSend">Send</button>
+                              </div>
+                              </div>
+                            </div>
+
+                            <a class="hide" id="autoPreview" target="_blank"></a>
+
+</form>
+
+                        </div>

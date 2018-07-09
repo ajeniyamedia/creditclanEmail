@@ -1,0 +1,10 @@
+.bor_name > a:hover{
+	text-decoration: underline;
+}
+
+.bor_id_mag{
+    position: absolute;
+    width: 23px !important;
+    right: -4px;
+    top: -4px;
+}

@@ -1,0 +1,23 @@
+.anl_list > ul > li {
+    padding: 5px 0;
+    font-size: 14px;
+}
+.anl_list{
+	max-width: 500px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+.anl_list h3{
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 10px;
+}
+
+.anl_form label{
+	font-weight: 700;
+}
+.anl_form list-inline li{
+	margin-right: 10px;
+}
+.anl_form list-inline li:last-child{
+	margin-right: 0;
+}

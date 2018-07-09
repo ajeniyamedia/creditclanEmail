@@ -1,0 +1,103 @@
+.panel-icon {
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    /* float: left; */
+    margin:0 auto;
+    text-align: center; 
+    padding-top: 18px;
+}
+.panel-icon .amount {
+    font-size: 24px;
+    padding: 12px 0 0 0;
+    line-height: 1;
+}
+
+.offer_made {
+   border: 3px solid rgb(218, 104, 12);
+}
+.offer_accepted {
+    border: 3px solid red;
+}
+.offer_funded {
+    border: 3px solid green;
+}
+ .hidden{
+     display:none;
+ }
+
+ .analysis-name{
+     font-size:11px;
+     font-weight: bolder;
+     margin-top:5px;
+ }
+
+ .square{
+     width:150px;
+     height:200px;
+     background: rgba(255,255,255,0.9);
+    border-radius: 8px;
+    margin:auto;
+    margin-right:15px;
+    padding-top:20px;
+    text-align: center;
+    border: 1px solid #d1dad1;
+ }
+
+ .document-square{
+    width:200px;
+    height:250px;
+    background: rgba(255,255,255,0.9);
+   border-radius: 8px;
+   margin-left:-70px;
+   padding-top:20px;
+   margin-top:20px;
+   text-align: center;
+   border: 1px solid grey;
+ }
+ .progress{
+    background-color:#dedede;
+ }
+
+ .list li{
+    padding:10px;
+}
+hr{
+    background-color: lightblue; 
+    height: 1px; 
+    border: 0; 
+}
+
+.square div{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    border:1px solid black;
+    margin: 0 auto;
+    margin-top:30px;
+}
+
+.square div img {
+    width:50px;
+    height:50px;
+    margin-top:5px;
+}
+
+.head{
+    border-bottom: 1px groove;
+}
+
+.text_red{
+    color:red;
+}
+
+.empty{
+    border:1px solid grey;
+}
+
+.hidden{
+    display:none
+}
+
+

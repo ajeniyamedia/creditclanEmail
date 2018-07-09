@@ -1,0 +1,101 @@
+<section class="panel panl" style="margin-bottom: 5px">
+  <div class="panel-body">
+    <article class="media">
+        <div class="pull-left thumb">
+          <img src="assets/images/file.PNG">
+        </div>
+        <div class="pull-left" style="margin-top: 5px">
+          <!-- <h4 class="no-margin" style="word-wrap:break-word; margin-bottom: 10px">Employees</h4> -->
+        </div>
+        <button (click)="addingUser=!addingUser" class="pull-right btn btn-white wd_btn" style="border-radius: 0">Add New User</button>
+    </article> 
+    
+           
+  </div>
+</section>
+<section class="panel">
+    <div class="panel-body" *ngIf="addingUser">
+        <div class="form-area animated">
+            <form role="form animated" (ngSubmit)="saveEmployee()" #rsvpForm="ngForm">
+
+                <div class="form-group row">
+
+                    <label class="control-label col-md-6">Full name</label>
+                    <div class="col-md-6">
+                        <input type="text" #LEGAL_NAME="ngModel" [(ngModel)]="employee.LEGAL_NAME" class="form-control" id="LEGAL_NAME" name="LEGAL_NAME"
+                            required>
+                        <div *ngIf="LEGAL_NAME.errors && LEGAL_NAME.dirty" class="small text-danger formErrors">
+                            <div [hidden]="!LEGAL_NAME.errors.required">
+                                Name is
+                                <strong>required</strong>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+
+                    <label class="control-label col-md-6">Email</label>
+                    <div class="col-md-6">
+                        <input type="text" #EMAIL="ngModel" [(ngModel)]="employee.EMAIL" class="form-control" id="EMAIL" name="EMAIL" required>
+                        <div *ngIf="EMAIL.errors && EMAIL.dirty" class="small text-danger formErrors">
+                            <div [hidden]="!EMAIL.errors.required">
+                                Email is
+                                <strong>required</strong>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-white btn-block" [disabled]="!rsvpForm.form.valid || loading" >Save</button>
+                    </div>
+                </div>
+
+
+
+
+            </form>
+        </div>
+    </div>
+<div class="panel-body" *ngIf="!addingUser" style="padding:0px">
+    <div *ngIf="employees?.count=='0'">
+        <div  class="panel panel-body box" style="position: relative; padding: 30px">
+
+            <div  style="margin-top: 100px"></div>
+
+            <div  class="row">
+                <div  class="col-md-4">
+                    <ul  class="list list_border" id="no-padding-right">
+                        <li >
+                            <p  class="txt t_l2 t_cool">No Records</p>
+                        </li>
+
+                    </ul>
+                </div>
+                <div  class="col-md-8"></div>
+            </div>
+        </div>
+    </div>  
+    
+    <article class="media hover_toggle_desc" *ngFor="let employee of employees?.all_emp" style="border-bottom: 1px solid #eee;
+    padding: 15px;">
+        <div class="pull-left thumb" style="padding-right: 20px">
+          <img src="assets/images/i.PNG">
+        </div>
+        <div class="pull-left" style="margin-top: 5px">
+          <h5 class="no-margin" style="margin-bottom: 7px">{{employee?.LEGAL_NAME}}</h5>
+          <p class="no-margin t_lh1 t_l4" style="font-size: 14px">{{employee?.EMAIL}}</p> 
+        </div>
+        
+        
+        <div class="pull-right text-right hover_toggle">
+           
+            <a class="pull-right btn btn-white wd_btn hover_show" (click)="update(employee)" style="border-radius: 0">Edit</a>
+          </div> 
+    </article>
+</div>
+</section>

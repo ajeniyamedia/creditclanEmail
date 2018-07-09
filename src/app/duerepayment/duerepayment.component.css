@@ -1,0 +1,17 @@
+.media {
+    border-bottom:1px solid #eee !important;
+}
+
+.media:last-child{
+	border-bottom: none !important;
+}
+
+.media-body{
+     display: inline; 
+}
+.media-body {
+    width: auto;
+}
+.mgt {
+    margin-top:5px !important;
+}

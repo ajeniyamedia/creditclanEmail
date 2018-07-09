@@ -1,0 +1,1064 @@
+<div class="row">
+  <div class="col-md-3" *ngIf="sub!='5'&&sub!='8'"></div>
+  <div class="{{sub!='5'&&sub!='8'?'col-md-5':'col-md-12'}}">
+    <div *ngIf="request_step=='1'">
+      <div style="margin-bottom:15px;border-bottom:1px solid #eee">
+        <h3>Create a Loan Request</h3>
+      </div>
+
+      <div style="margin-bottom:15px;border-bottom:1px solid #eee">
+
+        <div class=" no_article_hover">
+          <article class="media" *ngIf="!searchForCustomer" style="margin-bottom:15px">
+
+            <div class="pull-left thumb p-thumb" *ngIf="customerSelected&&sub!='1'">
+              <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{selectedCustomer?.FILE_NAME | imagenotfound}}"
+                style=" width: 50px;   height: 50px; border-radius: 50%; ">
+            </div>
+
+            <div class="pull-right" style="padding-bottom:10px" *ngIf="loan_request?.REQUEST_ID==''">
+              <a (click)="searchForCustomer=true;loading=false;" style="font-size:30px">
+                <i class="fa fa-search"></i>
+              </a>
+            </div>
+
+            <div *ngIf="customerSelected">
+              <!-- <div class="pull-left thumb p-thumb" style="margin-right: 10px">
+                              <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{selectedCustomer?.FILE_NAME | imagenotfound}}" style=" width: 50px;   height: 50px; border-radius: 50%; ">
+                          </div> -->
+              <div class="media-body">
+                <p class="txt t_l3 t_lh1" style="word-wrap:break-word;">{{selectedCustomer?.LEGAL_NAME}}</p>
+                <p class="txt t_dull">{{selectedCustomer?.PEOPLE_CUSTOMERS_ID}}</p>
+              </div>
+            </div>
+
+            <div class="media-body" *ngIf="!customerSelected">
+              <h4>Search for customer</h4>
+            </div>
+          </article>
+        </div>
+
+        <div *ngIf="searchForCustomer">
+
+          <!-- Hidden -->
+          <section class="panel hide">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="input-group">
+                  <input class="form-control" name="searchText" required="" [(ngModel)]="searchString" type="text">
+                  <span class="input-group-btn">
+                    <button (click)="searchCustomers()" class="btn btn-white" type="button">Search
+                      <i class="fa fa-search"></i>
+                    </button>
+                    <span (click)="searchForCustomer=false" class="btn btn-white" type="button">
+                      <i class="fa fa-times"></i>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- New Search -->
+          <div class="search_box" style="padding-top: 5px; padding-bottom: 5px; position: relative;">
+            <input type="text" name="" placeholder="Search Customer" (keyup)="searchCustomers()" name="lender_name" [(ngModel)]="searchString"
+              style="max-width: 90%">
+
+            <img src="assets/images/search.PNG" (click)="searchCustomers()">
+
+            <span (click)="searchForCustomer=false" class="btn btn-danger" type="button" style="position: absolute; right: -10px; top: -10px; padding: 0; border-radius: 50%; width: 20px; height: 20px;">
+              <i class="fa fa-times"></i>
+            </span>
+          </div>
+
+
+          <section class="panel" style="height:400px;">
+            <div *ngIf="searchedCustomerResult?.count=='0'">
+              <div class="text-center" style="padding:30px 0px">
+                <a style="font-size:50px">
+                  <i class="fa fa-meh-o"></i>
+                </a>
+                <h4>No customer found</h4>
+              </div>
+            </div>
+            <div *ngIf="searchedCustomerResult?.count!='0'">
+
+              <article (click)="selectCustomer(customer)" class="media" *ngFor="let customer of searchedCustomerResult?.a" style="padding: 10px; margin-top: 0; cursor: pointer;">
+                <div class="pull-left thumb p-thumb">
+                  <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{customer?.FILE_NAME | imagenotfound}}"
+                    style=" width: 40px;   height: 40px; border-radius: 50%; ">
+                </div>
+                <div class="media-body">
+                  <p class="txt t_l4 t_cool" style="word-wrap:break-word; ">{{customer?.LEGAL_NAME}}</p>
+                  <p style="font-size: 12px">{{customer?.PEOPLE_CUSTOMERS_ID}}</p>
+                </div>
+              </article>
+
+            </div>
+          </section>
+        </div>
+      </div>
+
+
+
+
+
+      <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px" *ngIf="!searchForCustomer&&customerSelected">
+        <div class="form-group row hide">
+          <div class="col-md-12">
+            <div style="padding:12px 24px; border:1px solid #eee;">
+              <div class="row">
+                <div class="col-md-1">
+                  <a style="margin-right:10px">
+                    <img style="width:35px" src="assets/img/naira_no_circle.png">
+                  </a>
+                </div>
+                <div class="col-md-11">
+                  <div class="input-group ">
+                    <input type="text" class="form-control" name="REQUEST_PRINCIPAL" [(ngModel)]="loan_request.REQUEST_PRINCIPAL">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                        <span class="sel_cur">{{loan_currency}}</span>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu pull-right">
+                        <li *ngFor="let c of countries">
+                          <a href="javascript:;" (click)="changeCurrency(c)">{{c.currency[0]}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row hide">
+          <div class="col-md-12">
+            <div style="padding:12px 24px; border:1px solid #eee;">
+              <div class="row">
+                <div class="col-md-1">
+                  <a style="margin-right:10px">
+                    <img style="width:35px" src="assets/img/stopwatch.png">
+                  </a>
+                </div>
+                <div class="col-md-11">
+                  <div class="input-group ">
+                    <input type="text" class="form-control" [(ngModel)]="loan_request.REQUEST_TENOR" name="REQUEST_TENOR">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                        <span class="sel_cur">{{loan_duration}}</span>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu pull-right">
+                        <li *ngFor="let d of loan_durations;let i=index;">
+                          <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row hide">
+          <div class="col-md-12">
+            <div style="padding:12px 24px; border:1px solid #eee; ">
+              <div class="row">
+                <div class="col-md-1">
+                  <a style="margin-right:10px">
+                    <img style="width:35px" src="assets/img/percent.png">
+                  </a>
+                </div>
+                <div class="col-md-11">
+                  <div class="input-group ">
+                    <input type="text" class="form-control" [(ngModel)]="loan_request.REQUEST_RATE" name="REQUEST_RATE">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                        <span class="sel_cur">{{interest_duration}}</span>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu pull-right">
+                        <li *ngFor="let d of loan_durations;let i=index;">
+                          <a (click)="changeDuration(i,2)">{{d.INTEREST_DURATION}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="border: 1px solid #ccc;padding: 10px 0; margin-bottom: 10px">
+            <div class="input-group ">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                  <span class="sel_cur">
+                    <img style="width:20px" src="assets/img/naira_no_circle.png">
+                  </span>
+                </button>
+              </div>
+              <input type="text" class="form-control" required name="REQUEST_PRINCIPAL" [(ngModel)]="loan_request.REQUEST_PRINCIPAL" style="border: 0; font-size: 18px">
+            </div>
+          </div>
+          <div style="border: 1px solid #ccc;padding: 10px 0; margin-bottom: 10px">
+            <div class="input-group ">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                  <span class="sel_cur">
+                    <img style="width:20px" src="assets/img/stopwatch.png">
+                  </span>
+                </button>
+              </div>
+              <input type="text" class="form-control" required [(ngModel)]="loan_request.REQUEST_TENOR" name="REQUEST_TENOR" style="border: 0; font-size: 18px">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                  <span class="sel_cur">{{loan_duration}}</span>
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                  <li *ngFor="let d of loan_durations;let i=index;">
+                    <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div style="border: 1px solid #ccc;padding: 10px 0;">
+            <div class="input-group ">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                  <span class="sel_cur">
+                    <img style="width:20px" src="assets/img/percent.png">
+                  </span>
+                </button>
+              </div>
+              <input type="text" class="form-control" required [(ngModel)]="loan_request.REQUEST_RATE" name="REQUEST_RATE" style="border: 0; font-size: 18px">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                  <span class="sel_cur">{{interest_duration}}</span>
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                  <li *ngFor="let d of loan_durations;let i=index;">
+                    <a (click)="changeDuration(i,2)">{{d.INTEREST_DURATION}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="hide" style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px" *ngIf="!searchForCustomer&&customerSelected">
+        <article class="media" *ngIf="!changingProduct" style="margin-bottom:15px">
+          <div class="pull-right" style="padding-bottom:10px">
+            <a (click)="changingProduct=true;loading=false;" style="font-size:30px">
+              <i class="fa fa-pencil"></i>
+            </a>
+          </div>
+          <div class="media-body">
+            <h4 style="margin:0px; margin-top:0px" class="heady">{{loan_product?.LOAN_DESCRIPTION}}</h4>
+          </div>
+        </article>
+        <div class="form-group row" *ngIf="changingProduct">
+          <div class="col-md-12">
+            <label class="control-label">Select Product</label>
+            <select (change)="changingProduct=false" name="loan_product" class="form-control" [(ngModel)]="loan_product">
+              <option *ngFor="let product of loan_products" [ngValue]="product">{{product.LOAN_DESCRIPTION}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px" *ngIf="!searchForCustomer&&customerSelected">
+        <div class="row">
+          <div class="col-md-6"></div>
+          <div class="col-md-6">
+            <button class="btn btn-danger btn-block btn-pink" (click)="previewLoan()" [disabled]="loading||loan_request?.REQUEST_PRINCIPAL=='0'||loan_request?.REQUEST_TENOR=='0'">{{loan_request?.REQUEST_ID==''?'Preview Loan':'Save and Continue'}}
+              <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="request_step=='2'">
+      <div style="margin-bottom:15px;border-bottom:1px solid #eee">
+        <h3>Review and modify terms</h3>
+      </div>
+      <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+        <div *ngIf="sub=='0'">
+            <div class="row" *ngIf="(loan_request?.LOAN_STATUS=='1'&&loan_request?.IS_PEER_TO_PEER!='1'&&loan_request?.SCHEDULE_HAS_BEEN_SAVED!='1')||(loan_request?.LOAN_STATUS=='1'&&loan_request?.IS_PEER_TO_PEER=='1')">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <span class="pull-left text-primary">Book Loan</span>
+                    <span class="pull-right">
+                      <input type="radio" name="IS_PEER_TO_PEER" [value]="0" [(ngModel)]="loan_request.IS_PEER_TO_PEER">
+                    </span>
+                    <div class="clearfix"></div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <span class="pull-left text-primary">Send To Market</span>
+                    <span class="pull-right">
+                      <input type="radio" name="IS_PEER_TO_PEER" [value]="1" [(ngModel)]="loan_request.IS_PEER_TO_PEER">
+                    </span>
+                    <div class="clearfix"></div>
+                  </div>
+                </div>
+              </div>
+        </div>
+       
+        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+          <div class="form-group">
+            <span class="pull-left text-primary">Contract ID</span>
+            <span class="pull-right">
+              {{loan_request?.LOAN_ID}}
+            </span>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+          <div class="form-group">
+            <span class="pull-left text-primary">Required Credit</span>
+            <span class="pull-right" style="cursor:pointer" (click)="request_step='1'">
+              <u>
+                {{loan_request?.REQUEST_PRINCIPAL | number:'.2-2'}}</u>
+            </span>
+            <div class="clearfix"></div>
+          </div>
+          <div class="form-group">
+            <span class="pull-left text-primary">Duration</span>
+            <span class="pull-right">
+              {{loan_request?.REQUEST_TENOR}} {{loan_request?.LOAN_DURATION}}
+            </span>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+          <!-- <div class="form-group">
+            <span class="pull-left text-primary">
+              <span *ngIf="loan_request?.IS_PEER_TO_PEER=='0'">Est.</span> Fees</span>
+            <span class="pull-right" style="cursor:pointer" (click)="request_step='6'">
+              {{loan_request?.LENDER_FEES | number:'.2-2'}}
+            </span>
+            <div class="clearfix"></div>
+          </div> -->
+          <div class="form-group">
+            <span class="pull-left text-primary">
+              <span *ngIf="loan_request?.IS_PEER_TO_PEER=='0'">Est.</span> Fees & Charges</span>
+            <!-- <span class="pull-right" style="cursor:pointer" (click)="request_step='7'"> -->
+            <span class="pull-right" style="cursor:pointer" (click)="request_step='6'">
+              {{loan_request?.TOTAL_FEES_CHARGES | number:'.2-2'}}
+            </span>
+            <div class="clearfix"></div>
+          </div>
+          <div class="form-group">
+            <span class="pull-left text-primary">
+              <span *ngIf="loan_request?.IS_PEER_TO_PEER=='0'">Est.</span> Total Interest</span>
+            <span class="pull-right" style="cursor:pointer" (click)="request_step=4">
+              <u>
+                {{loan_request?.TOTAL_INTERESTS | number:'.2-2'}}</u>
+            </span>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+          <div class="form-group">
+            <span class="pull-left text-primary ">
+              <span *ngIf="loan_request?.IS_PEER_TO_PEER=='0'">Est.</span> Total Repayment</span>
+            <span class="pull-right">
+              {{loan_request?.TOTAL_REPAYMENT | number:'.2-2'}}
+            </span>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div *ngIf="showingMore">
+          <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+            <div class="form-group">
+              <span class="pull-left text-primary ">Repayment Frequency</span>
+              <span class="pull-right">
+                {{loan_request?.REPAYMENT_FREQUENCY}}
+              </span>
+              <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+              <span class="pull-left text-primary ">Repayment Type</span>
+              <span class="pull-right" style="cursor:pointer" (click)="request_step=4">
+                <u>
+                  {{loan_request?.REPAYMENT_TYPE}}</u>
+              </span>
+              <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+              <span class="pull-left text-primary ">Monthly Repayment</span>
+              <span class="pull-right">
+                {{loan_request?.MONTHLY_REPAYMENT | number:'.2-2'}}
+              </span>
+              <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+              <span class="pull-left text-primary ">1st Repayment Date</span>
+              <span class="pull-right" style="cursor:pointer" (click)="request_step=5">
+                <u>
+                  {{loan_request?.REPAYMENT_STARTED_WHEN}}</u>
+              </span>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+            <div class="form-group">
+              <span class="pull-left text-primary ">Net Disbursement</span>
+              <span class="pull-right">
+                {{getNet(loan_request) | number:'.2-2'}}
+              </span>
+              <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+              <span class="pull-left text-primary ">Disbursement Date</span>
+              <span class="pull-right">
+                {{loan_request?.DISBURSEMENT_DATE}}
+              </span>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div class="hide" style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+            <div class="form-group">
+              <span class="pull-left text-primary ">About the loan</span>
+              <span class="pull-right">
+                {{loan_request?.TOTAL_REPAYMENT | number:'.2-2'}}
+              </span>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!showingMore" style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+          <div class="form-group">
+            <span class="pull-left text-primary ">More Details</span>
+            <span class="pull-right">
+              <a (click)="showingMore = true">View</a>
+            </span>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px">
+            <div class="row">
+                <div class="col-md-6">Send contract documents</div>
+                <div class="col-md-6 text-right">
+                  <input type="checkbox" name="SEND_CONTRACT_DOCS" [(ngModel)]="SEND_CONTRACT_DOCS">
+                </div>
+              </div>
+          <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+              <button *ngIf="(loan_request?.LOAN_STATUS=='2'||loan_request?.IS_PEER_TO_PEER!='1')"
+                class="btn btn-danger btn-block btn-pink" (click)="createContract()" [disabled]="loading">{{loan_request?.SCHEDULE_HAS_BEEN_SAVED=='1'?'Edit Contract':'Create Contract'}}
+                <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+              </button>
+              <button *ngIf="loan_request?.IS_PEER_TO_PEER=='1'&&loan_request?.LOAN_STATUS=='1'" class="btn btn-danger btn-block btn-pink"
+                (click)="sendToMarket()" [disabled]="loading">Send To Market
+                <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="request_step=='finishedRollover'">
+        <section class="panel bround">
+          <div class="panel-body text-center" style="padding: 40px 0;">
+            <div style="margin-bottom:60px">
+                <a style="margin:10px 0px">
+                    <img style="width:140px" src="assets/img/check.png">
+                  </a>
+            </div>
+            
+            <button class="btn btn-white"  (click)="paymentProcessDone()">Close</button>
+          </div>
+        </section>
+      </div>
+
+    <div *ngIf="request_step=='3'">
+      <section class="panel bround">
+        <div class="panel-body text-center" style="padding: 40px 0;">
+          <a style="margin:10px 0px">
+            <img style="width:140px" src="assets/img/check.png">
+          </a>
+          <div style="margin:30px 0px 40px">
+            <h2 class="txt t_l2 t_lh1"> {{loan_request?.REQUEST_PRINCIPAL | number:'.2-2'}}</h2>
+            <p class="txt t_dull t_lh1 t_l3">Loan Created</p>
+          </div>
+          <p>
+            <button class="text-center txt t_l4 t_cool big_btn wd_btn good" style="" (click)="view_loan(loan_request?.REQUEST_ID)">View Request</button>
+          </p>
+          <a style="cursor:pointer"  (click)="new_request()">Create Another</a>
+        </div>
+      </section>
+    </div>
+
+
+
+
+    <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm.value, myForm.valid)">
+ 
+      <!-- New View-->
+      <div *ngIf="request_step=='5'" style="min-height:500px">
+        <div style="margin-bottom:15px;border-bottom:1px solid #eee">
+          <h3 class="t_cool">Repayment Date</h3>
+        </div>
+        <ul class="list list_border no_pad labels">
+          <li>
+            <div class="row">
+              <div class="col-md-5">
+                <p class="t_cool">Disbursement Date</p>
+              </div>
+              <div class="col-md-7">
+                <div class="search_box" style="padding-top: 10px; padding-bottom: 5px">
+                  <div *ngIf="disdate">
+                    <my-date-picker (dateChanged)="onDateChanged($event)" [selDate]="selDate" name="DISBURSEMENT_DATE" [options]="myDatePickerOptions"
+                      formControlName="DISBURSEMENT_DATE"></my-date-picker>
+                  </div>
+                  <span *ngIf="!disdate">{{selDate.year+'/'+selDate.month+'/'+selDate.day}}</span>
+                  <small *ngIf="!disdate" style="float:right;cursor:pointer" (click)="disdate=!disdate">Edit</small>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="row">
+              <div class="col-md-5">
+                <p class="t_cool">1st Repayment Date</p>
+              </div>
+              <div class="col-md-7">
+                <div class="search_box" style="padding-top: 10px; padding-bottom: 5px">
+                  <my-date-picker *ngIf="repdate" [selDate]="selDate_" name="REPAYMENT_STARTED_WHEN" [options]="myDatePickerOptions" formControlName="REPAYMENT_STARTED_WHEN"></my-date-picker>
+                  <span *ngIf="!repdate">{{selDate_.year+'/'+selDate_.month+'/'+selDate_.day}}</span>
+                  <small *ngIf="!repdate" style="float:right;cursor:pointer" (click)="repdate=!repdate">Edit</small>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="row">
+              <div class="col-md-6">
+                <!-- <button class="btn btn-white btn-block edged_box">Cancel</button> -->
+
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-orange btn-block edged_box" (click)="request_step='2'">Update</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+
+
+
+      <div *ngIf="request_step=='6'">
+        <div style="margin-bottom:15px;border-bottom:1px solid #eee; overflow:auto">
+          <h3 class="pull-left">Review and modify terms</h3>
+          <a class="btn btn-xs btn-white pull-right" style="margin-right:15px;margin-top:20px" (click)="request_step='2'">Close</a>
+        </div>
+        <!-- <app-loanfees [totalsecuritydeposit]="myForm.controls.TOTAL_SECURITY_DEPOSIT.value" [paidfeesandcharges]="paidfeesandcharges"
+          [fees]="fees" [charges]="charges" [allfeesqueue]="allfeesqueue" [allchargesqueue]="allchargesqueue" [loan]="loan"
+          [interestAlone]="interestAlone" [formValues]="myForm.value"></app-loanfees> -->
+          <div class="row">
+            <div class="col-md-5">
+              <p class="t_cool">Fee Type</p>
+            </div>
+            <div class="col-md-7">
+                <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
+                    <select style="width: 85%;border: 0px;background: #fafafa;" name="FEE_TYPE" formControlName="FEE_TYPE">
+                        <option [value]="0">Upfront</option>
+                        <option [value]="1">Capitalized</option>
+                        <!-- <option [value]="2">Backend</option> -->
+                      </select>
+                
+                  <small style="cursor:pointer">Edit</small>
+                </div> 
+              <br>
+
+            </div>
+          </div> 
+          <div class="row" style="margin-bottom:15px">
+              <div class="col-md-5">
+                <p class="t_cool">Flat Value</p>
+              </div>
+              <div class="col-md-7">
+                <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
+                 
+                  <input type="text" formControlName="TOTAL_FLAT_FEES" name="TOTAL_FLAT_FEES" style="max-width: 100%">
+                 
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom:15px">
+              <div class="col-md-5">
+                <p class="t_cool">Percentage Value</p>
+              </div>
+              <div class="col-md-7">
+                <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
+                 
+                  <input type="text" formControlName="TOTAL_PERCENTAGE_FEES" name="TOTAL_PERCENTAGE_FEES" style="max-width: 100%">
+                 
+                </div>
+              </div>
+            </div>
+      </div>
+      <div *ngIf="request_step=='7'">
+        <div style="margin-bottom:15px;border-bottom:1px solid #eee; overflow:auto">
+          <h3 class="pull-left">Review and modify terms</h3>
+          <a class="btn btn-xs btn-white pull-right" style="margin-right:15px;margin-top:20px" (click)="request_step='2'">Close</a>
+        </div>
+        <app-loancharges [totalsecuritydeposit]="myForm.controls.TOTAL_SECURITY_DEPOSIT.value" [paidfeesandcharges]="paidfeesandcharges"
+          [fees]="fees" [charges]="charges" [allfeesqueue]="allfeesqueue" [allchargesqueue]="allchargesqueue" [loan]="loan"
+          [interestAlone]="interestAlone" [formValues]="myForm.value"></app-loancharges>
+      </div>
+
+
+      <!-- Hide -->
+      <!-- <div *ngIf="request_step=='4'" class="hide">
+        <div style="margin-bottom:15px;border-bottom:1px solid #eee">
+          <h3>Review and modify terms</h3>
+        </div>
+        <div class="form-group row">
+          <label class="control-label col-md-6">Interest Rate type</label>
+          <div class="col-md-6">
+            <select (ngModelChange)="changeRepay($event)" class="form-control" formControlName="INTEREST_RATE_TYPE_ID">
+              <option [value]="1">Flat</option>
+              <option [value]="2">Simple</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-6">
+            Repayment type
+          </label>
+          <div class="col-md-6">
+            <select class="form-control" (ngModelChange)="cIA($event)" formControlName="REPAYMENT_TYPE_ID">
+              <option *ngFor="let r of rtypes" [value]="r.value">
+                {{r.display}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="!interestAlone">
+          <label for="RMI" class="col-md-6 control-label">All Interests Discounted</label>
+          <div class="col-md-6">
+            <label class="checkbox-inline" style="padding-left:0px !important">
+              <input type="checkbox" formControlName="ALL_INTERESTS_UPFRONTED">
+            </label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="RMI" class="col-md-6 control-label">All Interests Paid</label>
+          <div class="col-md-6">
+            <label class="checkbox-inline" style="padding-left:0px !important">
+              <input type="checkbox" formControlName="ALL_INTERESTS_HAVE_BEEN_PAID">
+            </label>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="epi">
+          <label for="RMI" class="col-md-6 control-label">Fees</label>
+          <div class="col-md-6">
+            <select class="form-control" formControlName="FEES_EXCLUDE_INCLUDE">
+              <option [value]="1">Include</option>
+              <option [value]="2">Exclude</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="interestAlone">
+          <label for="RMI" class="col-md-6 control-label">Fees</label>
+          <div class="col-md-6">
+            <select class="form-control" formControlName="FEES_UPFRONT_BACKEND">
+              <option [value]="1">Upfront</option>
+              <option [value]="2">Backend</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="interestAlone">
+          <label for="RMI" class="col-md-6 control-label">Interests</label>
+          <div class="col-md-6">
+            <label class="radio-inline" style="padding-left:0px !important">
+              <input type="radio" (ngModelChange)="cIB($event)" [value]="1" formControlName="WHAT_HAPPENS_TO_INTEREST"> Upfront
+            </label>
+            <label class="radio-inline" style="padding-left:0px !important">
+              <input type="radio" [value]="2" formControlName="WHAT_HAPPENS_TO_INTEREST"> Spread
+            </label>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="interestAlone">
+          <label for="RMI" class="col-md-6 control-label">Principal</label>
+          <div class="col-md-6">
+            <label class="radio-inline" style="padding-left:0px !important">
+              <input type="radio" [value]="1" formControlName="WHAT_HAPPENS_TO_PRINCIPAL"> Backend
+            </label>
+            <label class="radio-inline" style="padding-left:0px !important">
+              <input type="radio" [value]="2" formControlName="WHAT_HAPPENS_TO_PRINCIPAL"> Spread
+            </label>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="!interestAlone&&!bullet">
+          <label for="RMI" class="col-md-6 control-label">Allow moratorium</label>
+          <div class="col-md-6">
+            <select class="form-control" (ngModelChange)="cIB($event)" formControlName="ALLOW_MORATORIUM">
+              <option [value]="1">No</option>
+              <option [value]="2">Yes</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="allowMoratorium">
+          <label for="RMI" class="col-md-6 control-label">Moratorium Type</label>
+          <div class="col-md-6">
+            <label class="radio-inline" style="padding-left:0px !important">
+              <input type="radio" [value]="1" formControlName="MORATORIUM_TYPE"> Principal
+            </label>
+            <label class="radio-inline" style="padding-left:0px !important">
+              <input type="radio" [value]="3" formControlName="MORATORIUM_TYPE"> All
+            </label>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="allowMoratorium">
+          <label for="RMI" class="col-md-6 control-label">Moratorium Period</label>
+          <div class="col-md-6">
+            <input type="text" class="form-control" formControlName="MORATORIUM_PERIOD">
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="allowMoratorium">
+          <label for="RMI" class="col-md-6 control-label">Do not compound</label>
+          <div class="col-md-6">
+            <label class="radio-inline" style="padding-left:0px !important">
+              <input type="radio" name="DO_NOT_COMPOUND" formControlName="DO_NOT_COMPOUND">
+            </label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="no-margin control-label col-md-6">How many days per year</label>
+          <div class="col-md-6">
+            <input type="text" value="" class="form-control" formControlName="DAYS_PER_YEAR">
+          </div>
+        </div>
+        <div class="form-group row ">
+          <label for="RMI" class="control-label col-md-6">Interest Applied When</label>
+          <div class="col-md-6">
+            <select class="form-control" formControlName="RP_SET_TYPE">
+              <option [value]="1">Immediate</option>
+              <option [value]="2">Prorated</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6"></div>
+          <div class="col-md-6">
+            <button class="btn btn-white btn-block" (click)="request_step='2'">Save</button>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- New View -->
+      <div *ngIf="request_step=='4'">
+        <div style="margin-bottom:15px;border-bottom:1px solid #eee">
+          <h3 class="t_cool">Review and modify terms</h3>
+        </div>
+        <ul class="list list_border no_pad labels">
+          <li>
+            <div style="border: 1px solid #ccc;padding: 10px 0;">
+              <div class="input-group ">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                    <span class="sel_cur">
+                      <img style="width:13px" src="assets/img/percent.png">
+                    </span>
+                  </button>
+                </div>
+                <input type="text" class="form-control" style="border: 0; font-size: 18px" formControlName="REQUEST_RATE">
+
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                    <span class="sel_cur">/ {{interest_duration}}</span>
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu pull-right">
+                    <li *ngFor="let d of loan_durations;let i=index;">
+                      <a (click)="changeDuration(i,2)">/ {{d.INTEREST_DURATION}}</a>
+                    </li>
+                    <!-- <li><a>/ Day</a></li>
+                                      <li><a>/ Month</a></li>
+                                      <li><a>/ Year</a></li> -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li >
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="t_cool">Loan Purpose</p>
+                </div>
+                <div class="col-md-6">
+                  <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
+                      <select [disabled]="optionEditing!='LOAN_PURPOSE_ID'" style="width: 85%;
+                      border: 0px;
+                      background: #fafafa;" name="LOAN_PURPOSE_ID" formControlName="LOAN_PURPOSE_ID">
+                           
+                      <option [value]="p.LOAN_PURPOSE_ID" *ngFor="let p of loan_purposes">{{p.DESCRIPTION}}</option>
+                          
+                        </select>
+                        
+                    <!-- <input type="text" name="" placeholder="Monthly" name="lender_name" style="max-width: 85%"> -->
+                    <small style="cursor:pointer" (click)="optionEditing=='LOAN_PURPOSE_ID'">Edit</small>
+                  </div>
+                </div>
+              </div>
+            </li>
+          <li>
+              <li >
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p class="t_cool">Comments</p>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
+                          <textarea  name="DESCRIPTION" formControlName="DESCRIPTION"></textarea>
+                        <small style="cursor:pointer" (click)="optionEditing=='DESCRIPTION'">Edit</small>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              <li>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="t_cool">Installment Frequency</p>
+              </div>
+              <div class="col-md-6">
+                <div class="checkbox" *ngFor="let freq of installment_frequencies;">
+                  <label>
+                    <input type="radio" (ngModelChange)="changeInstallmentFrequency($event)" formControlName="INSTALLMENT_FREQUENCY" [value]="freq.value"> {{freq.display}}</label>
+                </div>
+
+                <br>
+
+              </div>
+            </div>
+          </li>
+          <li *ngIf="installment_frequency==='2'">
+            <div class="row">
+              <div class="col-md-5">
+                <p class="t_cool">Installment Terms</p>
+              </div>
+              <div class="col-md-7">
+                  <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
+                      <select (ngModelChange)="cIA($event)" [disabled]="optionEditing!='REPAYMENT_TYPE_ID'" style="width: 85%;
+                      border: 0px;
+                      background: #fafafa;" name="REPAYMENT_TYPE_ID" formControlName="REPAYMENT_TYPE_ID">
+                          <option *ngFor="let r of rtypes;" [value]="r.value">{{r.display}}</option>
+                        
+                        </select>
+                        
+                    <!-- <input type="text" name="" placeholder="Monthly" name="lender_name" style="max-width: 85%"> -->
+                    <small style="cursor:pointer" (click)="optionEditing=='REPAYMENT_TYPE_ID'">Edit</small>
+                  </div>
+                <!-- <div class="checkbox" *ngFor="let r of rtypes;">
+                  <label>
+                    <input type="radio" (ngModelChange)="cIA($event)" formControlName="REPAYMENT_TYPE_ID" [value]="r.value"> {{r.display}}</label>
+
+                </div> -->
+                <br>
+
+              </div>
+            </div>
+          </li>
+          <!-- <li *ngIf="installment_frequency==='1'">
+            <div class="row">
+              <div class="col-md-5">
+                <p class="t_cool">Installment Terms</p>
+              </div>
+              <div class="col-md-7">
+                <div class="checkbox">
+                  <label>
+                    <input type="radio" (ngModelChange)="cIA($event)" formControlName="REPAYMENT_TYPE_ID" [value]="3"> Bullet</label>
+                </div>
+                <br>
+
+              </div>
+            </div>
+          </li> -->
+          <li *ngIf="installment_frequency!='1' && showingMoreOptions">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="t_cool">Installment Cycle</p>
+              </div>
+              <div class="col-md-6">
+                <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
+                    <select [disabled]="optionEditing!='MONTHLY_PERIOD'" style="width: 85%;
+                    border: 0px;
+                    background: #fafafa;" name="MONTHLY_PERIOD" formControlName="MONTHLY_PERIOD">
+                        <option [value]="1">Monthly</option>
+                        <option [value]="2">+28 days</option>
+                        <option [value]="3">+29 days</option>
+                        <option [value]="4">+30 days</option>
+                        <option [value]="5">+31 days</option>
+                        
+                      </select>
+                      
+                  <!-- <input type="text" name="" placeholder="Monthly" name="lender_name" style="max-width: 85%"> -->
+                  <small style="cursor:pointer" (click)="optionEditing=='MONTHLY_PERIOD'">Edit</small>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li *ngIf="installment_frequency!='1' && showingMoreOptions">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="t_cool">Interest Type</p>
+              </div>
+              <div class="col-md-6">
+                <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
+                    <select [disabled]="optionEditing!='INTEREST_RATE_TYPE_ID'"  style="width: 85%;
+                    border: 0px;
+                    background: #fafafa;"  (ngModelChange)="changeRepay($event)" formControlName="INTEREST_RATE_TYPE_ID">
+                        <option [value]="1">Flat</option>
+                        <option [value]="2">Simple</option>
+                      </select>
+                      <small style="cursor:pointer" (click)="optionEditing=='INTEREST_RATE_TYPE_ID'">Edit</small>
+                      
+                </div>
+              </div>
+            </div>
+          </li>
+          <li *ngIf="installment_frequency!='1' && showingMoreOptions">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="t_cool">1 Day equals Month?</p>
+              </div>
+              <div class="col-md-6">
+                  <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
+                      <select [disabled]="optionEditing!='RP_SET_TYPE'" style="width: 85%;
+                      border: 0px;
+                      background: #fafafa;" formControlName="RP_SET_TYPE">
+                          <option [value]="1">Yes</option>
+                          <option [value]="2">No, Prorate daily</option>
+                        </select>
+                   
+                        <small style="cursor:pointer" (click)="optionEditing=='RP_SET_TYPE'">Edit</small>
+                  </div>
+                
+              </div>
+            </div>
+          </li>
+          <li *ngIf="installment_frequency!='1' && showingMoreOptions">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="t_cool">Allow Moratorium</p>
+              </div>
+              <div class="col-md-6">
+                  <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
+                      <select  [disabled]="optionEditing!='ALLOW_MORATORIUM'" style="width: 85%;
+                      border: 0px;
+                      background: #fafafa;" (ngModelChange)="cIB($event)" formControlName="ALLOW_MORATORIUM">
+                      <option [value]="1">No</option>
+                      <option [value]="2">Yes</option>
+                        </select>
+                   
+                        <small style="cursor:pointer" (click)="optionEditing=='ALLOW_MORATORIUM'">Edit</small>
+                  </div> 
+                  <div class="" *ngIf="allowMoratorium">  
+                <br>
+                <label>
+                  <input type="radio" [value]="1" formControlName="MORATORIUM_TYPE"> On Principal</label>
+                <br>
+                <label>
+                  <input type="radio" [value]="3" formControlName="MORATORIUM_TYPE"> On all</label>
+                  </div>
+              </div>
+            </div>
+          </li>
+          <li *ngIf="allowMoratorium && showingMoreOptions">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="t_cool">Moratorium Duration</p>
+              </div>
+              <div class="col-md-6">
+                <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
+                 
+                  <input type="text" formControlName="MORATORIUM_PERIOD" name="MORATORIUM_PERIOD" style="max-width: 74%">
+                  <small>Months</small>
+                </div>
+              </div>
+            </div>
+          </li>
+          
+          <li *ngIf="installment_frequency!='1'">
+            <p class="text-right" *ngIf="showingMoreOptions">
+              <span (click)="showingMoreOptions=!showingMoreOptions" style="cursor:pointer">Less</span>
+            </p>
+            <p class="text-right" *ngIf="!showingMoreOptions">
+                <span (click)="showingMoreOptions=!showingMoreOptions" style="cursor:pointer">More</span>
+              </p>
+          </li>
+          <li>
+            <div class="row">
+              <div class="col-md-6">
+                &nbsp;
+              </div>
+              <div class="col-md-6"> 
+                <button class="btn btn-orange btn-block edged_box" (click)="request_step='2'">Update</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </form>
+  </div>
+  <div class="col-md-4 no_article_hover" *ngIf="sub!='5'&&sub!='8'">
+    <section class="panel bround" [ngClass]="{'active': request_step=='1', 'notactive':  request_step!='1'}">
+      <div class="panel-body" style="padding: 5px">
+        <article class="media">
+          <div class="pull-left thumb p-thumb">
+            <img *ngIf="request_step=='1'" style="width:75px; height:75px;" src="assets/img/naira.png">
+            <img *ngIf="request_step!='1'" style="width:75px; height:75px;" src="assets/img/naira_shade.png">
+          </div>
+          <div class="media-body">
+            <h4 style="margin:0px; margin-top:10px" [ngClass]="{'heady': request_step=='1', 'notheady':  request_step!='1'}">1. Make Request</h4>
+            <p>Enter the Principal and Duration</p>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="panel bround" [ngClass]="{'active': request_step=='2', 'notactive':  request_step!='2'}">
+      <div class="panel-body" style="padding: 12px 5px">
+        <article class="media">
+          <div class="pull-left thumb p-thumb" style="margin-right: 10px; margin-left: 10px">
+            <img *ngIf="request_step=='2'" style="width:55px; height:55px;" src="assets/img/pencil.png">
+            <img *ngIf="request_step!='2'" style="width:55px; height:55px;" src="assets/img/pencil_shade.png">
+          </div>
+          <div class="media-body">
+            <h4 style="margin:0px; margin-top:10px" [ngClass]="{'heady': request_step=='2', 'notheady':  request_step!='2'}">2. Review</h4>
+            <p>Review summary of the loan</p>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="panel bround" [ngClass]="{'active': request_step=='3', 'notactive':  request_step!='3'}">
+      <div class="panel-body" style="padding: 4px 2px;">
+        <article class="media">
+          <div class="pull-left thumb p-thumb" style="margin-left: 5px">
+            <img *ngIf="request_step=='3'" style="width:70px; height:70px;" src="assets/img/check_.png">
+            <img *ngIf="request_step!='3'" style="width:70px; height:70px;" src="assets/img/check_shade.png">
+          </div>
+          <div class="media-body">
+            <h4 style="margin:0px; margin-top:10px" [ngClass]="{'heady': request_step=='3', 'notheady':  request_step!='3'}">3. Done</h4>
+            <p>Request created</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+</div>

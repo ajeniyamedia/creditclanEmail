@@ -1,0 +1,19 @@
+<div class="left-arrow" style="z-index:1;" *ngIf="customer?.status"  (click)="open_customer(customer?.prev.PEOPLE_CUSTOMERS_ID)">
+  <div class="cvr lft">
+
+      <div class="nxt">
+          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      </div>
+  
+      <div class="media cnt text-right">
+          <div class="pull-right thumb p-thumb">
+              <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{customer?.prev.FILE_NAME | imagenotfound}}?q=auto" style="border-radius: 50%">
+          </div>
+          <div class="pull-right media-body" style="width: auto">
+              <p class="t_l4 t_cool" style="margin-bottom: 0px;"><strong>{{customer?.prev.LEGAL_NAME}}</strong></p>
+              <p class="no-margin" style="font-size: 9px">{{customer?.prev.PHONE}}</p>
+          </div>
+      </div>
+       
+  </div>
+</div>

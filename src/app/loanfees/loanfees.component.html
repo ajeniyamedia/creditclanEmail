@@ -1,0 +1,127 @@
+<div *ngIf="!editFee">
+    <div>
+            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;padding:15px">
+                    <div class="form-group" *ngFor="let fee of fees; let i = index">
+                       <span class="pull-left text-primary" (click)="onFeeEdit(fee)" style="cursor:pointer">{{fee?.CHARGE_ID.DESCRIPTION}}</span>
+                       <span class="pull-right">
+                          {{fee?.AMOUNT_FOR_LOAN | number:'.2-2'}}|{{fee?.AMOUNT_FOR_LOAN_TAX | number:'.2-2'}}
+                       </span>
+                       <div class="clearfix"></div>
+                     </div>
+                    
+                 </div>
+                 <h4>Total: &#8358;<span>{{fees_queue.total_charges}}</span></h4>
+                 <h4>Vat on Fees: &#8358;<span>{{fees_queue.vat_on_fees}}</span></h4>
+    </div>
+    <div>
+            <div  style="padding-bottom: 121px">
+                    <div  class="text-center">
+                                                      
+                                                         <a class="btn btn-white btn-xs" (click)="addNewFee()"><i class="fa fa-plus"></i> <span class="st">Add</span></a>
+                                                   
+                                                    </div>
+                    </div>
+    </div>    
+</div>
+<div *ngIf="editFee">
+    <section class="panel">
+        <div class="panel-body">
+                <div class="form-group row">
+                        <div class="col-md-6">
+                            <label>
+                                       Name
+                                    </label>
+                          <select class="form-control" [(ngModel)]="fee.CHARGE_ID">
+                          <option value="0"></option>
+                             <option *ngFor="let r of lists" [ngValue]="r" [selected]="r.DEFAULT_CHARGE_ID === fee.CHARGE_ID">  
+                              {{r.NAME}}
+                             </option>
+                         
+                         </select>
+                        </div>
+                          <div class="col-md-6">
+                            <label>
+                                       Calculation
+                                    </label>
+                         <select class="form-control CALCULATION"  (ngModelChange)="onHowCalculatedChanged($event)" [(ngModel)]="fee.HOW_CALCULATED"> 
+                      <option value="0"></option>
+                          <option [value]=1 [selected]="fee.HOW_CALCULATED==1">Upfront</option>
+                         <option [value]=2 [selected]="fee.HOW_CALCULATED =='2'">Capitalize</option>
+                         <option [value]=3 [selected]="fee.HOW_CALCULATED =='3'">Periodic</option>
+                         <option [value]=4 [selected]="fee.HOW_CALCULATED == '4'">Backend</option>
+                          <option [value]=5 [selected]="fee.HOW_CALCULATED =='5'">Debited</option>
+                         </select>
+                        </div>
+                    </div>
+        <div class="form-group row">
+                        <div class="col-md-6">
+                            <label>
+                                       Payment Type
+                                    </label>
+                          <select class="form-control" (ngModelChange)="onChargePaymentTypeChanged($event)"  [(ngModel)]="fee.CHARGE_PAYMENT_TYPE"> 
+                         <option [value]=0 [selected]="fee.CHARGE_PAYMENT_TYPE==0"></option>
+                         <option [value]=1 [selected]="fee.CHARGE_PAYMENT_TYPE==1">Flat</option>
+                         <option [value]=2 [selected]="fee.CHARGE_PAYMENT_TYPE==2">Percentage</option>
+                         </select>
+                        </div>
+                          <div class="col-md-6">
+                            <label>
+                                       Value
+                                    </label>
+                          <input type="text"  (ngModelChange)="onChargeValueChanged($event)" *ngIf="fee.HOW_CALCULATED!='3'" class="form-control" [(ngModel)]="fee.CHARGE_VALUE"> 
+                         <input  (ngModelChange)="onPeriodicFeeChanged($event)" type="text" class="form-control" *ngIf="fee.HOW_CALCULATED=='3'" [(ngModel)]="fee.PERIODIC_CHARGE">
+                        
+                         
+                        </div>
+                    </div>
+        <div class="form-group row"  *ngIf="fee.CHARGE_PAYMENT_TYPE==2">
+                     <label class="control-label col-md-6">
+                                      Percentage On
+                                    </label>
+                        <div class="col-md-6">
+                            
+                          <select  (ngModelChange)="onPercentageOnChanged($event)" class="form-control" [(ngModel)]="fee.PERCENTAGE_ON"> 
+                          <option [value]='0' [selected]="fee.PERCENTAGE_ON=='0'"></option>
+                         <option [value]='1' [selected]="fee.PERCENTAGE_ON=='1'">Principal</option>
+                         <option [value]='2' [selected]="fee.PERCENTAGE_ON=='2'">Net Principal</option>
+                         </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label>
+                                       Is Taxable
+                                    </label>
+                          <div class="checkbox pull-right">
+                                    <label>
+                                        <input type="checkbox"  (ngModelChange)="onIsTaxableChanged($event)" [(ngModel)]="fee.IS_TAXABLE" [checked]="fee.IS_TAXABLE===1"> 
+                                    </label>
+                                </div>
+                        </div>
+                        <div class="col-md-6">
+                        <label for="RMI" class="control-label">Tax Percentage(%)</label>
+                        <input type="text"  (ngModelChange)="onTaxPercentageChanged($event)" [(ngModel)]="fee.TAX_PERCENTAGE" [disabled]="fee.IS_TAXABLE===0||!fee.IS_TAXABLE" class="form-control btn-block"> 
+                        </div>
+                    </div>
+                    
+        <div class="form-group row" *ngIf="fee.HOW_CALCULATED=='3'">
+                        <div class="col-md-6">
+                            <label>
+                                      Period (Days)
+                                    </label>
+                        <select class="form-control for-periodic" [(ngModel)]="fee.PERIODIC_CHARGE_ID"> 
+                         <option [value]="30">30</option>
+                         <option [value]="60">60</option>
+                         <option [value]="90">90</option>
+                         <option [value]="120">120</option>
+                         
+                         </select>
+                        </div>
+                        
+                    </div>
+        <a *ngIf="newFee" class="btn btn-white btn-block" (click)="saveNewFee()">Save <i class="fa fa-spinner fa-spin hide"></i></a>
+        <a *ngIf="editFee&&!newFee" class="btn btn-white btn-block" (click)="closeFee()">Close <i class="fa fa-spinner fa-spin hide"></i></a>
+        
+        </div>
+    </section>
+</div>

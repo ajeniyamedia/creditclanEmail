@@ -1,0 +1,7 @@
+/* You can add global styles to this file, and also import other style files */
+@import "fullcalendar.min.css";
+.modal-content {
+	width: 600px !important;
+    margin: 30px auto !important;
+    overflow: hidden !important;
+}

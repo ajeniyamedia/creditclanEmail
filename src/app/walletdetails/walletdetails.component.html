@@ -1,0 +1,62 @@
+<section class="panel panl" style="margin-bottom: 5px">
+  <div class="panel-body">
+    <article class="media">
+      <div class="pull-left thumb">
+        <img src="assets/images/file.PNG">
+      </div>
+      <div class="pull-left" style="margin-top: 5px">
+        <h4 class="no-margin" style="word-wrap:break-word; margin-bottom: 10px">Recent Wallet Transactions</h4>
+      </div>
+      <button (click)="openStatement()" [disabled]="loading" class="pull-right btn btn-white wd_btn" style="border-radius: 0">View Statement</button>
+      <!-- <button (click)="isWalletSettings=!isWalletSettings" class="pull-right btn btn-white wd_btn" style="border-radius: 0">Settings</button> -->
+    </article>
+
+
+  </div>
+</section>
+<section class="panel" *ngIf="!isWalletSettings">
+  <div class="panel-body" style="padding:0px">
+    <div *ngIf="state?.recent.contra_charts.length=='0'">
+      <div>
+    
+        <div class="panel panel-body box" style="position: relative; padding: 30px">
+
+            <div style="margin-top: 100px"></div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <ul class="list list_border" id="no-padding-right">
+                        <li>
+                            <p class="txt t_l2 t_cool">No Records</p>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <div class="col-md-8"></div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    
+    <article class="media" *ngFor="let tran of state?.recent_.chart_account_transactions" style="border-bottom: 1px solid #eee;
+        padding: 15px;">
+        <div class="pull-left thumb" style="padding-right: 20px">
+          <img src="assets/images/i.PNG">
+        </div>
+        <div class="pull-left" style="margin-top: 5px">
+          <h5 class="no-margin" style="margin-bottom: 7px; font-size:12px">{{tran?.NARRATION}}</h5>
+          <p class="no-margin t_lh1 t_l4" style="font-size: 14px; font-size:10px">{{tran?.DATE_ADDED| amDateFormat:'dddd, MMMM Do YYYY'}}</p>
+        </div>
+
+        <div class="pull-right text-right">
+          <div class="">
+            <h5 class="no-margin" style="margin-bottom: 7px">{{tran?.TTYPE=='2'?tran?.CREDIT:tran?.DEBIT|number:'.2-2'}}</h5>
+            <p class="no-margin t_lh1 t_l4 t_cool" style="font-size: 14px">{{tran?.TTYPE=='2'?'Credit':'Debit'}}</p>
+          </div>
+
+        </div>
+
+      </article>
+  </div>
+</section>

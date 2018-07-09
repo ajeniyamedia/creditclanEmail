@@ -1,0 +1,107 @@
+<section id="main-content">
+    <div class="" [ngClass]="{' container external': !external, '': external}">
+        <div class="row" [ngClass]="{'mtop': !external, 'internal': external}">
+            <div class="" [ngClass]="{'pad0 col-md-12': !external, '': external}">
+                <div id="ajax_view">
+                    <section class="panel">
+                        <header class="panel-heading" *ngIf="!external">
+                            Contractual Schedule
+                            <span class="tools pull-right">
+
+                                <a (click)="open_schedule(loan?.REQUEST_ID)">Schedule</a>
+                                <!-- <a (click)="open_payment(loan?.REQUEST_ID)">Payment</a> -->
+                                <a (click)="open_statement(loan?.REQUEST_ID)">Statement</a>
+                                <!-- <a class="" (click)="open_approval=true">Break Loan</a> -->
+                                <a (click)="open_contract(loan?.REQUEST_ID)">Contract</a>
+
+                            </span>
+                        </header>
+                        <div class="panel-body">
+                            <div class="row invoice-list">
+
+                                <div class="col-lg-4 col-sm-4">
+                                    <h4>CLIENT INFO</h4>
+                                    <p>Client : {{loan?.LEGAL_NAME}}</p>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <h4>REQUEST INFO</h4>
+                                    <p>Amount : {{loan?.REQUEST_PRINCIPAL| number:'.2-2'}}</p>
+                                    <p>Tenor : {{loan?.REQUEST_TENOR}} {{loan?.LOAN_DURATION}}</p>
+                                    <p>Rate : {{loan?.REQUEST_RATE}} {{loan?.INTEREST_DURATION}}</p>
+                                    <p>Value Date : {{loan?.DISBURSEMENT_DATE}}</p>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <h4>REPAYMENTS</h4>
+                                    <p>Total Repayment : {{loan?.repayment.tr| number:'.2-2'}}</p>
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <!-- <th>#</th> -->
+                                <th>Date</th>
+                                <th>Outstanding Principal</th>
+                                <th>Interest</th>
+                                <!-- <th>Principal</th>
+                        
+                        <th>Mgt Fee</th>
+                        <th>Vat</th> -->
+                                <th>Term Repayment</th>
+                                <th>Paid</th>
+                                <th>Remaining</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let repayment of loan?.repayment.schedule"> 
+                                    <td>{{repayment?.REPAYMENT_DATE| amDateFormat:'DD MMM YYYY'}}</td>
+                                    <td>{{repayment?.OUTSTANDING_PRINCIPAL| number:'.2-2'}}</td> 
+                                    <td>{{repayment?.INTEREST_REPAYMENT| number:'.2-2'}}</td>
+                                    <td>{{repayment?.TERM_REPAYMENT| number:'.2-2'}}</td>
+                                    <td>{{repayment?.HOW_MUCH_PAID| number:'.2-2'}}</td>
+                                    <td>{{repayment?.HOW_MUCH_REMAINING| number:'.2-2'}}</td>
+                                    <td>
+                                        <div class="btn-group" *ngIf="repayment?.HOW_MUCH_REMAINING > 0 && authService.canViewModule('1,7') && repayment?.AUTODEBIT_NOW">
+
+                                            <button data-toggle="dropdown" class="btn btn-white btn-xs dropdown-toggle" type="button" aria-expanded="false">
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul role="menu" class="dropdown-menu">
+                                                <li>
+                                                    <a (click)="initiateRecollection(repayment)">Push for recollection</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                                                     <td>{{getTotal('OUTSTANDING_PRINCIPAL',loan?.repayment?.schedule) | number:'.2-2'}}</td>
+                                                                     <td>{{getTotal('INTEREST_REPAYMENT',loan?.repayment?.schedule) | number:'.2-2'}}</td>
+                                                                     <td>{{getTotal('TERM_REPAYMENT',loan?.repayment?.schedule) | number:'.2-2'}}</td>
+                                                                     <td>{{getTotal('HOW_MUCH_PAID',loan?.repayment?.schedule) | number:'.2-2'}}</td>
+                                                                     <td>{{getTotal('HOW_MUCH_REMAINING',loan?.repayment?.schedule) | number:'.2-2'}}</td> 
+                                                                     
+                                    </tr>
+                            </tbody>
+
+                        </table>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- <div class="overlay_ app_overlay animated" style="overflow:hidden" *ngIf="open_approval">
+
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="open_approval=false">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class=" overpanel-content container" role="document" style="background:rgba(255, 255, 255, 0.95); height:100%; text-align:left;width:450px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden">
+        <app-breakloan [request_id]="parentRouteId"></app-breakloan>
+    </div>
+</div> -->

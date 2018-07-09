@@ -1,0 +1,87 @@
+<header class="header bg" style="">
+       
+            <div class="container-fluid">
+                <a class="logo bold pull-left" style="margin-right:15px">
+                    <img src="assets/img/CC_small_colour_1.png" style="width: 35px">
+                </a>
+                <div class="pull-left" style="margin-top:2px">
+                    <input type="hidden" id="USER_DEFINED_ACTORS">
+                    <input type="text" class="form-control input-sm" placeholder="Search" style=" margin-top: 0;
+                            width: 260px;
+                            border-top-right-radius: 0;
+                            border-bottom-right-radius: 0;">	
+                </div>
+                <input type="button" class="btn btn-primary" value="Search" style="
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                    line-height: 18px;
+                    margin-top: 2px;
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                    margin-left: -1px;
+                ">
+
+                <div class="nav notify-row pull-right" id="top_menu" style="margin-top:0px !important">
+             
+                        <ul class="nav top-menu " style=" margin-top: 0;">
+                        <li class="">
+                               <a class="i"><i class="fa fa-dollar"></i></a>
+                            </li>   
+                       
+                        <li><a class="i"><i class="fa fa-briefcase"></i></a>
+                            </li>
+                            <li><a class="i"><i class="fa fa-shopping-cart"></i></a>
+                             </li> 
+                            <li class="dropdown" style="margin-top: 5px">
+                                <a data-toggle="dropdown" class="dropdown-toggle " href="#">
+                                    <img alt="" class="tiny" src="assets/img/blk2.jpg">
+                                    <!-- <span class="username" style="color:#fff;">{{currentUser.email | limitto: 20}}</span> -->
+                                    <span class="username" style="color:#fff;">Me</span>
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu extended logout"> 
+                                    <li><a [routerLink]="['/password']">Change Password</a></li>
+                                    <li><a [routerLink]="['/crm']">CRM</a></li>
+                                    <li><a [routerLink]="['/operations']">Operations</a></li>
+                                    <!-- <li><a [routerLink]="['/']">Dashboard</a></li>
+                                    
+                                    
+                                    <li><a [routerLink]="['/credit']">Credit</a></li>
+                                    <li><a [routerLink]="['/treasury']">Treasury</a></li>
+                                    <li><a [routerLink]="['/expenses']">Expenses</a></li>
+                                    <li><a [routerLink]="['/assets']">Assets</a></li>
+                                    
+                                    <li><a [routerLink]="['/admin']">Admin</a></li>
+                                    <li><a [routerLink]="['/reports']">Reports</a></li> 
+                                    <li><a [routerLink]="['/settings']">Settings</a></li> -->
+                                    <li><a [routerLink]="['/login']"><i class="fa fa-key"></i> Log Out</a></li>
+                                </ul>
+                            </li>
+                           
+                        </ul>
+                </div>
+            </div>
+        
+       </header>
+       <div class="sub" style="clear:both;background:#fff;color:#fff; padding:10px 0px;">
+        <ul class="nav nav_" style="margin-left:2%;">
+         <li><a [routerLink]="['/']">Home</a></li>
+         <li><a [routerLink]="['/']">Requests</a></li>
+         <li><a [routerLink]="['/settings']">Workflow</a></li>
+         <li><a [routerLink]="['/']">Draft Requests</a></li>
+         <li><a [routerLink]="['/password']">3 Days To Expire</a></li>
+         <li><a [routerLink]="['/crm']">Cancelled / Rejected</a></li>
+         <li><a [routerLink]="['/credit']">Historical</a></li> 
+         <!-- <li class="dropdown" style="margin-right:85px">
+             <a data-toggle="dropdown" class="dropdown-toggle " href="#"> 
+                 <span class="username">Portfolio</span>
+                 <b class="caret"></b>
+             </a>
+             <ul class="dropdown-menu extended"> 
+                 <li><a [routerLink]="['/password']">3 Days To Expire</a></li>
+                 <li><a [routerLink]="['/crm']">Cancelled / Rejected</a></li>
+                 <li><a [routerLink]="['/credit']">Historical</a></li> 
+             </ul>
+         </li> -->
+        </ul> 
+     </div>

@@ -1,0 +1,157 @@
+<section class="panel" style="background:none">
+  <header class="panel-heading" style="background:#fff">
+      People
+      <span class="tools pull-right"><button (click)="isUploading=!isUploading" class="btn btn-white btn-xs">Upload</button></span>
+      <span class="tools pull-right"><a [routerLink]="['../customers']" class="btn btn-white btn-xs">Customers</a></span>
+  </header>
+  <div class="panel-body" style="background:#fff" *ngIf="isUploading">
+
+    <h3>Upload customer</h3>
+    <p>Upload an excel file of the customers to be added</p>
+    <div class="row">
+            <div class="col-md-6 sharp_form">
+                 
+                <div>
+                  <div class="form-group">
+                      <label class="control-label">Description</label>
+                      <input type="text" name="description" [(ngModel)]="description" class="form-control">
+                  </div>
+                  <div class="form-group" *ngIf="description">
+                     <input id="file" name="file" (change)="uploadFile($event)" type="file" accept=".xls,.xlsx">
+                      
+                  </div>
+                  
+                    
+                  <button class="btn btn-pink btn-block edged_box"  [disabled]="description==''||loading"><span *ngIf="!loading">Upload Attachment</span><i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+              </div>
+            </div>
+            <div class="col-md-6">
+                <div class="text-right">
+                    <img src="assets/images/file2.PNG" style="width: 75px">
+                    <p class="t_l3 t_cool"><strong>Attachments</strong></p>
+                </div>
+            </div>
+        </div>
+    <div class="row" *ngIf="uploadingComplete">
+
+        
+
+    </div>
+  </div>
+  <div class="table_cus" *ngIf="!isUploading">
+      <div class="panel-body all_cus" style="min-height:370px; padding:0px" *ngIf="showEmptyState == false">
+          <article *ngFor="let customer of customers" id="{{customer?.PEOPLE_CUSTOMERS_ID+'_item'}}" class="media" style="margin: 5px 0px;background: #fff;padding: 5px;cursor:pointer; margin-bottom:0px">
+              <div class="pull-left thumb p-thumb">
+                  <a [routerLink]="['/customer/', 'individual', customer.PEOPLE_CUSTOMERS_ID]">
+                      <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{customer?.FILE_NAME | imagenotfound}}?q=auto" style="width:50px; height:50px">
+                  </a>
+              </div>
+
+              <div [attr.data-target]="customer?.PEOPLE_CUSTOMERS_ID+'_preview_pane'" [attr.data-parent]="customer?.PEOPLE_CUSTOMERS_ID+'_item'" style="position: relative;">
+                  <a (click)="showCustomerPreview($event, 'individual', customer.PEOPLE_CUSTOMERS_ID)" class=" btn btn-white pull-right open_button hover_vis edged_box wd_btn"><i class="fa fa-pencil"></i> view</a>
+                  <a class=" btn btn-danger pull-right close_button hide" data-action="close"><i class="fa fa-pencil"></i> close</a>
+
+                  <div style="float: right; text-align: right; position: absolute; right: 0" class="hover_vis_show">
+                      <div class="sm_rating" style="margin-bottom: 0">
+                          <app-rating [rating]='customer?.PEOPLE_RATING_ID'></app-rating>
+                      </div>
+                      <p>{{customer?.WHERE_FROM_TEXT}} | {{customer?.DATE_ADDED | amTimeAgo}}</p>
+                  </div>
+
+              </div>
+
+
+              <div class="media-body">
+                  <a [routerLink]="['/customer/', 'individual', customer.PEOPLE_CUSTOMERS_ID]">
+                      <p class="">{{customer.LEGAL_NAME}}</p>
+                  </a>
+                  <p class=""><small>{{customer.CUSTOMER_TYPE_}}</small></p>
+                  <p class="hover_vis">
+                      <span *ngIf="customer.ACCOUNT_OFFICER_ASSIGNED === '0'">Officer Unassigned</span>
+                      <span *ngIf="customer.ACCOUNT_OFFICER_ASSIGNED === '1'">Managed by<span class="blue_c"> {{customer.ACCOUNT_OFF}} </span></span>
+                  </p>
+                  <!-- Preview of the content when clicked -->
+                  <div *ngIf="openedTab == customer.PEOPLE_CUSTOMERS_ID" class="animated slideInDown">
+                    <div class="panel-body rBox">
+                        <div style="width: 100%;max-width: 450px;margin: 20px auto;">
+                            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                            </div>
+                            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                <div class="form-group" style="margin-bottom: 3px">
+                                    <span class="pull-left text-primary">Contact</span>
+                                    <span class="pull-right">{{customerPreview.individual[customer.PEOPLE_CUSTOMERS_ID]["data"]["EMAIL"]}}</span>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <span class="pull-right">{{customerPreview.individual[customer.PEOPLE_CUSTOMERS_ID]["data"]["PHONE"]}}</span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+                                <div class="form-group">
+                                    <span class="pull-left text-primary">Loans</span>
+                                    <span class="pull-right">{{customerPreview.individual[customer.PEOPLE_CUSTOMERS_ID]["loans"]}}</span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;" *ngIf="enable_peer=='1'">
+                                <div class="form-group">
+                                    <span class="pull-left text-primary">Funding</span>
+                                    <span class="pull-right">{{customerPreview.individual[customer.PEOPLE_CUSTOMERS_ID]["funding"]}}</span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;" *ngIf="enable_peer=='1'">
+                                <div class="form-group">
+                                    <span class="pull-left text-primary">Wallet</span>
+                                    <span class="pull-right">{{customerPreview.individual[customer.PEOPLE_CUSTOMERS_ID]["wallet"]}}</span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div style="">
+                                <div class="row">
+                                     <div class="col-md-6"></div>
+                                    <div class="col-md-6">
+                                        <a [routerLink]="['/customer/', 'individual',customer.PEOPLE_CUSTOMERS_ID]" class="pull-right btn-white wd_btn btn-orange btn-block text-center" style="padding: 6px 12px;color:#fff;">View Profile</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div style="">
+                                <div class="row">
+                                    <div class="col-md-6" style='padding-right: 0; margin-left: -5px'>
+                                        <button  class="btn btn-white wd_btn btn-orange btn-block text-center">Take Ownership</button> 
+                                        <button  class="btn btn-white wd_btn btn-orange btn-block text-center">Change Ownership</button> 
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a [routerLink]="['/customer/', 'individual',customer?.PEOPLE_CUSTOMERS_ID]" class="pull-right btn-white wd_btn btn-orange btn-block text-center" style="padding: 6px 12px;color:#fff;">View Profile</a>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+              </div>
+          </article>
+          <!-- <hr>
+          <header class="panel-heading " style="overflow:auto; padding: 0 0 15px 15px;" *ngIf="!navigation.complete">
+              <span class="tools pull-right">
+                  
+
+                  <a class="btn btn-prev-a" (click)="prev()" *ngIf="navigation.prev > 0">Prev</a>
+
+                  <a class="btn btn-next-a" (click)="next()" *ngIf="navigation.next > 0">Next</a>
+
+              </span>
+          </header> -->
+      </div>
+      <!-- Empty State -->
+      <div class="panel-body all_cus" style="min-height:370px; padding:0px" *ngIf="showEmptyState">
+          <div class="text-center" style="min-height:400px;padding-top:120px;background:#fff; text-align:center">
+              <a href="javascript:;" style="font-size:40px"><i class="fa fa-meh-o"></i></a>
+              <h3>No customers found</h3>
+              
+          </div>
+      </div>
+  </div>
+</section>

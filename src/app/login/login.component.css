@@ -1,0 +1,48 @@
+.login-body {
+    background: #fff !important;
+}
+.form-control {
+  margin-bottom: 15px !important;
+}
+body.loading {
+        overflow: hidden;   
+      } 
+      body.loading .modal {
+        display: block;
+      }
+      
+      .login-body{
+        background:#fff !important;
+      }
+      .form-signin .btn-login {
+        background: #f5a534;
+        color: #fff;
+        box-shadow: 0 4px #f5a534;
+      }
+      .profile-nav .user-heading {
+          background: #fff;
+      }
+      .profile-nav .user-heading a img{
+        border: 8px solid #52658c;
+      }
+      .profile-nav .user-heading a img {
+        width: 152px;
+        height: 152px;
+      }
+      .footer{
+        border-top: 1px solid #ddd;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+      }
+      .header{
+        position: fixed;
+        top: 0;
+        width: 100%;
+      }
+      body{
+        overflow-y: scroll
+      }
+      @media(min-width: 320px) and (max-width: 769px){
+        .sidetxt{display: none;}
+      }

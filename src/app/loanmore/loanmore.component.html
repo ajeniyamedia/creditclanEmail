@@ -1,0 +1,135 @@
+<div class="profile_area animated fadeIn">
+
+      <section class="panel contract_area hideable_area" style="margin-bottom: 10px">
+        <header class="panel-heading">
+          <span class="tools pull-right">
+            <ul class="list-inline">
+                <li><a [routerLink]="['../contract']">Summary</a></li>
+                <li *ngIf="loan?.LOAN_STATUS<=2"><a [routerLink]="['../repayments']">Schedule</a></li>
+                <li><a [routerLink]="['../more']">More</a></li>                    
+            </ul>
+          </span>
+          <span>MORE</span>
+        </header>
+      </section>
+
+      <div>
+          <div class="row">
+              <div class="col-md-6" style="padding-right: 0">
+                  <a class="box mason mason2 br0" [routerLink]="['../guarantors']" style="padding: 15px;padding-bottom: 140px; text-align: left; border-bottom: 0"><span class="txt t_l2">Guarantors</span></a>
+                  
+                  <div class="box mason mason2 br0 animated slideInUp" href="javascript:;" style="padding: 10px 30px 4px 80px; margin-top: -112px;"  *ngIf="view == 'actions'">
+                      <div>
+                          <ul class="list list_border text-right actions" id="no-padding-right">
+                              <li>
+                                <span class="t_l3 t_dull"><strong>Actions</strong></span>
+                              </li>
+                              <li *ngIf="loan?.IS_ACCEPTED!='1'&&loan?.SCHEDULE_HAS_BEEN_SAVED=='1'">
+                                <a class="t_l3 t_dull" href="javascript:;" (click)="acceptContract()">Accept Contract</a>
+                              </li>
+                              <li *ngIf="loan?.IS_PEER_TO_PEER=='1'&&loan?.LOAN_STATUS=='1'&&loan?.PERCENTAGE_FUNDED>=30">
+                                    <a class="t_l3 t_dull" href="javascript:;" (click)="requestToGetPaid()">Request To Get Paid</a>
+                                  </li>
+                              <li *ngIf="loan?.BVN_DONE!='1'">
+                                <a class="t_l3 t_dull" href="javascript:;" (click)="sendBVN()">Send BVN</a>
+                              </li>
+                              <!-- <li *ngIf="loan?.CONNECTED_CARD_ID=='0'||loan?.CONNECTED_CARD_ID===null">
+                                <a class="t_l3 t_dull" href="javascript:;" (click)="requestCard()">Request Card</a>
+                              </li> -->
+                              <li>
+                                <a class="t_l3 t_dull" href="javascript:;" (click)="requestCard()">Request Card</a>
+                              </li>
+                              <!-- <li>
+                                    <a class="t_l3 t_dull" href="javascript:;" (click)="requestFinancials()">Request Financial Documents</a>
+                                  </li> -->
+                                  <li>
+                                    <a class="t_l3 t_dull" href="javascript:;" (click)="requestOthers()">Request Other Documents</a>
+                                  </li>
+                              <li>
+                              <li>
+                                    <a class="t_l3 t_dull" href="javascript:;" (click)="requestGuarantors()">Request Guarantors</a>
+                                  </li>
+                              <li>
+                                <a class="t_l3 t_dull" href="javascript:;" (click)="requestKYC()">{{loan?.KYC_STATUS_}}</a>
+                              </li>
+                              <li>
+                                <a class="t_l3 t_dull" href="javascript:;" (click)="requestDocs()">{{loan?.DOC_STATUS_}}</a>
+                              </li>
+                              <li *ngIf="loan?.LOAN_STATUS=='1'||loan?.LOAN_STATUS=='2'">
+                                <a class="t_l3 t_dull" href="javascript:;" (click)="deleteRequest()">Delete Request</a>
+                              </li>
+                              <li *ngIf="loan?.SCHEDULE_HAS_BEEN_SAVED==='1'">
+                                <a class="t_l3 t_dull" href="javascript:;" (click)="sendContract()">Send Contract Docs.</a>
+                              </li>
+                              <li *ngIf="loan?.CONNECTED_ACCOUNT_ID==='0'||loan?.CONNECTED_ACCOUNT_ID===null">
+                                <a class="t_l3 t_dull" href="javascript:;" (click)="confirmAccount()">Request Acct. Confimration</a>
+                              </li>                 
+                              <li>
+                                  <a class="t_l3 t_dull" (click)="close()" href="javascript:;"><i class="glyphicon glyphicon-arrow-left"></i> back</a>
+                              </li>       
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="row animated slideInDown"  *ngIf="view == 'cheque'">
+                      <div class="col-md-6" style="padding-right: 0">
+                          <a class="box mason br0" [routerLink]="['../location']" style="
+                            padding: 15px;
+                            padding-top: 145px;
+                            text-align: right">
+                              <span class="txt t_l3">Request &amp; Location</span></a>
+                      </div>
+                      <div class="col-md-6" style="padding-left: 0">
+                          <a class="box mason" [routerLink]="['../cheque']"  style="
+                            padding: 15px;
+                            padding-bottom: 173px;
+                            text-align: left; border-right: 0">
+                              <span class="txt t_l3">Cheques</span></a>
+                      </div>
+                  </div>
+                  <a class="box mason mason2 pd0" style="border-top: 0; padding: 15px; padding-bottom: 51px; text-align: right; border-right: 0" href="javascript:;"  (click)="open('actions')" *ngIf="view == 'cheque'">
+                      <span class="txt t_l3">Actions</span>
+                  </a>
+              </div>
+              <div class="col-md-6" style="padding-left: 0;">
+                    <div class="row">
+                        <div class="col-md-6" style="padding-right: 0">
+                            <a class="box mason br0" [routerLink]="['../photos']" style="
+                              padding: 15px;
+                              padding-top: 190px;
+                              text-align: right">
+                                <span class="txt t_l3">Attachment &amp; Pictures</span></a>
+                        </div>
+                        <div class="col-md-6" style="padding-left: 0">
+                            <a class="box mason" [routerLink]="['../analysis']"  style="
+                              padding: 15px;
+                              padding-bottom: 218px;
+                              text-align: left">
+                                <span class="txt t_l3">Analysis</span></a>
+                        </div>
+                    </div>
+
+                    <div class="text-right">
+                            <a class="box mason mason2 pd0" [routerLink]="['../profile']" style="border-top: 0; padding: 15px; text-align: right">
+                                <span class="txt t_l3">Customer Profile</span>
+                            </a>
+                        <a class="box mason mason2 pd0" [routerLink]="['../approvals']" style="border-top: 0; padding: 15px; text-align: right">
+                            <span class="txt t_l3">Workflow</span>
+                        </a>
+                        <a class="box mason mason2 pd0 text-right" href="javascript:;" style="border-top: 0; padding-right: 20px; text-align: right" [routerLink]="['../documents']">
+                            <span class="txt t_l3">Credit Check</span>
+                        </a>
+                        <a class="box mason mason2 pd0 text-right" [routerLink]="['../collateral']" style="border-top: 0; padding-right: 20px; text-align: right">
+                            <span class="txt t_l3">Collateral</span>
+                        </a>
+                        <a class="box mason mason2 pd0" [routerLink]="['../accts']" style="border-top: 0; padding-right: 20px; text-align: right">
+                            <span class="txt t_l3">Card &amp; Account</span>
+                        </a>
+                        <a class="box mason mason2 pd0" [routerLink]="['../logs']" style="border-top: 0; padding-right: 20px; text-align: right">
+                            <span class="txt t_l3">Calls &amp; Logs</span>
+                        </a>
+                    </div>                  
+              </div>
+          </div>
+      </div>
+
+</div>

@@ -1,0 +1,214 @@
+<section id="main-content">
+  <div class="container" style="min-height:850px;width:70%;">
+    <div class="row">
+            <div class="col-md-12" style="padding:0;">
+                <div id="ajax_view">
+                    <div class="row" style="padding-top:50px"> 
+              			<div class="col-md-12">
+                  			<section class="panel" style="margin-bottom:5px;">
+        					        	<header class="panel-heading" style="padding-bottom:7px">Journal 
+        					            <span class="tools pull-right">
+        					           <a (click)="searchingForJournal=!searchingForJournal" class="btn btn-white btn-xs"><i class="fa fa-search"></i></a>
+        					           <a (click)="reOpenJournal()"  *ngIf="journal?.IS_APPROVED=='1'||journal?.IS_APPROVED=='-1'" class="btn btn-white btn-xs">Reopen Journal</a>
+        					           <a (click)="approveJournal()" class="btn btn-white btn-xs">Approve Journal</a>
+        					           <a (click)="rejectJournal()" class="btn btn-white btn-xs">Reject Journal</a>
+        					           <a (click)="saveJournal()"  *ngIf="journal?.EDITABLE=='1'||journal?.EDITABLE=='-1'"  class="btn btn-white btn-xs">Save Journal</a>
+        					        	
+        					            </span> 
+        					            </header>
+        					            <div class="panel-body" style="padding-bottom:0px">
+                            	 <div class="row">
+                              	 <div class="col-md-12">
+                                  <div class="form-group row" style="margin-bottom:7px">
+                                    <label class="control-label col-md-3">Folio Number</label>
+                                      <div class="col-md-3">
+                                        <input type="text" id="JOURNAL_ENTRY_ID" [(ngModel)]="journal_.JOURNAL_ENTRY_ID" name="JOURNAL_ENTRY_ID"  disabled class="form-control"> 
+                                           
+                                      </div>
+                                      <form class="form-inline" *ngIf="searchingForJournal" [formGroup]="searchForm" (ngSubmit)="searchFormJournal(searchForm.value)">
+                                      <label class="control-label col-md-3 jsearch">Search Journal</label>
+                                      <div class="col-md-3 jsearch">
+                                        <div class="input-group " [ngClass]="{'has-error':!searchForm.controls['fsno'].valid && searchForm.controls['fsno'].touched}">
+                                            <input type="number" class="form-control text-center bold" [formControl]="searchForm.controls['fsno']" name="fsno" id="fsno"> 
+                                            <div class="input-group-btn">
+                                              <button type="submit" [disabled]="!searchForm.valid" class="btn btn-white"><i class="fa fa-search"> Search</i></button>
+                                            </div>
+                                        </div> 
+                                           
+                                      </div> 
+                                      </form>
+                                  </div>  	
+                                  <div class="form-group row" style="margin-bottom:7px">
+                                  <label class="control-label col-md-1">Date</label>
+                                    <div class="col-md-3">
+                                    
+                                    <my-date-picker [selDate]="selDate" [disabled]="journal?.IS_APPROVED=='-1' || journal?.IS_APPROVED =='1'" name="DATE_ADDED" [options]="myDatePickerOptions"></my-date-picker> 
+                                    </div>
+                                    <label class="control-label col-md-2">Narration</label>
+                                    <div class="col-md-6">
+                                      <textarea class="form-control" [disabled]="journal?.IS_APPROVED=='-1' || journal?.IS_APPROVED =='1'" id="NARRATION">{{journal?.NARRATIVE}}</textarea>
+                                    </div>
+                                </div> 
+                                 </div> 
+                              </div>
+                              </div>
+        					      </section>
+                        <!-- <section class="panel e_form animated">
+  <header class="panel-heading">Add New Entry
+    <span class="tools pull-right">
+      <a (click)="newJournalEntry=!newJournalEntry" class="btn btn-xs btn-white">Close</a>
+    </span>
+    </header>
+    <div class="panel-body">
+      <div style="width:50%; margin:0px auto">
+          <div class="row">
+        <div class="col-md-9">
+          <div class="form-group ">
+                  <label for="" class="control-label">Account</label>
+                    <select class="form-control" [(ngModel)]="record.ACCOUNT_ID" id="ACCOUNT_ID" name="ACCOUNT_ID">
+                      <option value="0"></option>
+                      <option *ngFor="let com of com_accounts"  [ngValue]="com">{{com.GL_NAME}}</option>
+                      <option *ngFor="let com of people_customers"  [ngValue]="customer">{{com.LEGAL_NAME}}</option>
+                     </select>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <label class="control-label" id="IFN">IFN</label>
+                <input class="form-control" type="number" value="1" [(ngModel)]="record.INTRAFOLIONUMBER" name="INTRAFOLIONUMBER" id="INTRAFOLIONUMBER"> 
+                </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" *ngIf="record.ISC=='1'">
+                    <div class="form-group">
+                        <label for="" class="control-label">Account Type</label>
+                        <select class="form-control" [(ngModel)]="record.OTHER_FORM_TYPE" id="OTHER_FORM_TYPE" name="OTHER_FORM_TYPE"> 
+                            <option [ngValue]="0">select</option>  
+                            <option [ngValue]="1">Loan</option>  
+                            <option [ngValue]="2">Investments</option>
+                        </select>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group b b_1 animated" *ngIf="record.OTHER_FORM_TYPE=='1'"> 
+                            <label class="no-margin control-label">Loans</label> 
+                            <select class="form-control" name="LOANS" [(ngModel)]="record.LOANS" id="LOANS" name="LOANS">
+                              <option *ngFor="let loan of loans"  [ngValue]="loan">{{loan.REQUEST_ID}}</option>
+                            </select> 
+                        </div>
+                        <div class="form-group b b_2 animated"  *ngIf="record.OTHER_FORM_TYPE=='2'">
+                            <label class="no-margin control-label">Investments</label> 
+                            <select class="form-control" name="INVESTMENTS" [(ngModel)]="record.LOANS" id="INVESTMENTS" name="INVESTMENTS">
+                              <option *ngFor="let investment of investments"  [ngValue]="investment">{{investment.INVESTMENT_ID}}</option>
+                            </select>  
+                        </div>
+                    </div>
+            </div>
+              <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="" class="control-label">Debit</label>
+                    <input type="text" data-t="1" class="form-control" id="AMOUNT" name="AMOUNT" value="0" [(ngModel)]="record.AMOUNT">
+                </div>
+                </div>
+                <div class="col-md-6">
+                <div class="form-group">
+                  <label for="" class="control-label">Credit</label>
+                    <input type="text" data-t="2" class="form-control AMOUNT_" id="AMOUNT_" name="AMOUNT_" value="0">
+                </div>
+                </div>
+            </div>
+            <div class="row">
+              <label for="" class="control-label col-md-6">Date</label>
+              <div class="col-md-6">
+                  <input id="DATE_ADDED_" class="form-control default-date-picker">
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="" class="control-label">Narrative</label>
+                    <input id="NARRATIVE" class="form-control">
+                     <input id="LOAN_ID" type="hidden">
+                </div>
+                </div>
+            </div>
+          <a href="javascript:;" class="btn btn-white btn-block addEntry" style="margin-bottom:15px">Add Entry <i class="fa fa-spin fa-spinner hide"></i></a>
+        </div> 
+    </div>
+</section> -->
+                        <div class="row">
+                  <div class="col-md-6">
+                          <section class="panel">
+                              <header class="panel-heading">
+                              DEBIT
+                              <span class="tools pull-right">
+                                <span class="debit_total">{{debit_total}}</span>
+                                 <a (click)="addDebitRecord(1)" class="btn-xs btn btn-small btn-white"  style="margin-top:-5px"><i class="fa fa-plus"></i></a>
+                              </span>
+                              </header>
+                              <div class="debitlist">
+                              <div *ngFor="let debit of debit_list" style="border-bottom:1px solid #ccc">
+                                  <div class="row">
+                                  <div class="col-md-10" style="padding-right:0px">
+                                  <div style="padding:5px">
+                                  <a (click)="editRecord(debit,1)">
+                                  <article class="media">
+                                  <p class="pull-right">{{debit?.DEBIT | number:'.2-2'}}</p>
+                                  <div class="media-body">
+                                  <p class="p-head"><span style="color:#FF0004">({{debit?.IFN}})</span>
+                                  {{debit?.a}}
+                                  </p>
+                                  <p class="narrattion">{{debit?.NARRATION}}</p>
+                                  </div>
+                                  </article>
+                                  </a>
+                                  </div>
+                                  </div>
+                                  <div class="col-md-2"><a (click)="deleteRecord(debit,1)" class="btn btn-white btn-xs" style="margin:10px 0px 0px 10px"><i class="fa fa-times"></i></a></div>
+                                  </div>
+                                </div>
+                              </div>
+                          </section>    
+                      </div>
+                    <div class="col-md-6">
+                          <section class="panel">
+                              <header class="panel-heading">
+                              CREDIT
+                              <span class="tools pull-right">
+                                <span class="debit_total">{{credit_total}}</span>
+                                 <a (click)="addCreditRecord(1)" class="btn-xs btn btn-small btn-white"  style="margin-top:-5px"><i class="fa fa-plus"></i></a>
+                              </span>
+                              </header>
+                              <div class="creditlist">
+                              <div *ngFor="let credit of credit_list" style="border-bottom:1px solid #ccc">
+                                  <div class="row">
+                                  <div class="col-md-10" style="padding-right:0px">
+                                  <div style="padding:5px">
+                                  <a (click)="editRecord(credit,1)">
+                                  <article class="media">
+                                  <p class="pull-right">{{credit?.DEBIT | number:'.2-2'}}</p>
+                                  <div class="media-body">
+                                  <p class="p-head"><span style="color:#FF0004">({{credit?.IFN}})</span>
+                                  {{credit?.a}}
+                                  </p>
+                                  <p class="narrattion">{{credit?.NARRATION}}</p>
+                                  </div>
+                                  </article>
+                                  </a>
+                                  </div>
+                                  </div>
+                                  <div class="col-md-2"><a (click)="deleteRecord(credit,1)" class="btn btn-white btn-xs" style="margin:10px 0px 0px 10px"><i class="fa fa-times"></i></a></div>
+                                  </div>
+                                </div>
+                              </div>
+                          </section>    
+                      </div>
+                      
+                  </div>
+                		</div>
+              		</div>
+              	</div>
+            </div>
+        </div>
+    </div>
+</section>

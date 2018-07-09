@@ -1,0 +1,130 @@
+body{
+	background: #fafafa;
+	background: #e8e8e8;
+}
+.arrow-back img{
+	width: 35px;
+	transform: rotate(180deg);
+}
+/* Change the white to any color ;) */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px white inset;
+}
+.cont{
+	/* position: absolute; */
+	top: 0;
+	bottom: 0;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	font-family: Arial, Helvetica, sans-serif !important;
+}
+.left-container, .right-container{
+	padding-top: 100px
+}
+.padded{
+	border-radius: 0;
+    height: auto;
+    padding: 25px;
+    font-size: 18px;
+    border-color: #a0a0a0;
+}
+.onb-title{
+	margin-top: 0;
+	font-size: 25px;
+	font-size: 30px;
+    line-height: 1.3;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    color: #233670;
+}
+.onb-title-bold{
+    color: #52658C;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: -45px;
+    margin-bottom: 20px;
+}
+.form-group{
+	margin-bottom: 10px;
+}
+.wide-btn{
+	padding: 15px 100px
+}
+.orange-btn{
+	background: #F58634;
+	color: #fff;
+	border-color: #C66E00;
+}
+.orange-btn:hover{
+	background: #C66E00;
+	color: #fff;
+	border-color: #C66E00;
+}
+.onb-desc{
+	margin-bottom: 30px;
+}
+.onb-action{
+	display: inline-block;
+	text-align: center;
+}
+.onb-action p{
+	margin-top: 10px; 
+	font-size: 16px;
+}
+.onb-content{
+	font-size: 18px;
+	color: #666;
+}
+.onb-content ol{
+	padding-left: 20px;
+	line-height: 1.8;
+}
+.onb-content hr{
+	border-top-color: #ccc;
+}
+.icon-shot-cover{
+	padding: 20px;
+    border: 1px solid #bcbcbc;
+    margin-bottom: 15px;
+}
+.icon-shot{
+	padding-left: 80px;
+    padding-right: 20px;
+    position: relative;
+}
+.icon-shot .icn-title{
+    margin-bottom: 0;
+    font-size: 20px;
+    line-height: 1;
+    padding-top: 5px;
+}
+.icon-shot .icn-body{
+	color: #777;
+	font-size: 16px;
+}
+.icon-shot > span{
+	position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 32px;
+}
+
+.book{
+	position: absolute;
+    right: -122px;
+    bottom: 78px;
+    transform: rotate(255deg);
+    width: 257px;
+}
+.coffee{
+	position: absolute;
+    right: -42px;
+    width: 238px;
+    bottom: -93px;
+}
+.pos-rel{
+	position: relative;
+    overflow: hidden;
+}

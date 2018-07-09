@@ -1,0 +1,260 @@
+<div class="row">
+  <div class="col-md-3" *ngIf="sub!='5'&&sub!='8'"></div>
+  <div class="{{sub!='5'&&sub!='8'?'col-md-5':'col-md-12'}}">
+    <div *ngIf="request_step=='1'">
+      <div style="margin-bottom:15px;border-bottom:1px solid #eee">
+        <h3>Create a Loan Request</h3>
+      </div>
+
+      <div style="margin-bottom:15px;border-bottom:1px solid #eee">
+
+        <div class=" no_article_hover">
+          <article class="media" *ngIf="!searchForCustomer" style="margin-bottom:15px">
+
+            <div class="pull-left thumb p-thumb" *ngIf="customerSelected&&sub!='1'">
+              <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/avatar-mini.jpg"
+                style=" width: 50px;   height: 50px; border-radius: 50%; ">
+            </div>
+
+            <div class="pull-right" style="padding-bottom:10px" *ngIf="request?.REQUEST_ID==''">
+              <a (click)="searchForCustomer=true;loading=false;" style="font-size:30px">
+                <i class="fa fa-search"></i>
+              </a>
+            </div>
+
+            <div *ngIf="customerSelected">
+              <!-- <div class="pull-left thumb p-thumb" style="margin-right: 10px">
+                              <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{selectedCustomer?.FILE_NAME | imagenotfound}}" style=" width: 50px;   height: 50px; border-radius: 50%; ">
+                          </div> -->
+              <div class="media-body">
+                <p class="txt t_l3 t_lh1" style="word-wrap:break-word;">{{selectedCustomer?.LEGAL_NAME}}</p>
+                <p class="txt t_dull">{{selectedCustomer?.PEOPLE_CUSTOMERS_ID}}</p>
+              </div>
+            </div>
+
+            <div class="media-body" *ngIf="!customerSelected">
+              <h4>Search for customer</h4>
+            </div>
+          </article>
+        </div>
+
+        <div *ngIf="searchForCustomer">
+
+          <!-- Hidden -->
+          <section class="panel hide">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="input-group">
+                  <input class="form-control" name="searchText" required="" [(ngModel)]="searchString" type="text">
+                  <span class="input-group-btn">
+                    <button (click)="searchCustomers()" class="btn btn-white" type="button">Search
+                      <i class="fa fa-search"></i>
+                    </button>
+                    <span (click)="searchForCustomer=false" class="btn btn-white" type="button">
+                      <i class="fa fa-times"></i>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- New Search -->
+          <div class="search_box" style="padding-top: 5px; padding-bottom: 5px; position: relative;">
+            <input type="text" name="" placeholder="Search Customer" (keyup)="searchCustomers()" name="lender_name" [(ngModel)]="searchString"
+              style="max-width: 90%">
+
+            <img src="assets/images/search.PNG" (click)="searchCustomers()">
+
+            <span (click)="searchForCustomer=false" class="btn btn-danger" type="button" style="position: absolute; right: -10px; top: -10px; padding: 0; border-radius: 50%; width: 20px; height: 20px;">
+              <i class="fa fa-times"></i>
+            </span>
+          </div>
+
+
+          <section class="panel" style="height:400px;">
+            <div *ngIf="searchedCustomerResult?.count=='0'">
+              <div class="text-center" style="padding:30px 0px">
+                <a style="font-size:50px">
+                  <i class="fa fa-meh-o"></i>
+                </a>
+                <h4>No customer found</h4>
+                <div>
+                  <button class="btn btn-white" (click)="newCustomer()">Create New Customer</button>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="searchedCustomerResult?.count!='0'">
+
+              <article (click)="selectCustomer(customer)" class="media" *ngFor="let customer of searchedCustomerResult?.a" style="padding: 10px; margin-top: 0; cursor: pointer;">
+                <div class="pull-left thumb p-thumb">
+                  <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{customer?.FILE_NAME | imagenotfound}}"
+                    style=" width: 40px;   height: 40px; border-radius: 50%; ">
+                </div>
+                <div class="media-body">
+                  <p class="txt t_l4 t_cool" style="word-wrap:break-word; ">{{customer?.LEGAL_NAME}}</p>
+                  <p style="font-size: 12px">{{customer?.PEOPLE_CUSTOMERS_ID}}</p>
+                </div>
+              </article>
+
+            </div>
+          </section>
+        </div>
+      </div>
+
+
+
+
+
+      <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px" *ngIf="!searchForCustomer&&customerSelected">
+       
+        <div class="form-group row hide">
+          <div class="col-md-12">
+            <div style="padding:12px 24px; border:1px solid #eee;">
+              <div class="row">
+                <div class="col-md-1">
+                  <a style="margin-right:10px">
+                    <img style="width:35px" src="assets/img/stopwatch.png">
+                  </a>
+                </div>
+                <div class="col-md-11">
+                  <div class="input-group ">
+                    <input type="text" class="form-control" [(ngModel)]="request.REQUEST_TENOR" name="REQUEST_TENOR">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                        <span class="sel_cur">{{loan_duration}}</span>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu pull-right">
+                        <li *ngFor="let d of loan_durations;let i=index;">
+                          <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="border: 1px solid #ccc;padding: 10px 0; margin-bottom: 10px">
+            <div class="input-group ">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                  <span class="sel_cur">
+                    <img style="width:20px" src="assets/img/naira_no_circle.png">
+                  </span>
+                </button>
+              </div>
+              <input type="text" class="form-control" required name="REQUEST_PRINCIPAL" [(ngModel)]="request.REQUEST_PRINCIPAL" style="border: 0; font-size: 18px">
+            </div>
+          </div>
+          <div style="border: 1px solid #ccc;padding: 10px 0; margin-bottom: 10px">
+            <div class="input-group ">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                  <span class="sel_cur">
+                    <img style="width:20px" src="assets/img/stopwatch.png">
+                  </span>
+                </button>
+              </div>
+              <input type="text" class="form-control" required [(ngModel)]="request.REQUEST_TENOR" name="REQUEST_TENOR" style="border: 0; font-size: 18px">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                  <span class="sel_cur">{{loan_duration}}</span>
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                  <li *ngFor="let d of loan_durations;let i=index;">
+                    <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px" *ngIf="!searchForCustomer&&customerSelected">
+          <h3>{{request_bank?.account_number}}</h3>
+          <h4>{{request_bank?.account_name}}</h4>
+          <h5>{{request_bank?.bank_id.BANK_NAME}}</h5>
+      </div>
+      <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px" *ngIf="!searchForCustomer&&customerSelected">
+        <div class="row">
+          <div class="col-md-6"></div>
+          <div class="col-md-6">
+            <button class="btn btn-danger btn-block btn-pink" (click)="queueStraightForDisbursement()" [disabled]="loading||request?.REQUEST_PRINCIPAL=='0'||request?.REQUEST_TENOR=='0'">Queue For Disbursement
+              <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="request_step=='3'">
+        <section class="panel bround">
+          <div class="panel-body text-center" style="padding: 40px 0;">
+            <a style="margin:10px 0px">
+              <img style="width:140px" src="assets/img/check.png">
+            </a>
+            <div style="margin:30px 0px 40px">
+              <h2 class="txt t_l2 t_lh1"> {{request?.REQUEST_PRINCIPAL | number:'.2-2'}}</h2>
+              <p class="txt t_dull t_lh1 t_l3">Loan Created</p>
+            </div>
+            
+            <a style="cursor:pointer"  (click)="new_request()">Create Another</a>
+          </div>
+        </section>
+      </div>
+    <div *ngIf="request_step=='100'">
+      <app-loancustomerform (customerCreated)="customerCreated($event)" [occupations]='occupations' [nigerian_banks]='nigerian_banks' [designations]='designations'  [sectors]='sectors' [gender]='gender' [edu_qua]='edu_qua' [relations]='relations' [marital_statuses]='marital_status' [countries]='countries' [id_means]='id_means' [appsettings]='appsettings'></app-loancustomerform>
+    </div>
+    
+  </div>
+  <div class="col-md-4 no_article_hover" *ngIf="sub!='5'&&sub!='8'">
+    <section class="panel bround" [ngClass]="{'active': request_step=='1', 'notactive':  request_step!='1'}">
+      <div class="panel-body" style="padding: 5px">
+        <article class="media">
+          <div class="pull-left thumb p-thumb">
+            <img *ngIf="request_step=='1'" style="width:75px; height:75px;" src="assets/img/naira.png">
+            <img *ngIf="request_step!='1'" style="width:75px; height:75px;" src="assets/img/naira_shade.png">
+          </div>
+          <div class="media-body">
+            <h4 style="margin:0px; margin-top:10px" [ngClass]="{'heady': request_step=='1', 'notheady':  request_step!='1'}">1. Make Request</h4>
+            <p>Enter the Principal and Duration</p>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="panel bround" [ngClass]="{'active': request_step=='2', 'notactive':  request_step!='2'}">
+      <div class="panel-body" style="padding: 12px 5px">
+        <article class="media">
+          <div class="pull-left thumb p-thumb" style="margin-right: 10px; margin-left: 10px">
+            <img *ngIf="request_step=='2'" style="width:55px; height:55px;" src="assets/img/pencil.png">
+            <img *ngIf="request_step!='2'" style="width:55px; height:55px;" src="assets/img/pencil_shade.png">
+          </div>
+          <div class="media-body">
+            <h4 style="margin:0px; margin-top:10px" [ngClass]="{'heady': request_step=='2', 'notheady':  request_step!='2'}">2. Review</h4>
+            <p>Review summary of the loan</p>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="panel bround" [ngClass]="{'active': request_step=='3', 'notactive':  request_step!='3'}">
+      <div class="panel-body" style="padding: 4px 2px;">
+        <article class="media">
+          <div class="pull-left thumb p-thumb" style="margin-left: 5px">
+            <img *ngIf="request_step=='3'" style="width:70px; height:70px;" src="assets/img/check_.png">
+            <img *ngIf="request_step!='3'" style="width:70px; height:70px;" src="assets/img/check_shade.png">
+          </div>
+          <div class="media-body">
+            <h4 style="margin:0px; margin-top:10px" [ngClass]="{'heady': request_step=='3', 'notheady':  request_step!='3'}">3. Done</h4>
+            <p>Request created</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+</div>

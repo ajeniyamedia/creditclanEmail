@@ -1,0 +1,950 @@
+<!-- New View -->
+<div>
+    <section class="panel panl" style="margin-bottom: 5px">
+      <div class="panel-body">
+          <article class="media">
+              <div class="pull-left thumb">
+                <img src="assets/images/file.PNG">
+              </div>
+              <div class="pull-left" style="margin-top: 5px">
+                <h4 class="no-margin" style="word-wrap:break-word; margin-bottom: 10px">Financials</h4>
+              </div>
+          </article>                  
+      </div>
+    </section>
+
+    <div *ngIf="subSection == 'main'">
+      <div class="row">
+          <div class="col-md-7" style="padding-right: 0;">
+
+                <!-- <a class="box mason" style=" border-right-color: transparent;" href="javascript:;"  (click)="open('statement')"><span class="txt t_l2">Statement</span></a> -->
+
+                <!-- <a class="box mason" href="javascript:;" (click)="open('income')" style=" border-right-color: transparent; padding: 120px 0"><span class="txt t_l2">Income</span>
+                  </a> -->
+
+                <div class="row">
+                    <div class="col-md-6" style="padding-right: 0">
+                        <a class="box mason text-left" href="javascript:;" style="
+                          text-align: left;                         
+                          border-right-color: transparent;
+                          padding: 15px;
+                          padding-bottom: 225px;" (click)="open('income')">
+                            <span class="txt t_l2">Income</span></a>
+                    </div>
+                    <div class="col-md-6" style="padding-left: 0">
+                        <a class="box mason text-right" href="javascript:;" style="
+                          text-align: right;                         
+                          padding: 15px;
+                          padding-top: 225px;
+                          border-right-color: transparent;" (click)="open('bvn')">
+                            <span class="txt t_l2">BVN</span></a>
+                    </div>
+                </div>
+
+                <a class="box mason mason2" href="javascript:;"  (click)="open('statement')" style="border-top: 0; border-right-color: transparent; padding: 66px 0">
+                    <span class="txt t_l2">Statement</span>
+                </a>
+          </div>
+
+          <div class="col-md-5" style="padding-left: 0">
+              <a class="box mason mason2" href="javascript:;" (click)="open('expense')"><span class="txt t_l2">Expense</span></a>
+              <a class="box mason mason2" href="javascript:;" (click)="open('payslips')" style="border-top: 0"><span class="txt t_l2">Payslips</span></a>
+          </div>
+      </div>
+    </div>
+
+    <!-- Hidden Sections -->
+    <div class="panel panel-body box" *ngIf="subSection == 'statement'">
+        <div>
+            <p class="text-right">
+                <a href="javascript:;" (click)="open('statement_upload')" style="margin-right: 10px" class="ln_prf_hide">Upload</a>
+                <a href="javascript:;" (click)="close()">Close</a>
+            </p>
+        </div>
+        <div class="artcles" style="max-width:350px;margin:0 auto;" *ngIf="statement_count != 0">
+            <article class="media x-mod" style="border-bottom: 1px solid #d9d9d9;padding: 10px 0;" *ngFor="let statement of statements">
+                <a class="pull-left thumb" style="margin-right: 10px">
+                    <img src="assets/images/file2.PNG">
+                </a>
+                <div class="media-body">
+                    <div class="pull-left">
+                        <a class="text-primary t_lh1" href="javascript:;" style="float: none; font-size: 14px" target="_blank">{{statement['DATE_START'] | date: 'yMMMd'}} - {{statement['DATE_END'] | date: 'yMMMd'}}</a>
+                        <small>Added By: {{cust['LEGAL_NAME']}}</small>
+                        <small class="t_lh1">Date Added: {{statement['DATE_ADDED'] | date: 'yMMMMd'}}</small>
+                    </div>
+                    <div class="pull-right">
+                        <a target="_blank" href="{{attach_dir + statement['FILE_NAME']}}" class="btn btn-white" style="border:0">
+                            <img src="assets/images/download.PNG">
+                        </a>                        
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </article>
+        </div>
+        <div *ngIf="statement_count == 0">
+            <div style="padding: 90px 0">
+                <div class="text-center">
+                    <a href="javascript:;" style="font-size:40px">
+                        <i class="fa fa-meh-o"></i></a>
+                    <h3 style="margin-bottom: 26px; text-align: center;">No Statement</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-body box" *ngIf="subSection == 'expense'">
+        <header class="panel-heading">Expense
+            <span class="tools pull-right">
+                <a href="javascript:;" (click)="open('expense_update')" style="margin-right: 10px" class="ln_prf_hide">Update</a>
+                <a href="javascript:;" (click)="close()">Close</a>
+            </span>
+        </header>
+
+
+        <div class="artcles expense" style="max-width:350px;">
+
+            <div class="panel-body">
+                <ul>
+                    <li class="text-left black_c ">
+                        <span> Has External Loan</span>
+                        <p class="no-margin black_c pull-right" style="">{{cust.HAS_EXTERNAL_LOAN == 1 ? 'Yes' : 'No'}}</p>
+                    </li>
+                    <li class="text-left black_c " *ngIf="cust.HAS_EXTERNAL_LOAN=='1'">
+                        <span> Monthly Repayment</span>
+                        <p class="no-margin black_c pull-right" style="">{{cust.EXTERNAL_TOTAL_MONTHLTY_REPAYMENT | currency:'NGN':true:'1.2-2'}}</p>
+                    </li>
+                    <li class="text-left black_c ">
+                        <span> Calls</span>
+                        <p class="no-margin black_c pull-right" style="">{{cust.MONTHLY_TEL_INTERNET | currency:'NGN':true:'1.2-2'}}</p>
+                    </li>
+                    <li class="text-left black_c ">
+                        <span> Transport</span>
+                        <p class="no-margin black_c pull-right" style="">{{cust.MONTHLY_TRANSPORT | currency:'NGN':true:'1.2-2'}}</p>
+                    </li>
+                    <li class="text-left black_c ">
+                        <span> Rent</span>
+                        <p class="no-margin black_c pull-right" style="">{{cust.MONTHLY_RENT_EXPENSES | currency:'NGN':true:'1.2-2'}}</p>
+                    </li>
+                    <li class="text-left black_c " style="font-weight: bold">
+                        <span> Total</span>
+                        <p class="no-margin black_c pull-right" style="">{{ get_total_personal() | currency:'NGN':true:'1.2-2'}}</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel-body">
+                <ul>
+                    <li class="text-left black_c ">
+                        <span> No. of Dependants</span>
+                        <p class="no-margin black_c pull-right" style="">{{cust.NUMBER_OF_DEPENDANTS}}</p>
+                    </li><li class="text-left black_c ">
+                        <span> School Fees</span>
+                        <p class="no-margin black_c pull-right" style="">{{cust.SCHOOL_FEES_EXPENSES | currency:'NGN':true:'1.2-2'}}</p>
+                    </li>
+                    <li class="text-left black_c ">
+                        <span> Feeding</span>
+                        <p class="no-margin black_c pull-right" style="">{{cust.FEEDING_EXPENSES | currency:'NGN':true:'1.2-2'}}</p>
+                    </li>
+                    <li class="text-left black_c " style="font-weight: bold">
+                        <span> Total</span>
+                        <p class="no-margin black_c pull-right" style="">{{ get_total_fam() | currency:'NGN':true:'1.2-2'}}</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel-body">
+                <ul>
+                    <li class="text-left black_c ">
+                        <span> Spouse Earnings</span>
+                        <p class="no-margin black_c pull-right" style="">{{cust.WIFE_MONTHLY_SALARY | currency:'NGN':true:'1.2-2'}}</p>
+                    </li>
+                </ul>
+                <div *ngIf="cust.RESPONSIBLE_FOR_FAMILY">
+                    <ul>
+                        <li class="text-left black_c ">
+                            <span> Dependants</span>
+                            <p class="no-margin black_c pull-right" style="">{{cust.NUMBER_OF_DEPENDANTS}}</p>
+                        </li>
+                        <li class="text-left black_c ">
+                            <span> School Fees</span>
+                            <p class="no-margin black_c pull-right" style="">{{cust.SCHOOL_FEES_EXPENSES | currency:'NGN':true:'1.2-2'}}</p>
+                        </li>
+                        <li class="text-left black_c ">
+                            <span> Feeding</span>
+                            <p class="no-margin black_c pull-right" style="">{{cust.FEEDING_EXPENSES | currency:'NGN':true:'1.2-2'}}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
+    <div class="panel panel-body box" *ngIf="subSection == 'payslips'">
+        <div>
+            <p class="text-right">
+                <a href="javascript:;" (click)="open('payslip_upload')" style="margin-right: 10px" class="ln_prf_hide">Upload</a>
+                <a href="javascript:;" (click)="close()">Close</a>
+            </p>
+        </div>
+        <div class="artcles" style="max-width:350px;margin:0 auto;" *ngIf="payslip_count != 0">
+            <article class="media x-mod" style="border-bottom: 1px solid #d9d9d9;padding: 10px 0;" *ngFor="let payslip of payslips">
+                <a class="pull-left thumb" style="margin-right: 10px">
+                    <img src="assets/images/file2.PNG">
+                </a>
+                <div class="media-body">
+                    <div class="pull-left">
+                        <a class="text-primary t_lh1" href="javascript:;" style="float: none;" target="_blank" style="font-size: 14px">{{payslip['DATE_START'] | date: 'yMMMMd'}}</a>
+                        <small>Added By: {{cust['LEGAL_NAME']}}</small>
+                        <small class="t_lh1">Date Added: {{payslip['DATE_ADDED'] | date: 'yMMMMd'}}</small>
+                    </div>
+                    <div class="pull-right">
+                        <a target="_blank" href="{{attach_dir + payslip['FILE_NAME']}}" class="btn btn-white" style="border:0">
+                            <img src="assets/images/download.PNG">
+                        </a>                        
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </article>
+        </div>
+        <div *ngIf="payslip_count == 0">
+            <div style="padding: 90px 0">
+                <div class="text-center">
+                    <a href="javascript:;" style="font-size:40px">
+                        <i class="fa fa-meh-o"></i></a>
+                    <h3 style="margin-bottom: 26px; text-align: center;">No Payslip</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-body box" *ngIf="subSection == 'income'">
+        <header class="panel-heading">Income
+            <span class="tools pull-right">
+                <a href="javascript:;" (click)="open('income_update')" style="margin-right: 10px" class="ln_prf_hide">Update</a>
+                <a href="javascript:;" (click)="close()">Close</a>
+            </span>
+        </header>
+        
+        <div class="panel-body expense">
+            <div style="max-width:100%">
+                <div class="panel-body">
+                    <div class="artcles">
+                        <ul>
+                            <li class="text-left black_c ">
+                                <span> Occupation</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust.DESCRIPTION}}</p>
+                            </li>                                          
+                            <li class="text-left black_c ">
+                                <span> Monthly Income</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust.NET_MONTHLY_INCOME | currency:'NGN':true:'1.2-2'}}</p>
+                            </li>
+                            <li class="text-left black_c ">
+                                <span> Gross Annual Income</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust.GROSS_ANNUAL_INCOME | currency:'NGN':true:'1.2-2'}}</p>
+                            </li>                                
+                            <li class="text-left black_c ">
+                                <span> Work Sector</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust.WORK_SECTOR_D}}</p>
+                            </li>
+                            <li class="text-left black_c ">
+                                <span> Job Grade</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust.OCC}}</p>
+                            </li>                                    
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="artcles">
+                        <ul>
+                            <li class="text-left black_c ">
+                                <span> Company Name</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust.COMPANY_OF_WORK_ID}}</p>
+                            </li>                        
+                            <li class="text-left black_c ">
+                                <span> Work Start Date</span>
+                                <p class="no-margin black_c pull-right" style="">{{getWorkStartDate(cust.WORK_START_DATE)}}</p>
+                            </li>
+                            <li class="text-left black_c ">
+                                <span> Work Start Year</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust.WORK_END_DATE == '0' ? 'Still Active' : cust.WORK_END_DATE  }}</p>
+                            </li>
+
+                            <li class="text-left black_c ">
+                                <span> Work Address</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust.WORK_ADDRESS}}</p>
+                            </li>
+                            <!-- <li class="text-left black_c ">
+                                <span> Work State</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust.WORK_STATE}}</p>
+                            </li>
+                            <li class="text-left black_c ">
+                                <span> Work Country</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust.WORK_COUNTRY}}</p>
+                            </li> -->
+                            <!-- <li class="text-left black_c ">
+                                <span> Work City</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust.WORK_CITY}}</p>
+                            </li> -->                  
+                        </ul>
+                    </div>
+                </div>                    
+            </div>
+        </div>
+    </div>
+
+    <section class="panel panel-body box" *ngIf="subSection == 'bvn'">
+        <header class="panel-heading">BVN
+            <span class="tools pull-right">
+                <a href="javascript:;" (click)="close()">Close</a>
+            </span>
+        </header>
+        <div class="panel-body">
+            <div id="uploadedAttachment" class="artcles" style="width:100%;max-width:350px;margin:0 auto;">
+                
+                <div class="bvn_image" style="border-bottom: none; padding-bottom: 0">
+                    <div class="artcles expense" style="max-width:350px;">
+                        <ul> 
+                            <li>
+                                <article class="media" style="padding-bottom: 20px">
+                                    <div class="pull-right thumb">
+                                        <a>
+                                            <img class="img-circle" src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507989748/{{cust?.FILE_NAME|imagenotfound}}" style="width:70px; height:70px">
+                                        </a>
+                                    </div>
+                                </article>
+                            </li>                                               
+                            <li class="text-left black_c ">
+                                <span> BVN</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust?.BVN}}</p>
+                            </li>
+                            <div *ngIf="cust?.HAS_BVN=='1'">
+                                <li class="text-left black_c ">
+                                    <span> BVN Name</span>
+                                    <p class="no-margin black_c pull-right" style="">{{cust?.BVN_RESPONSE.data.first_name}} {{cust?.BVN_RESPONSE.data.last_name}}</p>
+                                </li>
+                                <li class="text-left black_c ">
+                                    <span> BVN Date of Birth</span>
+                                    <p class="no-margin black_c pull-right" style="">{{cust?.BVN_RESPONSE.data.dob}}</p>
+                                </li>
+                                <li class="text-left black_c ">
+                                    <span> BVN Phone</span>
+                                    <p class="no-margin black_c pull-right" style="">{{cust?.BVN_PHONE}}</p>
+                                </li>
+                            </div>
+                            <li class="text-left black_c " *ngIf="cust?.HAS_BVN=='1'">
+                                <span> Date Validated</span>
+                                <p class="no-margin black_c pull-right" style="">{{cust?.BVN_VALIDATION_DATE}}</p>
+                            </li>
+                             
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row" >
+                        <div class="col-md-6">
+                                <button  [disabled]="loading" class="btn btn-white btn-block egded-box wd_btn" (click)="clearBVNRecord(cust)">Clear BVN Record <i *ngIf="loading && source == '1'" class="fa fa-spinner fa-spin"></i></button>
+                            </div>
+                    <div class="col-md-6">
+                            <button [disabled]="loading" class="btn btn-white btn-block egded-box wd_btn" (click)="retryBVNValidation(cust)">Retry <i *ngIf="loading && source == '2'" class="fa fa-spinner fa-spin"></i></button  >
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <div class="panel panel-body box" *ngIf="subSection == 'income_update'">
+        <header class="panel-heading ln_prf_hide">Update Income
+            <span class="tools pull-right">
+                <a href="javascript:;" (click)="open('income')">Close</a>
+            </span>
+        </header>
+        
+        <div class="panel-body expense">
+            <div  style="max-width:80%;">
+                <div class="panel-body">
+                    <div class="artcles">
+                        <section class="panel vvi vviwic" style="background:none">
+                            <style type="text/css">
+                            .form-group {
+                                margin-bottom: 5px !important;
+                            }
+                            
+                            hr {
+                                margin: 10px 0px !important;
+                                border-color: #eaeaea !important;
+                            }
+                            
+                            .control-label {
+                                color: #0b426d;
+                                font-size: 13px;
+                                padding-top: 0px !important;
+                            }
+                            
+                            .form-control {
+                                font-size: 12px;
+                            }
+                            
+                            .control-label {
+                                margin-bottom: 0px;
+                            }
+                            
+                            .panel-heading .nav a.ftab {
+                                color: #618cae;
+                            }
+                            
+                            .panel-heading.nav li .active a.ftab {
+                                background: #618cae;
+                                color: #fff !important;
+                            }
+                            
+                            .panel-heading .nav li .active a.ftab:hover {
+                                background: #618cae;
+                                color: #fff !important;
+                            }
+                            </style>
+                            <div class="form-group row occupation">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        Occupation
+                                    </label>
+                                    <select id="OCCUPATION_ID" name="OCCUPATION_ID" class="form-control" [(ngModel)]="model.work.data['OCCUPATION_ID']">
+                                        <option value=""></option>
+                                        <option *ngFor="let key of keysGetter(model.dump.occupation)" [value]="model.dump.occupation[key]['OCCUPATION_ID']"> {{model.dump.occupation[key]["DESCRIPTION"]}} </option>
+                                    </select>
+                                    <input type="hidden" name="PEOPLE_WORK_ID" id="PEOPLE_WORK_ID" [(ngModel)]="model.work.data['PEOPLE_WORK_ID']">
+                                </div>
+                            </div>
+                            <div class="form-group row income not_for_un for_ret ">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        <span> Approximate Monthly Income</span>
+                                    </label>
+                                    <div class="input-group ">
+                                        <input type="text" name="NET_MONTHLY_INCOME" id="NET_MONTHLY_INCOME" class="form-control fmoney" [(ngModel)]="model.work.data['NET_MONTHLY_INCOME']">
+                                        <input type="hidden" name="COUNTRY_CODE" id="COUNTRY_CODE" value="">
+                                        <div class="input-group-btn">
+                                            <button type="button" style="color:#000" class="btn btn-white dropdown-toggle f16" data-toggle="dropdown" aria-expanded="false"><a class="ext_sh" href="javascript:;"><span class=""> ₦</span></a> <span class="caret"></span></button>
+                                            <ul class="dropdown-menu" style="min-width:89px">
+                                                <li><a href="javascript:;" data-ext="ng" data-curr="1" data-tt="₦" class="flagger"> ₦</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row income not_for_un for_ret ">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        <span> Approximate Gross Monthly Income</span>
+                                    </label>
+                                    <div class="input-group ">
+                                        <input type="text" name="NET_MONTHLY_INCOME" id="NET_MONTHLY_INCOME" class="form-control fmoney" [(ngModel)]="model.work.data['GROSS_ANNUAL_INCOME']">
+                                        <input type="hidden" name="COUNTRY_CODE" id="COUNTRY_CODE" value="">
+                                        <div class="input-group-btn">
+                                            <button type="button" style="color:#000" class="btn btn-white dropdown-toggle f16" data-toggle="dropdown" aria-expanded="false"><a class="ext_sh" href="javascript:;"><span class=""> ₦</span></a> <span class="caret"></span></button>
+                                            <ul class="dropdown-menu" style="min-width:89px">
+                                                <li><a href="javascript:;" data-ext="ng" data-curr="1" data-tt="₦" class="flagger"> ₦</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group not_for_un not_for_ret row company ">
+                                        <div class="col-md-12">
+                                            <label class="control-label" style="padding:0;">
+                                                I work in
+                                            </label>
+                                            <select class="form-control" name="WORK_SECTOR" [(ngModel)]="model.work.data['WORK_SECTOR']">
+                                                <option></option>
+                                                <option *ngFor="let key of keysGetter(model.dump.sector)" [value]="model.dump.sector[key]['OCCUPATION_ID']"> {{model.dump.sector[key]["DESCRIPTION"]}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group not_for_un not_for_ret row company ">
+                                        <div class="col-md-12">
+                                            <label class="control-label" style="padding:0;">
+                                                Designation
+                                            </label>
+                                            <select class="form-control" name="WORK_DESIGNATION" [(ngModel)]="model.work.data['WORK_DESIGNATION']">
+                                                <option></option>
+                                                <option *ngFor="let work of model.dump.work_desig" [value]="work['OCCUPATION_ID']"> {{work["DESCRIPTION"]}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group not_for_un not_for_ret row institution  hide">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        I school in
+                                    </label>
+                                    <select class="form-control" name="EDU_SECTOR" [(ngModel)]="model.work.data['EDU_SECTOR']">
+                                        <option></option>
+                                        <option *ngFor="let key of keysGetter(model.dump.edusector)" [value]="model.dump.edusector[key]['OCCUPATION_ID']"> {{model.dump.edusector[key]["DESCRIPTION"]}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group not_for_un for_ret row company ">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        Company
+                                    </label>
+                                    <input type="text" name="COMPANY_OF_WORK_ID" id="COMPANY_OF_WORK_ID" class="form-control " [(ngModel)]="model.work.data['COMPANY_OF_WORK_ID']" style="">
+                                </div>
+                            </div>
+                            <div class="form-group not_for_un not_for_ret row institution hide">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        Institution Name
+                                    </label>
+                                    <input type="text" name="INSTITUTION_ID" id="INSTITUTION_ID" class="form-control " [(ngModel)]="model.work.data['INSTITUTION_ID']" style="">
+                                </div>
+                            </div>
+                            <div class="form-group company institution row not_for_un for_ret ">
+                                <input type="hidden" name="ADDRESS_ID" id="ADDRESS_ID" value="">
+                                <div class="col-md-6">
+                                    <label class="control-label" style="padding:0;">
+                                        Country
+                                    </label>
+                                    <select id="COUNTRY_ID_" name="COUNTRY_ID_" class="form-control" [(ngModel)]="model.work.data['COUNTRY_ID_']">
+                                        <option value="0"></option>
+                                        <option *ngFor="let country of model.dump.countries" [value]="country['COUNTRY_ID']"> {{country["COUNTRY_NAME"]}} </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label" style="padding:0;">
+                                        State
+                                    </label>
+                                    <select id="STATE_ID_" name="STATE_ID_" class="form-control" [(ngModel)]="model.work.data['STATE_ID_']">
+                                        <option value="">Select an option</option>
+                                        <option value="1">Abia </option>
+                                        <option value="2">Adamawa </option>
+                                        <option value="3">Akwa Ibom </option>
+                                        <option value="4">Anambra </option>
+                                        <option value="5">Bauchi </option>
+                                        <option value="6">Bayelsa </option>
+                                        <option value="7">Benue </option>
+                                        <option value="8">Borno </option>
+                                        <option value="9">Cross River </option>
+                                        <option value="10">Delta </option>
+                                        <option value="11">Ebonyi </option>
+                                        <option value="12">Edo </option>
+                                        <option value="13">Ekiti </option>
+                                        <option value="14">Enugu </option>
+                                        <option value="15">FCT</option>
+                                        <option value="16">Gombe </option>
+                                        <option value="17">Imo </option>
+                                        <option value="18">Jigawa </option>
+                                        <option value="19">Kaduna </option>
+                                        <option value="20">Kano </option>
+                                        <option value="21">Katsina </option>
+                                        <option value="22">Kebbi </option>
+                                        <option value="23">Kogi </option>
+                                        <option value="24">Kwara </option>
+                                        <option value="25">Lagos </option>
+                                        <option value="26">Nasarawa </option>
+                                        <option value="27">Niger </option>
+                                        <option value="28">Ogun </option>
+                                        <option value="29">Ondo </option>
+                                        <option value="30">Osun </option>
+                                        <option value="31">Oyo </option>
+                                        <option value="32">Plateau </option>
+                                        <option value="33">Rivers </option>
+                                        <option value="34">Sokoto </option>
+                                        <option value="35">Taraba </option>
+                                        <option value="36">Yobe </option>
+                                        <option value="37">Zamfara </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group company institution row not_for_un for_ret  ">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        Address
+                                    </label>
+                                    <label class="pull-right item-text-counter2">160</label>
+                                    <textarea id="ADDRESS_" name="ADDRESS_" class="form-control" [(ngModel)]="model.work.data['ADDRESS_']">{{model.work.data['ADDRESS_']}}</textarea>
+                                </div>
+                            </div>
+                            <div class="not_for_un form-group row for_ret  hide">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="" class="control-label">Retire Month</label>
+                                            <select id="WORK_RETIRED_DATE" name="WORK_RETIRED_DATE" class="form-control" [(ngModel)]="model.work.data['WORK_RETIRED_DATE']">
+                                                <option value=""></option>
+                                                <option *ngFor="let month of months" [value]="month.value">{{month.display}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 ">
+                                            <label for="" class="control-label">Retire Year</label>
+                                            <select id="WORK_RETIRED_YEAR" name="WORK_RETIRED_YEAR" class="form-control" [(ngModel)]="model.work.data['WORK_RETIRED_YEAR']">
+                                                <option value=""></option>
+                                                <option *ngFor="let year of model.dump.years" [value]="year">{{year}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 ">
+                                    <label for="" class="control-label">Years of service</label>
+                                    <input type="text" class="form-control" id="YEARS_OF_SERVICE" [(ngModel)]="model.work.data['YEARS_OF_SERVICE']">
+                                </div>
+                            </div>
+                            <div class="not_for_un form-group institution income row not_for_ret  ">
+                                <div class="col-md-6">
+                                    <label for="" class="control-label">Start Year</label>
+                                    <select id="WORK_START_DATE" name="WORK_START_DATE" class="form-control" [(ngModel)]="model.work.data['WORK_START_DATE']">
+                                        <option value=""></option>
+                                        <!-- <option *ngFor="let month of months" [value]="month.value">{{month.display}}</option> -->
+                                        <option *ngFor="let year of model.dump.years" [value]="year">{{year}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 ">
+                                    <label for="" class="control-label">End Year</label>
+                                    <select id="WORK_END_DATE" name="WORK_END_DATE" class="form-control" [(ngModel)]="model.work.data['WORK_END_DATE']">
+                                        <option value="0">Actives</option>
+                                        <option *ngFor="let year of model.dump.years" [value]="year">{{year}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a href="javascript:;" (click)="updateWork()" class="btn btn-blue btn-primary btn-block" style="padding: 6px 12px">Save <i class="fa fa-spinner fa-spin hide"></i></a>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-body box" *ngIf="subSection == 'statement_upload'">
+        <header class="panel-heading">Upload Statement
+            <span class="tools pull-right">
+                <a href="javascript:;" (click)="open('statement')">Close</a>
+            </span>
+        </header>
+        
+        <div class="panel-body expense">
+            <div  style="max-width:80%; margin:0 auto">
+                <div class="panel-body">
+                    <div class="artcles">
+                        <section class="panel vvi vviwic" style="background:none">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" style="padding:0;">
+                                        Start Month
+                                        </label>
+                                        <select class="form-control" name="sm" [(ngModel)]="statementData.BANKSTATEMENT_START_MONTH">
+                                            <option *ngFor="let month of months" [value]="month.value">{{month.display}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" style="padding:0;">Start Year
+                                        </label>
+                                        <select class="form-control" name="WORK_DESIGNATION" [(ngModel)]="statementData.BANKSTATEMENT_START_YEAR">
+                                            <option *ngFor="let a of maxDuration; let index = index" [value]="startDate - index">{{ startDate - index }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" style="padding:0;">
+                                        End Month
+                                        </label>
+                                        <select class="form-control" name="WORK_SECTOR" [(ngModel)]="statementData.BANKSTATEMENT_END_MONTH">
+                                            <option *ngFor="let month of months" [value]="month.value">{{month.display}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" style="padding:0;">End Year
+                                        </label>
+                                        <select class="form-control" name="WORK_DESIGNATION" [(ngModel)]="statementData.BANKSTATEMENT_END_YEAR">
+                                            <option *ngFor="let a of maxDuration; let index = index" [value]="startDate - index">{{ startDate - index }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div>   
+                                <input type="file" (change)="saveStatement($event)" placeholder="Upload file" accept=".pdf,.doc,.docx">
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a href="javascript:;" (click)="uploadStatement()" class="btn btn-blue btn-primary btn-block" style="padding: 6px 12px">Save <i class="fa fa-spinner fa-spin hide"></i></a>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-body box" *ngIf="subSection == 'payslip_upload'">
+        <header class="panel-heading">Upload Payslip
+            <span class="tools pull-right">
+                <a href="javascript:;" (click)="open('payslips')">Close</a>
+            </span>
+        </header>
+        
+        <div class="panel-body expense">
+            <div  style="max-width:80%; margin:0 auto">
+                <div class="panel-body">
+                    <div class="artcles">
+                        <section class="panel vvi vviwic" style="background:none">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" style="padding:0;">
+                                        Start Month
+                                        </label>
+                                        <select class="form-control" name="sm" [(ngModel)]="payslipData.PAYSLIP_START_MONTH">
+                                            <option *ngFor="let month of months" [value]="month.value">{{month.display}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" style="padding:0;">Start Year
+                                        </label>
+                                        <select class="form-control" name="WORK_DESIGNATION" [(ngModel)]="payslipData.PAYSLIP_START_YEAR">
+                                            <option *ngFor="let a of maxDuration; let index = index" [value]="startDate - index">{{ startDate - index }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" style="padding:0;">
+                                        End Month
+                                        </label>
+                                        <select class="form-control" name="WORK_SECTOR" [(ngModel)]="payslipData.PST_ED">
+                                            <option *ngFor="let month of months" [value]="month.value">{{month.display}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" style="padding:0;">End Year
+                                        </label>
+                                        <select class="form-control" name="WORK_DESIGNATION" [(ngModel)]="payslipData.PST_EY">
+                                            <option *ngFor="let a of maxDuration; let index = index" [value]="startDate - index">{{ startDate - index }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div>   
+                                <input type="file" (change)="savePayslip($event)" placeholder="Upload file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.JPG">
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a href="javascript:;" (click)="uploadPayslip()" class="btn btn-blue btn-primary btn-block" style="padding: 6px 12px">Upload <i class="fa fa-spinner fa-spin hide"></i></a>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-body box" *ngIf="subSection == 'expense_update'">
+        <header class="panel-heading">Expense Income
+            <span class="tools pull-right">
+                <a href="javascript:;" (click)="open('expense')">Close</a>
+            </span>
+        </header>
+                
+        <div class="panel-body expense">
+            <div  style="max-width:80%;">
+                <div class="panel-body">
+                    <div class="artcles">
+                        <section class="panel vvi vviwic" style="background:none">
+                            <div class="form-group row occupation">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        Has External Loan
+                                    </label>
+                                    <select id="OCCUPATION_ID" name="OCCUPATION_ID" class="form-control" [(ngModel)]="_cust.HAS_EXTERNAL_LOAN">
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>                                   
+                                </div>
+                            </div>
+                            <div *ngIf="_cust.HAS_EXTERNAL_LOAN=='1'" class="form-group row income not_for_un for_ret ">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        <span> Monthly Repayment</span>
+                                    </label>
+                                    <div class="input-group ">
+                                        <input type="text" name="NET_MONTHLY_INCOME" class="form-control fmoney" [(ngModel)]="_cust.EXTERNAL_TOTAL_MONTHLTY_REPAYMENT">
+                                        <div class="input-group-btn">
+                                            <button type="button" style="color:#000" class="btn btn-white dropdown-toggle f16" data-toggle="dropdown" aria-expanded="false"><a class="ext_sh" href="javascript:;"><span class=""> ₦</span></a></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row income not_for_un for_ret ">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        <span> Calls</span>
+                                    </label>
+                                    <div class="input-group ">
+                                        <input type="text" name="NET_MONTHLY_INCOME" class="form-control fmoney" [(ngModel)]="_cust.MONTHLY_TEL_INTERNET">
+                                        <div class="input-group-btn">
+                                            <button type="button" style="color:#000" class="btn btn-white dropdown-toggle f16" data-toggle="dropdown" aria-expanded="false"><a class="ext_sh" href="javascript:;"><span class=""> ₦</span></a></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row income not_for_un for_ret ">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        <span> Transport</span>
+                                    </label>
+                                    <div class="input-group ">
+                                        <input type="text" name="NET_MONTHLY_INCOME" class="form-control fmoney" [(ngModel)]="_cust.MONTHLY_TRANSPORT">
+                                        <input type="hidden" name="COUNTRY_CODE" id="COUNTRY_CODE" value="">
+                                        <div class="input-group-btn">
+                                            <button type="button" style="color:#000" class="btn btn-white dropdown-toggle f16" data-toggle="dropdown" aria-expanded="false"><a class="ext_sh" href="javascript:;"><span class=""> ₦</span></a></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="margin-bottom: 20px">
+                                    <div class="form-group not_for_un not_for_ret row company ">
+                                        <div class="col-md-12">
+                                            <label class="control-label" style="padding:0;">
+                                                Rent
+                                            </label>
+                                            <div class="input-group ">
+                                                <input type="text" name="NET_MONTHLY_INCOME" class="form-control fmoney" [(ngModel)]="_cust.MONTHLY_RENT_EXPENSES">
+                                                <div class="input-group-btn">
+                                                    <button type="button" style="color:#000" class="btn btn-white dropdown-toggle f16" data-toggle="dropdown" aria-expanded="false"><a class="ext_sh" href="javascript:;"><span class=""> ₦</span></a>
+                                                    </button>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr />
+                                <!--- // -->
+
+                                <div class="col-md-12">
+                                    <div class="form-group not_for_un not_for_ret row company ">
+                                        <div class="col-md-12">
+                                            <label class="control-label" style="padding:0;">
+                                                Dependants
+                                            </label>
+                                            <select class="form-control" name="EDU_SECTOR" [(ngModel)]="_cust.NUMBER_OF_DEPENDANTS">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group not_for_un not_for_ret row institution">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        School Fees
+                                    </label>
+                                    <div class="input-group ">
+                                        <input type="text" name="NET_MONTHLY_INCOME" class="form-control fmoney" [(ngModel)]="_cust.SCHOOL_FEES_EXPENSES">
+                                        <div class="input-group-btn">
+                                            <button type="button" style="color:#000" class="btn btn-white dropdown-toggle f16" data-toggle="dropdown" aria-expanded="false">    
+                                                <a class="ext_sh" href="javascript:;">
+                                                <span class=""> ₦</span></a>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group not_for_un for_ret row company" style="margin-bottom: 20px" >
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        Feeding
+                                    </label>
+                                    <div class="input-group ">
+                                        <input type="text" name="NET_MONTHLY_INCOME" class="form-control fmoney" [(ngModel)]="_cust.FEEDING_EXPENSES">
+                                        <div class="input-group-btn">
+                                            <button type="button" style="color:#000" class="btn btn-white dropdown-toggle f16" data-toggle="dropdown" aria-expanded="false"><a class="ext_sh" href="javascript:;"><span class=""> ₦</span></a></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="form-group not_for_un not_for_ret row institution">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        Spouse Earning
+                                    </label>
+                                    <div class="input-group ">
+                                        <input type="text" name="NET_MONTHLY_INCOME" id="NET_MONTHLY_INCOME" class="form-control fmoney" [(ngModel)]="_cust.WIFE_MONTHLY_SALARY">
+                                        <div class="input-group-btn">
+                                            <button type="button" style="color:#000" class="btn btn-white dropdown-toggle f16" data-toggle="dropdown" aria-expanded="false"><a class="ext_sh" href="javascript:;"><span class=""> ₦</span></a> </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                                                        
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a href="javascript:;" (click)="updateExpense()" class="btn btn-blue btn-primary btn-block" style="padding: 6px 12px">Save <i class="fa fa-spinner fa-spin hide"></i></a>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Hidden Sections -->
+
+</div>
+<!--// New View -->
+

@@ -1,0 +1,75 @@
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingTwo">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
+          aria-controls="collapseTwo">
+          Origination Fee
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body">
+        <div class="panel-body toc-panel">
+          <form #fee="ngForm" novalidate>
+            <div class="form-group row">
+              <label class="control-label col-md-6">Fee type</label>
+              <div class="col-md-6">
+                <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="product.LOAN_PRODUCT_ID">
+                <select name="FEE_TYPE" [(ngModel)]="fee_settings.FEE_TYPE" class="form-control">
+                  <option [value]="0">Upfront</option>
+                  <option [value]="1">Capitalize</option>
+                  <option [value]="2">Backend</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+
+
+              <label class="col-md-6">
+                Percentage Value
+              </label>
+              <div class="col-md-6">
+
+                <input name="FEE_PERCENT_VALUE" [(ngModel)]="fee_settings.FEE_PERCENT_VALUE" type="text" class="form-control">
+
+              </div>
+            </div>
+            <div class="form-group row">
+
+
+              <label class="col-md-6">
+                Flat Value
+              </label>
+              <div class="col-md-6">
+
+                <input name="FEE_FLAT_VALUE" [(ngModel)]="fee_settings.FEE_FLAT_VALUE" type="text" class="form-control">
+              </div>
+            </div>
+            <div class="form-group row">
+
+
+              <label class="col-md-6">
+                Card Request Fee
+              </label>
+              <div class="col-md-6">
+
+                <input name="CARD_REQUEST_FEE" [(ngModel)]="fee_settings.CARD_REQUEST_FEE" type="text" class="form-control">
+              </div>
+            </div>
+            <div class="form-group row hide">
+              <label class="control-label col-md-6">Account</label>
+              <div class="col-md-6">
+                <select name="FEES_ACCOUNT" [(ngModel)]="fee_settings.FEES_ACCOUNT" class="form-control">
+                  <option *ngFor="let account of companyaccounts" [value]="account.ACCOUNT_ID">{{account.GL_NAME}}</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" (click)="saveFee(fee.value, fee.valid)" [disabled]="loading" class="btn btn-white pull-right">
+              <span *ngIf="!loading">Submit</span>
+              <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

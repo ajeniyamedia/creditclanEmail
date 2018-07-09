@@ -1,0 +1,22 @@
+<section class="panel">
+    <header class="panel-heading">
+        Contractual Schedule
+        <span class="tools pull-right">
+            <!--<button class="btn btn-xs btn-white" id="btnGenerateStatement">Statement</button>-->
+            <a [routerLink]="['/schedule',loan?.REQUEST_ID]">Schedule</a>
+            <a [routerLink]="['/payments',loan?.REQUEST_ID]">Payment</a>
+            <a [routerLink]="['/statement',loan?.REQUEST_ID]">Statement</a>
+            <a class="">Break Loan</a>
+            <a [routerLink]="['/loan',loan?.REQUEST_ID]">Contract</a>
+            <!-- <div class="btn-group">
+                <button class="btn btn-white btn-xs" type="button">More</button>
+                <button data-toggle="dropdown" class="btn btn-xs btn-white dropdown-toggle" type="button" aria-expanded="false">
+                    <span class="caret"></span>
+                </button>
+                <ul role="menu" class="dropdown-menu">
+
+                </ul>
+            </div> -->
+        </span>
+    </header>
+</section>
