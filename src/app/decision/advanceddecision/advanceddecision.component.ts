@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdvanceddecisionComponent implements OnInit {
 
+  currentUser:any;
+  analytics_settings:any;
+
   constructor() { }
 
   ngOnInit() {

@@ -86,7 +86,8 @@ export class PaymentComponent implements OnInit {
   public wallet_status = false;
   public otpmessage = '';
   public result: any;
-  constructor(public toastr: ToastrService, private DataService: DataService, public loansService: LoansService, public fb: FormBuilder, public operationsService: OperationsService, public storageService: StorageService) {
+  constructor(public toastr: ToastrService, private DataService: DataService, public loansService: LoansService, 
+    public fb: FormBuilder, public operationsService: OperationsService, public storageService: StorageService) {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.operationsService.getNigerianBanks(this.currentUser.token).subscribe(nigerian_banks => this.nigerian_banks = nigerian_banks);
 
@@ -530,7 +531,8 @@ export class PaymentComponent implements OnInit {
           this.makingFinalPayment = false;
           this.paymentHasBeenProcessed = false;
           this.otpError = true;
-          this.otpmessage = status.data.message
+          this.otpmessage = status.data.message; 
+          this.showError(status.data.response.data.message);
         }
       });
   }

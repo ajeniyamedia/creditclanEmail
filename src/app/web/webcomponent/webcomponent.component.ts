@@ -4,11 +4,12 @@ import { OperationsService, StorageService } from '../../_services/index';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-mobile',
-  templateUrl: './mobilesettings.component.html',
-  styleUrls: ['./mobilesettings.component.css']
+  selector: 'app-webcomponent',
+  templateUrl: './webcomponent.component.html',
+  styleUrls: ['./webcomponent.component.css']
 })
-export class MobileComponent implements OnInit {
+export class WebcomponentComponent implements OnInit {
+
   public product = {
     LOAN_TYPE: '0',
     LOAN_CURRENCY: '0',
@@ -173,7 +174,7 @@ export class MobileComponent implements OnInit {
     if (currentUrl == "/settings/ussd") {
       this.view = 'ussd';
     }
-    this.operationsService.getAppSettings(this.currentUser.token,2)
+    this.operationsService.getAppSettings(this.currentUser.token,1)
       .subscribe(data => {
         this.ussd.gender = data.ussd.gender;
         this.ussd.dateofbirth = data.ussd.dateofbirth;
@@ -191,7 +192,7 @@ export class MobileComponent implements OnInit {
         this.ussd.default_starting_amount = data.ussd.default_starting_amount;
         this.ussd.ussd_division_ration = data.ussd.ussd_division_ration;
 
-        this.mobile.loan_product_id = data.product.LOAN_PRODUCT_ID;
+        this.mobile.loan_product_id = data.product.LOAN_PRODUCT_ID
 
         this.mobile.customerconfirmsemailafterregisteration = data.mobile.customerconfirmsemailafterregisteration;
         this.mobile.shouldthecustomerporvidebvnaftersigningup = data.mobile.shouldthecustomerporvidebvnaftersigningup;
@@ -373,9 +374,6 @@ export class MobileComponent implements OnInit {
         this.showSuccess(data.message);
       });
   }
-  saveForm(event) {
-    this.saveGeneralSettings(event.value, event.valid);
-  }
   saveITFrom(event) {
     this.saveInterestForm(event.value, event.valid);
   }
@@ -388,8 +386,11 @@ export class MobileComponent implements OnInit {
   saveOFFrom(event) {
     this.saveFee(event.value, event.valid);
   }
+  saveForm(event) {
+    this.saveGeneralSettings(event.value, event.valid);
+  }
   saveFloorRate(value, valid) {
-    value.WHERE_FROM = '2';
+    value.WHERE_FROM = '1';
     this.loading = true;
     this.operationsService.saveFloorRate(this.currentUser.token, value)
       .subscribe(data => {
@@ -402,7 +403,7 @@ export class MobileComponent implements OnInit {
       });
   }
   saveSpecialLoanInterest(value, valid) {
-    value.WHERE_FROM = '2';
+    value.WHERE_FROM = '1';
     this.loading = true;
     this.operationsService.saveSLInterest(this.currentUser.token, value)
       .subscribe(data => {
@@ -415,7 +416,7 @@ export class MobileComponent implements OnInit {
       });
   }
   saveFee(value, valid) {
-    value.WHERE_FROM = '2';
+    value.WHERE_FROM = '1';
     this.loading = true;
     this.operationsService.saveFee(this.currentUser.token, value)
       .subscribe(data => {
@@ -428,7 +429,7 @@ export class MobileComponent implements OnInit {
       });
   }
   saveGeneralSettings(value, valid) {
-    value.WHERE_FROM = '2';
+    value.WHERE_FROM = '1';
     this.loading = true;
     this.operationsService.saveLoanProduct(this.currentUser.token, value)
       .subscribe(data => {
@@ -441,7 +442,7 @@ export class MobileComponent implements OnInit {
       });
   }
   saveInterestForm(value, valid) {
-    value.WHERE_FROM = '2';
+    value.WHERE_FROM = '1';
     this.loading = true;
     this.operationsService.saveInterestForm(this.currentUser.token, value)
       .subscribe(data => {
@@ -453,4 +454,5 @@ export class MobileComponent implements OnInit {
         }
       });
   }
+
 }

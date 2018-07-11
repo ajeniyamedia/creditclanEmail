@@ -35,6 +35,7 @@ import { DisbursmentreportComponent } from './disbursmentreport/disbursmentrepor
 import { LoanofficerreportComponent } from './loanofficerreport/loanofficerreport.component';
 import { AllcustomersComponent } from './allcustomers/allcustomers.component';
 import { PaidloanComponent } from './paidloan/paidloan.component';
+import { AutodebitComponent } from './autodebit/autodebit.component';
 
 
 
@@ -74,7 +75,8 @@ import { PaidloanComponent } from './paidloan/paidloan.component';
     GuarantorsComponent,
     RepaymentsComponent,
     AllcustomersComponent,
-    PaidloanComponent
+    PaidloanComponent,
+    AutodebitComponent
   ]
 })
 export class ReportsModule { }

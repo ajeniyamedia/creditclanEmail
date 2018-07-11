@@ -1,14 +1,16 @@
 import 'rxjs/add/operator/map'
 
-import {Injectable} from '@angular/core';
-import {Headers,
-        Http,
-        RequestOptions,
-        Response} from '@angular/http';
-import {validateConfig} from '@angular/router/src/config';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import {
+  Headers,
+  Http,
+  RequestOptions,
+  Response
+} from '@angular/http';
+import { validateConfig } from '@angular/router/src/config';
+import { Observable } from 'rxjs';
 
-import {LoggingService} from './logging.service';
+import { LoggingService } from './logging.service';
 import { RoleModel } from '../_models/role.model';
 
 @Injectable()
@@ -16,7 +18,7 @@ export class OperationsService {
 
 
 
-  constructor(public http: Http, private loggingService: LoggingService) {}
+  constructor(public http: Http, private loggingService: LoggingService) { }
 
   saveGeneralAnalytics(token: any, value: any): Observable<any> {
     // get users from api
@@ -78,24 +80,24 @@ export class OperationsService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getAccounts', JSON.stringify({ search: search, type: type, start: start, token: token }))
       .map((response: Response) => response.json());
   }
-  saveEmployee(token: any, data: any, people_people_id: any, isedit: any,roles:any): Observable<any> {
+  saveEmployee(token: any, data: any, people_people_id: any, isedit: any, roles: any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveEmployee', JSON.stringify({ roles:roles,data: data, isedit: isedit, people_people_id: people_people_id, token: token }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveEmployee', JSON.stringify({ roles: roles, data: data, isedit: isedit, people_people_id: people_people_id, token: token }))
       .map((response: Response) => response.json());
   }
-  saveEmployeeCompany(token: any, data: any, company_id: any, is_edit:any): Observable<any> {
+  saveEmployeeCompany(token: any, data: any, company_id: any, is_edit: any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/company/saveEmployee', JSON.stringify({ token:token,data: data, company_id: company_id,isedit:is_edit }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/company/saveEmployee', JSON.stringify({ token: token, data: data, company_id: company_id, isedit: is_edit }))
       .map((response: Response) => response.json());
   }
-  saveRole(role:RoleModel,token:any,is_edit:any,role_id:any): Observable<any> {
+  saveRole(role: RoleModel, token: any, is_edit: any, role_id: any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/employee/saveRole', JSON.stringify({ is_edit:is_edit,role_id:role_id,role: role, token: token }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/employee/saveRole', JSON.stringify({ is_edit: is_edit, role_id: role_id, role: role, token: token }))
       .map((response: Response) => response.json());
   }
-  getCompanyEmployees(token: any, start: any, search: any, company_id:any): Observable<any> {
+  getCompanyEmployees(token: any, start: any, search: any, company_id: any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/company/getEmployees', JSON.stringify({ search: search, start: start, token: token,company_id:company_id }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/company/getEmployees', JSON.stringify({ search: search, start: start, token: token, company_id: company_id }))
       .map((response: Response) => response.json());
   }
   getEmployees_(token: any, start: any, search: any): Observable<any> {
@@ -179,6 +181,14 @@ export class OperationsService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getClosedLoanPortfolio', JSON.stringify({ token: token, filter: filter }))
       .map((response: Response) => response.json());
   }
+  getAutodebitReport(token: any): Observable<any> {
+    // get users from api
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getAutodebitReport', JSON.stringify({ token: token }))
+      .map((response: Response) => response.json());
+  }
   getLoanPortfolio(token: any, filter: any): Observable<any> {
     // get users from api
     let headers = new Headers();
@@ -235,9 +245,9 @@ export class OperationsService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getLoanAgeing', this.serializeParams(filter), options)
       .map((response: Response) => response.json());
   }
-  getAppSettings(token: any): Observable<any> {
+  getAppSettings(token: any, where_from: any = '0'): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getAppSettings', JSON.stringify({ token: token }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getAppSettings', JSON.stringify({ token: token, where_from: where_from }))
       .map((response: Response) => response.json());
   }
   getLenderSettings(token: any): Observable<any> {
@@ -249,8 +259,18 @@ export class OperationsService {
   //   return this.http.post('https://dataupload.creditclan.com/api/v2/reports/exportReport', JSON.stringify({ token: token, param: param }))
   //     .map((response: Response) => response.json());
   // }
-  exportRecords(token: any, account_details: any, date_start:any,date_end:any,contra_charts:any) {
-    return this.http.post('https://dataupload.creditclan.com/api/v2/reports/exportRecords', JSON.stringify({ token: token, account_details: account_details, date_start:date_start, date_end:date_end, contra_charts:contra_charts  }))
+  exportRecords(token: any, account_details: any, date_start: any, date_end: any, contra_charts: any) {
+    return this.http.post('https://dataupload.creditclan.com/api/v2/reports/exportRecords', JSON.stringify({ token: token, account_details: account_details, date_start: date_start, date_end: date_end, contra_charts: contra_charts }))
+      .map((response: Response) => response.json());
+  }
+  saveFloorRate(token: any, value: any): Observable<any> {
+    // get users from api
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveFloorRate', JSON.stringify({ token: token, data: value }))
+      .map((response: Response) => response.json());
+  }
+  saveInterestForm(token: any, value: any): Observable<any> {
+    // get users from api
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveInterestForm', JSON.stringify({ token: token, data: value }))
       .map((response: Response) => response.json());
   }
   saveTCSettings(token: any, value: any): Observable<any> {
@@ -261,6 +281,11 @@ export class OperationsService {
   saveITCSettings(token: any, value: any): Observable<any> {
     // get users from api
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveITC', JSON.stringify({ token: token, data: value }))
+      .map((response: Response) => response.json());
+  }
+  saveSLInterest(token: any, value: any): Observable<any> {
+    // get users from api
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveSLInterest', JSON.stringify({ token: token, data: value }))
       .map((response: Response) => response.json());
   }
   saveContract(token: any, value: any): Observable<any> {
@@ -338,7 +363,7 @@ export class OperationsService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveFee', JSON.stringify({ token: token, data: value }))
       .map((response: Response) => response.json());
   }
-  deleteLevel(token:any,value:any): Observable<any> {
+  deleteLevel(token: any, value: any): Observable<any> {
     // get users from api
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/deleteLevel', JSON.stringify({ token: token, data: value }))
       .map((response: Response) => response.json());
@@ -348,14 +373,14 @@ export class OperationsService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveLevel', JSON.stringify({ token: token, data: value }))
       .map((response: Response) => response.json());
   }
-  saveQualifiedBorrowers(token: any, value: any,sectors:any,occupations:any,marital_status:any,states:any,guarantors:any,guarantor_requirements:any): Observable<any> {
+  saveQualifiedBorrowers(token: any, value: any, sectors: any, occupations: any, marital_status: any, states: any, guarantors: any, guarantor_requirements: any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveQualifiedBorrowers', JSON.stringify({ guarantor_requirements:guarantor_requirements,guarantors:guarantors,marital_status:marital_status,states:states,sectors:sectors,occupations:occupations,token: token, data: value }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveQualifiedBorrowers', JSON.stringify({ guarantor_requirements: guarantor_requirements, guarantors: guarantors, marital_status: marital_status, states: states, sectors: sectors, occupations: occupations, token: token, data: value }))
       .map((response: Response) => response.json());
   }
-  saveGuarantorRequirements(token: any, value: any,sectors:any,occupations:any,marital_status:any,states:any,guarantors:any,guarantor_requirements:any): Observable<any> {
+  saveGuarantorRequirements(token: any, value: any, sectors: any, occupations: any, marital_status: any, states: any, guarantors: any, guarantor_requirements: any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveGuarantorRequirements', JSON.stringify({ guarantor_requirements:guarantor_requirements,guarantors:guarantors,marital_status:marital_status,states:states,sectors:sectors,occupations:occupations,token: token, data: value }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveGuarantorRequirements', JSON.stringify({ guarantor_requirements: guarantor_requirements, guarantors: guarantors, marital_status: marital_status, states: states, sectors: sectors, occupations: occupations, token: token, data: value }))
       .map((response: Response) => response.json());
   }
   saveAccounts(token: any, value: any): Observable<any> {
@@ -468,12 +493,12 @@ export class OperationsService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/confirmBorrowerHasBeenPaid', JSON.stringify({ token: token, payment_queue: payment_queue }))
       .map((response: Response) => response.json());
   }
-  confirmBorrowerHasBeenPaidForBulk(token: any, payment_queue: any, bulkpayrequests:any): Observable<any> {
+  confirmBorrowerHasBeenPaidForBulk(token: any, payment_queue: any, bulkpayrequests: any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/confirmBorrowerHasBeenPaidBlk', JSON.stringify({ token: token, payment_queue: payment_queue,bulkpayrequests:bulkpayrequests }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/confirmBorrowerHasBeenPaidBlk', JSON.stringify({ token: token, payment_queue: payment_queue, bulkpayrequests: bulkpayrequests }))
       .map((response: Response) => response.json());
   }
-  
+
   confirmOTPForTransferToBorrower(token: any, otp: any, payment_queue: any): Observable<any> {
     // get users from api
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/confirmOTPForTransferToBorrower', JSON.stringify({ token: token, otp: otp, payment_queue: payment_queue }))
@@ -499,14 +524,14 @@ export class OperationsService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/doPaymentConfirm', JSON.stringify({ token: token, payment_queue: payment_queue, schedule_type: schedule_type, record_type: record_type }))
       .map((response: Response) => response.json());
   }
-  doPaymentConfirmForBulk(token: any,payment_queue:any, bulkpayrequests: any): Observable<any> {
+  doPaymentConfirmForBulk(token: any, payment_queue: any, bulkpayrequests: any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/doPaymentConfirmForBulk', JSON.stringify({ token: token, bulkpayrequests: bulkpayrequests,payment_queue:payment_queue}))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/doPaymentConfirmForBulk', JSON.stringify({ token: token, bulkpayrequests: bulkpayrequests, payment_queue: payment_queue }))
       .map((response: Response) => response.json());
   }
-  doPaymentConfirmDebitAll(token: any, payment_queue: any, schedule_type: any, record_type: any, debit_all_card:any, disburse:any): Observable<any> {
+  doPaymentConfirmDebitAll(token: any, payment_queue: any, schedule_type: any, record_type: any, debit_all_card: any, disburse: any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/services/doPaymentConfirmDebitAll', JSON.stringify({ disburse:disburse,debit_all_card:debit_all_card,token: token, payment_queue: payment_queue, schedule_type: schedule_type, record_type: record_type }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/services/doPaymentConfirmDebitAll', JSON.stringify({ disburse: disburse, debit_all_card: debit_all_card, token: token, payment_queue: payment_queue, schedule_type: schedule_type, record_type: record_type }))
       .map((response: Response) => response.json());
   }
   dopaymentConfirmRollbackForm(token: any, payment_queue: any, schedule_type: any, record_type: any): Observable<any> {
@@ -519,7 +544,7 @@ export class OperationsService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/doTransferToWallet', JSON.stringify({ token: token, payment_queue: payment_queue, schedule_type: schedule_type, record_type: record_type }))
       .map((response: Response) => response.json());
   }
-  saveCustomerBank(token: any, bank: any, userId:any) {
+  saveCustomerBank(token: any, bank: any, userId: any) {
     // get users from api
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveCustomerBank', JSON.stringify({ userId: userId, token: token, bank: bank }))
       .map((response: Response) => response.json());
@@ -534,9 +559,9 @@ export class OperationsService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/saveWalletWithdrawalAccount', JSON.stringify({ token: token, bank: bank }))
       .map((response: Response) => response.json());
   }
-  initiateAutodebit(token:any, autodebit_form:any,request_id:any,connected_card_id:any,disburse:any) {
+  initiateAutodebit(token: any, autodebit_form: any, request_id: any, connected_card_id: any, disburse: any) {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/initiateAutodebut', JSON.stringify({ disburse:disburse,autodebit_form: autodebit_form, connected_card_id: connected_card_id, token: token, request_id: request_id }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/initiateAutodebut', JSON.stringify({ disburse: disburse, autodebit_form: autodebit_form, connected_card_id: connected_card_id, token: token, request_id: request_id }))
       .map((response: Response) => response.json());
   }
   setAsConnectedAccountId(token: any, connected_account_id: any, request_id: any, payment_queue_id: any, record_type: any, schedule_type: any) {
@@ -584,10 +609,10 @@ export class OperationsService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getWalletData', JSON.stringify({ token: token, data: data }))
       .map((response: Response) => response.json());
   }
-  
-  getAccountStatement(token: any, data: any, start_date:any, end_date:any): Observable<any> {
+
+  getAccountStatement(token: any, data: any, start_date: any, end_date: any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getAccountStatement', JSON.stringify({ token: token, data: data, start_date:start_date, end_date:end_date }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getAccountStatement', JSON.stringify({ token: token, data: data, start_date: start_date, end_date: end_date }))
       .map((response: Response) => response.json());
   }
   getLeafAccountBalance(token: any, data: any): Observable<any> {
@@ -605,9 +630,9 @@ export class OperationsService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getWalletData', JSON.stringify({ token: token, hw: hw, is_company: is_company, customer_id: customer_id }))
       .map((response: Response) => response.json());
   }
-  getWalletSummary(token: any,how_much_was_given:any=0): Observable<any> {
+  getWalletSummary(token: any, how_much_was_given: any = 0): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getWalletSummary', JSON.stringify({ token: token, HOW_MUCH_WAS_GIVEN:how_much_was_given}))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getWalletSummary', JSON.stringify({ token: token, HOW_MUCH_WAS_GIVEN: how_much_was_given }))
       .map((response: Response) => response.json());
   }
   getCustomerWalletData(token: any, hw: any, is_company: any, customer_id: any): Observable<any> {
@@ -668,27 +693,27 @@ export class OperationsService {
   loadDashboardData(token: any, dashboardFilter: any): Observable<any> {
     // get users from api
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/loadDashboardData', JSON.stringify({ token: token, dashboardFilter: dashboardFilter }))
-      .map((response: Response) => response.json()); 
+      .map((response: Response) => response.json());
   }
   loadDashboard(token: any, dashboardFilter: any): Observable<any> {
     // get users from api
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/loadDashboard', JSON.stringify({ token: token, dashboardFilter: dashboardFilter }))
-      .map((response: Response) => response.json()); 
+      .map((response: Response) => response.json());
   }
   getDueRepayments(token: any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getDueRepayments', JSON.stringify({ token: token}))
-      .map((response: Response) => response.json()); 
+    return this.http.post('https://dataupload.creditclan.com/api/v2/operations/getDueRepayments', JSON.stringify({ token: token }))
+      .map((response: Response) => response.json());
   }
   currentStats(token: any, dashboardFilter: any): Observable<any> {
     // get users from api
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/currentStats', JSON.stringify({ token: token, dashboardFilter: dashboardFilter }))
-      .map((response: Response) => response.json()); 
+      .map((response: Response) => response.json());
   }
   loanPlatforWallet(token: any, dashboardFilter: any): Observable<any> {
     // get users from api
     return this.http.post('https://dataupload.creditclan.com/api/v2/operations/loanPlatforWallet', JSON.stringify({ token: token }))
-      .map((response: Response) => response.json()); 
+      .map((response: Response) => response.json());
   }
   getJournals(token: any): Observable<any> {
     // get users from api
@@ -784,7 +809,7 @@ export class OperationsService {
     }
     return str;
   }
- 
+
 
   // Reports
   getDueLoans(token: any, param: any) {
@@ -831,9 +856,9 @@ export class OperationsService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/reports/downloadRepayments', JSON.stringify({ token: token, param: param }))
       .map((response: Response) => response.json());
   }
-  
-  saveUssd(value:any): Observable<any> {
-    return this.http.post('http://app.creditclan.com/dataupload/api/v2/operations/getUssd', JSON.stringify({data: value }))
-    .map((response: Response) => response.json());
+
+  saveUssd(value: any): Observable<any> {
+    return this.http.post('http://app.creditclan.com/dataupload/api/v2/operations/getUssd', JSON.stringify({ data: value }))
+      .map((response: Response) => response.json());
   }
 }

@@ -1,0 +1,70 @@
+<app-main-navigation *ngIf="!is_mobile"></app-main-navigation>
+<div class="container dashhead">
+    <div class="row">
+        <div class="col-md-9">
+            <section class="panel panl" style="margin-bottom: 5px">
+                <div class="panel-body">
+                    <article class="media">
+                        <div class="pull-left">
+                            <h4 class="no-margin">Web App Settings (Borrower)</h4>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <div>
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <app-generalform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
+                        [loan_duration]='loan_duration' [loading]='loading' [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'></app-generalform>
+
+                    <app-interestform (saveForm)="saveITFrom($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
+                        [interest_duration]='interest_duration' [special_interest_duration]='special_interest_duration' [loading]='loading'
+                        [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'></app-interestform>
+
+                    <app-loanamount (saveForm)="saveLAFrom($event)" [product]='product' [special_interest_duration]='special_interest_duration'
+                        [loading]='loading' [loan_durations]='loan_durations'></app-loanamount>
+
+                    <app-interestratefloor [floor_rate]='floor_rate' [product]="product" [loading]='loading' [loan_durations]='loan_durations' (saveForm)="saveFRFrom($event)"
+                        [special_interest_duration]='special_interest_duration'></app-interestratefloor>
+
+                    <app-originationfee (saveForm)="saveOFFrom($event)" [product]='product' [companyaccounts]='companyaccounts' [loading]='loading'
+                        [fee_settings]='fee_settings'></app-originationfee>
+                    
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3" *ngIf="!is_mobile">
+            <div class="panel-body text-center b_grey crd_theme">
+                <div class="text-center crd_top" style="margin-top: 5px; margin-bottom: 15px;">
+                    <p class="t_lh1">
+                        <img src="assets/images/phone_blue.PNG">
+                    </p>
+                </div>
+                <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline">Back</a>
+            </div>
+
+            <section class="box panel">
+                <div class="panel-body">
+                    <ul class="list list_border">
+                        <li>
+                            <a class="txt_l4" [routerLink]="['../mobile']">Mobile App</a>
+                        </li>
+                        <li>
+                            <a class="txt_l4" [routerLink]="['../backend']">Backend</a>
+                        </li>
+                        <li>
+                            <a class="txt_l4" [routerLink]="['../ussd']">USSD</a>
+                        </li>
+                        <li>
+                            <a class="txt_l4" [routerLink]="['../decision-engine']">Decision Engine</a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+
+    </div>
+</div>

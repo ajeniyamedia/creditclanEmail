@@ -93,7 +93,7 @@
         </a>
     </div>
     <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
-        <!-- <app-wallettransfer [otpError]="otpError" [api_message]="api_message" [security_question]="security_question" [paymentConfirmed]="paymentConfirmed" [paymentHasBeenProcessed]="paymentHasBeenProcessed" [makingFinalPayment]="makingFinalPayment" [loading]="loading" [banks]="banks" (doWalletTransfer)="doWalletTransfer($event)" [ledger]="ledger" [account_details]="account_details"></app-wallettransfer> -->
+        
         <app-withdrawal (confirmWithdrawal)="confirmWithdrawal($event)" [fundingQueued]="fundingQueued" [withdrawalDone]='withdrawalDone' (doInitiateFuning)="doInitiateWithdrawal($event)" [otpMessage]="otpMessage" [lender_banks]="lender_banks" [otpSent]="otpSent" [otpError]="otpError" [legal_name]="currentUser?.legal_name" [icon]="currentUser?.icon" [wallet]="ledger"></app-withdrawal>
     </div>
 </div>

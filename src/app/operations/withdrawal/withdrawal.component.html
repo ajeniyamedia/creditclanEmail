@@ -17,7 +17,7 @@
   </div>
   <div style="text-align: left;padding:0px 20px;" *ngIf="fundingQueued">
 
-    <div style="margin-bottom: 30px" *ngIf="withdrawalDone">
+    <!-- <div style="margin-bottom: 30px" *ngIf="withdrawalDone">
       <div style="width: 120px;margin:20px auto;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" x="0px" y="0px">
           <path d="M50,8A42,42,0,1,1,8,50,42,42,0,0,1,50,8m0-3A45,45,0,1,0,95,50,45,45,0,0,0,50,5Z"></path>
@@ -25,7 +25,7 @@
         </svg>
       </div>
 
-    </div>
+    </div> -->
     <div style="width: 120px;margin:20px auto;" *ngIf="withdrawalDone">
       <svg style="width: 100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
         y="0px" viewBox="0 0 100 125" enable-background="new 0 0 100 100" xml:space="preserve">
@@ -35,10 +35,14 @@
         </g>
       </svg>
     </div>
+    <div class="form-group text-center" style="margin-bottom:15px"  *ngIf="!withdrawalDone">
+      <label for="exampleInputEmail1"><i class="fa fa-spinner fa-spin"></i></label>
+    </div>
   </div>
-  <div class="form-group" style="margin-bottom:15px">
-    <label for="exampleInputEmail1">Wallet Balance : {{wallet?.cu|number:'.2-2'}}</label>
+  <div class="form-group" style="margin-bottom:15px"  *ngIf="!withdrawalDone">
+    <label for="exampleInputEmail1">Wallet Balance : {{cu|number:'.2-2'}}</label>
   </div>
+  
   <div style="text-align: left;padding:0px 20px;" *ngIf="!fundingQueued">
     <form *ngIf="wallet?.wallet_status" [formGroup]="withdrawalForm" (ngSubmit)="doInitiateWithdrawal(withdrawalForm.value)">
       <div class="form-group" [ngClass]="{'has-error':!withdrawalForm.controls['LENDER_BANK_ACCOUNT_ID'].valid && withdrawalForm.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
@@ -77,7 +81,7 @@
 
       </div>
     </form>
-    <div *ngIf="wallet?.cu<=0">
+    <div *ngIf="cu<=0">
       <h3>Insufficient Balance</h3>
       <p>You do not have enough balance in your platform wallet to fund this transaction</p>
 

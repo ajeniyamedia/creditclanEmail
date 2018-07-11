@@ -111,6 +111,9 @@
                                     <small>
                                         <span>{{accd?.PAYSTACK_CHECK_ID.authorization.country_code}}</span>
                                     </small>
+                                    <small>
+                                        <span>{{accd?.PAYSTACK_CHECK_ID.authorization.exp_month}}/{{accd?.PAYSTACK_CHECK_ID.authorization.exp_year}}</span>
+                                    </small>
                                 </div>                        
                                 
                                 <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID === accd?.ACCOUNT_CARD_ID"><img src="assets/images/check.PNG" class="tick"></span>

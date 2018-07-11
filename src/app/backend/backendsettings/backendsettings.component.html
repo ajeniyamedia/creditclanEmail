@@ -25,7 +25,7 @@
           <app-loanamount (saveForm)="saveLAFrom($event)" [product]='product' [special_interest_duration]='special_interest_duration'
             [loading]='loading' [loan_durations]='loan_durations'></app-loanamount>
 
-          <app-interestratefloor [floor_rate]='floor_rate' [loading]='loading' [loan_durations]='loan_durations' (saveForm)="saveFRFrom($event)"
+          <app-interestratefloor [product]="product" [floor_rate]='floor_rate' [loading]='loading' [loan_durations]='loan_durations' (saveForm)="saveFRFrom($event)"
             [special_interest_duration]='special_interest_duration'></app-interestratefloor>
 
           <app-originationfee (saveForm)="saveOFFrom($event)" [product]='product' [companyaccounts]='companyaccounts' [loading]='loading'
@@ -668,7 +668,7 @@
               </div>
             </div>
           </div>
-          <div class="panel panel-default hide">
+          <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingEligibility">
               <h4 class="panel-title">
                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEligibility" aria-expanded="false"
@@ -734,6 +734,18 @@
                       <span> Suspend if eligibility fails</span>
                       <div class="pull-right">
                         <input type="checkbox" name="SUSPEND_IF_FAIL_ELIGIBILITY" name="SUSPEND_IF_FAIL_ELIGIBILITY" [(ngModel)]="backend.SUSPEND_IF_FAIL_ELIGIBILITY">
+                      </div>
+                    </li>
+                    <li class="text-left">
+                      <span> Send Ineligible Message</span>
+                      <div class="pull-right">
+                        <input type="checkbox" name="SEND_IF_INELIGIBILE" name="SEND_IF_INELIGIBILE" [(ngModel)]="backend.SEND_IF_INELIGIBILE">
+                      </div>
+                    </li>
+                    <li class="text-left" *ngIf="backend.SEND_IF_INELIGIBILE">
+                      <div class="form-group">
+                        <label class="control-label">Ineligible Message</label>
+                        <app-ngx-editor [config]="editorConfig" name="INELIGIBLE_MESSAGE" [(ngModel)]="backend.INELIGIBLE_MESSAGE"></app-ngx-editor>
                       </div>
                     </li>
                   </ul>
@@ -862,7 +874,7 @@
             </div>
 
           </div>
-          <div class="panel panel-default hide">
+          <div class="panel panel-default  ">
             <div class="panel-heading" role="tab" id="headingQB">
               <h4 class="panel-title">
                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseQB" aria-expanded="false"
