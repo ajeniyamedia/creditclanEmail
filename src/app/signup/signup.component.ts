@@ -26,10 +26,13 @@ export class SignupComponent implements OnInit {
     PASSWORD:"",
     LEGAL_NAME:"",
     WEBSITE:"",
-    LENDER_TYPE:"",
-    LOANS_MONTHLY:"",
-    STATE_OF_OPERATION:"",
-
+    LENDER_TYPE: null,
+    LOANS_MONTHLY: null,
+    STATE_OF_OPERATION: null,
+    MAX_AMOUNT: '',
+    INT_RATE: '',
+    TENOR: null,
+    MAX_TENOR: ''
   }
 
   constructor(public authenticationService: AuthenticationService,
@@ -87,6 +90,10 @@ export class SignupComponent implements OnInit {
 
   displaySetupTc(){
     this.currentView = 'tc';
+  }  
+
+  displaySetupRate(){
+    this.currentView = 'rates';
   }
 
   signup(value, valid) { 

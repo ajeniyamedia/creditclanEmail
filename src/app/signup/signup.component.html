@@ -1,295 +1,330 @@
 <form #signupForm="ngForm">
-    <!--  -->
-    <div class="cont" [class.hidden]="currentView != 'details'">
-        <div class="container">
-            <div class="col-md-5 col-md-offset-1">
-                <div class="left-container">
-                    <h1 class="onb-title-bold">Sign up for free.</h1>
-                    
-                        <div class="form-group">
-                            <input type="text" class="form-control padded" placeholder="Business Name" #LEGAL_NAME="ngModel" [(ngModel)]="setup.LEGAL_NAME" name="LEGAL_NAME" required>
-                            <div *ngIf="LEGAL_NAME.errors && LEGAL_NAME.dirty" class="small text-danger formErrors">
-                                <div [hidden]="!LEGAL_NAME.errors.required">
-                                    Business name is
-                                    <strong>required</strong>.
+    <div class="cont">
+
+        <div [class.hidden]="currentView != 'details'">
+            <div class="container">
+                <div class="col-md-5 col-md-offset-1">
+                    <div class="left-container">
+                        <h1 class="onb-title-bold">Sign up for free.</h1>
+                        
+                            <div class="form-group">
+                                <input type="text" class="form-control padded" placeholder="Business Name" #LEGAL_NAME="ngModel" [(ngModel)]="setup.LEGAL_NAME" name="LEGAL_NAME" required>
+                                <div *ngIf="LEGAL_NAME.errors && LEGAL_NAME.dirty" class="small text-danger formErrors">
+                                    <div [hidden]="!LEGAL_NAME.errors.required">
+                                        Business name is
+                                        <strong>required</strong>.
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control padded" placeholder="Business Email" #EMAIL="ngModel" [(ngModel)]="setup.EMAIL" name="EMAIL" required>
-                            <div *ngIf="EMAIL.errors && EMAIL.dirty" class="small text-danger formErrors">
-                                <div [hidden]="!EMAIL.errors.required">
-                                    Business email is
-                                    <strong>required</strong>.
+                            <div class="form-group">
+                                <input type="email" class="form-control padded" placeholder="Business Email" #EMAIL="ngModel" [(ngModel)]="setup.EMAIL" name="EMAIL" required>
+                                <div *ngIf="EMAIL.errors && EMAIL.dirty" class="small text-danger formErrors">
+                                    <div [hidden]="!EMAIL.errors.required">
+                                        Business email is
+                                        <strong>required</strong>.
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control padded" placeholder="Password" #PASSWORD="ngModel" [(ngModel)]="setup.PASSWORD" name="PASSWORD" required>
-                            <div *ngIf="PASSWORD.errors && PASSWORD.dirty" class="small text-danger formErrors">
-                                <div [hidden]="!PASSWORD.errors.required">
-                                    Password is
-                                    <strong>required</strong>.
+                            <div class="form-group">
+                                <input type="password" class="form-control padded" placeholder="Password" #PASSWORD="ngModel" [(ngModel)]="setup.PASSWORD" name="PASSWORD" required>
+                                <div *ngIf="PASSWORD.errors && PASSWORD.dirty" class="small text-danger formErrors">
+                                    <div [hidden]="!PASSWORD.errors.required">
+                                        Password is
+                                        <strong>required</strong>.
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control padded" placeholder="Phone Number" #PHONE="ngModel" [(ngModel)]="setup.PHONE" name="PHONE" required>
-                        </div>
-                        <button (click)="displaySetupMobile()" [disabled]="setup.LEGAL_NAME== '' || setup.PHONE== '' || setup.EMAIL== '' || setup.PASSWORD== ''" class="btn btn-block btn-default padded orange-btn">Submit</button>
-                        <p style="margin-top: 10px; font-size: 16px;">Already have an Account? <a [routerLink]="['/login']">Login</a></p>
-                                
-                </div>			
-            </div>
-            <div class="col-md-5">
-                <div class="right-container">
-                    <h2 class="onb-title">We are building Africa's smartest technology for lending</h2>
-                    <div class="onb-content">
-                        <ol>
-                            <li>Zero setup cost. Start lending immediately.</li>
-                            <li>End-to-end automation of lending operations</li>
-                            <li>Mobile, Web, USSD for loan origination</li>
-                            <li>Robust admin for underwriting and analytics</li>
-                            <li>Auto Collection and 50 More Features</li>
-                        </ol>
-                        <hr />
-                    </div>
-                </div>						
-            </div>
-        </div>
-        
-        <img class="coffee" src="assets/images/coffee.png">
-        <img class="book" src="assets/images/book.png">
-    </div>
-    <div class="cont" [class.hidden]="currentView != 'mobile'">
-        <div class="container">
-            <div class="col-md-5 col-md-offset-1">
-                <div class="right-container text-center">
-                    <img src="assets/images/app.png" style="margin-top: -50px; width: 650px; margin-left: -20px;">
+                            <div class="form-group">
+                                <input type="text" class="form-control padded" placeholder="Phone Number" #PHONE="ngModel" [(ngModel)]="setup.PHONE" name="PHONE" required>
+                            </div>
+                            <button (click)="displaySetupMobile()" [disabled]="setup.LEGAL_NAME== '' || setup.PHONE== '' || setup.EMAIL== '' || setup.PASSWORD== ''" class="btn btn-block btn-default padded orange-btn">Submit</button>
+                            <p style="margin-top: 10px; font-size: 16px;">Already have an Account? <a [routerLink]="['/login']">Login</a></p>
+                                    
+                    </div>          
                 </div>
-            </div>
-            <div class="col-md-5">
-                <div class="left-container" style="margin-top: 50px">
-                    <input class="hide" type="checkbox" name="MOBILE" [(ngModel)]="setup.MOBILE">
-                    <p class="arrow-back">
-                        <a (click) ="displaySetupDetails()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
-                    </p>
-                    <h2 class="onb-title">Save over $10,000<br>Get Free lending app!</h2>
-                    <div class="onb-content">
-                        <div>
-                            <p>Let your customers reach you on the move, anywhere in the world. Create request, view schedule sign contract, repay loan, etc.</p>
-                            <p>Yes, your business can become cool like that!</p>
-                        </div>
-                        <hr />
-
-						<p><a href="http://lokeshdhakar.com/projects/lightbox2/images/image-3.jpg" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">Click here</a> to see how it works</p>
-						<div style="display: none ">
-						    <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-4.jpg" data-lightbox="example-set" data-title="Or press the right arrow on your keyboard."></a>
-						    <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-5.jpg" data-lightbox="example-set" data-title="The next image in the set is preloaded as you're viewing."></a>
-						    <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-6.jpg" data-lightbox="example-set" data-title="Click anywhere outside the image or the X to the right to close."></a>
-						</div>
-						<hr />
-                    </div>	
-                    <div class="onb-action">
-                        <button (click)="mobileChecked()" class="btn btn-default padded orange-btn wide-btn">I am Interested</button>
-                        <p>No thanks.<a (click)="displaySetupUssd()"> Skip.</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <img class="coffee" src="assets/images/coffee.png">
-        <img class="book" src="assets/images/book.png">
-    </div>
-
-    <div class="cont" [class.hidden]="currentView != 'ussd'">
-        <div class="container">
-            <div class="col-md-5 col-md-offset-1">
-                <div class="right-container text-center">
-                    <img src="assets/images/ussd.png" style="margin-top: -50px; width: 664px; margin-left: -30px;">
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="left-container" style="margin-top: 130px">
-                    <input class="hide" type="checkbox" name="USSD" [(ngModel)]="setup.USSD">
-                    <p class="arrow-back">
-                        <a (click) ="displaySetupMobile()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
-                    </p>
-                    <h2 class="onb-title">Roll like the Big Banks.<br>USSD makes serious sense.</h2>
-                    <div class="onb-content">
-                        <div>
-                            <p>Let your customers reach even without internet.</p>
-                            <p>We will provide you with a unique Code where loan request can be initiated by your customers hassle free</p>
-                        </div>
-                        <hr />
-
-						<p><a href="http://lokeshdhakar.com/projects/lightbox2/images/image-3.jpg" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">Click here</a> to see how it works</p>
-						<div style="display: none ">
-						    <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-4.jpg" data-lightbox="example-set" data-title="Or press the right arrow on your keyboard."></a>
-						    <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-5.jpg" data-lightbox="example-set" data-title="The next image in the set is preloaded as you're viewing."></a>
-						    <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-6.jpg" data-lightbox="example-set" data-title="Click anywhere outside the image or the X to the right to close."></a>
-						</div>
-						<hr />
-                    </div>	
-                    <div class="onb-action">
-                        <button (click)="ussdChecked()" class="btn btn-default padded orange-btn wide-btn">I am Interested</button>
-                        <p>No thanks.<a (click)="displaySetupWeb()"> Skip.</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <img class="coffee" src="assets/images/coffee.png">
-        <img class="book" src="assets/images/book.png">
-    </div>
-
-    <div class="container" [class.hidden]="currentView != 'web'">
-        <div class="col-md-5 col-md-offset-1">
-            <div class="right-container text-right">
-                <img src="assets/images/web.png" width="350" style="margin-top: -30px">
-            </div>
-        </div>
-        <div class="col-md-5">
-            <div class="left-container">
-                <input class="hide" type="checkbox" name="WEB" [(ngModel)]="setup.WEB">
-                <p class="arrow-back">
-                    <a (click) ="displaySetupUssd()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
-                </p>
-                <h2 class="onb-title">Receive Loan Requests Live from Your Website</h2>
-                <div class="onb-content">
-                    <div>					
-                        <p>Drive traffic to your website and let us take it from there. Your customers can check rates, submit documents, repay loan, validate BVN, etc from the comfort of your site.</p>
-                        <p>It doesn't get better than this.</p>                       
-                    </div>
-                    <hr />
-
-                    <p><a href="http://lokeshdhakar.com/projects/lightbox2/images/image-3.jpg" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">Click here</a> to see how it works</p>
-                    <div style="display: none ">
-                        <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-4.jpg" data-lightbox="example-set" data-title="Or press the right arrow on your keyboard."></a>
-                        <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-5.jpg" data-lightbox="example-set" data-title="The next image in the set is preloaded as you're viewing."></a>
-                        <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-6.jpg" data-lightbox="example-set" data-title="Click anywhere outside the image or the X to the right to close."></a>
-                    </div>
-                    <hr />				
-                </div>
-                <div class="onb-action">
-                    <button (click)="webChecked()" class="btn btn-default padded orange-btn wide-btn">I'm Interested</button>
-                    <p>No, Thanks.<a (click)="displaySetupDashboard()"> Skip.</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="cont" [class.hidden]="currentView != 'dashboard'">
-        <div class="container">
-            <div class="col-md-5 col-md-offset-1">
-                <div class="right-container text-center">
-                    <img src="assets/images/dashboard.png" width="430">
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="left-container">
-                    <p class="arrow-back">
-                        <a (click) ="displaySetupWeb()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
-                    </p>
-                    <h2 class="onb-title">Make sense of your borrowers' data with our robust backend.</h2>
-                    <div class="onb-content">
-                        <div>
-                            <p>If you find any loan analytics tool on this side of the atlantic better than this, you are guaranteed one week in Ibiza 2035.</p>
+                <div class="col-md-5">
+                    <div class="right-container">
+                        <h2 class="onb-title">We are building Africa's smartest technology for lending</h2>
+                        <div class="onb-content">
+                            <ol>
+                                <li>Zero setup cost. Start lending immediately.</li>
+                                <li>End-to-end automation of lending operations</li>
+                                <li>Mobile, Web, USSD for loan origination</li>
+                                <li>Robust admin for underwriting and analytics</li>
+                                <li>Auto Collection and 50 More Features</li>
+                            </ol>
                             <hr />
-                            <p>Seriously, this is where everything comes together. <br />Receive analyze and ratify requests. <br>Disbursement, Collection, everything and more!</p>
                         </div>
-                        <hr />
-                    </div>	
-                    <div class="onb-action">
-                        <button (click)="displaySetupTc()" class="btn btn-default padded orange-btn wide-btn">I am Interested</button>
+                    </div>                      
+                </div>
+            </div>
+        </div>
+        <div [class.hidden]="currentView != 'mobile'">
+            <div class="container">
+                <div class="col-md-5 col-md-offset-1">
+                    <div class="right-container text-center">
+                        <img src="assets/images/app.png" style="margin-top: -50px; width: 650px; margin-left: -20px;">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="left-container">
+                        <input class="hide" type="checkbox" name="MOBILE" [(ngModel)]="setup.MOBILE">
+                        <p class="arrow-back">
+                            <a (click) ="displaySetupDetails()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
+                        </p>
+                        <h2 class="onb-title">Save over $10,000<br>Get Free lending app!</h2>
+                        <div class="onb-content">
+                            <div>
+                                <p>Let your customers reach you on the move, anywhere in the world. Create request, view schedule sign contract, repay loan, etc.</p>
+                                <p>Yes, your business can become cool like that!</p>
+                            </div>
+                            <hr />
+
+                            <p class="see-more"><a href="http://lokeshdhakar.com/projects/lightbox2/images/image-3.jpg" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">Click here</a> to see how it works</p>
+                            <div style="display: none ">
+                                <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-4.jpg" data-lightbox="example-set" data-title="Or press the right arrow on your keyboard."></a>
+                                <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-5.jpg" data-lightbox="example-set" data-title="The next image in the set is preloaded as you're viewing."></a>
+                                <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-6.jpg" data-lightbox="example-set" data-title="Click anywhere outside the image or the X to the right to close."></a>
+                            </div>
+                            <hr />
+                        </div>  
+                        <div class="onb-action">
+                            <button (click)="mobileChecked()" class="btn btn-default padded orange-btn wide-btn">I am Interested</button>
+                            <p>No thanks.<a (click)="displaySetupUssd()"> Skip.</a></p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div [class.hidden]="currentView != 'ussd'">
+            <div class="container">
+                <div class="col-md-5 col-md-offset-1">
+                    <div class="right-container text-center">
+                        <img src="assets/images/ussd.png" style="margin-top: -50px; width: 664px; margin-left: -30px;">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="left-container">
+                        <input class="hide" type="checkbox" name="USSD" [(ngModel)]="setup.USSD">
+                        <p class="arrow-back">
+                            <a (click) ="displaySetupMobile()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
+                        </p>
+                        <h2 class="onb-title">Roll like the Big Banks.<br>USSD makes serious sense.</h2>
+                        <div class="onb-content">
+                            <div>
+                                <p>Let your customers reach even without internet.</p>
+                                <p>We will provide you with a unique Code where loan request can be initiated by your customers hassle free</p>
+                            </div>
+                            <hr />
 
-        <img class="coffee" src="assets/images/coffee.png">
-        <img class="book" src="assets/images/book.png">
-    </div>
-
-    <div class="cont" [class.hidden]="currentView != 'tc'">
-        <div class="container">
-            <div class="col-md-5 col-md-offset-1">
-                <div class="left-container">
-                    <h1 class="onb-title-bold">Finally, let's know you a little.</h1>
-                    <div class="form-group">
-                        <select class="form-control padded" placeholder="State of operation" name="STATE_OF_OPERATION" [(ngModel)] ="setup.STATE_OF_OPERATION">
-                            <option>State of Operation</option>
-                            <option value="ibadan">Ibadan</option>
-                            <option value="lagos">Lagos</option>
-                            <option value="ogun">Ogun</option>
-                        </select>
+                            <p class="see-more"><a href="http://lokeshdhakar.com/projects/lightbox2/images/image-3.jpg" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">Click here</a> to see how it works</p>
+                            <div style="display: none ">
+                                <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-4.jpg" data-lightbox="example-set" data-title="Or press the right arrow on your keyboard."></a>
+                                <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-5.jpg" data-lightbox="example-set" data-title="The next image in the set is preloaded as you're viewing."></a>
+                                <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-6.jpg" data-lightbox="example-set" data-title="Click anywhere outside the image or the X to the right to close."></a>
+                            </div>
+                            <hr />
+                        </div>  
+                        <div class="onb-action">
+                            <button (click)="ussdChecked()" class="btn btn-default padded orange-btn wide-btn">I am Interested</button>
+                            <p>No thanks.<a (click)="displaySetupWeb()"> Skip.</a></p>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <textarea class="form-control padded" placeholder="Office Address" rows="3" name="ADDRESS" [(ngModel)] ="setup.ADDRESS"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control padded" placeholder="Website" name="WEBSITE" [(ngModel)] ="setup.WEBSITE">
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control padded"  name="LENDER_TYPE" [(ngModel)] ="setup.LENDER_TYPE">
-                            <option>What kind of lender are you?</option>
-                            <option value="corporate">Corporate</option>
-                            <option value="Personal">Personal</option>
-                            <option value="finance">Financial institutuion</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control padded" name="LOANS_MONTHLY" [(ngModel)] ="setup.LOANS_MONTHLY">
-                            <option >On average, how many loans do you do monthly?</option>
-                            <option value="below 10">below 10</option>
-                            <option value="1">10 - 50</option>
-                            <option value="2">50 - 100</option>
-                            <option value="3">100 - 500</option>
-                            <option value="4">500 - 1000</option>
-                            <option value="5">1000 - 5000</option>
-                            <option value="6">5000 - 10000</option>
-                        </select>
-                    </div>
-                    
-                    <button type="submit" (click)="signup(signupForm.value, signupForm.valid)" [disabled]="loading"class="btn btn-block btn-default padded orange-btn">Complete</button>
-                </div>			
+                </div>
             </div>
-            <div class="col-md-5">
-                <p class="arrow-back">
-                    <a (click) ="displaySetupDashboard()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
-                </p>
-                <div class="right-container">			
-                    <div>
+        </div>
+        <div [class.hidden]="currentView != 'web'">
+            <div class="container">
+                <div class="col-md-5 col-md-offset-1">
+                    <div class="right-container text-right">
+                        <img src="assets/images/web.png" width="350">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="left-container">
+                        <input class="hide" type="checkbox" name="WEB" [(ngModel)]="setup.WEB">
+                        <p class="arrow-back">
+                            <a (click) ="displaySetupUssd()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
+                        </p>
+                        <h2 class="onb-title">Receive Loan Requests Live from Your Website</h2>
+                        <div class="onb-content">
+                            <div>                   
+                                <p>Drive traffic to your website and let us take it from there. Your customers can check rates, submit documents, repay loan, validate BVN, etc from the comfort of your site.</p>
+                                <p>It doesn't get better than this.</p>                       
+                            </div>
+                            <hr />
+
+                            <p class="see-more"><a href="http://lokeshdhakar.com/projects/lightbox2/images/image-3.jpg" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">Click here</a> to see how it works</p>
+                            <div style="display: none ">
+                                <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-4.jpg" data-lightbox="example-set" data-title="Or press the right arrow on your keyboard."></a>
+                                <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-5.jpg" data-lightbox="example-set" data-title="The next image in the set is preloaded as you're viewing."></a>
+                                <a href="http://lokeshdhakar.com/projects/lightbox2/images/image-6.jpg" data-lightbox="example-set" data-title="Click anywhere outside the image or the X to the right to close."></a>
+                            </div>
+                            <hr />              
+                        </div>
+                        <div class="onb-action">
+                            <button (click)="webChecked()" class="btn btn-default padded orange-btn wide-btn">I'm Interested</button>
+                            <p>No, Thanks.<a (click)="displaySetupDashboard()"> Skip.</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div [class.hidden]="currentView != 'dashboard'">
+            <div class="container">
+                <div class="col-md-5 col-md-offset-1">
+                    <div class="right-container text-center">
+                        <img src="assets/images/dashboard.png" style="width: 500px; margin-left: -80px;">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="left-container">
+                        <p class="arrow-back">
+                            <a (click) ="displaySetupWeb()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
+                        </p>
+                        <h2 class="onb-title">Make sense of your borrowers' data with our robust backend.</h2>
+                        <div class="onb-content">
+                            <div>
+                                <p>If you find any loan analytics tool on this side of the atlantic better than this, you are guaranteed one week in Ibiza 2035.</p>
+                                <hr />
+                                <p>Seriously, this is where everything comes together. <br />Receive analyze and ratify requests. <br>Disbursement, Collection, everything and more!</p>
+                            </div>
+                            <hr />
+                        </div>  
+                        <div class="onb-action">
+                            <button (click)="displaySetupRate()" class="btn btn-default padded orange-btn wide-btn">I am Interested</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div [class.hidden]="currentView != 'rates'">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-1">
+                        <div class="right-container" style="line-height: 1.2">
+                            <h2 class="onb-title">Setup Your first Settings for Lending. Let's get started.</h2>
+                            <div class="onb-content">
+                                <p>This is just the basic settings to get you started. We have a robust settings page where you can add more advanced configuration, Let's get started.</p>
+                                <hr>
+                                <p class="see-more"><a href="javascript:;">Click here</a> to see how settings works.</p>
+                                <hr>
+                            </div>          
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="padded-sm left-container">
+                            <p class="arrow-back">
+                                <a (click) ="displaySetupDashboard()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a>
+                            </p>
+                                      
+                            <div class="form-group">
+                                <select class="form-control padded" name="TENOR" [(ngModel)] ="setup.TENOR">
+                                    <option value="null" disabled="true">Do you do Daily or Monthly Loans?</option>
+                                    <option value="1">Monthly</option>
+                                    <option value="2">Daily</option>
+                                </select>
+                            </div>
+                            <div class="form-group input-group padded-group">
+                                <input type="text" class="form-control padded" placeholder="Interest Rate" name="INT_RATE" [(ngModel)] ="setup.INT_RATE">
+                                <span class="input-group-addon">%/
+                                    <span  [class.hidden]="setup.TENOR != 1">Month</span>
+                                    <span [class.hidden]="setup.TENOR != 2">Day</span>
+                                </span>
+                            </div>
+                            <div class="form-group input-group padded-group">
+                                <input type="text" class="form-control padded" placeholder="Maximum Loan Amount" name="MAX_AMOUNT" [(ngModel)] ="setup.MAX_AMOUNT">
+                                <span class="input-group-addon">&#8358;</span>
+                            </div>
+                            <div class="form-group input-group padded-group">
+                                <input type="text" class="form-control padded" placeholder="Maximum Tenor" name="MAX_TENOR" [(ngModel)] ="setup.MAX_TENOR">
+                                <span class="input-group-addon">
+                                    <span  [class.hidden]="setup.TENOR != 1">Month(s)</span>
+                                    <span [class.hidden]="setup.TENOR != 2">Day(s)</span>
+                                </span>
+                            </div>
+                            
+                            <button (click)="displaySetupTc()" type="submit" class="btn btn-block btn-default padded orange-btn">Submit</button>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div [class.hidden]="currentView != 'tc'">
+            <div class="container">
+                <div class="col-md-5 col-md-offset-1">
+                    <div class="left-container">
+                        <h1 class="onb-title-bold">Finally, let's know you a little.</h1>
+                        <div class="form-group">
+                            <select class="form-control padded" placeholder="State of operation" name="STATE_OF_OPERATION" [(ngModel)] ="setup.STATE_OF_OPERATION">
+                                <option value="null" disabled="true" >State of Operation</option>
+                                <option value="ibadan">Ibadan</option>
+                                <option value="lagos">Lagos</option>
+                                <option value="ogun">Ogun</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control padded" placeholder="Office Address" rows="3" name="ADDRESS" [(ngModel)] ="setup.ADDRESS"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control padded" placeholder="Website" name="WEBSITE" [(ngModel)] ="setup.WEBSITE">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control padded"  name="LENDER_TYPE" [(ngModel)] ="setup.LENDER_TYPE">
+                                <option value="null" disabled="true">What kind of lender are you?</option>
+                                <option value="corporate">Corporate</option>
+                                <option value="Personal">Personal</option>
+                                <option value="finance">Financial institutuion</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control padded" name="LOANS_MONTHLY" [(ngModel)] ="setup.LOANS_MONTHLY">
+                                <option value="null" disabled="true">On average, how many loans do you do monthly?</option>
+                                <option value="below 10">below 10</option>
+                                <option value="1">10 - 50</option>
+                                <option value="2">50 - 100</option>
+                                <option value="3">100 - 500</option>
+                                <option value="4">500 - 1000</option>
+                                <option value="5">1000 - 5000</option>
+                                <option value="6">5000 - 10000</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" (click)="signup(signupForm.value, signupForm.valid)" [disabled]="loading"class="btn btn-block btn-default padded orange-btn">Complete</button>
+                    </div>          
+                </div>
+                <div class="col-md-5">
+                    <div class="right-container">
+                        <p class="arrow-back"><a (click) ="displaySetupRate()"><img src="assets/images/back-arrow.png" alt="Go Back" title="Go Back"></a></p>   
                         <div>
                             <div class="icon-shot-cover">
                                 <div class="icon-shot">
                                     <p class="icn-title">Guaranteed</p>
                                     <p class="icn-body">Data Security</p>
-                                    <span><img src="assets/images/shield.png" width="70"></span>
+                                    <span><img src="assets/images/lock.png" width="70"></span>
                                 </div>
                             </div>
                             <div class="icon-shot-cover">
                                 <div class="icon-shot">
                                     <p class="icn-title">Real Time</p>
                                     <p class="icn-body">Customer Support</p>
-                                    <span><img src="assets/images/shield.png" width="70"></span>
+                                    <span><img src="assets/images/time.jpg" width="70"></span>
                                 </div>
                             </div>
                             <div class="icon-shot-cover">
                                 <div class="icon-shot">
                                     <p class="icn-title">Join our League of</p>
                                     <p class="icn-body">technology powered Lenders</p>
-                                    <span><img src="assets/images/shield.png" width="70"></span>
+                                    <span><img src="assets/images/tech.png" width="70"></span>
                                 </div>
                             </div>
-                        </div>					
-                    </div>
+                        </div>
+                    </div>                                
                 </div>
-                            
-            </div>
+            </div>    
         </div>
-        
+
         <img class="coffee" src="assets/images/coffee.png">
         <img class="book" src="assets/images/book.png">
-    </div>
+    </div>    
 </form>
