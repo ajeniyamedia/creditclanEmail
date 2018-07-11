@@ -1,0 +1,200 @@
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingRCS">
+    <h4 class="panel-title">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionRWS" href="#collapseRCS" aria-expanded="false"
+        aria-controls="collapseRCS">
+       Remite Connection Settings
+      </a>
+    </h4>
+  </div>
+  <div id="collapseRCS" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingRCS">
+    <div class="panel-body">
+      <form #connectionform="ngForm" novalidate>
+        <div class="form-group row">
+          <div class="col-md-6"><label class="control-label">Merchant  ID</label></div>
+          <div class="col-md-6"><input class="form-control" name="MERCHANT_ID" [(ngModel)]="remitaconnection.MERCHANT_ID"></div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6"><label class="control-label">API Key</label></div>
+          <div class="col-md-6"><input class="form-control" name="API_KEY" [(ngModel)]="remitaconnection.API_KEY"></div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6"><label class="control-label">API Token</label></div>
+          <div class="col-md-6"><input class="form-control" name="API_TOKEN" [(ngModel)]="remitaconnection.API_TOKEN"></div>
+        </div>
+        <button type="submit" (click)="saveRemitaConnectionSettings(connectionform.value, connectionform.valid)" [disabled]="loading" class="btn btn-white pull-right">
+          <span *ngIf="!loading">Submit</span>
+          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingRWS">
+    <h4 class="panel-title">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionRWS" href="#collapseRWS" aria-expanded="false"
+        aria-controls="collapseRWS">
+       Remita Analytics Weight Settings
+      </a>
+    </h4>
+  </div>
+  <div id="collapseRWS" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingRWS">
+    <div class="panel-body">
+      <form #analyticsform="ngForm" novalidate>
+        <ul class="list list_border sm">
+          <li class="text-left sub_list" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Companies Included</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.company_included" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'company_included')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+      
+          <li class="text-left sub_list" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Company Popularity</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.company_popularity" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'company_popularity')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+          <li class="text-left sub_list" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Company Exists</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.company_exists" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'company_exists')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+          <li class="text-left sub_list" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Allowed Companies</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.allowed_companies" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'allowed_companies')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+          <li class="text-left sub_list" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Allowed Bank</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.allowed_banks" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'allowed_banks')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+      
+          <li class="text-left" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Bank Account Match</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.bank_account_match" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'bank_account_match')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+      
+          <li class="text-left" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Customer Name Match</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.customer_name_match" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'customer_name_match')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+      
+          <li class="text-left sub_list" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Uniform Salary</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.unifrom_salary" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'unifrom_salary')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+      
+          <li class="text-left sub_list" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Allowed Pay Date</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.allow_pay_date" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'allow_pay_date')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+          <li class="text-left sub_list" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Last Pay Date</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.last_pay_date" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'last_pay_date')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+          <li class="text-left sub_list" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Salary Increase</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.salary_increase" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'salary_increase')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+      
+          <li class="text-left sub_list" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Salary Decrease</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.salary_decrease" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'linkedln')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+          <li class="text-left sub_list" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Variation in salary</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.variation_in_salary" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'variation_in_salary')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+          <li class="text-left sub_list" style="padding-left: 20px">
+            <div class="row">
+              <div class="col-md-3" style="vertical-align: bottom;">
+                <p style="margin:20px 0 0">Variation in Pay Date</p>
+              </div>
+              <div class="col-md-9">
+                <ion-range-slider [from]="remita_analytics?.variation_in_pay_date" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'variation_in_pay_date')"></ion-range-slider>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <button type="submit" (click)="saveAnalytics(analyticsform.value, analyticsform.valid)" [disabled]="loading" class="btn btn-white pull-right">
+          <span *ngIf="!loading">Submit</span>
+          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

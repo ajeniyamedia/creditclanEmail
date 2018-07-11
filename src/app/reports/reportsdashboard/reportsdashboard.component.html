@@ -94,6 +94,10 @@
                               <a (click)="openReport('disbursmentreport')">
                                 <i class="fa fa-star-o"></i> Disbursement Report
                               </a></li>
+                              <li>
+                                <a (click)="openReport('autodebit')">
+                                  <i class="fa fa-star-o"></i> Autodebit Report
+                                </a></li>
                         </ul>
                     </div>
                 </section>
@@ -139,6 +143,7 @@
             <app-disbursmentreport *ngIf="openedReport == 'disbursmentreport'"></app-disbursmentreport>
             <app-loanportfolio *ngIf="openedReport == 'loan_portfolio'"></app-loanportfolio>
             <app-paidloan *ngIf="openedReport == 'paid'"></app-paidloan>
+            <app-autodebit *ngIf="openedReport == 'autodebit'"></app-autodebit>
             <!-- <app-allcustomers *ngIf="openedReport == 'customers'"></app-allcustomers> -->
         </div>
         

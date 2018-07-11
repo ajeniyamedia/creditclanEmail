@@ -252,6 +252,7 @@ export class BackendsettingsComponent implements OnInit {
   public loan_duration = 'Months';
   public max_loan_duration = 'Months';
 <<<<<<< HEAD
+<<<<<<< HEAD
   public currentUser: any;
   isedit = false;
   loading = false;
@@ -265,6 +266,18 @@ export class BackendsettingsComponent implements OnInit {
   public special_interest_duration = 'Per Day';
 =======
   
+=======
+  editorConfig = {
+    editable: true,
+    spellcheck: false,
+    height: '5rem',
+    minHeight: '7rem',
+    placeholder: 'Enter your text here',
+    translate: 'no',
+    width: "100%",
+    minWidth: "100%"
+  };
+>>>>>>> 4b20b0ce4eaae383243ff4a3caa0138acb496d5b
   countries: any;
   public currentUser: any;
   isedit = false;
@@ -275,6 +288,8 @@ export class BackendsettingsComponent implements OnInit {
   public app_levels: any;
   public loan_approvals: any;
   public backend = {
+    SEND_IF_INELIGIBILE:false,
+    INELIGIBLE_MESSAGE:'',
     SUSPEND_IF_FAIL_ELIGIBILITY: false,
     SUSPEND_FOR_HOW_LONG: 24,
     enableautorouting: true,
@@ -490,6 +505,8 @@ export class BackendsettingsComponent implements OnInit {
         this.acc_off = data.accoff;
         this.app_levels = data.app_levels;
         this.loan_approvals = data.product.APP_LIST;
+        this.backend.SEND_IF_INELIGIBILE = data.backend.SEND_IF_INELIGIBILE;
+        this.backend.INELIGIBLE_MESSAGE = data.backend.INELIGIBLE_MESSAGE;
         this.backend.SUSPEND_FOR_HOW_LONG = data.backend.SUSPEND_FOR_HOW_LONG;
         this.backend.ENABLE_BULK_DISBURSEMENT = data.backend.ENABLE_BULK_DISBURSEMENT;
         this.backend.SUSPEND_IF_FAIL_ELIGIBILITY = data.backend.SUSPEND_IF_FAIL_ELIGIBILITY;

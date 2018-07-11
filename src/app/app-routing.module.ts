@@ -160,6 +160,14 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'settings/web',
+    loadChildren: '../app/web/web.module#WebModule',
+    data: {
+      preload : true
+    },
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'settings/decision-engine',
     loadChildren: '../app/decision/decision.module#DecisionModule',
     data: {

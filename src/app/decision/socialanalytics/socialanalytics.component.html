@@ -1,0 +1,18 @@
+<form #analyticsform="ngForm" novalidate>
+  <ul class="list list_border sm">
+    <li class="text-left sub_list" style="padding-left: 20px">
+      <div class="row">
+        <div class="col-md-3" style="vertical-align: bottom;">
+          <p style="margin:20px 0 0">Linkedln</p>
+        </div>
+        <div class="col-md-9">
+          <ion-range-slider [from]="analytics_settings?.linkedln" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'linkedln')"></ion-range-slider>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <button type="submit" (click)="saveAnalytics(analyticsform.value, analyticsform.valid)" [disabled]="loading" class="btn btn-white pull-right">
+    <span *ngIf="!loading">Submit</span>
+    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+  </button>
+</form>

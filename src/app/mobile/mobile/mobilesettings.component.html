@@ -389,7 +389,7 @@
         </div>
     </div>
 </div>
-<div class="container" [ngClass]="is_mobile == true? 'head': 'dashhead'">
+<div class="container dashhead">
     <div class="row">
 <<<<<<< HEAD
         <div class="col-md-9" [ngClass]="is_mobile == true? 'col-md-6': 'col-md-9'">               
@@ -415,6 +415,7 @@
 
             <div>
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+<<<<<<< HEAD
 <<<<<<< HEAD
                         <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="headingVR">
@@ -623,20 +624,23 @@
                                     <li class="text-left" style="padding-left: 60px">
 =======
                     <app-generalform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
+=======
+                    <!-- <app-generalform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
+>>>>>>> 4b20b0ce4eaae383243ff4a3caa0138acb496d5b
                         [loan_duration]='loan_duration' [loading]='loading' [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'></app-generalform>
 
-                    <app-interestform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
+                    <app-interestform (saveForm)="saveITFrom($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
                         [interest_duration]='interest_duration' [special_interest_duration]='special_interest_duration' [loading]='loading'
                         [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'></app-interestform>
 
                     <app-loanamount (saveForm)="saveLAFrom($event)" [product]='product' [special_interest_duration]='special_interest_duration'
                         [loading]='loading' [loan_durations]='loan_durations'></app-loanamount>
 
-                    <app-interestratefloor [floor_rate]='floor_rate' [loading]='loading' [loan_durations]='loan_durations' (saveForm)="saveFRFrom($event)"
+                    <app-interestratefloor [product]='product' [floor_rate]='floor_rate' [loading]='loading' [loan_durations]='loan_durations' (saveForm)="saveFRFrom($event)"
                         [special_interest_duration]='special_interest_duration'></app-interestratefloor>
 
                     <app-originationfee (saveForm)="saveOFFrom($event)" [product]='product' [companyaccounts]='companyaccounts' [loading]='loading'
-                        [fee_settings]='fee_settings'></app-originationfee>
+                        [fee_settings]='fee_settings'></app-originationfee> -->
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingVR">
                             <h4 class="panel-title">
@@ -679,14 +683,14 @@
                         </div>
                     </div>
                     <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
+                        <div class="panel-heading" role="tab" id="headingCR">
                             <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCR" aria-expanded="false" aria-controls="collapseCR">
                                     Customer Registeration
                                 </a>
                             </h4>
                         </div>
-                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div id="collapseCR" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingCR">
                             <div class="panel-body" style="padding: 15px 70px">
                                 <form #h="ngForm" novalidate>
                                     <ul class="list list_border sm">
@@ -738,15 +742,15 @@
                         </div>
                     </div>
                     <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTwo">
+                        <div class="panel-heading" role="tab" id="headingLA">
                             <h4 class="panel-title">
-                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
-                                    aria-controls="collapseTwo">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseLA" aria-expanded="false"
+                                    aria-controls="collapseLA">
                                     Loan Application
                                 </a>
                             </h4>
                         </div>
-                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <div id="collapseLA" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLA">
                             <div class="panel-body" style="padding: 15px 70px">
                                 <form #i="ngForm" novalidate>
                                     <ul class="list list_border sm">

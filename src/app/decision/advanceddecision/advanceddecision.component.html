@@ -7,9 +7,142 @@
         </a>
       </h4>
     </div>
-    <div id="collapseEligibility" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEligibility">
+    <!-- <div id="collapseEligibility" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEligibility">
       <div class="panel-body">
         
+      </div>
+    </div> -->
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingCC">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionCC" href="#collapseCC" aria-expanded="false"
+          aria-controls="collapseCC">
+         CreditClan Analytics
+        </a>
+      </h4>
+    </div>
+    <div id="collapseCC" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCC">
+      <div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingCCProfile">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionCCProfile" href="#collapseCCProfile" aria-expanded="false"
+                aria-controls="collapseCCProfile">
+               Profile
+              </a>
+            </h4>
+          </div>
+          <div id="collapseCCProfile" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCCProfile">
+            <div class="panel-body">
+              <app-profileanalytics [currentUser]="currentUser" [analytics_settings]="analytics_settings"></app-profileanalytics>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingCCSocial">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionCCSocial" href="#collapseCCSocial" aria-expanded="false"
+                aria-controls="collapseCCSocial">
+               Social
+              </a>
+            </h4>
+          </div>
+          <div id="collapseCCSocial" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCCSocial">
+            <div class="panel-body">
+              <app-socialanalytics [currentUser]="currentUser" [analytics_settings]="analytics_settings"></app-socialanalytics>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingCCRepayment">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionCCRepayment" href="#collapseCCRepayment" aria-expanded="false"
+                aria-controls="collapseCCRepayment">
+               Repayments
+              </a>
+            </h4>
+          </div>
+          <div id="collapseCCRepayment" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCCRepayment">
+            <div class="panel-body">
+              <app-repaymentanalytics></app-repaymentanalytics>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingCB">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionCB" href="#collapseCB" aria-expanded="false"
+          aria-controls="collapseCB">
+         Credit Bureau
+        </a>
+      </h4>
+    </div>
+    <div id="collapseCB" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCB">
+      <div class="panel-body">
+        <app-bureauanalytics></app-bureauanalytics>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingER">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionER" href="#collapseER" aria-expanded="false"
+          aria-controls="collapseER">
+         Ease of Repayment
+        </a>
+      </h4>
+    </div>
+    <div id="collapseER" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingER">
+      <div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingERRemita">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionERRemita" href="#collapseERRemita" aria-expanded="false"
+                aria-controls="collapseERRemita">
+               Remita
+              </a>
+            </h4>
+          </div>
+          <div id="collapseERRemita" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingERRemita">
+            <div class="">
+              <app-remitaanalytics></app-remitaanalytics>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingERDD">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionERDD" href="#collapseERDD" aria-expanded="false"
+                aria-controls="collapseERDD">
+               Direct Bank Account Debit 
+              </a>
+            </h4>
+          </div>
+          <div id="collapseERDD" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingERDD">
+            <div class="panel-body">
+              <app-bankaccountanalytics></app-bankaccountanalytics>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingERCards">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionERCards" href="#collapseERCards" aria-expanded="false"
+                aria-controls="collapseERCards">
+               Cards
+              </a>
+            </h4>
+          </div>
+          <div id="collapseERCards" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingERCards">
+            <div class="panel-body">
+              <app-cardsanalytics></app-cardsanalytics>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
