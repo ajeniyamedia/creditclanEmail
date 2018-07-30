@@ -7,7 +7,10 @@
               <li><a href="javascript:;" (click)="open('profile')">Profile</a></li>
               <li><a href="javascript:;" (click)="open('financials')">Financials</a></li>
               <li><a href="javascript:;" (click)="open('loans')">Loans</a></li>                    
-              <li><a href="javascript:;" (click)="open('invest')">Investments</a></li>                    
+              <li><a href="javascript:;" (click)="open('invest')">Investments</a></li>   
+              <li><a href="javascript:;" (click)="open('remita')">Remita</a></li>
+              <!-- <li><a href="javascript:;" (click)="open('creditclan')">CreditClan </a></li>                    
+              <li><a href="javascript:;" (click)="open('creditbureau')">Credit Bureau</a></li>                     -->
           </ul>
         </span>
         <span>Profile</span>
@@ -28,6 +31,15 @@
         <div *ngIf="view == 'invest'">
             <app-customer-investments [external]=true [userId]=borrower?.PEOPLE_ID></app-customer-investments>
         </div>
+        <div *ngIf="view == 'remita'">
+            <app-customer-remita [currentUser]="currentUser" [userId]=borrower?.PEOPLE_ID></app-customer-remita>
+        </div>
+        <!-- <div *ngIf="view == 'creditclan'">
+            <app-customer-loans [external]=true [userId]=borrower?.PEOPLE_ID></app-customer-loans>
+        </div>
+        <div *ngIf="view == 'creditbureau'">
+            <app-customer-investments [external]=true [userId]=borrower?.PEOPLE_ID></app-customer-investments>
+        </div> -->
     </div>
 
 </div>

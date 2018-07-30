@@ -5,7 +5,20 @@
           <div class="panel panel-default box">
               <div class="panel-heading" style="background: rgba(240,240,240,.5);">
                   <span style="line-height: 2.2em">Autodebit</span>
-                  
+                  <div class="form-inline pull-right">
+                    
+
+                    <div class="input-group" >
+                        <input type="text" name="TPDATE" class="form-control" [(ngModel)]="filter.TPDATE" ngui-datetime-picker date-only="true" />
+                        <span class="input-group-addon">To</span>
+                        <input type="text" name="TPDATE_" class="form-control" [(ngModel)]="filter.TPDATE_" ngui-datetime-picker date-only="true"
+                        />
+                    </div>
+ 
+                    <button (click)="getLoans()" class="btn btn-primary btn-tp edged_box" [disabled]="loading">Submit
+                        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+                    </button>
+                </div>
               </div>
           </div>
       </div>

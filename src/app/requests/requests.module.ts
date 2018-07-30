@@ -9,6 +9,9 @@ import { RequestslistComponent } from '../requestslist/requestslist.component';
 import { RequestsRoutingModule } from './requests-routing/requests-routing.module';
 import { PortfoliocalendarComponent } from '../portfoliocalendar/portfoliocalendar.component';
 import { ReversetransactionComponent } from './reversetransaction/reversetransaction.component';
+import { AnalyticsComponent } from './analytics/analytics.component';
+import { AnalyticsEngineComponent } from './analytics-engine/analytics-engine.component';
+import { AdvancedofferComponent } from './advancedoffer/advancedoffer.component';
 
 @NgModule({
   imports: [
@@ -21,7 +24,10 @@ import { ReversetransactionComponent } from './reversetransaction/reversetransac
     RequestsComponent,
     RequestslistComponent,
     PortfoliocalendarComponent,
-    ReversetransactionComponent
+    ReversetransactionComponent,
+    AnalyticsComponent,
+    AnalyticsEngineComponent,
+    AdvancedofferComponent
   ]
 })
 export class RequestsModule { }

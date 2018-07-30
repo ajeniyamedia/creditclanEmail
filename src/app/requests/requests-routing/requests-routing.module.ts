@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../../_guards/auth.guard';
 import { RequestsdashComponent } from '../../requests/requestsdash/requestsdash.component';
 import { RequestsComponent } from '../requests.component';
+import { AnalyticsComponent } from '../analytics/analytics.component';
 const routes: Routes = [
   {
     path: '', component: RequestsdashComponent, canActivate: [AuthGuard],
@@ -22,6 +23,7 @@ const routes: Routes = [
       { path: 'all', component: RequestsComponent },
       { path: 'repaid', component: RequestsComponent },
       { path: 'contract', component: RequestsComponent },
+      { path: 'analytics', component: AnalyticsComponent },
     ]
   },
 

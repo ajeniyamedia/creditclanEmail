@@ -15,12 +15,15 @@
       <div>
         <div class="panel-group">
           <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingDT">
-              <h4 class="panel-title">
+            <div class="panel-heading" role="tab" id="headingDT" style="overflow:auto">
+              <h4 class="panel-title pull-left">
                 <a role="button" data-toggle="collapse" data-parent="#accordionDT" href="#collapseDT" aria-expanded="true" aria-controls="collapseDT">
                   Decision Type
                 </a>
               </h4>
+              <span class="tools pull-right">
+                <button class="btn btn-white btn-xs" [disabled]="loading" (click)="saveDecisionSettings()">Save <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+              </span>
             </div>
             <div id="collapseDT" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseDT">
               <div class="panel-body" style="padding: 15px 70px">
@@ -29,14 +32,14 @@
                   <div class="col-md-6">
                     <div class="radio">
                       <label>
-                        <input type="radio" name="DECISION_TYPE" value="1" [(ngModel)]="decision.DECISION_TYPE"> Simple
+                        <input type="radio" [checked]="decision.DECISION_TYPE=='1'" name="DECISION_TYPE" value="1" [(ngModel)]="decision.DECISION_TYPE"> Simple
                       </label>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="radio">
                       <label>
-                        <input type="radio" name="DECISION_TYPE" value="2" [(ngModel)]="decision.DECISION_TYPE"> Advanced
+                        <input type="radio" [checked]="decision.DECISION_TYPE=='2'" name="DECISION_TYPE" value="2" [(ngModel)]="decision.DECISION_TYPE"> Advanced
                       </label>
                     </div>
                   </div>

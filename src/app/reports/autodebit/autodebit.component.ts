@@ -18,6 +18,10 @@ export class AutodebitComponent implements OnInit {
   public rows = [];
   public columns = {};
   objectKeys = Object.keys;
+  filter = {
+    TPDATE: '',
+    TPDATE_: ''
+  };
 
   constructor(public operationsService: OperationsService, public storageService: StorageService,
     protected customersSrvc: CustomersService) {
@@ -29,10 +33,12 @@ export class AutodebitComponent implements OnInit {
       'Customer': true,
       'Amount': true,
       'Repayment Date': true,
-      'Response': true, 
-    } 
+      'Last Autodebit': true,
+      'Response': true,
+      'Count': true
+    }
     this.getLoans();
-  }  
+  }
   // set the keys of the response object as column names on the table
   resetColumn(obj) {
     var cols = {};
@@ -77,12 +83,12 @@ export class AutodebitComponent implements OnInit {
 
   getLoans() {
     this.loading = true
-    this.operationsService.getAutodebitReport(this.currentUser.token).subscribe(data => {
+    this.operationsService.getAutodebitReport(this.currentUser.token, this.filter).subscribe(data => {
       this.loading = false;
       this.rows = data.message;
       if (typeof this.rows !== 'undefined' && this.rows.length > 0) {
         this.resetColumn(data.message[0]);
-      } 
+      }
 
     });
   }

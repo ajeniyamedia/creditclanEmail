@@ -30,12 +30,7 @@ export class RequestslistComponent implements OnInit {
     this.type_of_view = this.storageService.read<any>('type_of_view');
 
   }
-  getTotalFunded(PERCENTAGE_FUNDED,REQUEST_PRINCIPAL){
-    return parseFloat(PERCENTAGE_FUNDED)/100*parseFloat(REQUEST_PRINCIPAL);
-  }
-  getTotalRemaining(REQUEST_PRINCIPAL,TOTAL_FUNDED){
-    return parseFloat(REQUEST_PRINCIPAL)-parseFloat(TOTAL_FUNDED);
-  }
+ 
   ngOnInit() {
     this.type_of_view = this.storageService.read<any>('type_of_view');
   }
@@ -62,6 +57,12 @@ export class RequestslistComponent implements OnInit {
   }
   open_loan_(request_id){
     this.open_loan.emit(request_id);
+  }
+  getTotalFunded(PERCENTAGE_FUNDED,REQUEST_PRINCIPAL){
+    return parseFloat(PERCENTAGE_FUNDED)/100*parseFloat(REQUEST_PRINCIPAL);
+  }
+  getTotalRemaining(REQUEST_PRINCIPAL,TOTAL_FUNDED){
+    return parseFloat(REQUEST_PRINCIPAL)-parseFloat(TOTAL_FUNDED);
   }
   percent_funded(val){
     return val+'%';

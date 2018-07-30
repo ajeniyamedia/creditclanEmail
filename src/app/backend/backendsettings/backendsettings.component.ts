@@ -118,7 +118,8 @@ export class BackendsettingsComponent implements OnInit {
   reminders = {
     DAYS_TO: '0',
     REMINDER_INTERVAL: '0',
-    AUTODEBIT_INTERVAL: '4'
+    AUTODEBIT_INTERVAL: '4',
+    REPAYMENT_SOURCE: '0'
   }
   mail_settings = {
     HAS_SMTP: false,
@@ -217,7 +218,9 @@ export class BackendsettingsComponent implements OnInit {
     REQUEST_FOR_CARD: false,
     REQUEST_FOR_ACCOUNT: false,
     ENABLE_CONTRACT_SIGNATURE: false,
-    ADJUST_CONTRACT_DATE: false
+    ADJUST_CONTRACT_DATE: false,
+    NOTIFY_CONTRACT_ACCEPTED:false,
+    CONTRACT_ACCEPTED_EMAIL:''
   }
   public payment = {
     ALLOW_AUTO_APPROVE_PAYMENT: false,
@@ -265,13 +268,13 @@ export class BackendsettingsComponent implements OnInit {
   public currentUser: any;
   isedit = false;
   loading = false;
-  
+
   public acc_off: any;
   public app_levels: any;
   public loan_approvals: any;
   public backend = {
-    SEND_IF_INELIGIBILE:false,
-    INELIGIBLE_MESSAGE:'',
+    SEND_IF_INELIGIBILE: false,
+    INELIGIBLE_MESSAGE: '',
     SUSPEND_IF_FAIL_ELIGIBILITY: false,
     SUSPEND_FOR_HOW_LONG: 24,
     enableautorouting: true,
@@ -338,6 +341,7 @@ export class BackendsettingsComponent implements OnInit {
   sectors: any;
   occupations: any;
   overlayOpen = false;
+  overlayOpen_ = false;
   customeraccountsettings = {
     CUSTOMER_ACCOUNT_PART_ONE: "",
     CUSTOMER_ACCOUNT_RANGE_ONE: "",
@@ -414,6 +418,8 @@ export class BackendsettingsComponent implements OnInit {
         this.contract.REQUEST_FOR_CARD = data.contract.REQUEST_FOR_CARD;
         this.contract.ENABLE_CONTRACT_SIGNATURE = data.contract.ENABLE_CONTRACT_SIGNATURE;
         this.contract.ADJUST_CONTRACT_DATE = data.contract.ADJUST_CONTRACT_DATE;
+        this.contract.NOTIFY_CONTRACT_ACCEPTED = data.contract.NOTIFY_CONTRACT_ACCEPTED;
+        this.contract.CONTRACT_ACCEPTED_EMAIL = data.contract.CONTRACT_ACCEPTED_EMAIL;
 
         this.general_analytics_settings.EXCLUDED_CALL_COUNTRY = data.general_analytics_settings.EXCLUDED_CALL_COUNTRY;
         this.general_analytics_settings.ACCEPTED_CALL_COUNTRY = data.general_analytics_settings.ACCEPTED_CALL_COUNTRY;
@@ -612,6 +618,7 @@ export class BackendsettingsComponent implements OnInit {
         this.reminders.DAYS_TO = data.reminders.DAYS_TO;
         this.reminders.REMINDER_INTERVAL = data.reminders.REMINDER_INTERVAL;
         this.reminders.AUTODEBIT_INTERVAL = data.reminders.AUTODEBIT_INTERVAL;
+        this.reminders.REPAYMENT_SOURCE = data.reminders.REPAYMENT_SOURCE;
 
         this.investors.MAXIMUM_INVESTMENT_PERCENT = data.investors.MAXIMUM_INVESTMENT_PERCENT;
 
@@ -789,12 +796,12 @@ export class BackendsettingsComponent implements OnInit {
     if (T === 1) {
       this.loan_duration = this.loan_durations[d]["LOAN_DURATION"];
       this.product.LOAN_DURATION_TYPE = this.loan_durations[d]["LOAN_INTEREST_DURATION_ID"];
-
+      this.band.LOAN_DURATION = this.loan_durations[d]["LOAN_INTEREST_DURATION_ID"];
     }
     if (T === 2) {
       this.interest_duration = this.loan_durations[d]["INTEREST_DURATION"];
       this.product.LOAN_INTEREST_TYPE = this.loan_durations[d]["LOAN_INTEREST_DURATION_ID"];
-
+      this.band.INTEREST_DURATION = this.loan_durations[d]["LOAN_INTEREST_DURATION_ID"];
     }
     if (T === 3) {
       this.special_interest_duration = this.loan_durations[d]["INTEREST_DURATION"];
@@ -805,16 +812,16 @@ export class BackendsettingsComponent implements OnInit {
   saveForm(event) {
     this.save(event.value, event.valid);
   }
-  saveFRFrom(event){
+  saveFRFrom(event) {
     this.saveSpecialLoanInterest(event.value, event.valid)
   }
-  saveLAFrom(event){
+  saveLAFrom(event) {
     this.saveSpecialLoanInterest(event.value, event.valid)
   }
-  saveOFFrom(event){
+  saveOFFrom(event) {
     this.saveFee(event.value, event.valid);
   }
-  
+
   saveContract(value, valid) {
 
     this.loading = true;
@@ -828,8 +835,8 @@ export class BackendsettingsComponent implements OnInit {
         }
       });
   }
- 
-  
+
+
   saveInvestor(value, valid) {
 
     this.loading = true;
@@ -1030,7 +1037,7 @@ export class BackendsettingsComponent implements OnInit {
         }
       });
   }
-  saveInterestRateBand(value, valid) {
+  saveInterestRateBand(value, valid) { 
     this.loading = true;
     this.decisionService.addBand(this.currentUser.token, value, this.INTRREST_RATE_BAND_ID)
       .subscribe(data => {
@@ -1115,6 +1122,7 @@ export class BackendsettingsComponent implements OnInit {
     this.loading = true;
     this.operationsService.saveLevel(this.currentUser.token, event)
       .subscribe(status => {
+        this.is_edit = false;
         this.loading = false;
         this.overlayOpen = false;
         if (status.status == true) {
@@ -1125,6 +1133,11 @@ export class BackendsettingsComponent implements OnInit {
           this.showError(status.message)
         }
       });
+  }
+  checkEmployee(event) {
+    console.log(event)
+    this.employees[event.index].CHECKED = event.event;
+    console.log(this.employees)
   }
   deleteLevel(level) {
     this.loading = true;
@@ -1166,6 +1179,11 @@ export class BackendsettingsComponent implements OnInit {
         }
       });
   }
+  closeIsNewEmp() {
+    this.overlayOpen = false;
+    this.is_edit = false;
+    this.overlayOpen_ = false;
+  }
   saveEligibility(value, valid) {
     this.loading = true;
     this.operationsService.saveEligibility(this.currentUser.token, value)
@@ -1189,6 +1207,10 @@ export class BackendsettingsComponent implements OnInit {
           this.showError(data.message)
         }
       });
+  }
+  newLevel() {
+    this.overlayOpen = false;
+    this.overlayOpen_ = true;
   }
   saveautorouting(value, valid) {
     this.loading = true;

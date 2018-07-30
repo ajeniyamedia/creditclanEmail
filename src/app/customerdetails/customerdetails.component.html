@@ -222,6 +222,9 @@
         <section class="panel" style="border: 1px solid #E6E7E8" *ngIf="userType=='individual'">
             <div class="panel-body" style="padding: 10px 25px">
                 <ul class="list list_border">
+                        <li>
+                                <a [routerLink]="['/customer/',userType,userId,'kyc']" class="txt_l4">KYC</a>
+                            </li>
                     <li>
                         <a [routerLink]="['/customer/',userType,userId,'financials']" class="txt_l4">Financials</a>
                     </li>

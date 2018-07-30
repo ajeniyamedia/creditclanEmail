@@ -9,7 +9,7 @@
                 <section class="panel" [ngClass]="{'greenb': schedule_type, 'blueb':  !schedule_type}">
                   <div class="panel-body text-center">
                     <img src="assets/img/bell.png" style="width:60px;margin:15px 0px">
-                    <h2>{{state?.total}}</h2>
+                    <h2>{{state?.total|money}}</h2>
                     <h4 style="margin:0px !important">{{state?.current_month}}</h4>
                     <div style="height:1px;border-bottom:1px solid #fff;margin:30px">&nbsp;</div>
                   </div>

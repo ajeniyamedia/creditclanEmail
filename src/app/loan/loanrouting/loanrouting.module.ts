@@ -32,6 +32,8 @@ import { CustomerAnalysisDetailsComponent } from '../../customer-analysis-detail
 import { CustomerAnalysisFullDetailsComponent } from '../../customer-analysis-full-details/customer-analysis-full-details.component';
 import { CustomerSocialAnalysisComponent } from '../../customer-social-analysis/customer-social-analysis.component';
 import { CustomerSocialAnalysisDetailsComponent } from '../../customer-social-analysis-details/customer-social-analysis-details.component';
+import { LoanrejectionsComponent } from '../loanrejections/loanrejections.component';
+import { LoankycComponent } from '../loankyc/loankyc.component';
 
 const routes: Routes = [
   {
@@ -65,7 +67,10 @@ const routes: Routes = [
       { path: 'documents', component: LoandocumentComponent },
       { path: 'location', component: LoanlocationComponent },
       { path: 'checklist', component: LoanchecklistComponent} ,
-      { path: 'chat', component: LoanchatComponent} 
+      { path: 'chat', component: LoanchatComponent} ,
+      { path: 'rejections', component: LoanrejectionsComponent} ,
+      
+      { path: 'kyc', component: LoankycComponent} 
     ]
   },
 

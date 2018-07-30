@@ -3,7 +3,17 @@
     <li class="text-left sub_list" style="padding-left: 20px">
       <div class="row">
         <div class="col-md-3" style="vertical-align: bottom;">
-          <p style="margin:20px 0 0">profile</p>
+          <p style="margin:20px 0 0">Profile</p>
+        </div>
+        <div class="col-md-9">
+          <ion-range-slider [from]="analytics_settings?.customer_profile" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'customer_profile')"></ion-range-slider>
+        </div>
+      </div>
+    </li>
+    <li class="text-left sub_list" style="padding-left: 20px">
+      <div class="row">
+        <div class="col-md-3" style="vertical-align: bottom;">
+          <p style="margin:20px 0 0">customer profile</p>
         </div>
         <div class="col-md-9">
           <ion-range-slider [from]="analytics_settings?.profile" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'profile')"></ion-range-slider>
@@ -85,7 +95,7 @@
       </div>
     </li>
 
-    <li class="text-left sub_list" style="padding-left: 20px">
+    <!-- <li class="text-left sub_list" style="padding-left: 20px">
       <div class="row">
         <div class="col-md-3" style="vertical-align: bottom;">
           <p style="margin:20px 0 0">Linkedln</p>
@@ -94,7 +104,7 @@
           <ion-range-slider [from]="analytics_settings?.linkedln" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'linkedln')"></ion-range-slider>
         </div>
       </div>
-    </li>
+    </li> -->
   </ul>
   <button type="submit" (click)="saveAnalytics(analyticsform.value, analyticsform.valid)" [disabled]="loading" class="btn btn-white pull-right">
     <span *ngIf="!loading">Submit</span>

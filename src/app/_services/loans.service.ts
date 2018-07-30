@@ -17,6 +17,10 @@ export class LoansService {
     return this.http.post('http://app.creditclan.com/dataupload/api/v2/analytics/getCustomerAnalytics', JSON.stringify({ token: token, formdata: statement }))
       .map((response: Response) => response.json());
   }
+  getCustomerAnalyticsRecords(token: any, statement: any) {
+    return this.http.post('http://app.creditclan.com/dataupload/api/v2/analytics/getCustomerAnalyticsRecords', JSON.stringify({ token: token, formdata: statement }))
+      .map((response: Response) => response.json());
+  }
 
   displayanalysisrequest(token: any, data: any) {
     return this.http.post('http://app.creditclan.com/dataupload/api/v2/analytics/getCustomerAnalyticsRequest', JSON.stringify({ token: token, formdata: data }))
@@ -78,9 +82,19 @@ export class LoansService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/loan/previewLoan', JSON.stringify({ token: token, loan_request: loan_request, selectedCustomer: selectedCustomer, loan_product: loan_product }))
       .map((response: Response) => response.json());
   }
+  createLoan(token: any, loan_request: any): Observable<any> {
+    // get users from api
+    return this.http.post('https://dataupload.creditclan.com/api/v2/loan/create_loan', JSON.stringify({ token: token, loan_request: loan_request, analytics:true }))
+      .map((response: Response) => response.json());
+  }
   filterLoans(token: any, magic_filter: any, sectors: any, approval_levels: any, statuses: any, durations: any, request_date: any): Observable<any> {
     // get users from api
     return this.http.post('https://dataupload.creditclan.com/api/v2/loan/filterLoans', JSON.stringify({ token: token, magic_filter: magic_filter, sectors: sectors, approval_levels: approval_levels, statuses: statuses, durations: durations, request_date: request_date }))
+      .map((response: Response) => response.json());
+  }
+  runFilterLoans(token: any, magic_filter: any, sectors: any, approval_levels: any, statuses: any, durations: any, request_date: any): Observable<any> {
+    // get users from api
+    return this.http.post('https://dataupload.creditclan.com/api/v2/loan/filterLoans', JSON.stringify({ analytics:true,token: token, magic_filter: magic_filter, sectors: sectors, approval_levels: approval_levels, statuses: statuses, durations: durations, request_date: request_date }))
       .map((response: Response) => response.json());
   }
   filterActiveLoans(token: any, magic_filter: any): Observable<any> {
@@ -161,6 +175,11 @@ export class LoansService {
   getLoan(token: string, id: number): Observable<any> {
     // get users from api
     return this.http.post('https://dataupload.creditclan.com/api/v2/loan/getLoan', JSON.stringify({ token: token, id: id }))
+      .map((response: Response) => response.json());
+  }
+  getLoanRejections(token: string, id: number): Observable<any> {
+    // get users from api
+    return this.http.post('https://dataupload.creditclan.com/api/v2/loan/getLoanRejections', JSON.stringify({ token: token, id: id }))
       .map((response: Response) => response.json());
   }
   getAddresses(token: string, id: number): Observable<any> {

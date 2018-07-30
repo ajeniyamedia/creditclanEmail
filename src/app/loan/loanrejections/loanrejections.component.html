@@ -1,0 +1,39 @@
+<section class="panel contract_area hideable_area">
+  <header class="panel-heading">
+
+    <span class="tools pull-right">
+      <ul class="list-inline"> 
+          <li><a [routerLink]="['../contract']">Summary</a></li>
+          <li><a [routerLink]="['../checklist']">Checklist</a></li>
+          <li><a [routerLink]="['../chat']">Chat</a></li>
+          <li><a [routerLink]="['../more']">More</a></li>                    
+      </ul>
+    </span>
+
+    <span>LOAN REJECTIONS</span>
+  </header>
+
+</section>
+<div class='loan_list'>
+  <div class="panel no-margin box hover_toggle_desc" *ngFor="let loan of rejections">
+      <div class="panel-body">
+            <article class="media">
+                <div class="pull-left thumb" style="padding-right: 20px">
+                  <a><img src="assets/images/i.PNG"></a>
+                </div>
+                <div class="pull-left" style="margin-top: 5px">
+                  <h5 class="no-margin" style="margin-bottom: 7px">{{loan?.LOAN_ID}} &nbsp;|&nbsp; N{{loan?.REQUEST_PRINCIPAL | number}} &nbsp;|&nbsp; {{loan?.REQUEST_TENOR}} {{loan?.LOAN_DURATION}}</h5>
+                  <p class="no-margin t_lh1 t_l4" style="font-size: 14px">{{loan?.REJECTION_MESSAGE}}</p> 
+                </div>
+                
+                <div class="pull-right text-right">
+                  <div class="">
+                      <h5 class="no-margin" style="margin-bottom: 7px">Applied on {{loan.DATE_ADDED | date: 'yMMMMd'}} | Rejected on {{loan.DATE_REJECTED | date: 'yMMMMd'}}</h5>
+                  </div>
+                 </div>                              
+            </article>                  
+      </div>
+  </div>
+ 
+
+</div>

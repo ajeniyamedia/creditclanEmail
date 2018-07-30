@@ -89,6 +89,7 @@ export class AuthenticationService {
         const is_company_staff = response.json() && response.json().is_company_staff;
         const company_id = response.json() && response.json().company_id;
         const test_mode = response.json() && response.json().test_mode;
+        const decision_type = response.json() && response.json().decision_type;
         if (token) {
           // set token property
           this.token = token;
@@ -107,6 +108,8 @@ export class AuthenticationService {
           localStorage.setItem('is_company_staff', is_company_staff);
           localStorage.setItem('company_id', company_id);
           localStorage.setItem('test_mode', test_mode);
+          
+          localStorage.setItem('decision_type', decision_type);
           const type_of_view = localStorage.getItem('type_of_view');
           if (!type_of_view) {
             localStorage.setItem('type_of_view', '1');

@@ -4471,3 +4471,14 @@
         </div>
     </div>
   </div>
+  <div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="adjustingWeights">
+
+        <div class="col-md-12">
+            <a class="dismiss cancel_treat_ close" role="button" (click)="adjustingWeights=!adjustingWeights">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class=" overpanel-content container"  role="document" style="text-align:left;width:600px; height:500px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+            <app-adjustweights [loan]='loan'></app-adjustweights>
+        </div>
+    </div>

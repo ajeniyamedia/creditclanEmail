@@ -23,7 +23,7 @@
                                             <small class="pull-right">
                                                 <ul class="list-inline">
                                                     <li>
-                                                        <a href="javascript:;">Analytics</a>
+                                                        <a [routerLink]="['./analytics']">Analytics</a>
                                                     </li>
                                                     <li>
                                                         <a href="javascript:;">Sort</a>
@@ -153,26 +153,26 @@
                                                     </div>
                                                 </div>
                                                 <div class="panel panel-default mbot0 edged_box">
-                                                        <div class="panel-heading" id="headingCo" role="tab">
-                                                            <h4 class="panel-title">
-                                                                <a aria-controls="collapseCo" aria-expanded="true" class="" data-parent="#accordion" data-toggle="collapse" href="#collapseCo"
-                                                                    role="button">
-                                                                    Companies
-                                                                    <span class="pull-right">
-                                                                        <i class="fa fa-chevron-down"></i>
-                                                                    </span>
-                                                                </a>
-                                                            </h4>
-                                                        </div>
-                                                        <div aria-labelledby="headingCo" class="panel-collapse collapse in" id="collapseCo" role="tabpanel" aria-expanded="true"
-                                                            style="">
-                                                            <div class="panel-body">
-                                                                <select (change)="getLoans()" name="magic_filter.company_id" class="form-control" [(ngModel)]="magic_filter.company_id">
-                                                                    <option *ngFor="let company of companies?.a" [value]="company.PEOPLE_CUSTOMERS_ID">{{company.LEGAL_NAME}}</option>
-                                                                </select>
-                                                            </div>
+                                                    <div class="panel-heading" id="headingCo" role="tab">
+                                                        <h4 class="panel-title">
+                                                            <a aria-controls="collapseCo" aria-expanded="true" class="" data-parent="#accordion" data-toggle="collapse" href="#collapseCo"
+                                                                role="button">
+                                                                Companies
+                                                                <span class="pull-right">
+                                                                    <i class="fa fa-chevron-down"></i>
+                                                                </span>
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div aria-labelledby="headingCo" class="panel-collapse collapse in" id="collapseCo" role="tabpanel" aria-expanded="true"
+                                                        style="">
+                                                        <div class="panel-body">
+                                                            <select (change)="getLoans()" name="magic_filter.company_id" class="form-control" [(ngModel)]="magic_filter.company_id">
+                                                                <option *ngFor="let company of companies?.a" [value]="company.PEOPLE_CUSTOMERS_ID">{{company.LEGAL_NAME}}</option>
+                                                            </select>
                                                         </div>
                                                     </div>
+                                                </div>
                                                 <div class="panel panel-default mbot0 edged_box">
                                                     <div class="panel-heading" id="headingSecurity" role="tab">
                                                         <h4 class="panel-title">
@@ -220,6 +220,29 @@
                                                                     <div class="clearfix"></div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default mbot0 edged_box" *ngIf="!hideCategory">
+                                                    <div class="panel-heading" id="headingCtype" role="tab">
+                                                        <h4 class="panel-title">
+                                                            <a aria-controls="collapseCType" aria-expanded="true" class="" data-parent="#accordion" data-toggle="collapse" href="#collapseCType"
+                                                                role="button">
+                                                                Customer Type
+                                                                <span class="pull-right">
+                                                                    <i class="fa fa-chevron-down"></i>
+                                                                </span>
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div aria-labelledby="headingCtype" class="panel-collapse collapse" id="collapseCType" role="tabpanel" aria-expanded="true"
+                                                        style="">
+                                                        <div class="panel-body">
+                                                            <select (change)="getLoans()" name="customer_category" class="form-control" [(ngModel)]="magic_filter.customer_category">
+                                                                <option [value]="0">All</option>
+                                                                <option [value]="1">New</option>
+                                                                <option [value]="2">Repeat</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -331,29 +354,40 @@
             </a>
         </div>
         <div class=" overpanel-content container" role="document" style="text-align:left;width:800px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
-            <app-calendardetails [schedule_type]=false [record_type]="1" [datechosen]="datechosen"></app-calendardetails> 
+            <app-calendardetails [schedule_type]=false [record_type]="1" [datechosen]="datechosen"></app-calendardetails>
         </div>
     </div>
 </div>
 <div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="reverseModal">
 
-        <div class="col-md-12">
-            <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </a>
-        </div>
-        <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
-            <app-reversetransaction [loan]='loan_reverse' ></app-reversetransaction>
-        </div>
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
     </div>
-    <div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayOpenPayConfirm">
+    <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+        <app-reversetransaction [loan]='loan_reverse'></app-reversetransaction>
+    </div>
+</div>
+<div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayOpenPayConfirm">
 
-        <div class="col-md-12">
-            <a class="dismiss cancel_treat_ close" role="button" (click)="overlayOpenPayConfirm=!overlayOpenPayConfirm">
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </a>
-        </div>
-        <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
-            <app-payment  [record_type]="20" [schedule_type]="1" [sub]="1" [disburse]="disburse"></app-payment>
-        </div>
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="overlayOpenPayConfirm=!overlayOpenPayConfirm">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
     </div>
+    <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+        <app-payment [record_type]="20" [schedule_type]="1" [sub]="1" [disburse]="disburse"></app-payment>
+    </div>
+</div>
+<div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="initiatingBulkAnalytics">
+
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="initiatingBulkAnalytics=!initiatingBulkAnalytics">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class=" overpanel-content container"  role="document" style="text-align:left;width:600px; height:500px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+        <app-analytics-engine (startAnalytics)="startAnalyticsOnRequests()"  [numberOfRequests]='loans?.summary.count' [total]='loans?.summary.principal' [currentUser]='currentUser' [magic_filter]='magic' ></app-analytics-engine>
+    </div>
+</div>

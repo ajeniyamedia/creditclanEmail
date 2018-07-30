@@ -62,7 +62,7 @@ import { CustomerPhotoComponent } from './customer-photo/customer-photo.componen
     InterestComponent,
     PrevcustomerComponent,
     NextcustomerComponent,
-    UsersComponent
+    UsersComponent,
   ]
 })
 export class CustomersModule { }

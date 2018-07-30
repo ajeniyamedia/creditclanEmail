@@ -7,11 +7,41 @@
         </a>
       </h4>
     </div>
-    <!-- <div id="collapseEligibility" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEligibility">
+    <div id="collapseEligibility" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEligibility">
       <div class="panel-body">
-        
+          <form #decisiongroups="ngForm" novalidate>
+              <div class="row">
+                  <div class="col-md-3"></div>
+                  <div class="col-md-3">Apply</div>
+                  <div class="col-md-3">Still applies if record is absent</div>
+                  <div class="col-md-3">Refresh</div>
+                </div>
+        <div class="row">
+          <div class="col-md-3">Remita</div>
+          <div class="col-md-3"><input type="checkbox" name="USE_REMITA" [(ngModel)]="decision_groups.USE_REMITA"></div>
+          <div class="col-md-3"><input type="checkbox" name="STILL_USE_REMITA" [(ngModel)]="decision_groups.STILL_USE_REMITA"></div>
+          <div class="col-md-3"><input class="form-control" type="text" name="REMITA_REFRESH_DAYS" [(ngModel)]="decision_groups.REMITA_REFRESH_DAYS"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">CreditClan</div>
+            <div class="col-md-3"><input type="checkbox" name="USE_CREDITCLAN" [(ngModel)]="decision_groups.USE_CREDITCLAN"></div>
+            <div class="col-md-3"><input type="checkbox" name="STILL_USE_CREDITCLAN" [(ngModel)]="decision_groups.STILL_USE_CREDITCLAN"></div>
+            <div class="col-md-3"><input class="form-control" type="text" name="CREDITCLAN_REFRESH_DAYS" [(ngModel)]="decision_groups.CREDITCLAN_REFRESH_DAYS"></div>
+          </div>
+          <div class="row">
+              <div class="col-md-3">Credit Check</div>
+              <div class="col-md-3"><input type="checkbox" name="USE_CREDITCHECK" [(ngModel)]="decision_groups.USE_CREDITCHECK"></div>
+              <div class="col-md-3"><input type="checkbox" name="STILL_USE_CREDITCHECK" [(ngModel)]="decision_groups.STILL_USE_CREDITCHECK"></div>
+              <div class="col-md-3"><input class="form-control" type="text" name="CREDITCHECK_REFRESH_DAYS" [(ngModel)]="decision_groups.CREDITCHECK_REFRESH_DAYS"></div> 
+   
+            </div>
+            <button type="submit" (click)="saveDecisionGroups(decisiongroups.value, decisiongroups.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                <span *ngIf="!loading">Submit</span>
+                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+              </button>
+        </form>
       </div>
-    </div> -->
+    </div>
   </div>
   <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingCC">
@@ -35,7 +65,7 @@
           </div>
           <div id="collapseCCProfile" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCCProfile">
             <div class="panel-body">
-              <app-profileanalytics [currentUser]="currentUser" [analytics_settings]="analytics_settings"></app-profileanalytics>
+              <app-profileanalytics [currentUser]="currentUser"></app-profileanalytics>
             </div>
           </div>
         </div>
@@ -50,11 +80,11 @@
           </div>
           <div id="collapseCCSocial" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCCSocial">
             <div class="panel-body">
-              <app-socialanalytics [currentUser]="currentUser" [analytics_settings]="analytics_settings"></app-socialanalytics>
+              <app-socialanalytics [currentUser]="currentUser"></app-socialanalytics>
             </div>
           </div>
         </div>
-        <div class="panel panel-default">
+        <!-- <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingCCRepayment">
             <h4 class="panel-title">
               <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionCCRepayment" href="#collapseCCRepayment" aria-expanded="false"
@@ -68,11 +98,11 @@
               <app-repaymentanalytics></app-repaymentanalytics>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
+  <!-- <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingCB">
       <h4 class="panel-title">
         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionCB" href="#collapseCB" aria-expanded="false"
@@ -86,7 +116,7 @@
         <app-bureauanalytics></app-bureauanalytics>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingER">
       <h4 class="panel-title">
@@ -113,7 +143,7 @@
             </div>
           </div>
         </div>
-        <div class="panel panel-default">
+        <!-- <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingERDD">
             <h4 class="panel-title">
               <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionERDD" href="#collapseERDD" aria-expanded="false"
@@ -142,7 +172,7 @@
               <app-cardsanalytics></app-cardsanalytics>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

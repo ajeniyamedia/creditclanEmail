@@ -16,6 +16,7 @@ export class LedgerComponent implements OnInit {
   currentUser: any;
   FISCAL_DATE_START = '';
   FISCAL_DATE_END = '';
+  TTYPE='0';
   LENDER_ACCOUNT_ID = '';
   exportable = false;
   constructor(public fb: FormBuilder, public operationsService: OperationsService, public storageService: StorageService) {
@@ -45,7 +46,7 @@ export class LedgerComponent implements OnInit {
   getStatement() {
     this.loading = true;
     this.exportable = false;
-    this.operationsService.getAccountStatement(this.currentUser.token, this.account_details, this.FISCAL_DATE_START, this.FISCAL_DATE_END)
+    this.operationsService.getAccountStatement(this.currentUser.token, this.account_details, this.FISCAL_DATE_START, this.FISCAL_DATE_END, this.TTYPE)
       .subscribe(data => {
         this.loading = false;
         this.ledgers = data;

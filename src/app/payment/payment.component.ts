@@ -633,6 +633,8 @@ export class PaymentComponent implements OnInit {
               this.makingFinalPayment = false;
               this.paymentHasBeenProcessed = false;
               this.otpError = true;
+              this.otpmessage = status.message;
+              this.showError(status.message);
             }
           }
 
@@ -833,10 +835,12 @@ export class PaymentComponent implements OnInit {
           this.otpError = false;
           this.paymentConfirmed = true;
         } else {
-          this.otpmessage = status.message
+          this.otpmessage = status.message;
           this.makingFinalPayment = false;
           this.paymentHasBeenProcessed = false;
           this.otpError = true;
+          this.showError(status.message);
+          console.log(status)
         }
 
 
@@ -915,7 +919,7 @@ export class PaymentComponent implements OnInit {
     this.paymentHasBeenProcessed = false;
     this.paymentConfirmed = false;
     this.otpError = false;
-    if (this.record_type == '1' || this.record_type == '2' || this.record_type == '7' || this.record_type == '20') {
+    if (this.record_type == '1' || this.record_type == '2' || this.record_type == '7' || this.record_type == '20' || this.record_type == '4') {
       this.operationsService.getWalletSummary(this.currentUser.token, disburse.HOW_MUCH_WAS_GIVEN)
         .subscribe(data => {
           this.wallet_balance = data.data.LENDER_WALLET_BALANCE;

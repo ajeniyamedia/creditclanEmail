@@ -44,13 +44,11 @@
                                 <th>Date</th>
                                 <th>Outstanding Principal</th>
                                 <th>Interest</th>
-                                <!-- <th>Principal</th>
-                        
-                        <th>Mgt Fee</th>
-                        <th>Vat</th> -->
                                 <th>Term Repayment</th>
                                 <th>Paid</th>
                                 <th>Remaining</th>
+                                
+                                <th *ngIf="loan?.USE_REMITA=='1'">Remita Mandate Ref</th>
                                 <th></th>
                             </thead>
                             <tbody>
@@ -61,6 +59,7 @@
                                     <td>{{repayment?.TERM_REPAYMENT| number:'.2-2'}}</td>
                                     <td>{{repayment?.HOW_MUCH_PAID| number:'.2-2'}}</td>
                                     <td>{{repayment?.HOW_MUCH_REMAINING| number:'.2-2'}}</td>
+                                    <td *ngIf="loan?.USE_REMITA=='1'">{{repayment?.REMITA_MANDATE_REF}}</td>
                                     <td>
                                         <div class="btn-group" *ngIf="repayment?.HOW_MUCH_REMAINING > 0 && authService.canViewModule('1,7') && repayment?.AUTODEBIT_NOW">
 
@@ -70,6 +69,9 @@
                                             <ul role="menu" class="dropdown-menu">
                                                 <li>
                                                     <a (click)="initiateRecollection(repayment)">Push for recollection</a>
+                                                </li>
+                                                <li *ngIf="loan?.USE_REMITA=='1'">
+                                                    <a (click)="initiateStopRemitaCollection(repayment)">Stop Remita Collections</a>
                                                 </li>
                                             </ul>
                                         </div>

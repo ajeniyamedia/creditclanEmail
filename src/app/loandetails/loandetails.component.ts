@@ -13,6 +13,7 @@ import { LoancontractComponent } from '../loancontract/loancontract.component';
   encapsulation: ViewEncapsulation.None
 })
 export class LoandetailsComponent implements OnInit {
+  adjustingWeights = false;
   NOTIFY_ALL_LENDERS = false;
   islarger = false;
   // private _animator: AnimationBuilder;
@@ -228,6 +229,10 @@ export class LoandetailsComponent implements OnInit {
         this.getApp();
       }
     })
+    this.DataService.adjustTheAnalyticsWeight.subscribe(res => {
+      
+      this.adjustingWeights = true;
+    })
     this.DataService.onBreakingLoan.subscribe(res => {
       this.break_loan = true
     })
@@ -291,8 +296,8 @@ export class LoandetailsComponent implements OnInit {
       this.dontshownext = '1';
     })
   }
-  closeShowInterest(){
-    
+  closeShowInterest() {
+
   }
   choosingKYC = false;
   chooseKYCPlan() {
@@ -562,7 +567,7 @@ export class LoandetailsComponent implements OnInit {
         this.is_done = '1';
       });
   }
-  paymentHasBeenProcessedFinally(event) { 
+  paymentHasBeenProcessedFinally(event) {
     this.closeOverlay();
     this.router.navigate(['/statement/', this.loan.REQUEST_ID, 'schedule']);
   }

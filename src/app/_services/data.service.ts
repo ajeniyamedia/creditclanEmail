@@ -57,9 +57,16 @@ export class DataService {
   reloadCustomer: EventEmitter<any> = new EventEmitter();
   addNewCustomerEmployee: EventEmitter<any> = new EventEmitter();
   enableBulkDisbursements: EventEmitter<any> = new EventEmitter();
-  prepareBulkPay: EventEmitter<any> = new EventEmitter()
-  updateTotalBulkDisbursements: EventEmitter<any> = new EventEmitter()
-  onReverseTransaction: EventEmitter<any> = new EventEmitter()
-  doCheckWalletTransactionStatuses: EventEmitter<any> = new EventEmitter();
+  prepareBulkPay: EventEmitter<any> = new EventEmitter();
+  updateTotalBulkDisbursements: EventEmitter<any> = new EventEmitter();
+  onReverseTransaction: EventEmitter<any> = new EventEmitter();
+  doCheckWalletTransactionStatuses: EventEmitter<any> = new EventEmitter(); 
   onOpenCustomerStatement: EventEmitter<any> = new EventEmitter();
+  unauthorizedPageView: EventEmitter<any> = new EventEmitter();
+  hideCustomerCategoryFilter: EventEmitter<any> = new EventEmitter();
+  initiateBulAnalytics: EventEmitter<any> = new EventEmitter();
+  viewAnalyticsResults: EventEmitter<any> = new EventEmitter();
+  viewTheLoan: EventEmitter<any> = new EventEmitter();
+  geotagCustomerAddress: EventEmitter<any> = new EventEmitter();
+  adjustTheAnalyticsWeight: EventEmitter<any> = new EventEmitter();
 }

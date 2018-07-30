@@ -40,7 +40,7 @@
                                 <span class="pull-right">
                                     <div class="checkbox" style="margin:0px !important">
                                         <label>
-                                            <input type="checkbox" [checked]="IsAvailable(role?.PEOPLE_PEOPLE_ROLE_ID)" name="role_{{role?.PEOPLE_PEOPLE_ROLE_ID}}" (change)="checkSector(role,$event.target.checked,i)">
+                                            <input type="checkbox" [checked]="IsAvailable(role?.PEOPLE_PEOPLE_ROLE_ID,i)" name="role_{{role?.PEOPLE_PEOPLE_ROLE_ID}}" (change)="checkSector(role,$event.target.checked,i)">
 
                                         </label>
                                     </div>

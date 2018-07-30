@@ -1,0 +1,169 @@
+<div class="row">
+  <div class="col-md-12">
+    <div>
+      <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px">
+        <div class="form-group row hide">
+          <div class="col-md-12">
+            <div style="padding:12px 24px; border:1px solid #eee;">
+              <div class="row">
+                <div class="col-md-1">
+                  <a style="margin-right:10px">
+                    <img style="width:35px" src="assets/img/naira_no_circle.png">
+                  </a>
+                </div>
+                <div class="col-md-11">
+                  <div class="input-group ">
+                    <input type="text" class="form-control" name="REQUEST_PRINCIPAL" [(ngModel)]="loan_request.REQUEST_PRINCIPAL">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                        <span class="sel_cur">{{loan_currency}}</span>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu pull-right">
+                        <li *ngFor="let c of countries">
+                          <a href="javascript:;" (click)="changeCurrency(c)">{{c.currency[0]}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row hide">
+          <div class="col-md-12">
+            <div style="padding:12px 24px; border:1px solid #eee;">
+              <div class="row">
+                <div class="col-md-1">
+                  <a style="margin-right:10px">
+                    <img style="width:35px" src="assets/img/stopwatch.png">
+                  </a>
+                </div>
+                <div class="col-md-11">
+                  <div class="input-group ">
+                    <input type="text" class="form-control" [(ngModel)]="loan_request.REQUEST_TENOR" name="REQUEST_TENOR">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                        <span class="sel_cur">{{loan_duration}}</span>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu pull-right">
+                        <li *ngFor="let d of loan_durations;let i=index;">
+                          <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row hide">
+          <div class="col-md-12">
+            <div style="padding:12px 24px; border:1px solid #eee; ">
+              <div class="row">
+                <div class="col-md-1">
+                  <a style="margin-right:10px">
+                    <img style="width:35px" src="assets/img/percent.png">
+                  </a>
+                </div>
+                <div class="col-md-11">
+                  <div class="input-group ">
+                    <input type="text" class="form-control" [(ngModel)]="loan_request.REQUEST_RATE" name="REQUEST_RATE">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                        <span class="sel_cur">{{interest_duration}}</span>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu pull-right">
+                        <li *ngFor="let d of loan_durations;let i=index;">
+                          <a (click)="changeDuration(i,2)">{{d.INTEREST_DURATION}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="border: 1px solid #ccc;padding: 10px 0; margin-bottom: 10px">
+            <div class="input-group ">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                  <span class="sel_cur">
+                    <img style="width:20px" src="assets/img/naira_no_circle.png">
+                  </span>
+                </button>
+              </div>
+              <input type="text" class="form-control" required name="REQUEST_PRINCIPAL" [(ngModel)]="loan_request.REQUEST_PRINCIPAL" style="border: 0; font-size: 18px">
+            </div>
+          </div>
+          <div style="border: 1px solid #ccc;padding: 10px 0; margin-bottom: 10px">
+            <div class="input-group ">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                  <span class="sel_cur">
+                    <img style="width:20px" src="assets/img/stopwatch.png">
+                  </span>
+                </button>
+              </div>
+              <input type="text" class="form-control" required [(ngModel)]="loan_request.REQUEST_TENOR" name="REQUEST_TENOR" style="border: 0; font-size: 18px">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                  <span class="sel_cur">{{loan_duration}}</span>
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                  <li *ngFor="let d of loan_durations;let i=index;">
+                    <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div style="border: 1px solid #ccc;padding: 10px 0;">
+            <div class="input-group ">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                  <span class="sel_cur">
+                    <img style="width:20px" src="assets/img/percent.png">
+                  </span>
+                </button>
+              </div>
+              <input type="text" class="form-control" required [(ngModel)]="loan_request.REQUEST_RATE" name="REQUEST_RATE" style="border: 0; font-size: 18px">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                  <span class="sel_cur">{{interest_duration}}</span>
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                  <li *ngFor="let d of loan_durations;let i=index;">
+                    <a (click)="changeDuration(i,2)">{{d.INTEREST_DURATION}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px">
+        <div class="row">
+          <div class="col-md-6"></div>
+          <div class="col-md-6">
+            <button class="btn btn-danger btn-block btn-pink" (click)="previewLoan()" [disabled]="loading||loan_request?.REQUEST_PRINCIPAL=='0'||loan_request?.REQUEST_TENOR=='0'">Create Contract <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

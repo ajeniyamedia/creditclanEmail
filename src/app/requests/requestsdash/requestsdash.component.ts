@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, HostListener, ViewEncapsulation } from '@angular/core';
-import { FormArray, ReactiveFormsModule, FormsModule, FormBuilder, Validators } from '@angular/forms'; 
+import { FormArray, ReactiveFormsModule, FormsModule, FormBuilder, Validators } from '@angular/forms';
 import { DataService, OptionsserviceService, UserService, LoansService, AuthenticationService, StorageService } from '../../_services/index';
 import { User } from '../../_models/index';
 import { IonRangeSliderComponent } from 'ng2-ion-range-slider';
@@ -19,19 +19,19 @@ export class RequestsdashComponent implements OnInit {
   simpleSlider = { name: 'Simple Slider', onUpdate: undefined, onFinish: undefined };
   simpleSlider_ = { name: 'Simple Slider', onUpdate: undefined, onFinish: undefined };
   advancedSlider = { name: 'Advanced Slider', onUpdate: undefined, onFinish: undefined };
-  public type_of_view='1';
+  public type_of_view = '1';
   public loading = true;
   public searchView = false;
   public currentUser: any;
   public calendarView = false;
-  queueModal=false;
+  queueModal = false;
   showSearch = false;
-  bulkpayrequests:any;
+  bulkpayrequests: any;
   public statuses = [
     { value: '-2', display: 'All' },
     { value: '-1', display: 'Repaid' },
     { value: '-6', display: 'Terminated' },
-    { value: '-4', display: 'Disbursements'},
+    { value: '-4', display: 'Disbursements' },
     { value: '5', display: 'Rejected' },
     { value: '-3', display: 'Ineligible' },
     { value: '6', display: 'Contract Created' },
@@ -57,34 +57,44 @@ export class RequestsdashComponent implements OnInit {
   overlayType = '0';
   viewing_loan = false;
   loan_viewed = '0';
-  showViewOptions=false
+  showViewOptions = false
   public slaveOpen = '0';
   public masterClosed = '0';
   sectors: any;
   approval_levels;
-  magic_filter = { company_id:'',peer_to_peer:'',reset:false,my_approvals:false,account_officer:false,start: 0, funding: '100', token: '', min: 0, max: 10000000, loan_status: this.statuses[0].value, searchText: '', ratings_one: false, ratings_two: false, ratings_three: false, ratings_four: false, ratings_five: false, funding_amount_one: 1, funding_amount_two: 1, funding_amount_three: false, funding_status_disbursement: false, funding_status_contract_created: false, funding_status_applied: false, funding_status_funded: false, funding_status: false, amount: false, approval_level: false, rating: false, sector: false, date: false };
+  magic:any;
+  magic_filter = { customer_category: '0', ompany_id: '', peer_to_peer: '', reset: false, my_approvals: false, account_officer: false, start: 0, funding: '100', token: '', min: 0, max: 10000000, loan_status: this.statuses[0].value, searchText: '', ratings_one: false, ratings_two: false, ratings_three: false, ratings_four: false, ratings_five: false, funding_amount_one: 1, funding_amount_two: 1, funding_amount_three: false, funding_status_disbursement: false, funding_status_contract_created: false, funding_status_applied: false, funding_status_funded: false, funding_status: false, amount: false, approval_level: false, rating: false, sector: false, date: false };
   loans: any;
   miniSearch = false;
   dontshownext = '0';
   view_state = '0';
-  datechosen:any;
-  overlayOpen=false;
-  loan_status='0';
-  enable_bulk_disbursements=false;
-  companies:any;
-  reverseModal=false;
-  loan_reverse:any;
-  canDisburse=false;
-  constructor( @Inject(DOCUMENT) private document: Document, 
-  private DataService: DataService, 
-  private router: Router, 
-  public optionsService: OptionsserviceService, 
-  private authService:AuthenticationService,
-  public fb: FormBuilder, 
-  public loansService: LoansService, 
-  public storageService: StorageService,) {
+  datechosen: any;
+  overlayOpen = false;
+  loan_status = '0';
+  enable_bulk_disbursements = false;
+  companies: any;
+  reverseModal = false;
+  loan_reverse: any;
+  canDisburse = false;
+  hideCategory = false;
+  initiatingBulkAnalytics = false;
+  numberOfRequests = 0;
+  constructor(@Inject(DOCUMENT) private document: Document,
+    private DataService: DataService,
+    private router: Router,
+    public optionsService: OptionsserviceService,
+    private authService: AuthenticationService,
+    public fb: FormBuilder,
+    public loansService: LoansService,
+    public storageService: StorageService, ) {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.type_of_view = this.storageService.read<any>('type_of_view');
+    this.DataService.viewTheLoan.subscribe(res => {
+      this.router.navigate(['/loan', res.REQUEST_ID]);
+    });
+    this.DataService.viewAnalyticsResults.subscribe(res => {
+      this.initiatingBulkAnalytics = false; 
+    });
     this.DataService.onpreviewLoan.subscribe(res => {
       this.open_loan(res)
 
@@ -93,111 +103,118 @@ export class RequestsdashComponent implements OnInit {
       this.enable_bulk_disbursements = res;
 
     })
+    this.DataService.hideCustomerCategoryFilter.subscribe(res => {
+      this.hideCategory = res.hideStatus;
+      this.magic = res.magic_filter;
+      this.magic_filter.customer_category = '0'; 
+
+    })
     this.DataService.updateTotalBulkDisbursements.subscribe(res => {
       this.updateTBD(res);
 
     })
     this.DataService.doCheckWalletTransactionStatuses.subscribe(res => {
-      console.log(1)
       this.doCheckWalletTransactionStatus(res);
 
     })
     this.DataService.onRequestRoute.subscribe(res => {
-      this.loans=res;
-      this.searchView=false;
+      this.loans = res;
+      this.searchView = false;
     })
     this.DataService.onCheckLoan.subscribe(res => {
-      //this.dontshownext='1'
-      this.viewing_loan=true;
+      this.viewing_loan = true;
       this.loan_viewed = res.request_id
       this.dontshownext = res.dontshownext
       this.view_state = res.view_state
-      this.loan_status=res.loan_status;
+      this.loan_status = res.loan_status;
     })
-    this.DataService.onReverseTransaction.subscribe(res => { 
+    this.DataService.onReverseTransaction.subscribe(res => {
       this.loan_reverse = res.loan;
-      this.reverseModal=true; 
+      this.reverseModal = true;
     })
-    this.DataService.showCalendarDetails.subscribe(res => { 
+    this.DataService.showCalendarDetails.subscribe(res => {
       this.datechosen = res.date_chosen;
-      this.viewing_loan=false;
-      this.overlayOpen=true
+      this.viewing_loan = false;
+      this.overlayOpen = true
     })
     this.DataService.onChangeRequestRoute.subscribe(res => {
       this.statuses = res.status;
     })
+    this.DataService.initiateBulAnalytics.subscribe(res => {
+      this.initiatingBulkAnalytics = true;
+    })
   }
-   
-  downloadList(){
+
+  downloadList() {
     const bpr = JSON.parse(this.storageService.readArray<any>('bulkpayrequests'));
-    
+
     this.loansService.exportDisburseList(this.currentUser.token, bpr).subscribe(data => {
       if (data.status) {
-          alert('Data Successfully exported. Download would start automatically.');
-          window.open(data.message);
-          return;
-      }else{
-          alert('Data could not be exported.');
+        alert('Data Successfully exported. Download would start automatically.');
+        window.open(data.message);
+        return;
+      } else {
+        alert('Data could not be exported.');
       }
-  });
+    });
   }
   ngOnInit() {
-    if(this.authService.canViewModule('3')){
+    if (this.authService.canViewModule('3')) {
       this.canDisburse = true;
-    } 
+    }
     this.type_of_view = this.storageService.read<any>('type_of_view');
     const total_bulk_pay_amount = this.storageService.read<any>('total_bulk_pay_amount');
     if (total_bulk_pay_amount) {
-        this.total_bulk_pay_amount = total_bulk_pay_amount;
-    }else{
-        this.total_bulk_pay_amount=0;
+      this.total_bulk_pay_amount = total_bulk_pay_amount;
+    } else {
+      this.total_bulk_pay_amount = 0;
     }
     //this.getLoans_();
     let currentUrl = this.router.url;
-    if(currentUrl=='/requests/pending'){
-      this.magic_filter.loan_status='1';
-      this.calendarView=false;
-      
+    if (currentUrl == '/requests/pending') {
+      this.magic_filter.loan_status = '1';
+      this.calendarView = false;
+
     }
-    if(currentUrl=='/requests/pending'){
-      this.magic_filter.loan_status='1';
-      this.calendarView=false;
+    if (currentUrl == '/requests/pending') {
+      this.magic_filter.loan_status = '1';
+      this.calendarView = false;
     }
-    if(currentUrl=='/requests/portfolio'){
-      this.magic_filter.loan_status='2';
-      this.calendarView=false;
+    if (currentUrl == '/requests/portfolio') {
+      this.magic_filter.loan_status = '2';
+      this.calendarView = false;
     }
-    if(currentUrl=='/requests/ineligible'){
-      this.magic_filter.loan_status='-3';
-      this.calendarView=false;
+    if (currentUrl == '/requests/ineligible') {
+      this.magic_filter.loan_status = '-3';
+      this.calendarView = false;
     }
-    if(currentUrl=='/requests/disbursements'){
-      this.magic_filter.loan_status='-4';
-      this.calendarView=false;
+    if (currentUrl == '/requests/disbursements') {
+      this.magic_filter.loan_status = '-4';
+      this.calendarView = false;
     }
-    if(currentUrl=='/requests/all'){
-      this.magic_filter.loan_status='-2';
-      this.calendarView=false;
+    if (currentUrl == '/requests/all') {
+      this.magic_filter.loan_status = '-2';
+      this.calendarView = false;
     }
-    if(currentUrl=='/requests/repaid'){
-      this.magic_filter.loan_status='-1';
-      this.calendarView=false;
+    if (currentUrl == '/requests/repaid') {
+      this.magic_filter.loan_status = '-1';
+      this.calendarView = false;
     }
-    if(currentUrl=='/requests/historical'){
-      this.magic_filter.loan_status='3';
-      this.calendarView=false;
+    if (currentUrl == '/requests/historical') {
+      this.magic_filter.loan_status = '3';
+      this.calendarView = false;
     }
-    if(currentUrl=='/requests/calendar'){
-      this.magic_filter.loan_status='2';
-      this.calendarView=true;
+    if (currentUrl == '/requests/calendar') {
+      this.magic_filter.loan_status = '2';
+      this.calendarView = true;
     }
-    if(currentUrl=='/requests/market'){
-      this.magic_filter.loan_status='100';
-      this.calendarView=true;
+    if (currentUrl == '/requests/market') {
+      this.magic_filter.loan_status = '100';
+      this.calendarView = true;
     }
-    if(currentUrl=='/requests/contract'){
-      this.magic_filter.loan_status='6';
-      this.calendarView=true;
+    if (currentUrl == '/requests/contract') {
+      this.magic_filter.loan_status = '6';
+      this.calendarView = true;
     }
     this.optionsService.getOccupation(2).subscribe(sectors => this.sectors = sectors);
     this.optionsService.getCompanies(this.currentUser.token).subscribe(companies => this.companies = companies);
@@ -213,50 +230,50 @@ export class RequestsdashComponent implements OnInit {
     }
 
   }
-  total_bulk_pay_amount=0;
-  prepareBulkPay(){
-    if(this.total_bulk_pay_amount>0){
+  total_bulk_pay_amount = 0;
+  prepareBulkPay() {
+    if (this.total_bulk_pay_amount > 0) {
       const storeddata = this.storageService.readArray<any>('bulkpayrequests');
       if (storeddata) {
-          this.bulkpayrequests = JSON.parse(storeddata);
-      }else{
-          this.bulkpayrequests=[]
+        this.bulkpayrequests = JSON.parse(storeddata);
+      } else {
+        this.bulkpayrequests = []
       }
       this.queueModal = true;
     }
-    
+
   }
-  openSearchView(){
-    this.searchView=true
-    this.DataService.openSearchView.emit({'magic_filter':this.magic_filter,'durations':this.durations,'approval_levels':this.approval_levels,request_date:this.request_date,});
+  openSearchView() {
+    this.searchView = true
+    this.DataService.openSearchView.emit({ 'magic_filter': this.magic_filter, 'durations': this.durations, 'approval_levels': this.approval_levels, request_date: this.request_date, });
   }
-  closeSearchView(){
-    this.searchView=false
+  closeSearchView() {
+    this.searchView = false
     this.DataService.closeSearchView.emit();
   }
   searchForLoans() {
-   
+
     this.DataService.onSearchForLoans.emit(this.magic_filter.searchText);
   }
-  myAccounts(event){
-    
+  myAccounts(event) {
+
     //this.magic_filter.account_officer=event.target.checked;
-    this.magic_filter.account_officer=event;
+    this.magic_filter.account_officer = event;
     this.searchForLoans();
   }
-  myApprovals(event){
-    
-    this.magic_filter.my_approvals=event.target.checked;
+  myApprovals(event) {
+
+    this.magic_filter.my_approvals = event.target.checked;
     //this.magic_filter.account_officer=event;
     this.searchForLoans();
   }
   checkLevel(sector, event, index) {
-    
+
     this.durations[index]['checked'] = event;
-    
+
   }
-  resetFilters(){
-    this.magic_filter.reset=true;
+  resetFilters() {
+    this.magic_filter.reset = true;
     this.DataService.onResetFilters.emit(this.magic_filter);
   }
   displayCondition(i) {
@@ -313,56 +330,56 @@ export class RequestsdashComponent implements OnInit {
     this.loan_viewed = REQUEST_ID;
   }
   getLoans() {
-    this.DataService.filterLoans.emit({'magic_filter':this.magic_filter,'durations':this.durations,'approval_levels':this.approval_levels,request_date:this.request_date,});
-     
+    this.DataService.filterLoans.emit({ 'magic_filter': this.magic_filter, 'durations': this.durations, 'approval_levels': this.approval_levels, request_date: this.request_date, });
+
   }
-  getLoanLink(status){
+  getLoanLink(status) {
     this.magic_filter.loan_status = status;
     this.getLoans_();
   }
   getLoans_() {
-    this.calendarView=false;
-  
-   if(this.magic_filter.loan_status=='-1'){
-    this.router.navigate(['/requests/repaid']);
-  } 
-  if(this.magic_filter.loan_status=='-6'){
-    this.router.navigate(['/requests/terminated']);
-  } 
-  if(this.magic_filter.loan_status=='-2'){
-    this.router.navigate(['/requests/all']);
-  }  
-  if(this.magic_filter.loan_status=='-4'){
-    this.router.navigate(['/requests/disbursements']);
-  } 
-    if(this.magic_filter.loan_status=='1'){
+    this.calendarView = false;
+
+    if (this.magic_filter.loan_status == '-1') {
+      this.router.navigate(['/requests/repaid']);
+    }
+    if (this.magic_filter.loan_status == '-6') {
+      this.router.navigate(['/requests/terminated']);
+    }
+    if (this.magic_filter.loan_status == '-2') {
+      this.router.navigate(['/requests/all']);
+    }
+    if (this.magic_filter.loan_status == '-4') {
+      this.router.navigate(['/requests/disbursements']);
+    }
+    if (this.magic_filter.loan_status == '1') {
       this.router.navigate(['/requests/pending']);
-    } 
-    if(this.magic_filter.loan_status=='2'){
+    }
+    if (this.magic_filter.loan_status == '2') {
       this.router.navigate(['/requests/portfolio']);
-    }  
-    if(this.magic_filter.loan_status=='3'){
+    }
+    if (this.magic_filter.loan_status == '3') {
       this.router.navigate(['/requests/historical']);
-    } 
-    if(this.magic_filter.loan_status=='4'){
+    }
+    if (this.magic_filter.loan_status == '4') {
       this.router.navigate(['/requests/draft']);
-    }  
-    if(this.magic_filter.loan_status=='5'){
+    }
+    if (this.magic_filter.loan_status == '5') {
       this.router.navigate(['/requests/rejected']);
-    } 
-    if(this.magic_filter.loan_status=='-3'){
+    }
+    if (this.magic_filter.loan_status == '-3') {
       this.router.navigate(['/requests/ineligible']);
-    } 
-    if(this.magic_filter.loan_status=='6'){
+    }
+    if (this.magic_filter.loan_status == '6') {
       this.router.navigate(['/requests/contract']);
-    } 
+    }
   }
-  showActiveRequests(){
-    this.calendarView=false;
+  showActiveRequests() {
+    this.calendarView = false;
     this.router.navigate(['/requests/portfolio']);
   }
-  showCalendar(){
-    this.calendarView=true;
+  showCalendar() {
+    this.calendarView = true;
     this.router.navigate(['/requests/calendar']);
   }
   open_loan(request_id) {
@@ -370,29 +387,29 @@ export class RequestsdashComponent implements OnInit {
     this.viewing_loan = true;
     this.loan_viewed = request_id;
   }
-  showListView(){
-    this.type_of_view='2';
-    this.calendarView=false;
+  showListView() {
+    this.type_of_view = '2';
+    this.calendarView = false;
     this.DataService.showListView.emit();
   }
-  showGridView(){
-    this.type_of_view='1';
-    this.calendarView=false;
+  showGridView() {
+    this.type_of_view = '1';
+    this.calendarView = false;
     this.DataService.showGridView.emit();
   }
   closeOverlay() {
     this.viewing_loan = false
-    this.overlayOpen=false;
-    this.queueModal=false;
+    this.overlayOpen = false;
+    this.queueModal = false;
     this.reverseModal = false;
     localStorage.removeItem('total_bulk_pay_amount');
     localStorage.removeItem('bulkpayrequests');
-    if(this.magic_filter.loan_status=='-4'){
+    if (this.magic_filter.loan_status == '-4') {
       this.getLoans()
-    } 
-    
+    }
+
   }
-  
+
   closeOverlay_(event) {
     console.log(event)
   }
@@ -425,28 +442,31 @@ export class RequestsdashComponent implements OnInit {
   setAdvancedSliderTo(from, to) {
     this.advancedSliderElement.update({ from: from, to: to });
   }
-  updateTBD(res){
-    if(res.confirm){
-      this.total_bulk_pay_amount=this.total_bulk_pay_amount+parseInt(res.loan.HOW_MUCH_WAS_GIVEN)
-    }else{
-      if(this.total_bulk_pay_amount !=0){
-        this.total_bulk_pay_amount=this.total_bulk_pay_amount-parseInt(res.loan.HOW_MUCH_WAS_GIVEN)
+  updateTBD(res) {
+    if (res.confirm) {
+      this.total_bulk_pay_amount = this.total_bulk_pay_amount + parseInt(res.loan.HOW_MUCH_WAS_GIVEN)
+    } else {
+      if (this.total_bulk_pay_amount != 0) {
+        this.total_bulk_pay_amount = this.total_bulk_pay_amount - parseInt(res.loan.HOW_MUCH_WAS_GIVEN)
       }
-      
+
     }
     localStorage.setItem('total_bulk_pay_amount', JSON.stringify(this.total_bulk_pay_amount));
   }
-  disburse:any;
-  overlayOpenPayConfirm=false;
-  doCheckWalletTransactionStatus(res){
-    
+  disburse: any;
+  overlayOpenPayConfirm = false;
+  doCheckWalletTransactionStatus(res) {
+
     this.loansService.queueForDisbursement(this.currentUser.token, res.loan.REQUEST_ID)
-    .subscribe(loans => { 
-      if (loans.status) {
-        //good to go
-        this.disburse = loans.queue.result[0];
-        this.overlayOpenPayConfirm=true;
-      } 
-    });
+      .subscribe(loans => {
+        if (loans.status) {
+          //good to go
+          this.disburse = loans.queue.result[0];
+          this.overlayOpenPayConfirm = true;
+        }
+      });
+  }
+  startAnalyticsOnRequests() {
+
   }
 }

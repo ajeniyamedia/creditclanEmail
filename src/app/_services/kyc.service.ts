@@ -22,4 +22,14 @@ export class KycService {
     return this.http.post('https://dataupload.creditclan.com/api/v2/kyc/getKYCS', JSON.stringify({ token: token, magic_filter: magic_filter }))
       .map((response: Response) => response.json());
   }
+  getLoanKYC(token: any, id: any): Observable<any> {
+    // get users from api
+    return this.http.post('https://dataupload.creditclan.com/api/v2/kyc/getLoanKYCs', JSON.stringify({ token: token, id: id }))
+      .map((response: Response) => response.json());
+  }
+  getCustomerKYC(token: any, id: any): Observable<any> {
+    // get users from api
+    return this.http.post('https://dataupload.creditclan.com/api/v2/kyc/getCustomerKycs', JSON.stringify({ token: token, id: id }))
+      .map((response: Response) => response.json());
+  }
 }

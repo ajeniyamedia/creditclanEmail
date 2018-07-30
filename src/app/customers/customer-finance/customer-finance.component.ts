@@ -14,7 +14,7 @@ import { StorageService } from '../../_services/index';
 
 export class CustomerFinanceComponent implements OnInit {
 
-  currentUser:any;
+  currentUser: any;
   records = []; // Customer Information
   sub; // Instance of the route subscription
   @Input('userType') userType; // Type of user
@@ -28,7 +28,9 @@ export class CustomerFinanceComponent implements OnInit {
   payslips: any;
   statements = [];
   expenses: any;
-
+  record = {
+    BVN: ''
+  }
 
   // New Model
   mainSection = true;
@@ -78,7 +80,7 @@ export class CustomerFinanceComponent implements OnInit {
     { value: '4', display: 'April' },
     { value: '5', display: 'May' },
     { value: '6', display: 'June' },
-    { value: '7', display: 'July' },
+    { value: '7', display: 'July' }, 
     { value: '8', display: 'August' },
     { value: '9', display: 'September' },
     { value: '10', display: 'October' },
@@ -86,6 +88,8 @@ export class CustomerFinanceComponent implements OnInit {
     { value: '12', display: 'December' }
   ];
 
+  source = '0';
+  loading = false;
   // Driving Licence Expiry Date Selection
   startDate = 2016;
   maxDuration = new Array(16);
@@ -100,8 +104,8 @@ export class CustomerFinanceComponent implements OnInit {
     protected customersSrvc: CustomersService,
     protected constants: ConstantsService,
     public DataService: DataService,
-    public customerService:CustomerService,
-    public storageService: StorageService ) {
+    public customerService: CustomerService,
+    public storageService: StorageService) {
 
   }
 
@@ -110,7 +114,7 @@ export class CustomerFinanceComponent implements OnInit {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.attach_dir = this.constants.read('attachments');
     if (this.external == true) {
-      
+
       this.load();
     } else {
       this.sub = this.route.parent.params.subscribe(params => {
@@ -131,7 +135,7 @@ export class CustomerFinanceComponent implements OnInit {
       this.statements = data.bank_statments;
       this.payslips = data.payslips;
       this.cust = data.cust;
-
+      this.record.BVN = data.cust.BVN;
       this.statement_count = data.bank_statments_count;
       this.payslip_count = data.payslips_count;
 
@@ -181,46 +185,46 @@ export class CustomerFinanceComponent implements OnInit {
   prevRecords(records) {
 
   }
-  getWorkStartDate(month){
+  getWorkStartDate(month) {
     const months = [
       {
-        "display":""
+        "display": ""
       },
       {
-        "display":"January"
+        "display": "January"
       },
       {
-        "display":"February"
+        "display": "February"
       },
       {
-        "display":"March"
+        "display": "March"
       },
       {
-        "display":"April"
+        "display": "April"
       },
       {
-        "display":"May"
+        "display": "May"
       },
       {
-        "display":"June"
+        "display": "June"
       },
       {
-        "display":"July"
+        "display": "July"
       },
       {
-        "display":"August"
+        "display": "August"
       },
       {
-        "display":"September"
+        "display": "September"
       },
       {
-        "display":"October"
+        "display": "October"
       },
       {
-        "display":"November"
+        "display": "November"
       },
       {
-        "display":"December"
+        "display": "December"
       },
     ]
     return months[month].display;
@@ -361,20 +365,19 @@ export class CustomerFinanceComponent implements OnInit {
       }
     });
   }
-  source = '0';
-  loading = false;
-  retryBVNValidation(cust){
+  retryBVNValidation(cust) {
     this.source = '2';
     this.loading = true;
-    this.customerService.retryBVNValidation(this.currentUser.token,cust).subscribe(data => {
+    this.cust.BVN = this.record.BVN;
+    this.customerService.retryBVNValidation(this.currentUser.token, cust).subscribe(data => {
       this.loading = false;
       this.load();
     });
   }
-  clearBVNRecord(cust){
+  clearBVNRecord(cust) {
     this.source = '1';
     this.loading = true;
-    this.customerService.clearBVNRecord(this.currentUser.token,cust).subscribe(data => {
+    this.customerService.clearBVNRecord(this.currentUser.token, cust).subscribe(data => {
       this.loading = false;
       this.load();
     });

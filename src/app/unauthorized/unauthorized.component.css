@@ -1,0 +1,44 @@
+.cc-dialog-body-section {
+    font-size: 14px;
+    line-height: 20px;
+    color: rgba(0,0,0,0.54);
+    -webkit-box-flex: 0 0 auto;
+    -webkit-flex: 0 0 auto;
+    flex: 0 0 auto;
+    padding: 0 24px;
+}
+.layout-column {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+.layout, .layout-column, .layout-row {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+.layout-align-start-center, .layout-align-center-center, .layout-align-end-center, .layout-align-space-between-center, .layout-align-space-around-center {
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-align-content: center;
+    align-content: center;
+    max-width: 100%;
+}
+.layout-align-space-around, .layout-align-space-around-center, .layout-align-space-around-start, .layout-align-space-around-end, .layout-align-space-around-stretch {
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+}
+.c5e-create-project-async-ready {
+    margin: 20px;
+}
+.c5e-create-project-async-ready-label {
+    color: #009688;
+    margin-bottom: 10px;
+}

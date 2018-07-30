@@ -25,13 +25,9 @@
           <app-loanamount (saveForm)="saveLAFrom($event)" [product]='product' [special_interest_duration]='special_interest_duration'
             [loading]='loading' [loan_durations]='loan_durations'></app-loanamount>
 
-          <app-interestratefloor [product]="product" [floor_rate]='floor_rate' [loading]='loading' [loan_durations]='loan_durations' (saveForm)="saveFRFrom($event)"
-            [special_interest_duration]='special_interest_duration'></app-interestratefloor>
-<<<<<<< HEAD
- 
-=======
+          <app-interestratefloor [product]="product" [floor_rate]='floor_rate' [loading]='loading' [loan_durations]='loan_durations'
+            (saveFpayorm)="saveFRFrom($event)" [special_interest_duration]='special_interest_duration'></app-interestratefloor>
 
->>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
           <app-originationfee (saveForm)="saveOFFrom($event)" [product]='product' [companyaccounts]='companyaccounts' [loading]='loading'
             [fee_settings]='fee_settings'></app-originationfee>
 
@@ -60,13 +56,29 @@
                       <div class="col-md-6">
                         <label class="control-label">Higher Band</label>
                         <input type="text" class="form-control" name="HIGHER_BAND" [(ngModel)]="band.HIGHER_BAND">
+                        <input type="hidden" name="INTEREST_DURATION" [(ngModel)]="band.INTEREST_DURATION">
+                        <input type="hidden" name="LOAN_DURATION" [(ngModel)]="band.LOAN_DURATION">
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="control-label">Max Rate</label>
-                          <input type="text" class="form-control" name="MAXIMUM_RATE" [(ngModel)]="band.MAXIMUM_RATE">
+                          <!-- <input type="text" class="form-control" name="MAXIMUM_RATE" [(ngModel)]="band.MAXIMUM_RATE"> -->
+                          <div class="input-group btn-block">
+                            <input type="text" class="form-control btn-block" name="MAXIMUM_RATE" [(ngModel)]="band.MAXIMUM_RATE">
+                            <div class="input-group-btn">
+                              <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                <span class="sel_cur">{{interest_duration}}</span>
+                                <span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu pull-right">
+                                <li *ngFor="let d of loan_durations;let i=index;">
+                                  <a (click)="changeDuration(i,1)">{{d.INTEREST_DURATION}}</a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div> 
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -78,7 +90,21 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="control-label">Max Duration</label>
-                          <input type="text" class="form-control" name="MAXIMUM_DURATION" [(ngModel)]="band.MAXIMUM_DURATION">
+                          <!-- <input type="text" class="form-control" name="MAXIMUM_DURATION" [(ngModel)]="band.MAXIMUM_DURATION"> -->
+                          <div class="input-group btn-block">
+                            <input type="text" class="form-control btn-block" name="MAXIMUM_DURATION" [(ngModel)]="band.MAXIMUM_DURATION">
+                            <div class="input-group-btn">
+                              <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                <span class="sel_cur">{{loan_duration}}</span>
+                                <span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu pull-right">
+                                <li *ngFor="let d of loan_durations;let i=index;">
+                                  <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <!-- <div class="col-md-6">
@@ -109,7 +135,7 @@
                     <tr *ngFor="let band of interest_bands">
                       <td>{{ band?.LOWER_BAND }}</td>
                       <td>{{ band?.HIGHER_BAND }}</td>
-                      <td>{{ band?.MINIMUM_AMOUNT }}</td>
+                      <td>{{ band?.MAXIMUM_AMOUNT }}</td>
                       <td>{{ band?.MAXIMUM_RATE }}</td>
                       <td>{{ band?.MAXIMUM_DURATION }}</td>
                       <td>
@@ -410,7 +436,7 @@
             </div>
             <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
               <div class="panel-body">
-                <button class="btn btn-xs btn-white pull-right" (click)="overlayOpen=true">Add New Level</button>
+                <button class="btn btn-xs btn-white pull-right" (click)="newLevel()">Add New Level</button>
               </div>
               <div class="panel-body">
 
@@ -1173,6 +1199,28 @@
                       </div>
                     </div>
 
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                          <ul>
+                            <li class="text-left">
+                              <span> Get notification when contract is accepted</span>
+                              <div class="pull-right">
+                                <input type="checkbox" name="NOTIFY_CONTRACT_ACCEPTED" name="NOTIFY_CONTRACT_ACCEPTED" [(ngModel)]="contract.NOTIFY_CONTRACT_ACCEPTED">
+  
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="form-group row" *ngIf="contract.NOTIFY_CONTRACT_ACCEPTED">
+                          <div class="col-md-6">
+                            <label class="control-label">Email</label>
+                          </div>
+                          <div class="col-md-6">
+                              <input type="text" class="form-control" name="CONTRACT_ACCEPTED_EMAIL" [(ngModel)]="contract.CONTRACT_ACCEPTED_EMAIL">
+                            </div>
+                        </div>
+
                     <button type="submit" (click)="saveContract(contractForm.value, contractForm.valid)" [disabled]="loading" class="btn btn-white pull-right">
                       <span *ngIf="!loading">Submit</span>
                       <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
@@ -1356,7 +1404,7 @@
             <div class="panel-heading" role="tab" id="headingReminder">
               <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseReminder" aria-expanded="true" aria-controls="collapseReminder">
-                  Repayment Reminders
+                  Repayment Settings
                 </a>
               </h4>
             </div>
@@ -1364,7 +1412,21 @@
               <div class="panel-body">
                 <div class="panel-body">
                   <form #remind="ngForm" novalidate>
+                    <h4>Repayment Source</h4>
+                    <div class="form-group row" id="loan_interval_container">
+                      <label class="no-margin control-label col-md-6">Repayment Source</label>
+                      <div class="col-md-6">
+                        <select class="form-control" name="REPAYMENT_SOURCE" [(ngModel)]="reminders.REPAYMENT_SOURCE">
+                          <option [value]="0"></option>
+                          <option [value]="1">Remita</option>
+                          <option [value]="2">Cards</option>
+                          <option [value]="3">Direct Bank Debit</option>
+                          <option [value]="4">Others</option>
 
+                        </select>
+                      </div>
+                    </div>
+                    <h4>Reminders</h4>
                     <div class="form-group row" id="loan_interval_container">
                       <div class="col-md-6">
                         <label class="no-margin control-label">Send Reminders When(days)</label>
@@ -1385,7 +1447,14 @@
 
                       </div>
                       <div class="col-md-6">
-                        <input type="text" class="form-control" name="AUTODEBIT_INTERVAL" [ngModel]="reminders.AUTODEBIT_INTERVAL">
+                        <!-- <input type="text" class="form-control" name="AUTODEBIT_INTERVAL" [ngModel]="reminders.AUTODEBIT_INTERVAL"> -->
+                          <select class="form-control" name="AUTODEBIT_INTERVAL"  [ngModel]="reminders.AUTODEBIT_INTERVAL">
+                            <option [value]="0"></option>
+                            <option [value]="5">5</option>
+                            <option [value]="6">6</option>
+                            <option [value]="7">7</option> 
+                            <option [value]="8">8</option> 
+                          </select>
                       </div>
                     </div>
                     <button type="submit" (click)="saveReminders(remind.value, remind.valid)" [disabled]="loading" class="btn btn-white pull-right">
@@ -1558,7 +1627,7 @@
             </div>
 
           </div>
-          <div class="panel panel-default">
+          <div class="panel panel-default hide">
             <div class="panel-heading" role="tab" id="headingAnalytics">
               <h4 class="panel-title">
                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAnalytics" aria-expanded="false"
@@ -2299,12 +2368,25 @@
 <div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayOpen">
 
   <div class="col-md-12">
-    <a class="dismiss cancel_treat_ close" role="button" (click)="overlayOpen=false">
+    <a class="dismiss cancel_treat_ close" role="button" (click)="closeIsNewEmp()">
       <i class="fa fa-times" aria-hidden="true"></i>
     </a>
   </div>
   <div class=" overpanel-content container" role="document" style="text-align:left;width:600px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
-    <app-levelform (saveLevel)="saveLevel($event)" [employees]="employees" [loading]="loading" [level]="level" [APPROVAL_LEVEL_ID_]="APPROVAL_LEVEL_ID_"
-      [isedit]="isedit"></app-levelform>
+    <app-levelform (checkEmployee)="checkEmployee($event)" (saveLevel)="saveLevel($event)" [employees]="employees" [loading]="loading"
+      [level]="level" [APPROVAL_LEVEL_ID_]="APPROVAL_LEVEL_ID_" [isedit]="isedit"></app-levelform>
   </div>
+   
 </div>
+<div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayOpen_">
+
+    <div class="col-md-12">
+      <a class="dismiss cancel_treat_ close" role="button" (click)="closeIsNewEmp()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </a>
+    </div>
+     
+    <div class=" overpanel-content container" role="document" style="text-align:left;width:600px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+        <app-newlevelform (checkEmployee)="checkEmployee($event)" (saveLevel)="saveLevel($event)" [employees]="employees" [loading]="loading" [APPROVAL_LEVEL_ID_]="APPROVAL_LEVEL_ID_" [isedit]="isedit"></app-newlevelform>
+      </div>
+  </div>

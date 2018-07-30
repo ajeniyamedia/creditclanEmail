@@ -16,6 +16,15 @@
             </button>
         </div>
         <div class="form-inline pull-right" role="form">
+                <div class="form-group">
+                        <div class="ngui-datetime-picker-wrapper">
+                            <select  name="TTYPE" class="form-control" [(ngModel)]="TTYPE">
+                                <option [value]="0">All</option>
+                                <option [value]="1">Debit</option>
+                                <option [value]="2">Credit</option>
+                            </select>
+                        </div>
+                    </div>
             <div class="form-group">
                 <div class="ngui-datetime-picker-wrapper">
                     <input type="text" name="FISCAL_DATE_START" placeholder="Start Date" class="form-control" [(ngModel)]="FISCAL_DATE_START"

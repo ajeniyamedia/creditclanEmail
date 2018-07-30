@@ -18,7 +18,7 @@ export class OperationsdashboardComponent implements OnInit {
   public preloading: any;
   showingAvgLRate = false;
   constructor(public authService:AuthenticationService,public storageService: StorageService, public router: Router, public operationsService: OperationsService) {
-    if(!authService.canViewModule('1,2,3,5')){
+    if(!authService.canViewModule('1,3,5')){
       this.router.navigate(['../unauthorized']);
     }
     this.currentUser = this.storageService.read<any>('currentUser');

@@ -1,0 +1,84 @@
+<div class="panel" *ngIf="!running_analytics">
+  <!-- <div class="panel-heading" role="tab" id="headingAnalytics">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAnalytics" aria-expanded="false"
+          aria-controls="collapseAnalytics">
+         General Analytics Weight Settings
+        </a>
+      </h4>
+    </div> -->
+  <!-- <div id="collapseAnalytics" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAnalytics">
+      
+    </div> -->
+  <div class="panel-body">
+    <h2>Modify Settings</h2>
+    <form #analyticsform="ngForm" novalidate>
+      <ul class="list list_border sm">
+        <li class="text-left sub_list" style="padding-left: 20px">
+          <div class="row">
+            <div class="col-md-3" style="vertical-align: bottom;">
+              <p style="margin:20px 0 0">General Profile</p>
+            </div>
+            <div class="col-md-9">
+              <ion-range-slider [from]="analytics_settings?.general" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'general')"></ion-range-slider>
+            </div>
+          </div>
+        </li>
+
+        <li class="text-left sub_list" style="padding-left: 20px">
+          <div class="row">
+            <div class="col-md-3" style="vertical-align: bottom;">
+              <p style="margin:20px 0 0">Social</p>
+            </div>
+            <div class="col-md-9">
+              <ion-range-slider [from]="analytics_settings?.social" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'social')"></ion-range-slider>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+      <button type="submit" [disabled]="loading" (click)="runAnalytics(analyticsform.value, analyticsform.valid)" class="btn btn-white pull-right">
+        <span *ngIf="!loading">Run Analytics</span>
+        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+      </button>
+    </form>
+  </div>
+</div>
+<div class="" *ngIf="running_analytics">
+
+  <div class="running-analytics" *ngIf="analytics_done">
+    <h2 style="text-align: center; margin-top:32px; margin-bottom: 32px">Analytics Results</h2>
+    <div style="width:50%; margin:10px auto">
+      <section class="panel">
+        <div class="panel-body text-center">
+          <h3>{{result?.score}}</h3>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="panel-body">
+          <button class="btn btn-white btn-block">Save Score</button>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="panel-body">
+          <button class="btn btn-white btn-block">Save Settings</button>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="running-analytics" *ngIf="!analytics_done">
+    <img src="assets/images/process.svg" style="max-height: 50%;
+      max-width: 50%;
+      height: auto;
+      width: auto;
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      box-sizing: border-box;
+      margin: auto;" />
+  </div>
+
+</div>

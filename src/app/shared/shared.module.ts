@@ -109,6 +109,13 @@ import { InterestformComponent } from '../operations/interestform/interestform.c
 import { LoanamountComponent } from '../operations/loanamount/loanamount.component';
 import { OriginationfeeComponent } from '../operations/originationfee/originationfee.component';
 import { InterestratefloorComponent } from '../operations/interestratefloor/interestratefloor.component';
+import { UnauthorizedComponent } from '../unauthorized/unauthorized.component';
+import { NewlevelformComponent } from '../backend/newlevelform/newlevelform.component';
+import { CustomerRemitaComponent } from '../customer-remita/customer-remita.component';
+
+import { KycdetailsComponent } from '../kyc/kycdetails/kycdetails.component';
+import { CustomerkycComponent } from '../customerkyc/customerkyc.component';
+import { AdjustweightsComponent } from '../loan/adjustweights/adjustweights.component';
 @NgModule({
   imports: [
     CommonModule, FormsModule, RouterModule, ReactiveFormsModule, MyDatePickerModule,
@@ -126,7 +133,7 @@ import { InterestratefloorComponent } from '../operations/interestratefloor/inte
     LoanformComponent, LoanfeesComponent, LoanchargesComponent, LoanchecklistComponent, WebUssdComponent,
     LoanguarantorsComponent,LoanpeertopeerComponent,NewempformComponent,
     RequestformComponent,LoancustomerformComponent,
-    CalendarComponent, 
+    CalendarComponent, UnauthorizedComponent,
     ViewguarantorComponent, LoananalysisComponent, LoanworkflowComponent,
     CalendarviewComponent, CalendardetailsComponent, LoanmoreComponent,
     RatingComponent, BorroweridComponent, BreakloanComponent, LoansummaryComponent, PaymentrollbackComponent,
@@ -140,7 +147,8 @@ import { InterestratefloorComponent } from '../operations/interestratefloor/inte
     LoanlogsComponent, PaymentComponent, ApprovalviewComponent, NewbankformComponent,QueuecancelComponent,
     LoanchatComponent,
     CustomeranalysisComponent,BulkpaymentComponent,CustomerUpdateComponent,LedgerComponent, GeneralformComponent,
-    InterestformComponent, LoanamountComponent, InterestratefloorComponent, OriginationfeeComponent
+    InterestformComponent, LoanamountComponent, InterestratefloorComponent, OriginationfeeComponent, NewlevelformComponent,
+    CustomerRemitaComponent, KycdetailsComponent, CustomerkycComponent, AdjustweightsComponent
   ],
   exports: [
     LimittoPipe, SafePipe, LoanStatusPipe, OfferstatusPipe, LoanStatusTextPipe, PeertopeerPipe,WebUssdComponent,
@@ -153,19 +161,20 @@ import { InterestratefloorComponent } from '../operations/interestratefloor/inte
     PaymentComponent,NgxEditorModule,
     UiSwitchModule, LoanguarantorsComponent, LoanlocationComponent, LoanchequeComponent, LoanphotosComponent,
     LoandocumentComponent, LoanacctsComponent, LoancollateralComponent, LoanlogsComponent,NewempformComponent,
-    CalendarComponent, 
+    CalendarComponent, UnauthorizedComponent,
     ApprovalviewComponent, NewbankformComponent,NguiDatetimePickerModule,
     CalendarviewComponent, LoanchecklistComponent, LoanmoreComponent,
-    CalendardetailsComponent, RatingComponent, BorroweridComponent, 
+    CalendardetailsComponent, RatingComponent, BorroweridComponent, NewlevelformComponent, 
     BreakloanComponent, LoansummaryComponent, PaymentrollbackComponent,
     MakepaymentComponent, CustomersummaryComponent, ScheduleComponent, RepayComponent, LoanprofileComponent,
     CustomerFinanceComponent, CustomerInvestmentsComponent, CustomerLoansComponent, 
     LoancontractComponent, LoandocumentComponent, WalletdetailsComponent,
     ChangeproductComponent, LoanlogsComponent, LoancontractComponent, UserlocationComponent, 
     LoancontractformComponent, LoanlendersComponent, OrderModule,
-    QueuecancelComponent,LoanpeertopeerComponent,
+    QueuecancelComponent,LoanpeertopeerComponent,KycdetailsComponent,
     CustomeranalysisComponent,BulkpaymentComponent,CustomerUpdateComponent,SelectModule,LedgerComponent,GeneralformComponent,
-    InterestformComponent, LoanamountComponent, InterestratefloorComponent, OriginationfeeComponent
+    InterestformComponent, LoanamountComponent, InterestratefloorComponent, OriginationfeeComponent,CustomerRemitaComponent,
+    AdjustweightsComponent
   ]
 })
 export class SharedModule {

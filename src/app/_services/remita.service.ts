@@ -28,4 +28,13 @@ export class RemitaService {
     return this.http.post('https://remita.creditclan.com/settings/save_connection', JSON.stringify({ token: token, data:value }))
       .map((response: Response) => response.json());
   }
+  saveRemitalAnalytics(token: any, value:any): Observable<any> {
+    // get users from api
+    return this.http.post('https://remita.creditclan.com/settings/saveRemitalAnalytics', JSON.stringify({ token: token, data:value }))
+      .map((response: Response) => response.json());
+  }
+  getRemitaRecords(token:any, userId:any){
+    return this.http.post('https://dataupload.creditclan.com/api/v2/remita/getRemitaRecords', JSON.stringify({ token: token, userId:userId }))
+      .map((response: Response) => response.json());
+  }
 }

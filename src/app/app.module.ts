@@ -24,7 +24,7 @@ import { InvestmentborrowerComponent } from './investmentborrower/investmentborr
 import { AccountreportsComponent } from './accountreports/accountreports.component'; 
 import { AccoutreportsComponent } from './accoutreports/accoutreports.component'; 
 import { PortfolioComponent } from './portfolio/portfolio.component';
-import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+// import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { ApprovalsService,DataService, AuthenticationService, UserService, StorageService } from './_services/index';
 import { CustomerService, InvestmentService, LoansService, OptionsserviceService, OperationsService, KycService,MarketService,AnalyticsService } from './_services/index';
 import { CustomersService } from './_services/customers.service';
@@ -50,7 +50,7 @@ import { RepaymentsComponent } from './repayments/repayments.component';
 import { MyapprovalsComponent } from './myapprovals/myapprovals.component';
 import { StatementprofileComponent } from './statementprofile/statementprofile.component'; 
 
-import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
+import { SlimLoadingBarModule } from 'ng2-slim-loading-bar'; 
 @NgModule({
   declarations: [
     CarouselComponent,CreditsummaryComponent,DisbursenavComponent,RepaymentsComponent,
@@ -67,12 +67,12 @@ import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
     AccountreportsComponent, 
     AccoutreportsComponent,
     PortfolioComponent,
-    UnauthorizedComponent,
+    //UnauthorizedComponent,
     DuerepaymentComponent,
     LoansComponent,
     PendingDisbursementComponent,
     StatementprofileComponent,
-    MyapprovalsComponent
+    MyapprovalsComponent, 
   ],
   imports: [
     BrowserModule,

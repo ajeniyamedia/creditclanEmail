@@ -65,7 +65,7 @@ export class CustomersComponent implements OnInit {
       this.normalLoad(this.navigation.next-10);
     })
     this.enable_peer = this.storageService.read<any>('enable_peer_to_peer');
-    if(!authService.canViewModule('1,7')){
+    if(!authService.canViewModule('1,7,2,3,4,5,1026')){
       this.router.navigate(['../unauthorized']);
     }
   }

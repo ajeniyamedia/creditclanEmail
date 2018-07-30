@@ -1,0 +1,356 @@
+<!-- <section class="panel">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-6 ">
+        <div class="square">
+          <div>
+            <img src="assets/img/icons/user.png">
+          </div>
+          <p>CreditClan</p>
+          <p style="font-size:18px;margin-top:10px;">
+            <b>{{scores?.creditclan_analytics|number:'.2-2'}}%</b>
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6">
+
+        <div style="width:90%; margin:0px auto; margin-top:20px">
+          <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+            <div class="form-group">
+              <span class="pull-left text-primary">CreditClan Analytics</span>
+
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+            <div class="form-group">
+              <span class="pull-left text-primary">General Profile</span>
+              <span class="pull-right">
+                {{analytics_data?.creditclan?.general_profile?.score}}
+              </span>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+            <div class="form-group">
+              <span class="pull-left text-primary">Social</span>
+              <span class="pull-right">
+                {{analytics_data?.creditclan?.social?.score}}
+              </span>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div>
+            <div class="row">
+              <div class="col-md-6">
+                <button class="btn btn-white btn-block" (click)="modifyWeights('creditclan_analytics')">Weights</button>
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-white btn-block">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section> -->
+<div>
+  <section class="panel">
+    <div class='loan_list'>
+      <div class="panel no-margin box">
+        <div class="panel-body">
+          <article class="media">
+
+            <div class="pull-left" style="margin-top: 5px">
+              <p class="no-margin t_lh1 t_l4" style="font-size: 14px">CreditClan Analytics</p>
+            </div>
+
+            <div class="pull-right text-right">
+              <button class="pull-right btn btn-white wd_btn" style="border-radius: 0" (click)="goBactToMatser()">Back</button>
+            </div>
+          </article>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+  <section class="panel">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-4 text-center">
+          <a>
+            <div class="panel-icon offer_made" style="padding:0;">
+              <img src="assets/img/CC_small_colour_1.png" style="border-radius: 50%;width:80px;">
+            </div>
+          </a>
+          <p class="analysis-name">CreditClan</p>
+        </div>
+        <div class="col-md-4 text-center ">
+          <div class="panel-icon offer_funded">
+            <p class="amount"> {{scores?.creditclan_analytics|number:'.2-2'}}%
+            </p>
+          </div>
+          <p class="analysis-name">Analytics Score</p>
+        </div>
+        <div class="col-md-4">
+          <section class="panel" style="margin-bottom: 0px">
+            <div class="panel-body">
+              <button class="btn btn-white btn-block">Save</button>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-body">
+              <button (click)="modifyWeights('creditclan_analytics')" class="btn btn-white btn-block">Modify</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="panel">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-6 ">
+          <div class="square">
+            <div>
+              <img src="assets/img/icons/user.png">
+            </div>
+            <p>General</p>
+            <p style="font-size:18px;margin-top:10px;">
+              <b>{{analytics_data?.creditclan?.general_profile?.score}}%</b>
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6">
+
+          <div style="margin-top:20px">
+            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+              <div class="form-group">
+                <span class="pull-left text-primary">General Analytics</span>
+
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+              <div (click)="hideParentTopBar()" class="form-group" style="cursor: pointer">
+                <span class="pull-left text-primary">Profile</span>
+                <span class="pull-right">
+                  {{analytics_data?.creditclan?.general_profile?.elements?.biodata}}
+                </span>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+              <div class="form-group">
+                <span class="pull-left text-primary">Address</span>
+                <span class="pull-right">
+                  {{analytics_data?.creditclan?.general_profile?.elements?.address}}
+                </span>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+              <div class="form-group">
+                <span class="pull-left text-primary">Work</span>
+                <span class="pull-right">
+                  {{analytics_data?.creditclan?.general_profile?.elements?.work}}
+                </span>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+              <div class="form-group">
+                <span class="pull-left text-primary">Income</span>
+                <span class="pull-right">
+                  {{analytics_data?.creditclan?.general_profile?.elements?.income}}
+                </span>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+              <div class="form-group">
+                <span class="pull-left text-primary">Education</span>
+                <span class="pull-right">
+                  {{analytics_data?.creditclan?.general_profile?.elements?.education}}
+                </span>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+              <div class="form-group">
+                <span class="pull-left text-primary">Call Logs</span>
+                <span class="pull-right">
+                  {{analytics_data?.creditclan?.general_profile?.elements?.calllogs}}
+                </span>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+              <div class="form-group">
+                <span class="pull-left text-primary">Guarantor</span>
+                <span class="pull-right">
+                  {{analytics_data?.creditclan?.general_profile?.elements?.guarantor}}
+                </span>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<div>
+  <!-- <section class="panel">
+    <div class='loan_list'>
+      <div class="panel no-margin box">
+        <div class="panel-body">
+          <article class="media">
+
+            <div class="pull-left" style="margin-top: 5px">
+              <p class="no-margin t_lh1 t_l4" style="font-size: 14px">CreditClan Analytics</p>
+            </div>
+
+            <div class="pull-right text-right">
+              <button class="pull-right btn btn-white wd_btn" style="border-radius: 0" (click)="goBactToMatser()">Back</button>
+            </div>
+          </article>
+        </div>
+      </div>
+
+
+    </div>
+  </section> -->
+  <!-- <section class="panel">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-4 text-center">
+          <a>
+            <div class="panel-icon offer_made" style="padding:0;">
+              <img src="assets/img/CC_small_colour_1.png" style="border-radius: 50%;width:80px;">
+            </div>
+          </a>
+          <p class="analysis-name">CreditClan</p>
+        </div>
+        <div class="col-md-4 text-center ">
+          <div class="panel-icon offer_funded">
+            <p class="amount"> {{analytics_data?.creditclan?.social?.score}}%
+            </p>
+          </div>
+          <p class="analysis-name">Analytics Score</p>
+        </div>
+        <div class="col-md-4">
+          <section class="panel" style="margin-bottom: 0px">
+            <div class="panel-body">
+              <button class="btn btn-white btn-block">Save</button>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-body">
+              <button class="btn btn-white btn-block">Modify</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section> -->
+  <section class="panel">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-6 ">
+          <div class="square">
+            <div>
+              <img src="assets/img/icons/user.png">
+            </div>
+            <p>Social</p>
+            <p style="font-size:18px;margin-top:10px;">
+              <b>{{analytics_data?.creditclan?.social?.score}}%</b>
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6">
+
+          <div style="margin-top:20px">
+            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+              <div class="form-group">
+                <span class="pull-left text-primary">Social Analytics</span>
+
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+              <div (click)="hideParentTopBar()" class="form-group" style="cursor: pointer">
+                <span class="pull-left text-primary">Linked In</span>
+                <span class="pull-right">
+                  {{analytics_data?.creditclan?.social?.elements?.linkedin}}
+                </span>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="panel">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-6 ">
+          <div class="square">
+            <div>
+              <img src="assets/img/icons/user.png">
+            </div>
+            <p>Repayment History</p>
+            <p style="font-size:18px;margin-top:10px;">
+              <b>{{analytics_data?.creditclan?.repayment?.score}}%</b>
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6">
+
+          <div style="margin-top:20px">
+            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+              <div class="form-group">
+                <span class="pull-left text-primary">Repayment History</span>
+
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
+
+              <div (click)="hideParentTopBar()" class="form-group" style="cursor: pointer">
+                <span class="pull-left text-primary">Linked In</span>
+                <span class="pull-right">
+                  {{analytics_data?.creditclan?.repayment?.elements?.repayment}}
+                </span>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

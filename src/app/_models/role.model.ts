@@ -5,5 +5,6 @@ export class RoleModel {
       public IS_CREDIT: boolean,
       public PEOPLE_PEOPLE_ROLE_ID?: string,
       public CHECKED?: boolean,
+      public CHECKED_?: boolean
     ) { }
   }

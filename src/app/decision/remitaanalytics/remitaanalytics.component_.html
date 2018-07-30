@@ -1,0 +1,84 @@
+<div class="panel-body">
+        <form #analyticsform="ngForm" novalidate>
+          <ul class="list list_border sm">
+            <li class="text-left sub_list" style="padding-left: 20px">
+              <div class="row">
+                <div class="col-md-3" style="vertical-align: bottom;">
+                  <p style="margin:20px 0 0">Excluded Companies</p>
+                </div>
+                <div class="col-md-9">
+                  <ion-range-slider [from]="remita_analytics?.excluded_companies" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'excluded_companies')"></ion-range-slider>
+                </div>
+              </div>
+            </li>
+        
+            <!-- <li class="text-left sub_list" style="padding-left: 20px">
+              <div class="row">
+                <div class="col-md-3" style="vertical-align: bottom;">
+                  <p style="margin:20px 0 0">Company Popularity</p>
+                </div>
+                <div class="col-md-9">
+                  <ion-range-slider [from]="remita_analytics?.company_popularity" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'company_popularity')"></ion-range-slider>
+                </div>
+              </div>
+            </li> -->
+            
+            <!-- <li class="text-left sub_list" style="padding-left: 20px">
+              <div class="row">
+                <div class="col-md-3" style="vertical-align: bottom;">
+                  <p style="margin:20px 0 0">Allowed Companies</p>
+                </div>
+                <div class="col-md-9">
+                  <ion-range-slider [from]="remita_analytics?.allowed_companies" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'allowed_companies')"></ion-range-slider>
+                </div>
+              </div>
+            </li> -->
+            <li class="text-left sub_list" style="padding-left: 20px">
+              <div class="row">
+                <div class="col-md-3" style="vertical-align: bottom;">
+                  <p style="margin:20px 0 0">Allowed Bank</p>
+                </div>
+                <div class="col-md-9">
+                  <ion-range-slider [from]="remita_analytics?.allowed_banks" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'allowed_banks')"></ion-range-slider>
+                </div>
+              </div>
+            </li>
+        
+            <li class="text-left" style="padding-left: 20px">
+              <div class="row">
+                <div class="col-md-3" style="vertical-align: bottom;">
+                  <p style="margin:20px 0 0">Bank Account Match</p>
+                </div>
+                <div class="col-md-9">
+                  <ion-range-slider [from]="remita_analytics?.bank_account_match" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'bank_account_match')"></ion-range-slider>
+                </div>
+              </div>
+            </li>
+        
+            
+        
+            
+            <!-- <li class="text-left sub_list" style="padding-left: 20px">
+              <div class="row">
+                <div class="col-md-3" style="vertical-align: bottom;">
+                  <p style="margin:20px 0 0">Variation in salary</p>
+                </div>
+                <div class="col-md-9">
+                  <ion-range-slider [from]="remita_analytics?.variation_in_salary" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'variation_in_salary')"></ion-range-slider>
+                </div>
+              </div>
+            </li>
+            <li class="text-left sub_list" style="padding-left: 20px">
+              <div class="row">
+                <div class="col-md-3" style="vertical-align: bottom;">
+                  <p style="margin:20px 0 0">Variation in Pay Date</p>
+                </div>
+                <div class="col-md-9">
+                  <ion-range-slider [from]="remita_analytics?.variation_in_pay_date" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'variation_in_pay_date')"></ion-range-slider>
+                </div>
+              </div>
+            </li> -->
+          </ul>
+          
+        </form>
+      </div>

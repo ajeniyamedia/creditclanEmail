@@ -1,5 +1,15 @@
 <form #analyticsform="ngForm" novalidate>
   <ul class="list list_border sm">
+      <li class="text-left sub_list" style="padding-left: 20px">
+          <div class="row">
+            <div class="col-md-3" style="vertical-align: bottom;">
+              <p style="margin:20px 0 0">Social</p>
+            </div>
+            <div class="col-md-9">
+              <ion-range-slider [from]="analytics_settings?.social" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'social')"></ion-range-slider>
+            </div>
+          </div>
+        </li>
     <li class="text-left sub_list" style="padding-left: 20px">
       <div class="row">
         <div class="col-md-3" style="vertical-align: bottom;">

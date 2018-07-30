@@ -2,194 +2,6 @@
 <div *ngIf="view=='ussd' ">
     <div class="container" [ngClass]="is_mobile == true? 'head': 'dashhead'">
         <div class="row">
-<<<<<<< HEAD
-            <div [ngClass]="is_mobile == true? 'col-md-6': 'col-md-9'">         
-                <section class="panel panl" style="margin-bottom: 5px">
-                    <div class="panel-body">
-                      <article class="media">                      
-                          <div class="pull-left">
-                            <h4 class="no-margin">USSD Settings</h4>
-                          </div> 
-                      </article>                  
-                    </div>
-                </section>
-    
-                <div>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                        <div class="panel panel-default">
-                          <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Customer Registeration Settings
-                              </a>
-                            </h4>
-                          </div>
-                          <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                            <div class="panel-body" style="padding: 15px 70px">
-                                    <form #f="ngForm" novalidate>
-                                <h4>Along with the fullname and email of the user,choose any four options below</h4>
-                                <ul class="list list_border sm">
-                                    
-                                    <li class="text-left ">
-                                        <span> Gender</span>
-                                        <div class="pull-right">
-                                            <input type="checkbox" name="gender" [(ngModel)]="ussd.gender" [checked]="ussd.gender=='4'">
-                                        </div>
-                                    </li>                                
-                                    <li class="text-left ">
-                                        <span> Date of Birth</span>
-                                        <div class="pull-right">
-                                                <input type="checkbox" name="dateofbirth" [(ngModel)]="ussd.dateofbirth">
-                                        </div>
-                                    </li>
-                                    <li class="text-left ">
-                                        <span> Occupation</span>
-                                        <div class="pull-right">
-                                                <input type="checkbox" name="occupation" [(ngModel)]="ussd.occupation">
-                                        </div>
-                                    </li>
-                                    <li class="text-left ">
-                                        <span> Home Address</span>
-                                        <div class="pull-right">
-                                                <input type="checkbox" name="homeaddress" [(ngModel)]="ussd.homeaddress">
-                                        </div>
-                                    </li>
-                                    <li class="text-left ">
-                                        <span> Work Address</span>
-                                        <div class="pull-right">
-                                                <input type="checkbox" name="workaddress" [(ngModel)]="ussd.workaddress">
-                                        </div>
-                                    </li>
-                                    <li class="text-left ">
-                                        <span> Occupation Sector (E.g Banking,Telecommunications)</span>
-                                        <div class="pull-right">
-                                                <input type="checkbox" name="occupationsector" [(ngModel)]="ussd.occupationsector">
-                                        </div>
-                                    </li>
-                                    <li class="text-left ">
-                                        <span> Company of Work Name</span>
-                                        <div class="pull-right">
-                                                <input type="checkbox" name="companyofworkname" [(ngModel)]="ussd.companyofworkname">
-                                        </div>
-                                    </li>
-                                    <li class="text-left ">
-                                        <span> Monthly Earning</span>
-                                        <div class="pull-right">
-                                                <input type="checkbox" name="monthlyearning" [(ngModel)]="ussd.monthlyearning">
-                                        </div>
-                                    </li>
-                                    <li class="text-left ">
-                                        <span> Educational Qualification</span>
-                                        <div class="pull-right">
-                                            <input type="checkbox" name="educationalqualification" [(ngModel)]="ussd.educationalqualification">
-                                        </div>
-                                    </li>
-                                    <li class="text-left ">
-                                        <span> Institution Attended</span>
-                                        <div class="pull-right">
-                                            <input type="checkbox" name="institutionattended" [(ngModel)]="ussd.institutionattended">
-                                        </div>
-                                    </li> 
-                                </ul>
-                                <button type="submit" (click)="save(f.value, f.valid)" [disabled]="loading" class="btn btn-white pull-right"><span *ngIf="!loading">Submit</span> <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
-                                </form>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="panel panel-default">
-                          <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
-                              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Loan Application Settings
-                              </a>
-                            </h4>
-                          </div>
-                          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                            <div class="panel-body" style="padding: 15px 70px">
-                                    <form #g="ngForm" novalidate>
-                                <ul class="list list_border sm">
-                                                                         
-                                    <li class="text-left">
-                                        <span> Is loan request amount fixed or flexible</span>
-                                        <div class="pull-right">
-                                            <input type="checkbox" name="fixedorvariable" name="fixedorvariable" [(ngModel)]="ussd.fixedorvariable">
-                                        </div>
-                                    </li>
-                                    <li class="text-left sub_list" *ngIf="ussd.fixedorvariable">
-                                        <span> Default Starting Amount</span>
-                                        <div class="pull-right">
-                                            <input type="text" name="default_starting_amount" [(ngModel)]="ussd.default_starting_amount">
-                                        </div>
-                                    </li>
-                                    <li class="text-left sub_list" *ngIf="ussd.fixedorvariable">
-                                        <span> Ratio</span>
-                                        <div class="pull-right">
-                                            <input type="text" name="ussd_division_ration" [(ngModel)]="ussd.ussd_division_ration">
-                                        </div>
-                                    </li>
-                                    <li class="text-left sub_list" *ngIf="ussd.fixedorvariable">
-                                        <span> Tenor</span>
-                                        <div class="pull-right">
-                                            <input type="text" name="base_duration_value" [(ngModel)]="ussd.base_duration_value">
-                                        </div>
-                                    </li>
-                                    <li class="text-left sub_list" style="padding-bottom:30px" *ngIf="ussd.fixedorvariable">
-                                        <span> Duration</span>
-                                        <div class="pull-right form-group">
-                                           <select class="form-control" name="base_duration" [(ngModel)]="ussd.base_duration">
-                                                <option [value]="2">Days</option>
-                                                <option [value]="1">Months</option>
-                                            </select>
-                                        </div>
-                                    </li>
-                                    <li class="text-left">
-                                            <span> Validate request aganist eligibility settings</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="validateagainsteligibility" [(ngModel)]="ussd.validateagainsteligibility">
-                                            </div>
-                                        </li>     
-                                </ul>
-                                <button type="submit" (click)="save_(g.value, g.valid)" [disabled]="loading" class="btn btn-white pull-right"><span *ngIf="!loading">Submit</span> <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
-                                </form>
-                            </div>
-                          </div>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-    
-    
-            <div class="col-md-3" *ngIf="!is_mobile">            
-                <div class="panel-body text-center b_grey crd_theme">
-                    <div class="text-center crd_top" style="margin-top: 5px; margin-bottom: 15px;">
-                      <p class="t_lh1"><img src="assets/images/phone_blue.PNG"></p>
-                    </div>
-                    <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline">Back</a>
-                </div>
-    
-                <section class="box panel">
-                  <div class="panel-body">              
-                    <ul class="list list_border">
-                        <li>
-                          <a class="txt_l4" [routerLink]="['../mobile']">Mobile App</a>
-                        </li>                      
-                        <li>
-                          <a class="txt_l4" [routerLink]="['../backend']">Backend</a>
-                        </li>
-                        <li>
-                          <a class="txt_l4" [routerLink]="['../ussd']">USSD</a>
-                        </li>       
-                        <li>
-                          <a class="txt_l4" [routerLink]="['../decision-engine']">Decision Engine</a>
-                        </li>                                   
-                    </ul>
-                  </div>
-                </section>
-            </div>
-    
-    
-=======
             <div [ngClass]="is_mobile == true? 'col-md-6': 'col-md-9'">
                 <section class="panel panl" style="margin-bottom: 5px">
                     <div class="panel-body">
@@ -200,7 +12,6 @@
                         </article>
                     </div>
                 </section>
-
                 <div>
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
@@ -213,6 +24,7 @@
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body" style="padding: 15px 70px">
+
                                     <form #f="ngForm" novalidate>
                                         <h4>Along with the fullname and email of the user,choose any four options below</h4>
                                         <ul class="list list_border sm">
@@ -283,8 +95,10 @@
                                             <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                                         </button>
                                     </form>
+
                                 </div>
                             </div>
+
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingTwo">
@@ -348,12 +162,9 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-
-
             <div class="col-md-3" *ngIf="!is_mobile">
                 <div class="panel-body text-center b_grey crd_theme">
                     <div class="text-center crd_top" style="margin-top: 5px; margin-bottom: 15px;">
@@ -383,25 +194,13 @@
                     </div>
                 </section>
             </div>
-
-
->>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
         </div>
     </div>
 </div>
-<div class="container dashhead">
+<div class="container dashhead" *ngIf="view=='mobile'">
     <div class="row">
-<<<<<<< HEAD
-        <div class="col-md-9" [ngClass]="is_mobile == true? 'col-md-6': 'col-md-9'">               
-            <section class="panel panl" style="margin-bottom: 5px">
-                <div class="panel-body">
-                  <article class="media">                      
-                      <div class="pull-left">
-                        <h4 class="no-margin">Mobile App Settings (Borrower)</h4>
-                      </div> 
-                  </article>                  
-=======
         <div class="col-md-9" [ngClass]="is_mobile == true? 'col-md-6': 'col-md-9'">
+
             <section class="panel panl" style="margin-bottom: 5px">
                 <div class="panel-body">
                     <article class="media">
@@ -409,238 +208,25 @@
                             <h4 class="no-margin">Mobile App Settings (Borrower)</h4>
                         </div>
                     </article>
->>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
                 </div>
             </section>
-
             <div>
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-<<<<<<< HEAD
-<<<<<<< HEAD
-                        <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingVR">
-                                  <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseVR" aria-expanded="true" aria-controls="collapseVR">
-                                      Validate Customer Records
-                                    </a>
-                                  </h4>
-                                </div>
-                                <div id="collapseVR" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseVR">
-                                  <div class="panel-body" style="padding: 15px 70px">
-                                      <form #vrForm="ngForm" novalidate>
-                                      <ul class="list list_border sm">
-                                          <li class="text-left">
-                                              <span> <p class="no-margin"></p>BVN name must match the records added by the customer</span>
-                                              <div class="pull-right">
-                                              
-                                                  <input type="checkbox" name="bvnmustmatch" [(ngModel)]="vr.bvnmustmatch">
-                                              </div>
-                                          </li>                                          
-                                          <li class="text-left hide">
-                                              <span> Name on repayment card must match the records added by the customer</span>
-                                              <div class="pull-right">
-                                                  <input type="checkbox" name="cardmustmatch" [(ngModel)]="vr.cardmustmatch">
-                                              </div>
-                                          </li>
-                                          <li class="text-left">
-                                              <span> Bank Account name must match the records added by the customer</span>
-                                              <div class="pull-right">
-                                                  <input type="checkbox" name="accountmustmatch" [(ngModel)]="vr.accountmustmatch">
-                                              </div>
-                                          </li>                                
-                                      </ul>
-                                      <button type="submit" (click)="saveRecordsValidation(vrForm.value, vrForm.valid)" [disabled]="loading" class="btn btn-white pull-right"><span *ngIf="!loading">Submit</span> <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
-                                          </form>
-                                  </div>
-                                </div>
-                              </div>
-                    <div class="panel panel-default">
-                      <div class="panel-heading" role="tab" id="headingOne">
-                        <h4 class="panel-title">
-                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            Customer Registeration
-                          </a>
-                        </h4>
-                      </div>
-                      <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                        <div class="panel-body" style="padding: 15px 70px">
-                            <form #h="ngForm" novalidate>
-                            <ul class="list list_border sm">
-                                <li class="text-left">
-                                    <span> <p class="no-margin"><strong>Email Confirmation</strong></p>Should the customer confirm his/her email before proceeding after signing up </span>
-                                    <div class="pull-right">
-                                    
-                                        <input type="checkbox" name="customerconfirmsemailafterregisteration" [(ngModel)]="mobile.customerconfirmsemailafterregisteration">
-                                    </div>
-                                </li>                                          
-                                <li class="text-left">
-                                    <span> Provide BVN before proceeding after signing up</span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="shouldthecustomerporvidebvnaftersigningup" [(ngModel)]="mobile.shouldthecustomerporvidebvnaftersigningup">
-                                    </div>
-                                </li>
-                                <li class="text-left" *ngIf="mobile.shouldthecustomerporvidebvnaftersigningup">
-                                    <span> Confirm BVN before proceeding after signing up</span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="shouldthebvnbevalidatedrealtime" [(ngModel)]="mobile.shouldthebvnbevalidatedrealtime">
-                                    </div>
-                                </li> 
-                                <li class="text-left">
-                                    <span>Notification</span>
-                                  </li>   
-                                  <li class="text-left" style="padding-left: 60px">
-                                    <span>Send email notification</span>
-                                    <div class="pull-right">
-                                        <input type="checkbox"  name="SEND_NEW_CUSTOMER_REGISTERED" [(ngModel)]="mobile.SEND_NEW_CUSTOMER_REGISTERED">
-                                    </div>
-                                </li>      
-                                <li class="text-left" style="padding-left: 60px" *ngIf="mobile.SEND_NEW_CUSTOMER_REGISTERED">
-                                    <span>Email</span>
-                                    <div class="pull-right">
-                                        <input type="textbox" name="SEND_NEW_CUSTOMER_REGISTERED_EMAIL" [(ngModel)]="mobile.SEND_NEW_CUSTOMER_REGISTERED_EMAIL">
-                                    </div>
-                                </li>                                  
-                            </ul>
-                            <button type="submit" (click)="saveMobileRegisteration(h.value, h.valid)" [disabled]="loading" class="btn btn-white pull-right"><span *ngIf="!loading">Submit</span> <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
-                                </form>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="panel panel-default">
-                      <div class="panel-heading" role="tab" id="headingTwo">
-                        <h4 class="panel-title">
-                          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Loan Application
-                          </a>
-                        </h4>
-                      </div>
-                      <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                        <div class="panel-body" style="padding: 15px 70px">
-                                <form #i="ngForm" novalidate>
-                            <ul class="list list_border sm">
-                                <li class="text-left">
-                                  <span>Pre Loan Application Checks</span>
-                                </li>
-                                
-                                <li class="text-left sub_list">
-                                    <span>Allow only users with verified BVN</span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="checkifuserhasvalidatedbvn" [(ngModel)]="mobile.checkifuserhasvalidatedbvn">
-                                    </div>
-                                </li>
-                                <li class="text-left sub_list">
-                                    <span>Allow only users with verified emails</span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="checkifuserhasvalidatedemail" [(ngModel)]="mobile.checkifuserhasvalidatedemail">
-                                    </div>
-                                </li>
-                            </ul>
+                        <!-- <app-generalform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
+                        [loan_duration]='loan_duration' [loading]='loading' [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'>
 
-                            <p class="t_l4" style="margin-top: 30px; margin-bottom: 0"><strong>Documents to be asked during loan application</strong></p>
-                            <ul class="list list_border sm">
-                                <li class="text-left">
-                                  <span>Profile</span>
-                                </li> 
-                                <li class="text-left sub_list">
-                                    <span>Must a selfie be provided</span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="mustprovideselfie" [(ngModel)]="mobile.mustprovideselfie">
-                                    </div>
-                                </li>
-                                <li class="text-left sub_list">
-                                    <span>Must next of kin details  be provided</span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="nextofkin" [(ngModel)]="mobile.nextofkin">
-                                    </div>
-                                </li>
-                                <li class="text-left sub_list">
-                                    <span>Must provide Education Information</span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="education" [(ngModel)]="mobile.education">
-                                    </div>
-                                </li>
-                                <li class="text-left sub_list">
-                                    <span>Must connect at least a social media account(Facebook,Twitter or LinkedIn)</span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="social" [(ngModel)]="mobile.social">
-                                    </div>
-                                </li>
+    <app-interestform (saveForm)="saveITFrom($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
+        [interest_duration]='interest_duration' [special_interest_duration]='special_interest_duration' [loading]='loading'
+        [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'></app-interestform>
 
-                                <li class="text-left">
-                                  <span>Home Address</span>
-                                </li>
-                                <li class="text-left sub_list">
-                                    <span>Should the home address be provided </span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="homeaddress" [(ngModel)]="mobile.homeaddress">
-                                    </div>
-                                </li>
-                                <li class="text-left sub_list">
-                                    <span>Must provide proof of home address</span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="proofofaddress" [(ngModel)]="mobile.proofofaddress">
-                                    </div>
-                                </li>
+    <app-loanamount (saveForm)="saveLAFrom($event)" [product]='product' [special_interest_duration]='special_interest_duration'
+        [loading]='loading' [loan_durations]='loan_durations'></app-loanamount>
 
-                                <li class="text-left">
-                                  <span>Work Information</span>
-                                </li>
-                                <li class="text-left sub_list">
-                                    <span>Must provide work information </span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="workinfo" [(ngModel)]="mobile.workinfo">
-                                    </div>
-                                </li>
-                                <li class="text-left sub_list">
-                                    <span>Must provide personal expense details(E.g phone,internet) </span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="personalexpense" [(ngModel)]="mobile.personalexpense">
-                                    </div>
-                                </li>
-                                <li class="text-left sub_list">
-                                    <span>Must provide financial records (E.g payslips,bank statements)</span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="financialrecords" [(ngModel)]="mobile.financialrecords">
-                                    </div>
-                                </li>
-                                <li class="text-left" style="padding-left: 60px" *ngIf="mobile.financialrecords">
-                                    <span>How many months of payslips/bank statements to be provided</span>
-                                    <div class="pull-right">
-                                        <input type="textbox" name="nooffinancial" [(ngModel)]="mobile.nooffinancial">
-                                    </div>
-                                </li>   
-                                <li class="text-left sub_list">
-                                        <span>Must provide guarantors</span>
-                                        <div class="pull-right">
-                                            <input type="checkbox" name="guarantor" [(ngModel)]="mobile.guarantor">
-                                        </div>
-                                    </li>
-                                    <li class="text-left" style="padding-left: 60px" *ngIf="mobile.guarantor">
-                                        <span>How many guarantors</span>
-                                        <div class="pull-right">
-                                            <input type="text" name="guarantorcount" [(ngModel)]="mobile.guarantorcount">
-                                        </div>
-                                    </li> 
-                                    <li class="text-left" style="padding-left: 60px">
-=======
-                    <app-generalform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
-=======
-                    <!-- <app-generalform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
->>>>>>> 4b20b0ce4eaae383243ff4a3caa0138acb496d5b
-                        [loan_duration]='loan_duration' [loading]='loading' [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'></app-generalform>
+    <app-interestratefloor [product]='product' [floor_rate]='floor_rate' [loading]='loading' [loan_durations]='loan_durations' (saveForm)="saveFRFrom($event)"
+        [special_interest_duration]='special_interest_duration'></app-interestratefloor>
 
-                    <app-interestform (saveForm)="saveITFrom($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
-                        [interest_duration]='interest_duration' [special_interest_duration]='special_interest_duration' [loading]='loading'
-                        [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'></app-interestform>
-
-                    <app-loanamount (saveForm)="saveLAFrom($event)" [product]='product' [special_interest_duration]='special_interest_duration'
-                        [loading]='loading' [loan_durations]='loan_durations'></app-loanamount>
-
-                    <app-interestratefloor [product]='product' [floor_rate]='floor_rate' [loading]='loading' [loan_durations]='loan_durations' (saveForm)="saveFRFrom($event)"
-                        [special_interest_duration]='special_interest_duration'></app-interestratefloor>
-
-                    <app-originationfee (saveForm)="saveOFFrom($event)" [product]='product' [companyaccounts]='companyaccounts' [loading]='loading'
-                        [fee_settings]='fee_settings'></app-originationfee> -->
+    <app-originationfee (saveForm)="saveOFFrom($event)" [product]='product' [companyaccounts]='companyaccounts' [loading]='loading'
+        [fee_settings]='fee_settings'></app-originationfee>  -->
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingVR">
                             <h4 class="panel-title">
@@ -683,444 +269,292 @@
                         </div>
                     </div>
                     <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingCR">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCR" aria-expanded="false" aria-controls="collapseCR">
-                                    Customer Registeration
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseCR" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingCR">
-                            <div class="panel-body" style="padding: 15px 70px">
-                                <form #h="ngForm" novalidate>
-                                    <ul class="list list_border sm">
-                                        <li class="text-left">
-                                            <span>
-                                                <p class="no-margin">
-                                                    <strong>Email Confirmation</strong>
-                                                </p>Should the customer confirm his/her email before proceeding after signing
-                                                up </span>
-                                            <div class="pull-right">
-
-                                                <input type="checkbox" name="customerconfirmsemailafterregisteration" [(ngModel)]="mobile.customerconfirmsemailafterregisteration">
-                                            </div>
-                                        </li>
-                                        <li class="text-left">
-                                            <span> Provide BVN before proceeding after signing up</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="shouldthecustomerporvidebvnaftersigningup" [(ngModel)]="mobile.shouldthecustomerporvidebvnaftersigningup">
-                                            </div>
-                                        </li>
-                                        <li class="text-left" *ngIf="mobile.shouldthecustomerporvidebvnaftersigningup">
-                                            <span> Confirm BVN before proceeding after signing up</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="shouldthebvnbevalidatedrealtime" [(ngModel)]="mobile.shouldthebvnbevalidatedrealtime">
-                                            </div>
-                                        </li>
-                                        <li class="text-left">
-                                            <span>Notification</span>
-                                        </li>
-                                        <li class="text-left" style="padding-left: 60px">
-                                            <span>Send email notification</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="SEND_NEW_CUSTOMER_REGISTERED" [(ngModel)]="mobile.SEND_NEW_CUSTOMER_REGISTERED">
-                                            </div>
-                                        </li>
-                                        <li class="text-left" style="padding-left: 60px" *ngIf="mobile.SEND_NEW_CUSTOMER_REGISTERED">
-                                            <span>Email</span>
-                                            <div class="pull-right">
-                                                <input type="textbox" name="SEND_NEW_CUSTOMER_REGISTERED_EMAIL" [(ngModel)]="mobile.SEND_NEW_CUSTOMER_REGISTERED_EMAIL">
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <button type="submit" (click)="saveMobileRegisteration(h.value, h.valid)" [disabled]="loading" class="btn btn-white pull-right">
-                                        <span *ngIf="!loading">Submit</span>
-                                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
-                                    </button>
-                                </form>
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                        Customer Registeration
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="panel-body" style="padding: 15px 70px">
+                                    <form #h="ngForm" novalidate>
+                                        <ul class="list list_border sm">
+                                            <li class="text-left">
+                                                <span>
+                                                    <p class="no-margin">
+                                                        <strong>Email Confirmation</strong>
+                                                    </p>Should the customer confirm his/her email before proceeding after signing up
+                                                    </span>
+                                                <div class="pull-right">
+        
+                                                    <input type="checkbox" name="customerconfirmsemailafterregisteration" [(ngModel)]="mobile.customerconfirmsemailafterregisteration">
+                                                </div>
+                                            </li>
+                                            <li class="text-left">
+                                                <span> Provide BVN before proceeding after signing up</span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="shouldthecustomerporvidebvnaftersigningup" [(ngModel)]="mobile.shouldthecustomerporvidebvnaftersigningup">
+                                                </div>
+                                            </li>
+                                            <li class="text-left" *ngIf="mobile.shouldthecustomerporvidebvnaftersigningup">
+                                                <span> Confirm BVN before proceeding after signing up</span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="shouldthebvnbevalidatedrealtime" [(ngModel)]="mobile.shouldthebvnbevalidatedrealtime">
+                                                </div>
+                                            </li>
+                                            <li class="text-left">
+                                                <span>Notification</span>
+                                            </li>
+                                            <li class="text-left" style="padding-left: 60px">
+                                                <span>Send email notification</span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="SEND_NEW_CUSTOMER_REGISTERED" [(ngModel)]="mobile.SEND_NEW_CUSTOMER_REGISTERED">
+                                                </div>
+                                            </li>
+                                            <li class="text-left" style="padding-left: 60px" *ngIf="mobile.SEND_NEW_CUSTOMER_REGISTERED">
+                                                <span>Email</span>
+                                                <div class="pull-right">
+                                                    <input type="textbox" name="SEND_NEW_CUSTOMER_REGISTERED_EMAIL" [(ngModel)]="mobile.SEND_NEW_CUSTOMER_REGISTERED_EMAIL">
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <button type="submit" (click)="saveMobileRegisteration(h.value, h.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                                            <span *ngIf="!loading">Submit</span>
+                                            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingLA">
-                            <h4 class="panel-title">
-                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseLA" aria-expanded="false"
-                                    aria-controls="collapseLA">
-                                    Loan Application
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseLA" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLA">
-                            <div class="panel-body" style="padding: 15px 70px">
-                                <form #i="ngForm" novalidate>
-                                    <ul class="list list_border sm">
-                                        <li class="text-left">
-                                            <span>Pre Loan Application Checks</span>
-                                        </li>
-
-                                        <li class="text-left sub_list">
-                                            <span>Allow only users with verified BVN</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="checkifuserhasvalidatedbvn" [(ngModel)]="mobile.checkifuserhasvalidatedbvn">
-                                            </div>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Allow only users with verified emails</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="checkifuserhasvalidatedemail" [(ngModel)]="mobile.checkifuserhasvalidatedemail">
-                                            </div>
-                                        </li>
-                                    </ul>
-
-                                    <p class="t_l4" style="margin-top: 30px; margin-bottom: 0">
-                                        <strong>Documents to be asked during loan application</strong>
-                                    </p>
-                                    <ul class="list list_border sm">
-                                        <li class="text-left">
-                                            <span>Profile</span>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Must a selfie be provided</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="mustprovideselfie" [(ngModel)]="mobile.mustprovideselfie">
-                                            </div>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Must next of kin details be provided</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="nextofkin" [(ngModel)]="mobile.nextofkin">
-                                            </div>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Must provide Education Information</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="education" [(ngModel)]="mobile.education">
-                                            </div>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Must connect at least a social media account(Facebook,Twitter or LinkedIn)</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="social" [(ngModel)]="mobile.social">
-                                            </div>
-                                        </li>
-
-                                        <li class="text-left">
-                                            <span>Home Address</span>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Should the home address be provided </span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="homeaddress" [(ngModel)]="mobile.homeaddress">
-                                            </div>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Must provide proof of home address</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="proofofaddress" [(ngModel)]="mobile.proofofaddress">
-                                            </div>
-                                        </li>
-
-                                        <li class="text-left">
-                                            <span>Work Information</span>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Must provide work information </span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="workinfo" [(ngModel)]="mobile.workinfo">
-                                            </div>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Must provide personal expense details(E.g phone,internet) </span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="personalexpense" [(ngModel)]="mobile.personalexpense">
-                                            </div>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Must provide financial records (E.g payslips,bank statements)</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="financialrecords" [(ngModel)]="mobile.financialrecords">
-                                            </div>
-                                        </li>
-                                        <li class="text-left" style="padding-left: 60px" *ngIf="mobile.financialrecords">
-                                            <span>How many months of payslips/bank statements to be provided</span>
-                                            <div class="pull-right">
-                                                <input type="textbox" name="nooffinancial" [(ngModel)]="mobile.nooffinancial">
-                                            </div>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Must provide guarantors</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="guarantor" [(ngModel)]="mobile.guarantor">
-                                            </div>
-                                        </li>
-                                        <li class="text-left" style="padding-left: 60px" *ngIf="mobile.guarantor">
-                                            <span>How many guarantors</span>
-                                            <div class="pull-right">
-                                                <input type="text" name="guarantorcount" [(ngModel)]="mobile.guarantorcount">
-                                            </div>
-                                        </li>
-                                        <li class="text-left" style="padding-left: 60px">
->>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
-                                            <span>Document Refresh Interval(days)</span>
-                                            <div class="pull-right">
-                                                <input type="text" name="documentrefresh" [(ngModel)]="mobile.documentrefresh">
-                                            </div>
-<<<<<<< HEAD
-                                        </li>   
-
-                                        <li class="text-left">
-                                            <span>Account Card</span>
-                                          </li>  
-                                          <li class="text-left" style="padding-left: 60px"  *ngFor="let ac of accountcards">
-                                            <span>{{ac.display}}</span>
-                                            <div class="pull-right">
-                                                <input type="radio"  name="accountcard" [value]="ac.value" [(ngModel)]="mobile.accountcard">
-                                            </div>
-                                        </li>      
-                             <li class="text-left">
-                                  <span>Loan Option</span>
-                                </li> 
-                                <li class="text-left sub_list">
-                                    <span>Must provide purpose of loan </span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="mustprovideloanpurpose" [(ngModel)]="mobile.mustprovideloanpurpose">
-                                    </div>
-                                </li>
-                                <li class="text-left sub_list">
-                                    <span>Add Referral Code </span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="addreferralcode" [(ngModel)]="mobile.addreferralcode">
-                                    </div>
-                                </li>
-                                <li class="text-left">
-                                    <span>Geolocation</span>
-                                  </li>
-                                  <li class="text-left sub_list">
-                                    <span>Enable location grabbing</span>
-                                    <div class="pull-right">
-                                        <input type="checkbox" name="ENABLE_GEOTAGGING" [(ngModel)]="mobile.ENABLE_GEOTAGGING">
-                                    </div>
-                                </li>
-                                <li class="text-left" style="padding-left: 60px" *ngIf="mobile.ENABLE_GEOTAGGING">
-                                    <span>Location grabbing retries</span>
-                                    <div class="pull-right">
-                                        <input type="text" name="GPS_RETRY" [(ngModel)]="mobile.GPS_RETRY">
-                                    </div>
-                                </li> 
-                                <li class="text-left">
-                                    <span>Notification</span>
-                                  </li>   
-                                  <li class="text-left" style="padding-left: 60px"  *ngFor="let opt of notify">
-                                    <span>{{opt.display}}</span>
-                                    <div class="pull-right">
-                                        <input type="radio"  name="mustnotifyaccountofficer" [value]="opt.value" [(ngModel)]="mobile.mustnotifyaccountofficer">
-                                    </div>
-                                </li>      
-                                <li class="text-left" style="padding-left: 60px" *ngIf="mobile.mustnotifyaccountofficer=='2'">
-                                    <span>Email</span>
-                                    <div class="pull-right">
-                                        <input type="textbox" name="notificationemail" [(ngModel)]="mobile.notificationemail">
-                                    </div>
-                                </li>   
-                            </ul>
-                            <button type="submit" (click)="saveMobileApplication(i.value, i.valid)" [disabled]="loading" class="btn btn-white pull-right"><span *ngIf="!loading">Submit</span> <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
-                        </form>
-                        </div>
-                      </div>
-                    </div> 
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTC">
-                          <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTC" aria-expanded="true" aria-controls="collapseTC">
-                              Terms and Condition
-                            </a>
-                          </h4>
-                        </div>
-                        <div id="collapseTC" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTC">
-                          <div class="panel-body">
-                              <form #tcs="ngForm" novalidate>
-                                    <ul class="list list_border sm">
-                                            <li class="text-left" style="margin-bottom:15px">
-                                                <span> <p class="no-margin"><strong>Include Terms in contract</strong></p></span>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingTwo">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
+                                        aria-controls="collapseTwo">
+                                        Loan Application
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                <div class="panel-body" style="padding: 15px 70px">
+                                    <form #i="ngForm" novalidate>
+                                        <ul class="list list_border sm">
+                                            <li class="text-left">
+                                                <span>Pre Loan Application Checks</span>
+                                            </li>
+        
+                                            <li class="text-left sub_list">
+                                                <span>Allow only users with verified BVN</span>
                                                 <div class="pull-right">
-                                                
+                                                    <input type="checkbox" name="checkifuserhasvalidatedbvn" [(ngModel)]="mobile.checkifuserhasvalidatedbvn">
+                                                </div>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Allow only users with verified emails</span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="checkifuserhasvalidatedemail" [(ngModel)]="mobile.checkifuserhasvalidatedemail">
+                                                </div>
+                                            </li>
+                                        </ul>
+        
+                                        <p class="t_l4" style="margin-top: 30px; margin-bottom: 0">
+                                            <strong>Documents to be asked during loan application</strong>
+                                        </p>
+                                        <ul class="list list_border sm">
+                                            <li class="text-left">
+                                                <span>Profile</span>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Must a selfie be provided</span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="mustprovideselfie" [(ngModel)]="mobile.mustprovideselfie">
+                                                </div>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Must next of kin details be provided</span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="nextofkin" [(ngModel)]="mobile.nextofkin">
+                                                </div>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Must provide Education Information</span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="education" [(ngModel)]="mobile.education">
+                                                </div>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Must connect at least a social media account(Facebook,Twitter or LinkedIn)</span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="social" [(ngModel)]="mobile.social">
+                                                </div>
+                                            </li>
+        
+                                            <li class="text-left">
+                                                <span>Home Address</span>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Should the home address be provided </span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="homeaddress" [(ngModel)]="mobile.homeaddress">
+                                                </div>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Must provide proof of home address</span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="proofofaddress" [(ngModel)]="mobile.proofofaddress">
+                                                </div>
+                                            </li>
+        
+                                            <li class="text-left">
+                                                <span>Work Information</span>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Must provide work information </span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="workinfo" [(ngModel)]="mobile.workinfo">
+                                                </div>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Must provide personal expense details(E.g phone,internet) </span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="personalexpense" [(ngModel)]="mobile.personalexpense">
+                                                </div>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Must provide financial records (E.g payslips,bank statements)</span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="financialrecords" [(ngModel)]="mobile.financialrecords">
+                                                </div>
+                                            </li>
+                                            <li class="text-left" style="padding-left: 60px" *ngIf="mobile.financialrecords">
+                                                <span>How many months of payslips/bank statements to be provided</span>
+                                                <div class="pull-right">
+                                                    <input type="textbox" name="nooffinancial" [(ngModel)]="mobile.nooffinancial">
+                                                </div>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Must provide guarantors</span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="guarantor" [(ngModel)]="mobile.guarantor">
+                                                </div>
+                                            </li>
+                                            <li class="text-left" style="padding-left: 60px" *ngIf="mobile.guarantor">
+                                                <span>How many guarantors</span>
+                                                <div class="pull-right">
+                                                    <input type="text" name="guarantorcount" [(ngModel)]="mobile.guarantorcount">
+                                                </div>
+                                            </li>
+                                            <li class="text-left" style="padding-left: 60px">
+                                                <span>Document Refresh Interval(days)</span>
+                                                <div class="pull-right">
+                                                    <input type="text" name="documentrefresh" [(ngModel)]="mobile.documentrefresh">
+                                                </div>
+                                            </li>
+        
+                                            <li class="text-left">
+                                                <span>Account Card</span>
+                                            </li>
+                                            <li class="text-left" style="padding-left: 60px" *ngFor="let ac of accountcards">
+                                                <span>{{ac.display}}</span>
+                                                <div class="pull-right">
+                                                    <input type="radio" name="accountcard" [value]="ac.value" [(ngModel)]="mobile.accountcard">
+                                                </div>
+                                            </li>
+                                            <li class="text-left">
+                                                <span>Loan Option</span>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Must provide purpose of loan </span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="mustprovideloanpurpose" [(ngModel)]="mobile.mustprovideloanpurpose">
+                                                </div>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Add Referral Code </span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="addreferralcode" [(ngModel)]="mobile.addreferralcode">
+                                                </div>
+                                            </li>
+                                            <li class="text-left">
+                                                <span>Geolocation</span>
+                                            </li>
+                                            <li class="text-left sub_list">
+                                                <span>Enable location grabbing</span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="ENABLE_GEOTAGGING" [(ngModel)]="mobile.ENABLE_GEOTAGGING">
+                                                </div>
+                                            </li>
+                                            <li class="text-left" style="padding-left: 60px" *ngIf="mobile.ENABLE_GEOTAGGING">
+                                                <span>Location grabbing retries</span>
+                                                <div class="pull-right">
+                                                    <input type="text" name="GPS_RETRY" [(ngModel)]="mobile.GPS_RETRY">
+                                                </div>
+                                            </li>
+                                            <li class="text-left">
+                                                <span>Notification</span>
+                                            </li>
+                                            <li class="text-left" style="padding-left: 60px" *ngFor="let opt of notify">
+                                                <span>{{opt.display}}</span>
+                                                <div class="pull-right">
+                                                    <input type="radio" name="mustnotifyaccountofficer" [value]="opt.value" [(ngModel)]="mobile.mustnotifyaccountofficer">
+                                                </div>
+                                            </li>
+                                            <li class="text-left" style="padding-left: 60px" *ngIf="mobile.mustnotifyaccountofficer=='2'">
+                                                <span>Email</span>
+                                                <div class="pull-right">
+                                                    <input type="textbox" name="notificationemail" [(ngModel)]="mobile.notificationemail">
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <button type="submit" (click)="saveMobileApplication(i.value, i.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                                            <span *ngIf="!loading">Submit</span>
+                                            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingTC">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTC" aria-expanded="true" aria-controls="collapseTC">
+                                        Terms and Condition
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTC" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTC">
+                                <div class="panel-body">
+                                    <form #tcs="ngForm" novalidate>
+                                        <ul class="list list_border sm">
+                                            <li class="text-left" style="margin-bottom:15px">
+                                                <span>
+                                                    <p class="no-margin">
+                                                        <strong>Include Terms in contract</strong>
+                                                    </p>
+                                                </span>
+                                                <div class="pull-right">
+        
                                                     <input type="checkbox" name="INCLUDE_TERMS_IN_CONTRACT" [(ngModel)]="tc.INCLUDE_TERMS_IN_CONTRACT">
                                                 </div>
-                                            </li>   
+                                            </li>
                                         </ul>
-                              <div class="form-group">
-                                    <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="mobile.loan_product_id">
-                                    <app-ngx-editor  [config]="editorConfig" name="TERMS_AND_CONDITIONS"  [(ngModel)]="tc.TERMS_AND_CONDITIONS"></app-ngx-editor>
-                              </div>
-                              <button type="submit" (click)="saveTC(tcs.value, tcs.valid)" [disabled]="loading" class="btn btn-white pull-right"><span *ngIf="!loading">Submit</span> <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
-                                  </form>
-                          </div>
-                        </div>
-                      </div>
-=======
-                                        </li>
-
-                                        <li class="text-left">
-                                            <span>Account Card</span>
-                                        </li>
-                                        <li class="text-left" style="padding-left: 60px" *ngFor="let ac of accountcards">
-                                            <span>{{ac.display}}</span>
-                                            <div class="pull-right">
-                                                <input type="radio" name="accountcard" [value]="ac.value" [(ngModel)]="mobile.accountcard">
-                                            </div>
-                                        </li>
-                                        <li class="text-left">
-                                            <span>Loan Option</span>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Must provide purpose of loan </span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="mustprovideloanpurpose" [(ngModel)]="mobile.mustprovideloanpurpose">
-                                            </div>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Add Referral Code </span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="addreferralcode" [(ngModel)]="mobile.addreferralcode">
-                                            </div>
-                                        </li>
-                                        <li class="text-left">
-                                            <span>Geolocation</span>
-                                        </li>
-                                        <li class="text-left sub_list">
-                                            <span>Enable location grabbing</span>
-                                            <div class="pull-right">
-                                                <input type="checkbox" name="ENABLE_GEOTAGGING" [(ngModel)]="mobile.ENABLE_GEOTAGGING">
-                                            </div>
-                                        </li>
-                                        <li class="text-left" style="padding-left: 60px" *ngIf="mobile.ENABLE_GEOTAGGING">
-                                            <span>Location grabbing retries</span>
-                                            <div class="pull-right">
-                                                <input type="text" name="GPS_RETRY" [(ngModel)]="mobile.GPS_RETRY">
-                                            </div>
-                                        </li>
-                                        <li class="text-left">
-                                            <span>Notification</span>
-                                        </li>
-                                        <li class="text-left" style="padding-left: 60px" *ngFor="let opt of notify">
-                                            <span>{{opt.display}}</span>
-                                            <div class="pull-right">
-                                                <input type="radio" name="mustnotifyaccountofficer" [value]="opt.value" [(ngModel)]="mobile.mustnotifyaccountofficer">
-                                            </div>
-                                        </li>
-                                        <li class="text-left" style="padding-left: 60px" *ngIf="mobile.mustnotifyaccountofficer=='2'">
-                                            <span>Email</span>
-                                            <div class="pull-right">
-                                                <input type="textbox" name="notificationemail" [(ngModel)]="mobile.notificationemail">
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <button type="submit" (click)="saveMobileApplication(i.value, i.valid)" [disabled]="loading" class="btn btn-white pull-right">
-                                        <span *ngIf="!loading">Submit</span>
-                                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
-                                    </button>
-                                </form>
+                                        <div class="form-group">
+                                            <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="mobile.loan_product_id">
+                                            <app-ngx-editor [config]="editorConfig" name="TERMS_AND_CONDITIONS" [(ngModel)]="tc.TERMS_AND_CONDITIONS"></app-ngx-editor>
+                                        </div>
+                                        <button type="submit" (click)="saveTC(tcs.value, tcs.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                                            <span *ngIf="!loading">Submit</span>
+                                            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTC">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTC" aria-expanded="true" aria-controls="collapseTC">
-                                    Terms and Condition
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseTC" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTC">
-                            <div class="panel-body">
-                                <form #tcs="ngForm" novalidate>
-                                    <ul class="list list_border sm">
-                                        <li class="text-left" style="margin-bottom:15px">
-                                            <span>
-                                                <p class="no-margin">
-                                                    <strong>Include Terms in contract</strong>
-                                                </p>
-                                            </span>
-                                            <div class="pull-right">
-
-                                                <input type="checkbox" name="INCLUDE_TERMS_IN_CONTRACT" [(ngModel)]="tc.INCLUDE_TERMS_IN_CONTRACT">
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="form-group">
-                                        <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="mobile.loan_product_id">
-                                        <app-ngx-editor [config]="editorConfig" name="TERMS_AND_CONDITIONS" [(ngModel)]="tc.TERMS_AND_CONDITIONS"></app-ngx-editor>
-                                    </div>
-                                    <button type="submit" (click)="saveTC(tcs.value, tcs.valid)" [disabled]="loading" class="btn btn-white pull-right">
-                                        <span *ngIf="!loading">Submit</span>
-                                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
->>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
                 </div>
+                
             </div>
         </div>
-
-
-<<<<<<< HEAD
-        <div class="col-md-3" *ngIf="!is_mobile">             
-            <div class="panel-body text-center b_grey crd_theme">
-                <div class="text-center crd_top" style="margin-top: 5px; margin-bottom: 15px;">
-                  <p class="t_lh1"><img src="assets/images/phone_blue.PNG"></p>
-=======
-        <div class="col-md-3" *ngIf="!is_mobile">
-            <div class="panel-body text-center b_grey crd_theme">
-                <div class="text-center crd_top" style="margin-top: 5px; margin-bottom: 15px;">
-                    <p class="t_lh1">
-                        <img src="assets/images/phone_blue.PNG">
-                    </p>
->>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
-                </div>
-                <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline">Back</a>
-            </div>
-
-            <section class="box panel">
-<<<<<<< HEAD
-              <div class="panel-body">              
-                <ul class="list list_border">
-                    <li>
-                      <a class="txt_l4" [routerLink]="['../mobile']">Mobile App</a>
-                    </li>                      
-                    <li>
-                      <a class="txt_l4" [routerLink]="['../backend']">Backend</a>
-                    </li>
-                    <li>
-                      <a class="txt_l4" [routerLink]="['../ussd']">USSD</a>
-                    </li>       
-                    <li>
-                      <a class="txt_l4" [routerLink]="['../decision-engine']">Decision Engine</a>
-                    </li>                                   
-                </ul>
-              </div>
-=======
-                <div class="panel-body">
-                    <ul class="list list_border">
-                        <li>
-                            <a class="txt_l4" [routerLink]="['../mobile']">Mobile App</a>
-                        </li>
-                        <li>
-                            <a class="txt_l4" [routerLink]="['../backend']">Backend</a>
-                        </li>
-                        <li>
-                            <a class="txt_l4" [routerLink]="['../ussd']">USSD</a>
-                        </li>
-                        <li>
-                            <a class="txt_l4" [routerLink]="['../decision-engine']">Decision Engine</a>
-                        </li>
-                    </ul>
-                </div>
->>>>>>> 9f7ffa6d436bbc2676aab04d8ef6fce16d78ad7d
-            </section>
-        </div>
-
 
     </div>
 </div>
