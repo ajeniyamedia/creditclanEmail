@@ -407,3 +407,6 @@ article .fa-pencil {
     .customers_menu a:hover{
         color: #5294C6;
     }
+.difficulty {
+    border:2px solid red;
+}

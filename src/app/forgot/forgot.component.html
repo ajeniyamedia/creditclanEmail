@@ -1,0 +1,84 @@
+<div class="login-body">
+	<header class="header white-bg">
+      <img src="assets/img/CC_wide_colour_1.png" style="max-width: 200px;">
+    </header>
+     <div class="container" style="min-height:1000px">
+        <div class="row" style="margin: 150px -15px;">
+            <div class="col-md-7 sidetxt" style="border-right:1px solid #ddd">
+            <div class="row">
+                <div class="col-md-12">
+                  <!-- <h1 class="text-center"> Welcome </h1> -->
+                </div>
+                <div class="col-md-4">
+                  <div class="panel-body profile-nav">
+                      <div class="user-heading round">
+                                <a href="#">
+                                        <img src="assets/img/p5.jpg" alt="">
+                                    </a>
+                        </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="panel-body profile-nav">
+                      <div class="user-heading round">
+                                <a href="#">
+                                        <img src="assets/img/p7.jpg" alt="">
+                                    </a>
+                        </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="panel-body profile-nav">
+                      <div class="user-heading round">
+                                <a href="#">
+                                        <img src="assets/img/blk2.jpg" alt="">
+                                    </a>
+                        </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                    <h2 class="text-center" style="margin-top:10px;">
+                          <!-- See for yourself why millions of people love -->
+                          Monitor your operations seamlessly with CreditClan
+                    </h2>
+                </div>
+
+            </div>
+               
+                 
+            </div>
+            <div class="col-md-4 ">
+            <form class="form-signin" name="form" (ngSubmit)="f.form.valid && forgot()" #f="ngForm" novalidate style="margin: 40px auto;">
+                
+                      <h2 class="text-left no-margin ">Forgot Password</h2>
+                      <hr class="no-margin">
+                      <div class="">
+                          <input type="email" class="form-control" placeholder="Email" name="email" required [(ngModel)]="model.email" #email="ngModel">
+                         
+                          <button class="btn btn-lg btn-login btn-block" [disabled]="loading">Submit</button>
+                           
+                            <hr class="no-margin">
+                           <label class="checkbox" style="margin-bottom:40px">
+                              <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                               
+                              <span class="pull-left">
+                                  <a data-toggle="modal" [routerLink]="['/login']" style="color: #52658c;"> Login</a>
+
+                              </span>
+                          </label>
+                          
+                      </div>
+                     
+                </form>
+            </div>
+        </div>
+    
+
+    </div>
+    <div class="footer" style="">
+        <div class="panel-body">
+            <p class="text-center">Copyright © 2018 Creditclan</p>
+        </div>
+    </div>
+ 
+</div>

@@ -22,7 +22,7 @@ export class OperationsdashboardComponent implements OnInit {
       this.router.navigate(['../unauthorized']);
     }
     this.currentUser = this.storageService.read<any>('currentUser');
-
+    
   }
 
   ngOnInit() {

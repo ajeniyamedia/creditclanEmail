@@ -17,6 +17,7 @@ import { MomentModule } from 'angular2-moment';
 export class LoancontractformComponent implements OnInit {
 
   @Input('master') masterName: string;
+  @Input('editing_customer') editing_customer: string;
   @Output() uploaded: EventEmitter<string> = new EventEmitter();
   public ACD: number = 0;
   public loading = false;
@@ -218,7 +219,6 @@ export class LoancontractformComponent implements OnInit {
 
         this.loan = loan;
         if (this.loan.REQUEST_RATE_PERIOD_ID == 1) {
-          console.log(1)
           this.interest_duration = "Per Day"
         }
         if (this.loan.REQUEST_RATE_PERIOD_ID == 2) {

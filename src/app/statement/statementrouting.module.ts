@@ -21,6 +21,9 @@ import { LoancollateralComponent } from '../loancollateral/loancollateral.compon
 import { LoanlogsComponent } from '../loanlogs/loanlogs.component';
 import { LoanpeertopeerComponent } from '../loanpeertopeer/loanpeertopeer.component';
 import { LoanlendersComponent } from '../loanlenders';
+import { DirectdebitComponent } from '../loan/directdebit/directdebit.component';
+
+import { NotificationsComponent } from '../shared/notifications/notifications.component';
 const routes: Routes = [
   {
     path: '',component: StatementdetailsComponent, canActivate: [AuthGuard],
@@ -44,7 +47,9 @@ const routes: Routes = [
       { path: 'collateral', component: LoancollateralComponent},
       { path: 'logs', component: LoanlogsComponent},
       { path: 'p2p', component: LoanpeertopeerComponent},
-      { path: 'lenders', component: LoanlendersComponent}
+      { path: 'lenders', component: LoanlendersComponent},
+      { path: 'directdebit', component: DirectdebitComponent},
+      { path: 'customer_repayment', component: NotificationsComponent}
     ]
   },
 

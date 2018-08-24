@@ -64,6 +64,7 @@ export class LoanstatementComponent implements OnInit {
 	}
   getStatement() {
     this.sub = this.route.parent.params.subscribe(params => {
+      
       this.parentRouteId = +params["id"];
       this.loansService.getStatement(this.currentUser.token, this.parentRouteId, this.statment_type, this.type_of_entry)
 

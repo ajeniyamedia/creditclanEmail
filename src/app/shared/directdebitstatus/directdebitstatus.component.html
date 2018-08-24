@@ -1,0 +1,56 @@
+<section class="panel" style="overflow:hidden;" >
+  <div style="padding:24px 20px; overflow: auto;">
+    <div class="text-center borrower-info">
+      <a class="pull-left" style="margin-right: 25px">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{disbursement?.FILE_NAME | imagenotfound}}?q=auto"
+          style="width:50px; height:50px">
+      </a>
+      <div class="borrower-text pull-left" style="text-align:left">
+        <p class="" style="margin-bottom: 0px">{{repayment?.LEGAL_NAME}}</p>
+        <p class="" style="font-weight: bold">{{repayment?.HOW_MUCH_REMAINING | number:'.2-2'}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    <p class="" style="font-weight: bold">Repayment</p>
+  </div>
+  <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
+    <a class="paystack-switch-make active" style="width:100% !important">Direct Debit Instruction</a>
+  </div>
+  <div>
+
+    <div class="panel-body">
+      <div *ngIf="!paymentHasBeenProcessed">
+        <img src="assets/images/process.svg" style="max-height: 50%;
+    max-width: 50%;
+    height: auto;
+    width: auto;
+    display: block;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+    margin: auto;" />
+
+        <h5 class="text-center">Checking transaction status</h5>
+      </div>
+      <div *ngIf="paymentHasBeenProcessed">
+        <div class="">
+          
+          <div style="width: 120px;margin:20px auto;">
+            <svg style="width: 100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
+              y="0px" viewBox="0 0 100 125" enable-background="new 0 0 100 100" xml:space="preserve">
+              <g>
+                <circle fill="none" stroke="#1CA261" stroke-width="6" stroke-miterlimit="10" cx="50" cy="50" r="47" />
+                <polygon style="color:#1CA261" points="72,25 42,71 27,56 23,60 43,80 77,28  " />
+              </g>
+            </svg>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

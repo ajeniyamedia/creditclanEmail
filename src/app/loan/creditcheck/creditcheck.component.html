@@ -1,0 +1,77 @@
+<section class="panel" *ngIf="view=='master'">
+
+
+    <header class="panel-heading" style="overflow:auto">
+        Credit Check
+        <span class="tools pull-right">
+            <a (click)="refreshCreditCheck()" class="btn btn-white">Run Credit Check</a>
+
+        </span>
+    </header>
+
+    <div class="panel-body">
+        <div class="row invoice-list">
+
+            <div class="col-lg-4 col-sm-4">
+                <h4>CLIENT INFO</h4>
+                <p>Client : {{loan?.LEGAL_NAME}}</p>
+            </div>
+            <div class="col-lg-4 col-sm-4">
+                &nbsp;
+            </div>
+            <div class="col-lg-4 col-sm-4">
+                <h4>Credit Check Info</h4>
+                <p>Last Check Date : {{loan?.CREDITSCORE_DATE_CHECK}}</p>
+                <p>Last Check Score : {{loan?.CREDIT_CHECK_SCORE}}</p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+<section class="panel">
+    <div *ngIf="loan?.creditcheck?.count == 0">
+        <div style="padding-bottom: 121px">
+            <div class="text-center">
+                <a href="javascript:;" style="font-size:40px">
+                    <i class="fa fa-meh-o"></i>
+                </a>
+                <h3 style="margin-bottom: 0px; text-align: center;">No records</h3>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="loan?.creditcheck?.count > 0">
+        <div class='loan_list' *ngIf="view=='master' && loan?.creditcheck?.count > 0">
+            <div class="panel no-margin box hover_toggle_desc" *ngFor="let loan of loan?.creditcheck?.result">
+                <div class="panel-body">
+                    <article class="media">
+                        <div class="pull-left thumb" style="padding-right: 20px">
+                            <a [routerLink]="['/loan',loan?.REQUEST_ID]">
+                                <img src="assets/images/i.PNG">
+                            </a>
+                        </div>
+                        <div class="pull-left" style="margin-top: 5px">
+                            <h5 class="no-margin" style="margin-bottom: 7px">&nbsp;</h5>
+                            <p class="no-margin t_lh1 t_l4" style="font-size: 14px">&nbsp;</p>
+                        </div>
+
+                        <div class="pull-right text-right hover_toggle">
+                            <div class="hover_hide">
+                                <h5 class="no-margin" style="margin-bottom: 7px">On {{loan?.DATE_ADDED | date: 'yMMMMd'}}</h5>
+                                <p class="no-margin t_lh1 t_l4 t_cool" style="font-size: 14px">Score: {{loan?.CREDIT_SCORE}}</p>
+                            </div>
+                            <a class="pull-right btn btn-white wd_btn hover_show" style="border-radius: 0" (click)="viewCreditCheckDetails(loan)">View</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div *ngIf="view=='detail'" style="position:relative">
+
+        <app-creditcheckdetails (showList)="showList()" [creditcheckrecord]='creditcheckrecord'></app-creditcheckdetails>
+
+    </div>
+</section>

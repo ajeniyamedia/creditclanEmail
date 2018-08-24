@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 export class RequestformComponent implements OnInit {
   request_bank:any;
   @Input('sub') sub = '0';
+  @Input('editing_customer') editing_customer = false;
   @Input() selectedCustomer: any;
   public searchedCustomerResult: any;
   @Input() customerSelected = false;

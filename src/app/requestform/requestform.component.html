@@ -103,95 +103,102 @@
       </div>
 
 
-
-
-
-      <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px" *ngIf="!searchForCustomer&&customerSelected">
+      <div *ngIf="!searchForCustomer&&customerSelected">
+        <div *ngIf="!editing_customer">
+          <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px">
        
-        <div class="form-group row hide">
-          <div class="col-md-12">
-            <div style="padding:12px 24px; border:1px solid #eee;">
-              <div class="row">
-                <div class="col-md-1">
-                  <a style="margin-right:10px">
-                    <img style="width:35px" src="assets/img/stopwatch.png">
-                  </a>
-                </div>
-                <div class="col-md-11">
-                  <div class="input-group ">
-                    <input type="text" class="form-control" [(ngModel)]="request.REQUEST_TENOR" name="REQUEST_TENOR">
-                    <div class="input-group-btn">
-                      <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
-                        <span class="sel_cur">{{loan_duration}}</span>
-                        <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu pull-right">
-                        <li *ngFor="let d of loan_durations;let i=index;">
-                          <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
-                        </li>
-                      </ul>
+            <div class="form-group row hide">
+              <div class="col-md-12">
+                <div style="padding:12px 24px; border:1px solid #eee;">
+                  <div class="row">
+                    <div class="col-md-1">
+                      <a style="margin-right:10px">
+                        <img style="width:35px" src="assets/img/stopwatch.png">
+                      </a>
+                    </div>
+                    <div class="col-md-11">
+                      <div class="input-group ">
+                        <input type="text" class="form-control" [(ngModel)]="request.REQUEST_TENOR" name="REQUEST_TENOR">
+                        <div class="input-group-btn">
+                          <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                            <span class="sel_cur">{{loan_duration}}</span>
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu pull-right">
+                            <li *ngFor="let d of loan_durations;let i=index;">
+                              <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <div>
+              <div style="border: 1px solid #ccc;padding: 10px 0; margin-bottom: 10px">
+                <div class="input-group ">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                      <span class="sel_cur">
+                        <img style="width:20px" src="assets/img/naira_no_circle.png">
+                      </span>
+                    </button>
+                  </div>
+                  <input type="text" class="form-control" required name="REQUEST_PRINCIPAL" [(ngModel)]="request.REQUEST_PRINCIPAL" style="border: 0; font-size: 18px">
+                </div>
+              </div>
+              <div style="border: 1px solid #ccc;padding: 10px 0; margin-bottom: 10px">
+                <div class="input-group ">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                      <span class="sel_cur">
+                        <img style="width:20px" src="assets/img/stopwatch.png">
+                      </span>
+                    </button>
+                  </div>
+                  <input type="text" class="form-control" required [(ngModel)]="request.REQUEST_TENOR" name="REQUEST_TENOR" style="border: 0; font-size: 18px">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
+                      <span class="sel_cur">{{loan_duration}}</span>
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                      <li *ngFor="let d of loan_durations;let i=index;">
+                        <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+    
           </div>
-        </div>
-        <div>
-          <div style="border: 1px solid #ccc;padding: 10px 0; margin-bottom: 10px">
-            <div class="input-group ">
-              <div class="input-group-btn">
-                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
-                  <span class="sel_cur">
-                    <img style="width:20px" src="assets/img/naira_no_circle.png">
-                  </span>
+          <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px">
+              <h3>{{request_bank?.account_number}}</h3>
+              <h4>{{request_bank?.account_name}}</h4>
+              <h5>{{request_bank?.bank_id.BANK_NAME}}</h5>
+          </div>
+          <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px">
+            <div class="row">
+              <div class="col-md-6"></div>
+              <div class="col-md-6">
+                <button class="btn btn-danger btn-block btn-pink" (click)="queueStraightForDisbursement()" [disabled]="loading||request?.REQUEST_PRINCIPAL=='0'||request?.REQUEST_TENOR=='0'">Queue For Disbursement
+                  <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
                 </button>
               </div>
-              <input type="text" class="form-control" required name="REQUEST_PRINCIPAL" [(ngModel)]="request.REQUEST_PRINCIPAL" style="border: 0; font-size: 18px">
             </div>
           </div>
-          <div style="border: 1px solid #ccc;padding: 10px 0; margin-bottom: 10px">
-            <div class="input-group ">
-              <div class="input-group-btn">
-                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
-                  <span class="sel_cur">
-                    <img style="width:20px" src="assets/img/stopwatch.png">
-                  </span>
-                </button>
-              </div>
-              <input type="text" class="form-control" required [(ngModel)]="request.REQUEST_TENOR" name="REQUEST_TENOR" style="border: 0; font-size: 18px">
-              <div class="input-group-btn">
-                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" style="border: 0">
-                  <span class="sel_cur">{{loan_duration}}</span>
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu pull-right">
-                  <li *ngFor="let d of loan_durations;let i=index;">
-                    <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
         </div>
-
-
-      </div>
-      <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px" *ngIf="!searchForCustomer&&customerSelected">
-          <h3>{{request_bank?.account_number}}</h3>
-          <h4>{{request_bank?.account_name}}</h4>
-          <h5>{{request_bank?.bank_id.BANK_NAME}}</h5>
-      </div>
-      <div style="margin-bottom:15px;border-bottom:1px solid #eee; padding-bottom:15px" *ngIf="!searchForCustomer&&customerSelected">
-        <div class="row">
-          <div class="col-md-6"></div>
-          <div class="col-md-6">
-            <button class="btn btn-danger btn-block btn-pink" (click)="queueStraightForDisbursement()" [disabled]="loading||request?.REQUEST_PRINCIPAL=='0'||request?.REQUEST_TENOR=='0'">Queue For Disbursement
-              <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
-            </button>
-          </div>
+        <div *ngIf="editing_customer">
+          <app-loancustomerform [selectedCustomer]='selectedCustomer' [editing_customer]='editing_customer' (customerCreated)="customerCreated($event)" [occupations]='occupations' [nigerian_banks]='nigerian_banks' [designations]='designations'  [sectors]='sectors' [gender]='gender' [edu_qua]='edu_qua' [relations]='relations' [marital_statuses]='marital_status' [countries]='countries' [id_means]='id_means' [appsettings]='appsettings'></app-loancustomerform>
         </div>
       </div>
+
+
+      
     </div>
     <div *ngIf="request_step=='3'">
         <section class="panel bround">

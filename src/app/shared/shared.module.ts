@@ -116,6 +116,20 @@ import { CustomerRemitaComponent } from '../customer-remita/customer-remita.comp
 import { KycdetailsComponent } from '../kyc/kycdetails/kycdetails.component';
 import { CustomerkycComponent } from '../customerkyc/customerkyc.component';
 import { AdjustweightsComponent } from '../loan/adjustweights/adjustweights.component';
+import { IncludedcompaniesComponent } from '../decision/includedcompanies/includedcompanies.component';
+import { LoanrepaymentComponent } from '../loanrepayment/loanrepayment.component';
+import { DirectdebitComponent } from '../loan/directdebit/directdebit.component';
+import { CreditcheckComponent } from '../loan/creditcheck/creditcheck.component';
+import { DirectdebitinitiateComponent } from './directdebitinitiate/directdebitinitiate.component';
+import { DirectdebitstatusComponent } from './directdebitstatus/directdebitstatus.component';
+import { DirectdebitcancelComponent } from './directdebitcancel/directdebitcancel.component';
+import { StopmandateComponent } from './stopmandate/stopmandate.component';
+import { CreditcheckdetailsComponent } from './creditcheckdetails/creditcheckdetails.component';
+import { ContractofferComponent } from './contractoffer/contractoffer.component';
+import { AllcustomersComponent } from './allcustomers/allcustomers.component';
+import { BankslistComponent } from './bankslist/bankslist.component';
+import { CompaniesComponent } from './companies/companies.component';
+import { NotificationsComponent } from './notifications/notifications.component'; 
 @NgModule({
   imports: [
     CommonModule, FormsModule, RouterModule, ReactiveFormsModule, MyDatePickerModule,
@@ -148,7 +162,11 @@ import { AdjustweightsComponent } from '../loan/adjustweights/adjustweights.comp
     LoanchatComponent,
     CustomeranalysisComponent,BulkpaymentComponent,CustomerUpdateComponent,LedgerComponent, GeneralformComponent,
     InterestformComponent, LoanamountComponent, InterestratefloorComponent, OriginationfeeComponent, NewlevelformComponent,
-    CustomerRemitaComponent, KycdetailsComponent, CustomerkycComponent, AdjustweightsComponent
+    CustomerRemitaComponent, KycdetailsComponent, CustomerkycComponent, AdjustweightsComponent,
+    IncludedcompaniesComponent,LoanrepaymentComponent,DirectdebitComponent, CreditcheckComponent, 
+    DirectdebitinitiateComponent, DirectdebitstatusComponent, DirectdebitcancelComponent, 
+    StopmandateComponent, CreditcheckdetailsComponent, ContractofferComponent, AllcustomersComponent, BankslistComponent, CompaniesComponent, 
+    NotificationsComponent
   ],
   exports: [
     LimittoPipe, SafePipe, LoanStatusPipe, OfferstatusPipe, LoanStatusTextPipe, PeertopeerPipe,WebUssdComponent,
@@ -171,10 +189,14 @@ import { AdjustweightsComponent } from '../loan/adjustweights/adjustweights.comp
     LoancontractComponent, LoandocumentComponent, WalletdetailsComponent,
     ChangeproductComponent, LoanlogsComponent, LoancontractComponent, UserlocationComponent, 
     LoancontractformComponent, LoanlendersComponent, OrderModule,
-    QueuecancelComponent,LoanpeertopeerComponent,KycdetailsComponent,
+    QueuecancelComponent,LoanpeertopeerComponent,KycdetailsComponent,IncludedcompaniesComponent,
     CustomeranalysisComponent,BulkpaymentComponent,CustomerUpdateComponent,SelectModule,LedgerComponent,GeneralformComponent,
-    InterestformComponent, LoanamountComponent, InterestratefloorComponent, OriginationfeeComponent,CustomerRemitaComponent,
-    AdjustweightsComponent
+    InterestformComponent, LoanamountComponent, InterestratefloorComponent, OriginationfeeComponent,
+    CustomerRemitaComponent,LoanrepaymentComponent,BankslistComponent,
+    AdjustweightsComponent, DirectdebitComponent, CreditcheckComponent, 
+    DirectdebitinitiateComponent, DirectdebitstatusComponent, DirectdebitcancelComponent, 
+    StopmandateComponent,CreditcheckdetailsComponent,ContractofferComponent,AllcustomersComponent, CompaniesComponent,
+    NotificationsComponent
   ]
 })
 export class SharedModule {

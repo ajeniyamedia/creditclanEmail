@@ -50,7 +50,8 @@ import { RepaymentsComponent } from './repayments/repayments.component';
 import { MyapprovalsComponent } from './myapprovals/myapprovals.component';
 import { StatementprofileComponent } from './statementprofile/statementprofile.component'; 
 
-import { SlimLoadingBarModule } from 'ng2-slim-loading-bar'; 
+import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
+import { ForgotComponent } from './forgot/forgot.component'; 
 @NgModule({
   declarations: [
     CarouselComponent,CreditsummaryComponent,DisbursenavComponent,RepaymentsComponent,
@@ -72,7 +73,8 @@ import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
     LoansComponent,
     PendingDisbursementComponent,
     StatementprofileComponent,
-    MyapprovalsComponent, 
+    MyapprovalsComponent,
+    ForgotComponent, 
   ],
   imports: [
     BrowserModule,

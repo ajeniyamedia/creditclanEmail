@@ -1,129 +1,168 @@
 <div class="profile_area animated fadeIn">
 
-      <section class="panel contract_area hideable_area" style="margin-bottom: 10px">
+    <section *ngIf="!fromloan" class="panel contract_area hideable_area" style="margin-bottom: 10px">
         <header class="panel-heading">
-          <span class="tools pull-right">
-            <ul class="list-inline">
-                <li><a [routerLink]="['../contract']">Summary</a></li>
-                <li><a [routerLink]="['../repayments']">Schedule</a></li>
-                <li><a [routerLink]="['../more']">More</a></li>                    
-            </ul>
-          </span>
-          <span>Analysis</span>
+            <span class="tools pull-right">
+                <ul class="list-inline">
+                    <li><a [routerLink]="['../contract']">Summary</a></li>
+                    <li><a [routerLink]="['../repayments']">Schedule</a></li>
+                    <li><a [routerLink]="['../more']">More</a></li>
+                </ul>
+            </span>
+            <span>Analysis</span>
         </header>
-      </section>
-      <section class="panel" *ngIf="addingBank">
-            <header class="panel-heading">
-              Bank Account
-            </header>
-            <div class="panel-body">
-                <form #c="ngForm" (ngSubmit)="updateBank(c.value, c.valid)" novalidate>
-              <div class="form-group row">
-                <label for="" class="control-label col-md-6">Bank</label>
-                <div class="col-md-6 ">
-          
-                  <select id="bank_id" required name="bank_id" class="form-control" [(ngModel)]="account.bank_id">
-                    <option value="0"></option>
-                    <option *ngFor="let nb of nigerian_banks" [ngValue]="nb">{{nb.BANK_NAME}}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="" class="control-label col-md-6">Account Number</label>
-                <div class="col-md-6 ">
-          
-                  <input type="text" maxlength=10 required name="account_number" id="account_number" (blur)="verifyBankDetails()" class="form-control" [(ngModel)]="account.account_number">
-                </div>
-              </div>
-              <div class="form-group row" *ngIf="account.is_verified">
-                <div class="col-md-12">
-          
-                  <input type="text" [disabled]=true name="account_name" id="account_name" class="form-control" [(ngModel)]="account.account_name">
-                  <div class="checkbox">
-                    <input [(ngModel)]="account.i_certify" name="i_certify" type="checkbox"> I certify the account to be valid</div>
-                </div>
-              </div>
-              <div class="form-group row" *ngIf="verify_error">
-                <div class="col-md-12">
-                  <p><i>Unable to verify account</i></p>
-                </div>
-              </div>
-              <div class="row">
-                  <div class="col-md-12"><button [disabled]="loading || !c.valid || !account.is_verified" class="btn btn-white btn-block" type="submit">Submit <i *ngIf="loading" class="fa fa-spinner fa-spin"></i></button></div>
-                </div>
-              </form>
-            </div>
-      </section>
-      <section class="panel" *ngIf="!addingBank">
-          <div class="panel-body banks">
-            <div style="overflow:auto">
-                    <h4 class="pull-left">Accounts</h4>
-                    <span class="pull-right"><button class="btn btn-white btn-xs" (click)="addingBank=!addingBank">Add New</button></span>
-            </div>
-            <div  *ngFor="let acc of accounts">
-                    <div class="media x-mod" *ngIf="acc?.TYPE_OF=='1'">
-                            <div class="pull-left thumb" style="width: 75px">
-                                <!-- <img src="assets/images/{{acc?.BANK_LOGO}}"> -->
-                            </div>
-                            <div class="media-body hover_toggle">
-                                <div class="pull-left" style="margin-top: 5px">
-                                    <p class="t_cool t_l4">{{acc?.bank_name}}</p>
-                                    <small style="font-size: 13px">{{acc?.LAST_FOUR_DIGITS}}</small>
-                                    <small style="font-size: 13px">{{acc?.CARD_NAME}}</small>
-                                </div>                        
-                                
-                                <span class="pull-right" *ngIf="loan?.CONNECTED_ACCOUNT_ID == acc?.ACCOUNT_CARD_ID"><img src="assets/images/check.PNG" class="tick"></span>
-                            </div>
-                        </div>
-            </div>
-            <h4>Cards</h4>
-            <div  *ngFor="let accd of accounts">
-                    <div class="media x-mod" *ngIf="accd?.TYPE_OF=='2'&& accd?.CARD_VALIDATED_THROUGH=='1'">
-                            <div class="pull-left thumb" style="width: 75px">
-                                <!-- <img src="assets/images/{{acc?.BANK_LOGO}}"> -->
-                            </div>
-                            <div class="media-body hover_toggle">
-                                <div class="pull-left" style="margin-top: 5px">
-                                    <p class="t_cool t_l4">{{accd?.CARD_NAME}}</p>
-                                    <small style="font-size: 13px">*********{{accd?.LAST_FOUR_DIGITS}}</small>
-                                    <small *ngIf="accd?.CARD_CHECK_ID.status=='success'">
-                                        <span>{{accd?.CARD_CHECK_ID.data.cardName}}</span>
-                                    </small>
-                                    <small *ngIf="acc?.CARD_CHECK_ID.status=='success'">
-                                        <span>{{accd?.CARD_CHECK_ID.data.country}}</span>
-                                    </small>
-                                </div>                        
-                                 
-                                <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID == accd?.ACCOUNT_CARD_ID"><img src="assets/images/check.PNG" class="tick"></span>
-                                <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID != accd?.ACCOUNT_CARD_ID"><button class="btn btn-white btn-xs" (click)="deleteCard(accd?.ACCOUNT_CARD_ID,loan?.REQUEST_ID)">Delete</button></span>
-                                <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID != accd?.ACCOUNT_CARD_ID"><button class="btn btn-white btn-xs" (click)="setAsConnectedCard(loan?.REQUEST_ID,accd?.ACCOUNT_CARD_ID)">Set As Default Card</button></span>
-                            </div>
-                        </div>
-                        <div class="media x-mod" *ngIf="accd?.TYPE_OF=='2'&& accd?.CARD_VALIDATED_THROUGH=='2'">
-                            <div class="pull-left thumb" style="width: 75px">
-                                <!-- <img src="assets/images/{{acc?.BANK_LOGO}}"> -->
-                            </div>
-                            <div class="media-body hover_toggle">
-                                <div class="pull-left" style="margin-top: 5px">
-                                    <p class="t_cool t_l4">{{accd?.PAYSTACK_CHECK_ID.authorization.bank}}|{{accd?.PAYSTACK_CHECK_ID.authorization.card_type}}</p>
-                                    <small style="font-size: 13px">*********{{accd?.LAST_FOUR_DIGITS}}</small>
-                                     
-                                    <small>
-                                        <span>{{accd?.PAYSTACK_CHECK_ID.authorization.country_code}}</span>
-                                    </small>
-                                    <small>
-                                        <span>{{accd?.PAYSTACK_CHECK_ID.authorization.exp_month}}/{{accd?.PAYSTACK_CHECK_ID.authorization.exp_year}}</span>
-                                    </small>
-                                </div>                        
-                                
-                                <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID === accd?.ACCOUNT_CARD_ID"><img src="assets/images/check.PNG" class="tick"></span>
-                                <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID != accd?.ACCOUNT_CARD_ID"><button class="btn btn-white btn-xs" (click)="deleteCard(accd?.ACCOUNT_CARD_ID,loan?.REQUEST_ID)">Delete</button></span>
-                                <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID != accd?.ACCOUNT_CARD_ID"><button class="btn btn-white btn-xs" (click)="setAsConnectedCard(loan?.REQUEST_ID,accd?.ACCOUNT_CARD_ID)">Set As Default Card</button></span>
-                            </div>
-                        </div>
-            </div>
+    </section>
+    <section class="panel" *ngIf="addingBank && !fromloan">
+        <header class="panel-heading">
+            Bank Account
+        </header>
+        <div class="panel-body">
+            <form #c="ngForm" (ngSubmit)="updateBank(c.value, c.valid)" novalidate>
+                <div class="form-group row">
+                    <label for="" class="control-label col-md-6">Bank</label>
+                    <div class="col-md-6 ">
 
-          </div>
-      </section>
+                        <select id="bank_id" required name="bank_id" class="form-control" [(ngModel)]="account.bank_id">
+                            <option value="0"></option>
+                            <option *ngFor="let nb of nigerian_banks" [ngValue]="nb">{{nb.BANK_NAME}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class="control-label col-md-6">Account Number</label>
+                    <div class="col-md-6 ">
+
+                        <input type="text" maxlength=10 required name="account_number" id="account_number" (blur)="verifyBankDetails()" class="form-control"
+                            [(ngModel)]="account.account_number">
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="account.is_verified">
+                    <div class="col-md-12">
+
+                        <input type="text" [disabled]=true name="account_name" id="account_name" class="form-control" [(ngModel)]="account.account_name">
+                        <div class="checkbox">
+                            <input [(ngModel)]="account.i_certify" name="i_certify" type="checkbox"> I certify the account
+                            to be valid</div>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="verify_error">
+                    <div class="col-md-12">
+                        <p><i>Unable to verify account</i></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><button [disabled]="loading || !c.valid || !account.is_verified" class="btn btn-white btn-block"
+                            type="submit">Submit <i *ngIf="loading" class="fa fa-spinner fa-spin"></i></button></div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <section class="panel" *ngIf="!addingBank">
+        <div *ngIf="directdebitstatus">
+            <app-directdebit></app-directdebit>
+        </div>
+        <div *ngIf="!directdebitstatus">
+            <div class="panel-body banks">
+                <div style="overflow:auto">
+                    <h4 class="pull-left">Accounts</h4>
+                    <span  *ngIf="!fromloan" class="pull-right"><button class="btn btn-white btn-xs" (click)="addingBank=!addingBank">Add New</button></span>
+                </div>
+                <div *ngFor="let acc of banks">
+                    <div class="media x-mod" *ngIf="acc?.TYPE_OF=='1'" style="overflow: visible">
+                        <div class="pull-left thumb" style="width: 75px">
+                        </div>
+                        <div class="media-body hover_toggle" style="overflow: visible">
+                            <div class="pull-left" style="margin-top: 5px">
+                                <p class="t_cool t_l4">{{acc?.bank_name}}</p>
+                                <small style="font-size: 13px">{{acc?.LAST_FOUR_DIGITS}}</small>
+                                <small style="font-size: 13px">{{acc?.CARD_NAME}}</small>
+                            </div>
+
+
+                            <span class="pull-right" *ngIf="loan?.CONNECTED_ACCOUNT_ID == acc?.ACCOUNT_CARD_ID"><img src="assets/images/check.PNG"
+                                    class="tick"></span>
+                            <span class="pull-right" *ngIf="loan?.CONNECTED_ACCOUNT_ID != acc?.ACCOUNT_CARD_ID && !fromloan"><button class="btn btn-white btn-xs"
+                                    (click)="deleteAccount(acc?.ACCOUNT_CARD_ID,loan?.REQUEST_ID)">Delete</button></span>
+                            <span class="pull-right" *ngIf="loan?.CONNECTED_ACCOUNT_ID != acc?.ACCOUNT_CARD_ID && !fromloan"><button class="btn btn-white btn-xs"
+                                    (click)="setAsConnectedAccount(loan?.REQUEST_ID,acc?.ACCOUNT_CARD_ID)">Set As Default Account</button></span>
+                            <span class="pull-right">
+                                <div class="btn-group">
+                                    <button aria-expanded="false" class="btn btn-white btn-xs dropdown-toggle" data-toggle="dropdown" type="button">Direct
+                                        Debit<span class="caret"></span></button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li *ngIf="!acc?.HAS_DIRECT_DEBIT && !fromloan" (click)="setUpDirectDebitMandate(loan,acc)"><a>Set
+                                                up Direct Debit Mandate</a></li>
+                                        <li *ngIf="acc?.HAS_DIRECT_DEBIT && acc?.DIRECT_DEBIT_REQUEST.IS_ACTIVE == '0' && !fromloan" (click)="checkdirectdebitstatus(loan,acc)"><a>Check
+                                                Direct Debit Mandate Status</a></li>
+                                        <li *ngIf="acc?.HAS_DIRECT_DEBIT && acc?.DIRECT_DEBIT_REQUEST.IS_ACTIVE == '1' && fromloan" (click)="checkTransactionStatus(loan,acc)"><a>Transaction
+                                                History</a></li>
+                                        <li *ngIf="acc?.HAS_DIRECT_DEBIT && acc?.DIRECT_DEBIT_REQUEST.IS_ACTIVE == '1' && fromloan" (click)="stopdirectdebitmandate(loan,acc)"><a>Stop
+                                                Direct Debit Mandate</a></li>
+                                    </ul>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+               
+                <div *ngIf="!fromloan">
+                        <h4>Cards</h4>
+                        <div *ngFor="let accd of accounts">
+                            <div class="media x-mod" *ngIf="accd?.TYPE_OF=='2'&& accd?.CARD_VALIDATED_THROUGH=='1'">
+                                <div class="pull-left thumb" style="width: 75px">
+                                    <!-- <img src="assets/images/{{acc?.BANK_LOGO}}"> -->
+                                </div>
+                                <div class="media-body hover_toggle">
+                                    <div class="pull-left" style="margin-top: 5px">
+                                        <p class="t_cool t_l4">{{accd?.CARD_NAME}}</p>
+                                        <small style="font-size: 13px">*********{{accd?.LAST_FOUR_DIGITS}}</small>
+                                        <small *ngIf="accd?.CARD_CHECK_ID.status=='success'">
+                                            <span>{{accd?.CARD_CHECK_ID.data.cardName}}</span>
+                                        </small>
+                                        <small *ngIf="acc?.CARD_CHECK_ID.status=='success'">
+                                            <span>{{accd?.CARD_CHECK_ID.data.country}}</span>
+                                        </small>
+                                    </div>
+        
+                                    <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID == accd?.ACCOUNT_CARD_ID"><img src="assets/images/check.PNG"
+                                            class="tick"></span>
+                                    <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID != accd?.ACCOUNT_CARD_ID"><button class="btn btn-white btn-xs"
+                                            (click)="deleteCard(accd?.ACCOUNT_CARD_ID,loan?.REQUEST_ID)">Delete</button></span>
+                                    <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID != accd?.ACCOUNT_CARD_ID"><button class="btn btn-white btn-xs"
+                                            (click)="setAsConnectedCard(loan?.REQUEST_ID,accd?.ACCOUNT_CARD_ID)">Set As Default Card</button></span>
+                                </div>
+                            </div>
+                            <div class="media x-mod" *ngIf="accd?.TYPE_OF=='2'&& accd?.CARD_VALIDATED_THROUGH=='2'">
+                                <div class="pull-left thumb" style="width: 75px">
+                                    <!-- <img src="assets/images/{{acc?.BANK_LOGO}}"> -->
+                                </div>
+                                <div class="media-body hover_toggle">
+                                    <div class="pull-left" style="margin-top: 5px">
+                                        <p class="t_cool t_l4">{{accd?.PAYSTACK_CHECK_ID.authorization.bank}}|{{accd?.PAYSTACK_CHECK_ID.authorization.card_type}}</p>
+                                        <small style="font-size: 13px">*********{{accd?.LAST_FOUR_DIGITS}}</small>
+        
+                                        <small>
+                                            <span>{{accd?.PAYSTACK_CHECK_ID.authorization.country_code}}</span>
+                                        </small>
+                                        <small>
+                                            <span>{{accd?.PAYSTACK_CHECK_ID.authorization.exp_month}}/{{accd?.PAYSTACK_CHECK_ID.authorization.exp_year}}</span>
+                                        </small>
+                                    </div>
+        
+                                    <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID === accd?.ACCOUNT_CARD_ID"><img src="assets/images/check.PNG"
+                                            class="tick"></span>
+                                    <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID != accd?.ACCOUNT_CARD_ID"><button class="btn btn-white btn-xs"
+                                            (click)="deleteCard(accd?.ACCOUNT_CARD_ID,loan?.REQUEST_ID)">Delete</button></span>
+                                    <span class="pull-right" *ngIf="loan?.CONNECTED_CARD_ID != accd?.ACCOUNT_CARD_ID"><button class="btn btn-white btn-xs"
+                                            (click)="setAsConnectedCard(loan?.REQUEST_ID,accd?.ACCOUNT_CARD_ID)">Set As Default Card</button></span>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
 
 </div>

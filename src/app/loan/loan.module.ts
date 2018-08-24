@@ -6,7 +6,6 @@ import { SharedModule } from '../shared/shared.module';
 import { LoanroutingModule } from '../loan/loanrouting/loanrouting.module';
 import { LoandetailsComponent } from '../loandetails';
 import { LoancommentsComponent } from '../loancomments/index';
-import { LoanrepaymentComponent } from '../loanrepayment/loanrepayment.component';
 import { LoaneirComponent } from '../loaneir/loaneir.component';
 import { LoancustomerComponent } from '../loancustomer/loancustomer.component';
 import { NextloanComponent } from '../nextloan/nextloan.component';
@@ -19,6 +18,7 @@ import { CustomerSocialAnalysisDetailsComponent } from '../customer-social-analy
 import { LoanrejectionsComponent } from './loanrejections/loanrejections.component';
 import { LoankycComponent } from './loankyc/loankyc.component';
 import { CreditclananalyticsComponent } from './creditclananalytics/creditclananalytics.component';
+// import { CreditcheckComponent } from './creditcheck/creditcheck.component';
 // import { AdjustweightsComponent } from './adjustweights/adjustweights.component';
 @NgModule({
   imports: [
@@ -29,7 +29,7 @@ import { CreditclananalyticsComponent } from './creditclananalytics/creditclanan
   declarations: [
     LoandetailsComponent,
     LoancommentsComponent,
-    LoanrepaymentComponent, LoaneirComponent, NextloanComponent,
+     LoaneirComponent, NextloanComponent,
     LoancustomerComponent,
     CustomeranalysisComponent, CustomerAnalysisDetailsComponent, CustomerAnalysisFullDetailsComponent,
     CustomerSocialAnalysisComponent, CustomerSocialAnalysisDetailsComponent, LoanrejectionsComponent,

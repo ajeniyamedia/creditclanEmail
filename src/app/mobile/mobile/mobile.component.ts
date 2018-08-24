@@ -115,6 +115,7 @@ export class MobileComponent implements OnInit {
     homeaddress: false,
     proofofaddress: false,
     workinfo: false,
+    companylist: false,
     personalexpense: false,
     financialrecords: false,
     nooffinancial: '0',
@@ -126,12 +127,17 @@ export class MobileComponent implements OnInit {
     GPS_RETRY: '3',
     ENABLE_GEOTAGGING: false,
     SEND_NEW_CUSTOMER_REGISTERED: false,
-    SEND_NEW_CUSTOMER_REGISTERED_EMAIL: ''
+    SEND_NEW_CUSTOMER_REGISTERED_EMAIL: '',
+    skipphoneconfirmation:false
   }
   public tc = {
     LOAN_PRODUCT_ID: '',
     TERMS_AND_CONDITIONS: '',
     INCLUDE_TERMS_IN_CONTRACT: ''
+  }
+  public ol = {
+    LOAN_PRODUCT_ID: '',
+    OFFER_LETTER: '' 
   }
   public accountcards = [
     { value: '0', display: 'None' },
@@ -157,6 +163,7 @@ export class MobileComponent implements OnInit {
     width: "100%",
     minWidth: "100%"
   };
+  required_documents:any;
   constructor(public toastr: ToastrService, vcr: ViewContainerRef, private router: Router,
     public storageService: StorageService, public operationsService: OperationsService) {
     this.currentUser = this.storageService.read<any>('currentUser');
@@ -175,6 +182,7 @@ export class MobileComponent implements OnInit {
     }
     this.operationsService.getAppSettings(this.currentUser.token,2)
       .subscribe(data => {
+        this.required_documents = data.required_documents;
         this.ussd.gender = data.ussd.gender;
         this.ussd.dateofbirth = data.ussd.dateofbirth;
         this.ussd.occupation = data.ussd.dateofbirth;
@@ -192,6 +200,7 @@ export class MobileComponent implements OnInit {
         this.ussd.ussd_division_ration = data.ussd.ussd_division_ration;
 
         this.mobile.loan_product_id = data.product.LOAN_PRODUCT_ID;
+        this.mobile.skipphoneconfirmation = data.mobile.skipphoneconfirmation;
 
         this.mobile.customerconfirmsemailafterregisteration = data.mobile.customerconfirmsemailafterregisteration;
         this.mobile.shouldthecustomerporvidebvnaftersigningup = data.mobile.shouldthecustomerporvidebvnaftersigningup;
@@ -207,6 +216,7 @@ export class MobileComponent implements OnInit {
         this.mobile.homeaddress = data.mobile.homeaddress;
         this.mobile.proofofaddress = data.mobile.proofofaddress;
         this.mobile.workinfo = data.mobile.workinfo;
+        this.mobile.companylist = data.mobile.companylist;
         this.mobile.personalexpense = data.mobile.personalexpense;
         this.mobile.financialrecords = data.mobile.financialrecords;
         this.mobile.nooffinancial = data.mobile.nooffinancial;
@@ -227,6 +237,9 @@ export class MobileComponent implements OnInit {
         this.tc.LOAN_PRODUCT_ID = data.product.LOAN_PRODUCT_ID;
         this.tc.TERMS_AND_CONDITIONS = data.product.TERMS_AND_CONDITIONS;
         this.tc.INCLUDE_TERMS_IN_CONTRACT = data.product.INCLUDE_TERMS_IN_CONTRACT;
+
+        
+        this.ol.OFFER_LETTER = data.product.OFFER_LETTER;
 
         this.vr.bvnmustmatch = data.vr.bvnmustmatch;
         this.vr.cardmustmatch = false;
@@ -341,6 +354,14 @@ export class MobileComponent implements OnInit {
         this.showSuccess(data.message);
       });
   }
+  saveOL(value, valid) {
+    this.loading = true;
+    this.operationsService.saveOLSettings(this.currentUser.token, value)
+      .subscribe(data => {
+        this.loading = false;
+        this.showSuccess(data.message);
+      });
+  }
   save_(value, valid) {
     this.loading = true;
     this.operationsService.saveUssdSettings(this.currentUser.token, value)
@@ -359,7 +380,7 @@ export class MobileComponent implements OnInit {
   }
   saveMobileApplication(value, valid) {
     this.loading = true;
-    this.operationsService.saveMobileApplication(this.currentUser.token, value)
+    this.operationsService.saveMobileApplication(this.currentUser.token, value, this.required_documents)
       .subscribe(data => {
         this.loading = false;
         this.showSuccess(data.message);

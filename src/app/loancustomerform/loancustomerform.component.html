@@ -1,4 +1,4 @@
-<section class="panel">
+<section class="panel" *ngIf="!editing_customer">
         <header class="panel-heading">
             &nbsp;
             <span class="tools pull-right">
@@ -8,7 +8,7 @@
        
       </section>  
 <section class="panel">
-  <header class="panel-heading">
+  <header class="panel-heading" *ngIf="!editing_customer">
     Personal Details
     <span class="tools pull-right">
       <a [ngClass]="{'fa fa-chevron-up': current_view=='profile', 'fa fa-chevron-down':current_view!='profile'}" href="javascript:;"
@@ -31,12 +31,19 @@
           <input type="hidden" class="form-control" name="PROFILE_PHOTO" [(ngModel)]="customer.personal.PROFILE_PHOTO">
           <input type="hidden" name="COUNTRY_CODE" id="COUNTRY_CODE" [(ngModel)]="customer.personal.COUNTRY_CODE" value="+234">
           <input type="hidden" name="PHONE_TYPE" id="PHONE_TYPE" [(ngModel)]="customer.personal.COUNTRY_CODE" value="1">
+          <input type="hidden" name="PEOPLE_ID" id="PEOPLE_ID" [(ngModel)]="customer.personal.PEOPLE_ID" value="1">
         </div>
       </div>
       <div class="form-group row">
         <label class="col-sm-2 control-label col-lg-4">Phone</label>
         <div class="col-lg-8">
           <input type="text" maxlength=11  class="form-control" required name="PHONE" [(ngModel)]="customer.personal.PHONE">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 control-label col-lg-4">Staff Number</label>
+        <div class="col-lg-8">
+          <input type="text" class="form-control" name="STAFF_NUMBER" [(ngModel)]="customer.personal.STAFF_NUMBER">
         </div>
       </div>
       <div class="row">
@@ -92,7 +99,7 @@
   </div>
 
 </section>
-<section class="panel" *ngIf="appsettings?.mobile.accountcard=='2'||appsettings?.mobile.accountcard=='3'">
+<section class="panel" *ngIf="(appsettings?.mobile.accountcard=='2'||appsettings?.mobile.accountcard=='3') && !editing_customer">
     <header class="panel-heading">
       Bank Account (<small>The bank account will be validated</small>)
       <span class="tools pull-right">
@@ -138,7 +145,7 @@
       </form>
     </div>
   </section>
-<section class="panel" *ngIf="appsettings?.mobile.nextofkin">
+<section class="panel" *ngIf="appsettings?.mobile.nextofkin && !editing_customer">
   <header class="panel-heading">
     Next of Kin
     <span class="tools pull-right">
@@ -185,7 +192,7 @@
     </form>
   </div>
 </section>
-<section class="panel" *ngIf="appsettings?.mobile.education">
+<section class="panel" *ngIf="appsettings?.mobile.education && !editing_customer">
   <header class="panel-heading">
     Education
     <span class="tools pull-right">
@@ -229,7 +236,7 @@
       </form>
   </div>
 </section>
-<section class="panel" *ngIf="appsettings?.mobile.homeaddress">
+<section class="panel" *ngIf="appsettings?.mobile.homeaddress && !editing_customer">
   <header class="panel-heading">
     Address Details
     <span class="tools pull-right">
@@ -366,7 +373,7 @@
 
   </div>
 </section>
-<section class="panel" *ngIf="appsettings?.mobile.workinfo">
+<section class="panel" *ngIf="appsettings?.mobile.workinfo && !editing_customer">
   <header class="panel-heading">
     Work Details
     <span class="tools pull-right">
@@ -438,9 +445,7 @@
     </form>
   </div>
 </section>
-
-
-<section class="panel" *ngIf="appsettings?.mobile.checkifuserhasvalidatedbvn">
+<section class="panel" *ngIf="appsettings?.mobile.checkifuserhasvalidatedbvn && !editing_customer">
   <header class="panel-heading">
     BVN
     <span class="tools pull-right">

@@ -11,6 +11,12 @@ declare var swal: any;
   styleUrls: ['./payment.component.css']
 })
 export class PaymentComponent implements OnInit {
+  mode_of_repayment =  [
+    { "value": "1", "display": "Remita Inflight" },
+    { "value": "2", "display": "Cards" },
+    { "value": "3", "display": "Direct Debit Mandate" },
+    { "value": "4", "display": "Others" }
+  ]
   confirmCardAD = false;
   loan: any;
   cards: any;
@@ -60,6 +66,7 @@ export class PaymentComponent implements OnInit {
   paymentConfirmRollbackForm: FormGroup;
   sendRepaymentLink: FormGroup;
   debitAllForm: FormGroup;
+  debitInstruction: FormGroup;
   public addingAccount = false;
   public VERIFY_STATUS = false;
   public newaccountconfirmed = false;
@@ -86,7 +93,7 @@ export class PaymentComponent implements OnInit {
   public wallet_status = false;
   public otpmessage = '';
   public result: any;
-  constructor(public toastr: ToastrService, private DataService: DataService, public loansService: LoansService, 
+  constructor(public toastr: ToastrService, private DataService: DataService, public loansService: LoansService,
     public fb: FormBuilder, public operationsService: OperationsService, public storageService: StorageService) {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.operationsService.getNigerianBanks(this.currentUser.token).subscribe(nigerian_banks => this.nigerian_banks = nigerian_banks);
@@ -130,12 +137,25 @@ export class PaymentComponent implements OnInit {
       'PEOPLE_ID': '',
       'REQUEST_ID': '',
       'SECURITY_QUESTION_ANSWER': [null, Validators.required],
+      'LENDER_BANK_ACCOUNT_ID': [null, Validators.required],
     });
     this.complexForm = fb.group({
       'PAYMENT_QUEUE_ID': '',
       'INVESTMENT_QUEUE_ID': '',
       'DISBURSEMENT_MODE': '1',
       'LENDER_BANK_ACCOUNT_ID': [null, Validators.required],
+      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
+      'PEOPLE_ID': '',
+      'REQUEST_ID': '',
+      'ADJUST_CONTRACT_DATE': false,
+      'REPAYMENT_MODE': ['1', Validators.required],
+    })
+    
+    this.debitInstruction = fb.group({
+      'PAYMENT_QUEUE_ID': '',
+      'INVESTMENT_QUEUE_ID': '',
+      'DISBURSEMENT_MODE': '1',
+      'LENDER_BANK_ACCOUNT_ID': '',
       'SECURITY_QUESTION_ANSWER': [null, Validators.required],
       'PEOPLE_ID': '',
       'REQUEST_ID': '',
@@ -191,7 +211,8 @@ export class PaymentComponent implements OnInit {
       'SECURITY_QUESTION_ANSWER': [null, Validators.required],
       'PEOPLE_ID': '',
       'REQUEST_ID': '',
-      'ADJUST_CONTRACT_DATE': ''
+      'ADJUST_CONTRACT_DATE': false,
+      'REPAYMENT_MODE': ['1', Validators.required],
     })
     this.walletWithdrawalForm = fb.group({
       // We can set default values by passing in the corresponding value or leave blank if we wish to not set the value. For our example, we’ll default the gender to female.
@@ -531,7 +552,7 @@ export class PaymentComponent implements OnInit {
           this.makingFinalPayment = false;
           this.paymentHasBeenProcessed = false;
           this.otpError = true;
-          this.otpmessage = status.data.message; 
+          this.otpmessage = status.data.message;
           this.showError(status.data.response.data.message);
         }
       });
@@ -562,6 +583,54 @@ export class PaymentComponent implements OnInit {
         }
       });
   }
+  // doSendDebitInstruction(value: any): void {
+  //   this.makingFinalPayment = true;
+  //   this.paymentHasBeenProcessed = false;
+  //   this.payment_status = false;
+  //   this.loading = true;
+  //   this.operationsService.doSendDebitInstruction(this.currentUser.token, value, this.repayment)
+  //     .subscribe(status => {
+  //       this.loading = false;
+  //       if (status.status == true) {
+
+  //         this.paymentHasBeenProcessed = true;
+  //         this.otpError = false;
+  //         this.paymentConfirmed = true;
+  //         this.payment_status = true;
+  //       } else {
+  //         this.makingFinalPayment = false;
+  //         this.paymentHasBeenProcessed = false;
+  //         this.showError(status.message);
+  //       }
+
+
+
+  //     });
+  // }
+  doCancelDebitInstruction(value: any): void {
+    this.makingFinalPayment = true;
+    this.paymentHasBeenProcessed = false;
+    this.payment_status = false;
+    this.loading = true;
+    this.operationsService.doCancelDirectDebit(this.currentUser.token, value, this.repayment)
+      .subscribe(status => {
+        this.loading = false;
+        if (status.status == true) {
+
+          this.paymentHasBeenProcessed = true;
+          this.otpError = false;
+          this.paymentConfirmed = true;
+          this.payment_status = true;
+        } else {
+          this.makingFinalPayment = false;
+          this.paymentHasBeenProcessed = false;
+          this.showError(status.message);
+        }
+
+
+
+      });
+  }
   doPaymentConfirmDebitAll(value: any): void {
     this.otpError = false;
     this.paytype = 'card_make';
@@ -577,7 +646,7 @@ export class PaymentComponent implements OnInit {
           this.paymentHasBeenProcessed = true;
           this.otpError = false;
           this.paymentConfirmed = true;
-          this.payment_status = true; 
+          this.payment_status = true;
         } else {
           this.makingFinalPayment = false;
           this.paymentHasBeenProcessed = false;
@@ -598,6 +667,7 @@ export class PaymentComponent implements OnInit {
     this.loading = true;
     this.operationsService.doPaymentConfirm(this.currentUser.token, value, this.schedule_type, this.record_type)
       .subscribe(status => {
+        this.DataService.runOperationsTest.emit();
         this.loading = false;
         if (this.record_type == '2') {
           this.withdrawal_step = '2';
@@ -790,6 +860,7 @@ export class PaymentComponent implements OnInit {
     this.loading = true;
     this.operationsService.confirmBorrowerHasBeenPaid(this.currentUser.token, value)
       .subscribe(status => {
+        this.DataService.runOperationsTest.emit();
         this.loading = false;
         if (status.status) {
           this.paymentHasBeenProcessed = true;
@@ -920,6 +991,31 @@ export class PaymentComponent implements OnInit {
     this.paymentConfirmed = false;
     this.otpError = false;
     if (this.record_type == '1' || this.record_type == '2' || this.record_type == '7' || this.record_type == '20' || this.record_type == '4') {
+      if(this.record_type=='1'){
+        
+        (<FormControl>this.complexForm.controls['REPAYMENT_MODE'])
+        .setValue(disburse.REPAYMENT_SOURCE, { onlySelf: true });
+
+        (<FormControl>this.walletPaymentForm.controls['REPAYMENT_MODE'])
+        .setValue(disburse.REPAYMENT_SOURCE, { onlySelf: true });
+        
+        if(disburse.USE_REMITA=='1'){ 
+          (<FormControl>this.complexForm.controls['REPAYMENT_MODE'])
+          .setValue('1', { onlySelf: true });
+          (<FormControl>this.walletPaymentForm.controls['REPAYMENT_MODE'])
+          .setValue('1', { onlySelf: true });
+        }
+        if(disburse.USE_REMITA=='0'){ 
+          if(disburse.DIRECT_DEBIT_STATUS=='1'){ 
+            (<FormControl>this.complexForm.controls['REPAYMENT_MODE'])
+            .setValue('3', { onlySelf: true });
+            (<FormControl>this.walletPaymentForm.controls['REPAYMENT_MODE'])
+          .setValue('3', { onlySelf: true });
+          }
+          
+        }
+        
+      }
       this.operationsService.getWalletSummary(this.currentUser.token, disburse.HOW_MUCH_WAS_GIVEN)
         .subscribe(data => {
           this.wallet_balance = data.data.LENDER_WALLET_BALANCE;
@@ -1148,8 +1244,8 @@ export class PaymentComponent implements OnInit {
       });
   }
   ngOnInit() {
-    //this.getDisbursements();
     this.getBanks();
+    this.getOptionsForRepayments();
     this.makingFinalPayment = false;
     this.paymentHasBeenProcessed = false;
     this.otpError = false;
@@ -1244,8 +1340,9 @@ export class PaymentComponent implements OnInit {
         }
       }
     }
-
+    
   }
+  
   rejectRequest(event) {
     this.operationsService.cancelQueuedOperation(this.currentUser.token, event)
       .subscribe(result => {
@@ -1267,7 +1364,12 @@ export class PaymentComponent implements OnInit {
         }
       });
   }
-
+  getOptionsForRepayments() {
+    this.operationsService.getOptionsForRepayments(this.currentUser.token)
+      .subscribe(banks => {
+        this.mode_of_repayment = banks;
+      });
+  }
 
   getBanks() {
     this.operationsService.getBanks(this.currentUser.token)

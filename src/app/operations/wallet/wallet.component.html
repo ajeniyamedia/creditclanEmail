@@ -83,7 +83,7 @@
     </div>
     <div class=" overpanel-content container" role="document" style="text-align:left;width:1000px;min-height:500px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
         <!-- <app-payment [record_type]="record_type" [schedule_type]="schedule_type" [disburse]="disburse" [security_question]="state?.security_question.QUESTION"></app-payment> -->
-        <app-ledger (dateChanged)="handledateChanged($event)" [ledger]="ledger" [transactions]="transactions" [account_details]="account_details"></app-ledger>
+        <app-ledger (dateChanged)="handledateChanged($event)" [from_wallet]=true [ledger]="ledger" [transactions]="transactions" [account_details]="account_details"></app-ledger>
     </div>
 </div>
 <div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayWithdrawal">

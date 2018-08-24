@@ -280,7 +280,7 @@ export class RequestsComponent implements OnInit {
       ];
       this.magic_filter.loan_status = '6';
       this.calendarView = false;
-
+      
     }
     this.getLoans_();
 

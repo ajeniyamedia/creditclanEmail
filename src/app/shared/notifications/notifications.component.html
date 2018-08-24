@@ -1,0 +1,48 @@
+<section class="panel">
+
+
+  <header class="panel-heading">
+    Customer Payments
+  </header>
+
+  <div>
+    <table class="table table-striped">
+      <thead>
+        <th>Date</th>
+        <th>Amount Paid</th>
+        <th>Status</th>
+        <th></th>
+        <th></th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let notify of notifications?.payments">
+          <td>{{notify?.PAYMENT_DATE | amDateFormat:'DD MMM YYYY'}}</td>
+          <td>{{notify?.AMOUNT_PAID| number:'.2-2'}}</td>
+          <td>{{notify?.STATUS=='1'?'Approved':'Not Approved'}}</td>
+          <td></td>
+          <td>
+            <div class="btn-group" *ngIf="notify?.STATUS == 0">
+
+              <button data-toggle="dropdown" class="btn btn-white btn-xs dropdown-toggle" type="button" aria-expanded="false">
+                <span class="caret"></span>
+              </button>
+              <ul role="menu" class="dropdown-menu">
+                <li>
+                  <a (click)="acceptPayment(notify)">Accept Payment</a>
+                </li>
+                <li>
+                  <a (click)="rejectPayment(notify)">Reject Payment</a>
+                </li>
+                 
+              </ul>
+            </div>
+          </td>
+        </tr>
+         
+      </tbody>
+
+    </table>
+
+
+  </div>
+</section>

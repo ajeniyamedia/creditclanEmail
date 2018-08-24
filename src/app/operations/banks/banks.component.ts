@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { FormArray, ReactiveFormsModule, FormsModule, FormBuilder, Validators } from '@angular/forms'; 
+import { FormArray, ReactiveFormsModule, FormsModule, FormBuilder, Validators } from '@angular/forms';
 import { UserService, OperationsService, AuthenticationService, StorageService } from '../../_services/index';
 
 import { ToastrService } from 'ngx-toastr';
@@ -13,8 +13,8 @@ export class BanksComponent implements OnInit {
   public currentUser: any;
   public loading = false;
   public banks = {
-    count:'0',
-    banks:[]
+    count: '0',
+    banks: []
   };
   public showForm = false;
   public showSearch = false;
@@ -22,7 +22,7 @@ export class BanksComponent implements OnInit {
   public VERIFY_STATUS = false;
   public charge_account = false;
   public destination = false;
-  public bank = { LENDER_BANK_BANK_NAME: '', LENDER_BANK_ACCOUNT_NAME: '', LENDER_BANK_CODE: '', LENDER_BANK_ACCOUNT_ID: '', LENDER_ACCOUNT_NUMBER: '', LENDER_BANK_ID: '', LENDER_ACCOUNT_GL: '', LENDER_ID: '', ADDED_BY: '', DATE_ADDED: '', PARENT_GL_ID: '', DATE_MODIFIED: '',IS_FOR_EBILLS: false };
+  public bank = { LENDER_BANK_BANK_NAME: '', LENDER_BANK_ACCOUNT_NAME: '', LENDER_BANK_CODE: '', LENDER_BANK_ACCOUNT_ID: '', LENDER_ACCOUNT_NUMBER: '', LENDER_BANK_ID: '', LENDER_ACCOUNT_GL: '', LENDER_ID: '', ADDED_BY: '', DATE_ADDED: '', PARENT_GL_ID: '', DATE_MODIFIED: '', IS_FOR_EBILLS: false };
   public credit = { DEST_BANK_ID: '', DEST_BANK_CODE: '', DEST_ACCOUNT_NUMBER: '' };
   public otp = { CONFIRM_OTP_CODE: '', flutterChargeReference: '' };
   public fresponse;
@@ -35,15 +35,17 @@ export class BanksComponent implements OnInit {
   overlayOpen = false;
   overlayWithdrawal = false;
   has_ebills_error = false;
-  ebills_error="";
+  ebills_error = "";
   account_details: any;
   ledger: any;
   transactions: any;
-  constructor(public toastr: ToastrService, vcr: ViewContainerRef,public fb: FormBuilder, public operationsService: OperationsService, 
+  isdelete = false;
+  singlebank: any;
+  constructor(public toastr: ToastrService, vcr: ViewContainerRef, public fb: FormBuilder, public operationsService: OperationsService,
     public storageService: StorageService) {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.operationsService.getNigerianBanks(this.currentUser.token).subscribe(nigerian_banks => this.nigerian_banks = nigerian_banks);
- 
+
   }
 
   closeOverlay() {
@@ -84,7 +86,7 @@ export class BanksComponent implements OnInit {
     if (contra_charts_size > 0) {
       let bal = chart_account_transactions[0]["DEBIT"];
       bal = bal - chart_account_transactions[0]["CREDIT"];
-      chart_account_transactions.map(function(element) {
+      chart_account_transactions.map(function (element) {
         element["BALANCE"] = bal
         bal = bal + element["DEBIT"];
         bal = bal - element["CREDIT"];
@@ -93,16 +95,22 @@ export class BanksComponent implements OnInit {
       this.transactions = chart_account_transactions
     }
   }
-  deleteBank(bank){
-    this.loading = true; 
-    this.operationsService.deleteBank(this.currentUser.token, bank)
+  deleteSingleBank(bank) {
+    this.overlayWithdrawal = true;
+    this.showForm = true;
+    this.isdelete = true;
+    this.singlebank = bank;
+  }
+  deleteBank(event) {
+    this.loading = true;
+    this.operationsService.deleteBank(this.currentUser.token, event.bank)
       .subscribe(status => {
-        
+
         this.loading = false;
 
-        if (status.status == '1') { 
+        if (status.status == '1') {
           this.showError(status.message)
-        } else { 
+        } else {
           this.showError(status.message)
         }
         this.getBanks();
@@ -110,10 +118,10 @@ export class BanksComponent implements OnInit {
   }
   saveLenderBank() {
 
-    this.loading = true; 
+    this.loading = true;
     this.operationsService.saveLenderBank(this.currentUser.token, this.bank)
       .subscribe(status => {
-        this.lbHBSFS = true; 
+        this.lbHBSFS = true;
         this.loading = false;
 
         if (status.status == '1') {
@@ -144,9 +152,9 @@ export class BanksComponent implements OnInit {
     this.lbHBSFS = false;
   }
   confirmOTPForTransfer() {
-    this.loading = true; 
+    this.loading = true;
     this.operationsService.confirmOTPForTransfer(this.currentUser.token, this.otp)
-      .subscribe(status => { 
+      .subscribe(status => {
         this.loading = false;
         this.otpHBSFC = true;
         if (status.status == true) {
@@ -164,9 +172,9 @@ export class BanksComponent implements OnInit {
 
 
   doTransfer() {
-    this.loading = true; 
+    this.loading = true;
     this.operationsService.accountToAccount(this.currentUser.token, this.bank, this.credit)
-      .subscribe(status => { 
+      .subscribe(status => {
         this.loading = false;
         if (status.status == true) {
           if (status.data.status == "error") {
@@ -187,9 +195,9 @@ export class BanksComponent implements OnInit {
   verifyAccount(bank) {
     this.bank = bank;
     this.loading = true;
-    this.VERIFY_STATUS = false; 
+    this.VERIFY_STATUS = false;
     this.operationsService.confirmBankAccount(this.currentUser.token, this.bank)
-      .subscribe(status => { 
+      .subscribe(status => {
         this.loading = false;
 
         if (status.status == "success") {
@@ -228,11 +236,11 @@ export class BanksComponent implements OnInit {
 
   }
   changeBankCode_(event) {
-   
+
     this.charge_account = false;
-      this.VERIFY_STATUS = false;
-      this.loading = false;
-      this.credit.DEST_BANK_CODE = event.event.BANK_CODE; 
+    this.VERIFY_STATUS = false;
+    this.loading = false;
+    this.credit.DEST_BANK_CODE = event.event.BANK_CODE;
   }
   updateBankDetails(bank) {
     this.showForm = true;
@@ -248,24 +256,24 @@ export class BanksComponent implements OnInit {
   }
   closeModal() {
     this.showForm = false;
-  } 
+  }
   getBanks() {
     this.operationsService.getBanks_(this.currentUser.token)
-      .subscribe(banks => { 
+      .subscribe(banks => {
         this.banks = banks;
         this.loading = false;
       });
   }
-  checkIfEbillsBankAlreadyExists(){
+  checkIfEbillsBankAlreadyExists() {
     this.ebills_error = "";
     this.has_ebills_error = false;
     this.operationsService.checkIfEbillsBankAlreadyExists(this.currentUser.token)
       .subscribe(result => {
-        if(result.status == "success"){
-          if(result.data.status == true){
+        if (result.status == "success") {
+          if (result.data.status == true) {
             this.has_ebills_error = true;
             this.ebills_error = "This will override an already existing account set for ebills transfer";
-          }else{
+          } else {
             this.ebills_error = "";
             this.has_ebills_error = false;
           }

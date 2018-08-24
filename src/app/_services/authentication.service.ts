@@ -70,6 +70,11 @@ export class AuthenticationService {
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
   }
+  forgot(email: any): Observable<any> {
+    // get users from api
+    return this.http.post('https://dataupload.creditclan.com/api/v2/loan/forgot', JSON.stringify({ email: email }))
+      .map((response: Response) => response.json());
+  }
   login(email: string, password: string): Observable<boolean> {
     return this.http.post('https://dataupload.creditclan.com/api/v2/loan/token', JSON.stringify({ email: email, password: password, grant_type: "password" }))
       .map((response: Response) => {
@@ -90,6 +95,7 @@ export class AuthenticationService {
         const company_id = response.json() && response.json().company_id;
         const test_mode = response.json() && response.json().test_mode;
         const decision_type = response.json() && response.json().decision_type;
+        const has_remita = response.json() && response.json().has_remita;
         if (token) {
           // set token property
           this.token = token;
@@ -109,6 +115,7 @@ export class AuthenticationService {
           localStorage.setItem('company_id', company_id);
           localStorage.setItem('test_mode', test_mode);
           
+          localStorage.setItem('has_remita', has_remita);
           localStorage.setItem('decision_type', decision_type);
           const type_of_view = localStorage.getItem('type_of_view');
           if (!type_of_view) {

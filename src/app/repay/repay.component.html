@@ -42,13 +42,14 @@
                             <thead>
                                 <!-- <th>#</th> -->
                                 <th>Date</th>
-                                <th>Outstanding Principal</th>
+                                <th>Principal</th>
                                 <th>Interest</th>
-                                <th>Term Repayment</th>
+                                <th>Repayment</th>
                                 <th>Paid</th>
-                                <th>Remaining</th>
+                                <th>Balance</th>
                                 
                                 <th *ngIf="loan?.USE_REMITA=='1'">Remita Mandate Ref</th>
+                                <th *ngIf="loan?.DIRECT_DEBIT_STATUS=='1'">Direct Debit Reference</th>
                                 <th></th>
                             </thead>
                             <tbody>
@@ -60,6 +61,8 @@
                                     <td>{{repayment?.HOW_MUCH_PAID| number:'.2-2'}}</td>
                                     <td>{{repayment?.HOW_MUCH_REMAINING| number:'.2-2'}}</td>
                                     <td *ngIf="loan?.USE_REMITA=='1'">{{repayment?.REMITA_MANDATE_REF}}</td>
+                                    
+                                    <td *ngIf="loan?.DIRECT_DEBIT_STATUS=='1'">{{repayment?.DIRECT_DEBIT_RETRIEVAL_REFERENCE}}</td>
                                     <td>
                                         <div class="btn-group" *ngIf="repayment?.HOW_MUCH_REMAINING > 0 && authService.canViewModule('1,7') && repayment?.AUTODEBIT_NOW">
 
@@ -73,6 +76,15 @@
                                                 <li *ngIf="loan?.USE_REMITA=='1'">
                                                     <a (click)="initiateStopRemitaCollection(repayment)">Stop Remita Collections</a>
                                                 </li>
+                                                <li *ngIf="loan?.DIRECT_DEBIT_STATUS=='1'">
+                                                        <a (click)="initiateSendDebitInstruction(repayment)">Send Debit Instructions</a>
+                                                    </li>
+                                                    <li *ngIf="loan?.DIRECT_DEBIT_STATUS=='1'">
+                                                        <a (click)="initiateCheckDebitInstruction(repayment)">Check Direct Debit Status</a>
+                                                    </li>
+                                                    <li *ngIf="loan?.DIRECT_DEBIT_STATUS=='1'">
+                                                        <a (click)="initiateCancelDebitInstruction(repayment)">Cancel Direct Debit</a>
+                                                    </li>
                                             </ul>
                                         </div>
                                     </td>

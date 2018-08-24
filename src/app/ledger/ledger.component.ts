@@ -9,6 +9,7 @@ import { FormArray, ReactiveFormsModule, FormsModule, FormBuilder, Validators } 
 export class LedgerComponent implements OnInit {
   @Input('account_details') account_details: any;
   @Input('ledger') ledger: any;
+  @Input('from_wallet') from_wallet: any = false;
   @Input('transactions') transactions: any;
   @Output() dateChanged = new EventEmitter();
   ledgers: any;
@@ -19,6 +20,8 @@ export class LedgerComponent implements OnInit {
   TTYPE='0';
   LENDER_ACCOUNT_ID = '';
   exportable = false;
+  people_customers:any;
+  PEOPLE_CUSTOMER:any;
   constructor(public fb: FormBuilder, public operationsService: OperationsService, public storageService: StorageService) {
     this.currentUser = this.storageService.read<any>('currentUser');
 
@@ -26,7 +29,14 @@ export class LedgerComponent implements OnInit {
 
   ngOnInit() {
     this.getStatement();
-
+    if(this.from_wallet){
+      this.getListOfCustomers();
+    }
+  }
+  getListOfCustomers(){
+    this.operationsService.getListOfCustomers(this.currentUser.token).subscribe(data => {
+      this.people_customers = data.people_customer;
+    });
   }
   exportRecords() {
     this.loading = true;
@@ -46,7 +56,7 @@ export class LedgerComponent implements OnInit {
   getStatement() {
     this.loading = true;
     this.exportable = false;
-    this.operationsService.getAccountStatement(this.currentUser.token, this.account_details, this.FISCAL_DATE_START, this.FISCAL_DATE_END, this.TTYPE)
+    this.operationsService.getAccountStatement(this.currentUser.token, this.account_details, this.FISCAL_DATE_START, this.FISCAL_DATE_END, this.TTYPE, this.PEOPLE_CUSTOMER)
       .subscribe(data => {
         this.loading = false;
         this.ledgers = data;

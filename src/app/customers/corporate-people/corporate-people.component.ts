@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CustomersService } from '../../_services/customers.service';
 import { ConstantsService } from '../../_services/constants.service';
-import { DataService,StorageService } from '../../_services/index';
+import { DataService, StorageService, OperationsService } from '../../_services/index';
 import { Router } from '@angular/router';
 
 // import { Uploader } from 'angular2-http-file-upload';
@@ -13,30 +13,32 @@ import { Router } from '@angular/router';
   styleUrls: ['./corporate-people.component.css']
 })
 export class CorporatePeopleComponent implements OnInit {
-  uploadingComplete=false;
-  uploadedResponse :any;
-  isUploading=false;
-  enable_peer='0'
-  customers:any;
+  uploadingComplete = false;
+  uploadedResponse: any;
+  isUploading = false;
+  enable_peer = '0'
+  customers: any;
   openedTab: any;
   sub;
   mainSection = true;
-  showEmptyState=false;
-  count='0';
-  description=' ';
-  loading=false
-  currentUser:any;
-  userId:any;
+  showEmptyState = false;
+  count = '0';
+  description = ' ';
+  loading = false
+  currentUser: any;
+  userId: any;
   constructor(public storageService: StorageService,
     public route: ActivatedRoute,
     protected customersSrvc: CustomersService,
     protected constants: ConstantsService,
-    public DataService: DataService, public router: Router, ) {
-      this.currentUser = this.storageService.read<any>('currentUser');
+    public DataService: DataService,
+    public router: Router,
+    public operationsService: OperationsService) {
+    this.currentUser = this.storageService.read<any>('currentUser');
   }
   uploadFile(event) {
     // let files = event.target.files;
-    
+
     // let uploadFile = files[0];
     // let myUploadItem = new MyUploadItem(uploadFile);
     // myUploadItem.formData = { description: this.description, token: this.currentUser.token,company_id:this.userId };  // (optional) form data can be sent with file
@@ -55,20 +57,23 @@ export class CorporatePeopleComponent implements OnInit {
     // this.uploaderService.onCompleteUpload = (item, response, status, headers) => {
     //   // complete callback, called regardless of success or failure
     //   this.loading = false;
-      
-      
+
+
     // };
     // this.uploaderService.upload(myUploadItem);
   }
-  start='0';
-  customerPreview = { 'corporate': {}, 'individual': {} }; 
+  start = '0';
+  customerPreview = { 'corporate': {}, 'individual': {} };
+  pie_perf = {
+    'COMPANY_ID': '0'
+  }
   // Load the basic information on navigation to this page
   ngOnInit() {
 
     this.sub = this.route.parent.params.subscribe(params => {
       this.userId = params["id"];
       this.loadCustomerPeoples(params["id"]);
-
+      this.pie_perf.COMPANY_ID = params["id"];
     });
 
   }
@@ -77,12 +82,12 @@ export class CorporatePeopleComponent implements OnInit {
   // load and reload functions
   loadCustomerPeoples(company_id) {
 
-    this.customersSrvc.getCustomerPeoples(company_id,this.start).subscribe(data => {
+    this.customersSrvc.getCustomerPeoples(company_id, this.start).subscribe(data => {
       //this.customers = data;
       if (data.status == false) {
         this.router.navigate(['/login']);
       } else {
-       // this.data = data;
+        // this.data = data;
         this.customers = data.all_cus.a;
         this.count = data.COUNT;
 
@@ -92,8 +97,8 @@ export class CorporatePeopleComponent implements OnInit {
           this.showEmptyState = false;
         }
         this.DataService.onProfileNav.emit({ 'location': 'home_corporate', 'data': data });
-    }
-      
+      }
+
     });
 
   }
@@ -101,8 +106,8 @@ export class CorporatePeopleComponent implements OnInit {
 
     event.preventDefault();
 
-     // If the data is not loaded, then open it.
-     if (this.customerPreview[category][id] == undefined) {
+    // If the data is not loaded, then open it.
+    if (this.customerPreview[category][id] == undefined) {
       this.openedTab = id;
       this.customerPreview[category][id] = { data: {} };
       this.customersSrvc.getCustomerPreview(category, id).subscribe(data => {
@@ -123,6 +128,18 @@ export class CorporatePeopleComponent implements OnInit {
 
   }
 
-
+  exportCustomers() {
+    this.loading = true;
+    this.operationsService.downloadCustomers(this.currentUser.token, this.pie_perf).subscribe(data => {
+      this.loading = false;
+      if (data.status) {
+        alert('Data Successfully exported. Download would start automatically.');
+        window.open(data.message);
+        return;
+      } else {
+        alert('Data could not be exported.');
+      }
+    });
+  }
 
 }

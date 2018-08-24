@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, EventEmitter, ViewContainerRef, ViewEncapsulation, Output, Input, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UserService, DataService, CustomerService, AuthenticationService, StorageService, LoansService, OperationsService } from '../../_services/index'; 
+import { UserService, DataService, CustomerService, AuthenticationService, StorageService, LoansService, OperationsService } from '../../_services/index';
 import { Router } from '@angular/router';
-import { LoancontractComponent } from '../../loancontract/loancontract.component'; 
+import { LoancontractComponent } from '../../loancontract/loancontract.component';
 import { IMyDpOptions } from 'mydatepicker';
-import { IMyDateModel, IMyInputFieldChanged, IMyCalendarViewChanged, IMyInputFocusBlur, IMyMarkedDate, IMyDate, IMySelector } from 'mydatepicker'; 
+import { IMyDateModel, IMyInputFieldChanged, IMyCalendarViewChanged, IMyInputFocusBlur, IMyMarkedDate, IMyDate, IMySelector } from 'mydatepicker';
 import { ToastrService } from 'ngx-toastr';
 declare var swal: any;
 
@@ -15,15 +15,21 @@ declare var swal: any;
   encapsulation: ViewEncapsulation.None
 })
 export class StatementdetailsComponent implements OnInit {
-  repayment:any;
-  initiate_recollection=false;
-  dont_queue_payments=false;
-  finalBreaking=false;
-  platformwallet:any;
-  security_question:any;
-  state:any;
-  disburse:any;
-  done = false; 
+  record_type='3';
+  notification: any;
+  initiate_debit_instruction = false;
+  initiate_debit_instruction_cancel = false;
+  initiate_debit_instruction_status = false;
+  stopdebitmandates = false;
+  repayment: any;
+  initiate_recollection = false;
+  dont_queue_payments = false;
+  finalBreaking = false;
+  platformwallet: any;
+  security_question: any;
+  state: any;
+  disburse: any;
+  done = false;
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     height: '34px',
@@ -31,14 +37,14 @@ export class StatementdetailsComponent implements OnInit {
     dateFormat: 'yyyy-mm-dd',
     openSelectorTopOfInput: false,
   };
-  post_action='6';
-  public trans:any;
+  post_action = '6';
+  public trans: any;
   public selDate: IMyDate = { year: 0, month: 0, day: 0 };
-  public is_done="0";
+  public is_done = "0";
   public parentRouteId: number;
   public loading = false;
-  public sub='7';
-  public subb:any;
+  public sub = '7';
+  public subb: any;
   public currentUser: any;
   public canDoApproval: false;
   public approvals_queue: any;
@@ -62,42 +68,42 @@ export class StatementdetailsComponent implements OnInit {
   rolling_back_payment = false;
   childModal = { location: '', data: {} };
   loan_viewed: any;
-  view_state='0';
+  view_state = '0';
   dontshownext: any;
   overlayType = '0';
   kyc_request = {
-    KYC_COMMENTS:'',
-    KYC_TYPE_ONE:false,
-    KYC_TYPE_TWO:false,
-    
+    KYC_COMMENTS: '',
+    KYC_TYPE_ONE: false,
+    KYC_TYPE_TWO: false,
+
   }
   pickup = {
-    KYC_COMMENTS:'', 
-    PICKUP_ADDRESS_TYPE:"1",
-    CUSTOM_PICKUP_ADDRESS:""
-    
+    KYC_COMMENTS: '',
+    PICKUP_ADDRESS_TYPE: "1",
+    CUSTOM_PICKUP_ADDRESS: ""
+
   }
   loan_statement = {
-    ddlDocList:1,
-    ddlAddHeader:'0',
-    ddlAddSignature:'0',
-    ddlSendDateOption:'1',
-    txtSendDate:'',
-    ddlEmailReceiver:'0'
+    ddlDocList: 1,
+    ddlAddHeader: '0',
+    ddlAddSignature: '0',
+    ddlSendDateOption: '1',
+    txtSendDate: '',
+    ddlEmailReceiver: '0'
   }
-  email_reminder = { 
-    ddlSendDateOption:'1',
-    txtSendDate:'',
-    ddlEmailReceiver:'0',
-    message:''
+  email_reminder = {
+    ddlSendDateOption: '1',
+    txtSendDate: '',
+    ddlEmailReceiver: '0',
+    message: ''
   }
-  sms_reminder = { 
-    ddlSendDateOption:'1',
-    txtSendDate:'',
-    ddlEmailReceiver:'0',
-    message:''
+  sms_reminder = {
+    ddlSendDateOption: '1',
+    txtSendDate: '',
+    ddlEmailReceiver: '0',
+    message: ''
   }
-  doctypes:any;
+  doctypes: any;
   editorConfig = {
     editable: true,
     spellcheck: false,
@@ -105,17 +111,30 @@ export class StatementdetailsComponent implements OnInit {
     minHeight: '7rem',
     placeholder: 'Enter your text here',
     translate: 'no',
-    width:"100%",
-    minWidth:"100%"
+    width: "100%",
+    minWidth: "100%"
   };
-  result:any;
-  constructor(public operationsService:OperationsService,public toastr: ToastrService, vcr: ViewContainerRef,private DataService: DataService, 
-    public router: Router, public route: ActivatedRoute, public loansService: LoansService, public storageService: StorageService) {
+  result: any;
+  has_remita = false;
+  PASSWORD='';
+  constructor(public operationsService: OperationsService, public toastr: ToastrService,
+    vcr: ViewContainerRef, private DataService: DataService,
+    public router: Router, public route: ActivatedRoute,
+    public loansService: LoansService, public storageService: StorageService) {
+    this.has_remita = this.storageService.read<any>('has_remita');
     this.DataService.onGetData.subscribe(res => {
       if (res) {
-        this.overlayOpen = true
+        this.overlayOpen = true;
       }
-    }) 
+    })
+    this.DataService.acceptBorrowerPayment.subscribe(res => {
+      this.notification = res.notify;
+      this.acceptingBorrowerPayment();
+    })
+    this.DataService.rejectBorrowerPayment.subscribe(res => {
+      this.notification = res.notify;
+      this.childModal.location = 'reject_notify';
+    })
     this.DataService.onViewLoan.subscribe(res => {
 
       this.overlayOpen = false;
@@ -123,51 +142,78 @@ export class StatementdetailsComponent implements OnInit {
         this.getApp();
       }
     })
-    this.DataService.onCancelPayment.subscribe(res => {
-        this.break_loan = false;
-        this.finalBreaking = false;
-        this.dont_queue_payments = false;
+    this.DataService.initiateDebitInstruction.subscribe(res => {
+      this.repayment = res.repayment;
+      this.initiate_debit_instruction = true;
+
     })
-    this.DataService.onInitiateRecollection.subscribe(res=>{
-     
+    this.DataService.initiateCheckDebitInstruction.subscribe(res => {
+      this.repayment = res.repayment;
+      this.initiate_debit_instruction_status = true;
+    })
+    this.DataService.initiateDebitInstructionCancel.subscribe(res => {
+      this.repayment = res.repayment;
+      this.initiate_debit_instruction_cancel = true;
+    })
+    this.DataService.onCancelPayment.subscribe(res => {
+      this.break_loan = false;
+      this.finalBreaking = false;
+      this.dont_queue_payments = false;
+    })
+    this.DataService.onInitiateRecollection.subscribe(res => {
+
       this.initiate_recollection = true;
       this.repayment = res;
     })
+    this.DataService.stopDebitMandate.subscribe(res => {
+      this.repayment = res.loan;
+      this.stopdebitmandates = true;
+    })
     this.DataService.onBreakingLoan.subscribe(res => {
-       this.break_loan = true
-       this.loan_viewed=res;
-       this.finalBreaking = false;
+      this.break_loan = true
+      this.loan_viewed = res;
+      this.finalBreaking = false;
     })
 
     // Catches requests from children on the modal to open.
     this.DataService.onOpenLoanChildModal.subscribe(res => {
-       this.loading = false;
-       this.is_done='0'
-       this.done = false;
-       this.childModal = res;
-       
+      this.loading = false;
+      this.is_done = '0'
+      this.done = false;
+      this.childModal = res;
+
     })
     this.DataService.onMakePaymentFromStatement.subscribe(res => {
-      
+
       this.viewing_loan = true
       this.loan_viewed = this.parentRouteId;
       this.view_state = '7';
       this.dontshownext = '1';
     })
     this.DataService.onRollbackPaymentFromStatement.subscribe(res => {
-       
+
       this.rolling_back_payment = true
-      this.trans = res.data.trans; 
+      this.trans = res.data.trans;
       this.loan = res.data.loan;
     })
   }
-  paymentHasBeenProcessedFinally(event){
+  acceptingBorrowerPayment(){ 
+    this.loansService.confirmPayment(this.currentUser.token, this.notification)
+      .subscribe(result => {
+        this.viewing_loan = false;
+        this.dont_queue_payments = true;
+        this.disburse = result.disbursement;
+        this.security_question = result.security_question;
+        this.record_type = '6';
+      });
+  }
+  paymentHasBeenProcessedFinally(event) {
     this.break_loan = false;
     this.finalBreaking = false;
     this.DataService.paymentHasBeenProcessedFinally.emit(event)
   }
-  openThePaymentForFinalBreaking(event){
-    
+  openThePaymentForFinalBreaking(event) {
+
     this.finalBreaking = true;
     this.disburse = event.disbursement;
     this.security_question = event.security_question;
@@ -176,82 +222,103 @@ export class StatementdetailsComponent implements OnInit {
     this.toastr.success(message, 'Success!');
     console.log(event)
   }
-  openForFinalPayment(event){
+  openForFinalPayment(event) {
     this.viewing_loan = false;
     this.dont_queue_payments = true;
-     this.disburse = event.disbursement;
-     this.security_question = event.security_question;
+    this.disburse = event.disbursement;
+    this.security_question = event.security_question;
   }
   showError(message) {
     this.toastr.error(message, 'Error');
   }
-  showMessage(event){
-    if(event.type=="success"){
+  cancelCustomerNotification() {
+    this.loading = true;
+    const sub = this.route.params.subscribe(params => {
+      this.parentRouteId = +params['id'];
+
+      this.loansService.cancelCustomerNotification(this.currentUser.token, this.parentRouteId, this.notification,this.PASSWORD)
+        .subscribe(data => {
+          this.loading = false;
+          if (data.status) {
+            this.is_done = '1';
+            this.showSuccess('Payment Cancelled');
+          } else {
+            this.showError(data.message);
+          }
+        });
+    });
+  }
+  showMessage(event) {
+    if (event.type == "success") {
       this.showSuccess(event.message)
     }
-    if(event.type=="error"){
+    if (event.type == "error") {
       this.showError(event.message)
     }
   }
   closeOverlay() {
     this.viewing_loan = false;
     this.rolling_back_payment = false;
+    this.initiate_debit_instruction = false;
+    this.initiate_debit_instruction_cancel = false;
+    this.stopdebitmandates = false;
+    this.initiate_debit_instruction_status = false;
   }
   checkLevel(sector, event, index) {
-    
+
     this.doctypes[index]["checked"] = event;
-    
+
   }
-  acceptBorrowerContract(){
+  acceptBorrowerContract() {
     this.loading = true;
     this.loansService.acceptContract(this.currentUser.token, this.loan.REQUEST_ID)
-    .subscribe(data => {
-      this.loading=false;
-      this.is_done='1';
-    });
+      .subscribe(data => {
+        this.loading = false;
+        this.is_done = '1';
+      });
   }
-  sendBVN(){
+  sendBVN() {
     this.loading = true;
     this.loansService.sendBVNRequest(this.currentUser.token, this.loan.REQUEST_ID)
-    .subscribe(data => {
-      this.loading=false;
-      this.is_done='1';
-    });
+      .subscribe(data => {
+        this.loading = false;
+        this.is_done = '1';
+      });
   }
-  requestCard(){
+  requestCard() {
     this.loading = true;
     this.loansService.sendCardRequest(this.currentUser.token, this.loan.REQUEST_ID)
-    .subscribe(data => {
-      this.loading=false;
-      this.is_done='1';
-    });
+      .subscribe(data => {
+        this.loading = false;
+        this.is_done = '1';
+      });
   }
-  confirmBankAccount(){
+  confirmBankAccount() {
 
     this.loading = true;
     this.loansService.sendAccountConfirmationRequest(this.currentUser.token, this.loan.REQUEST_ID)
-    .subscribe(data => {
-      this.loading=false;
-      this.is_done='1';
-    });
+      .subscribe(data => {
+        this.loading = false;
+        this.is_done = '1';
+      });
   }
-  sendContract(){
+  sendContract() {
     this.loading = true;
     this.loansService.sendContractDocumentRequest(this.currentUser.token, this.loan.REQUEST_ID)
-    .subscribe(data => {
-      this.loading=false;
-      this.is_done='1';
-    });
+      .subscribe(data => {
+        this.loading = false;
+        this.is_done = '1';
+      });
   }
-  deleteRequest(){
+  deleteRequest() {
     this.loading = true;
     this.loansService.sendDeleteRequest(this.currentUser.token, this.loan.REQUEST_ID, null)
-    .subscribe(data => {
-      this.loading=false;
-      this.is_done='1';
-      this.closeChildModal();
-      
-    });
+      .subscribe(data => {
+        this.loading = false;
+        this.is_done = '1';
+        this.closeChildModal();
+
+      });
     this.router.navigate['../../requests/pending'];
   }
   // Closes the modal opened by onOpenChildModal event
@@ -264,28 +331,28 @@ export class StatementdetailsComponent implements OnInit {
   closeChildModal_(event) {
     this.childModal.location = '';
     //this.break_loan = false;
-    if(event.post_action=='edit_contract'){
+    if (event.post_action == 'edit_contract') {
       this.post_action = '8'
       this.loan.REQUEST_ID = event.request_id;
       this.sub = event.is_top_up;
     }
   }
-  
-  sendKYCRequest(){
+
+  sendKYCRequest() {
     this.loading = true;
-    this.loansService.sendKYCRequest(this.currentUser.token, this.loan.REQUEST_ID,this.kyc_request)
-    .subscribe(data => {
-      this.loading=false;
-      this.is_done='1';
-    });
+    this.loansService.sendKYCRequest(this.currentUser.token, this.loan.REQUEST_ID, this.kyc_request)
+      .subscribe(data => {
+        this.loading = false;
+        this.is_done = '1';
+      });
   }
-  sendDocsRequest(){
+  sendDocsRequest() {
     this.loading = true;
-    this.loansService.sendDocumentPickupRequest(this.currentUser.token, this.loan.REQUEST_ID,this.pickup,this.doctypes)
-    .subscribe(data => {
-      this.loading=false;
-      this.is_done='1';
-    });
+    this.loansService.sendDocumentPickupRequest(this.currentUser.token, this.loan.REQUEST_ID, this.pickup, this.doctypes)
+      .subscribe(data => {
+        this.loading = false;
+        this.is_done = '1';
+      });
   }
   // Broadcast confirmtion to publish on loan market
   confirmPublish(request_id) {
@@ -304,7 +371,7 @@ export class StatementdetailsComponent implements OnInit {
     this.closeChildModal();
     this.DataService.onConfirmRejectOffer.emit({ 'lender_id': lender_id });
   }
-  cancelContract(){
+  cancelContract() {
     this.closeChildModal();
     this.DataService.onConfirmCancelContract.emit();
   }
@@ -330,98 +397,99 @@ export class StatementdetailsComponent implements OnInit {
 
   ngOnInit() {
     this.getApp()
-    this.pickup.PICKUP_ADDRESS_TYPE='1'
+    this.pickup.PICKUP_ADDRESS_TYPE = '1'
     let d: Date = new Date();
 
-        this.selDate = {
-          year: d.getFullYear(),
-          month: d.getMonth() + 1,
-          day: d.getDate()
-        };
+    this.selDate = {
+      year: d.getFullYear(),
+      month: d.getMonth() + 1,
+      day: d.getDate()
+    };
   }
-  sendTheStatement(){
+  sendTheStatement() {
     this.loan_statement.ddlEmailReceiver = "1";
     this.sendLoanStatement();
   }
-  previewTheStatement(){
+  previewTheStatement() {
     this.loan_statement.ddlEmailReceiver = "0";
     this.sendLoanStatement();
   }
-  previewTheEmailReminder(){
+  previewTheEmailReminder() {
     this.email_reminder.ddlEmailReceiver = "1";
     this.sendEmailReminder();
   }
-  sendForCancelAutoDebit(){
+  sendForCancelAutoDebit() {
     this.loading = true;
     this.loansService.sendForCancelAutoDebit(this.currentUser.token, this.loan.REQUEST_ID)
-    .subscribe(data => {
-      this.loading=false;
-      this.is_done='1';
-    });
-  } 
-  sendForReactivateAutoDebit(){
+      .subscribe(data => {
+        this.loading = false;
+        this.is_done = '1';
+      });
+  }
+  sendForReactivateAutoDebit() {
     this.loading = true;
     this.loansService.sendForReactivateAutoDebit(this.currentUser.token, this.loan.REQUEST_ID)
-    .subscribe(data => {
-      this.loading=false;
-      this.is_done='1';
-    });
-  } 
-  sendTheEmailReminder(){
+      .subscribe(data => {
+        this.loading = false;
+        this.is_done = '1';
+      });
+  }
+  sendTheEmailReminder() {
     this.email_reminder.ddlEmailReceiver = "0";
     this.sendEmailReminder();
   }
-  sendEmailReminder(){
+  sendEmailReminder() {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.subb = this.route.params.subscribe(params => {
+
       this.parentRouteId = +params["id"];
       this.operationsService.sendEmailReminder(this.currentUser.token, this.parentRouteId, this.email_reminder)
         .subscribe(result => {
           this.result = result;
-          if(result.status==true){
+          if (result.status == true) {
             this.done = true;
             this.showMessage(result.data.message)
-          }else{
+          } else {
             this.showError(result.data.message)
           }
         });
     });
   }
-  previewTheSMSReminder(){
+  previewTheSMSReminder() {
     this.sms_reminder.ddlEmailReceiver = "1";
     this.sendSMSReminder();
   }
-  sendTheSMSReminder(){
+  sendTheSMSReminder() {
     this.sms_reminder.ddlEmailReceiver = "0";
     this.sendSMSReminder();
   }
-  sendSMSReminder(){
+  sendSMSReminder() {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.subb = this.route.params.subscribe(params => {
       this.parentRouteId = +params["id"];
       this.operationsService.sendSMSReminder(this.currentUser.token, this.parentRouteId, this.sms_reminder)
         .subscribe(result => {
           this.result = result;
-          if(result.status==true){
+          if (result.status == true) {
             this.done = true;
             this.showMessage(result.data.message)
-          }else{
+          } else {
             this.showError(result.data.message)
           }
         });
     });
   }
-  sendLoanStatement(){
+  sendLoanStatement() {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.subb = this.route.params.subscribe(params => {
       this.parentRouteId = +params["id"];
       this.operationsService.sendLoanStatement(this.currentUser.token, this.parentRouteId, this.loan_statement)
         .subscribe(result => {
           this.result = result;
-          if(result.status==true){
+          if (result.status == true) {
             this.done = true;
             this.showMessage(result.data.message)
-          }else{
+          } else {
             this.showError(result.data.message)
           }
         });
@@ -514,14 +582,14 @@ export class StatementdetailsComponent implements OnInit {
             //window.location.reload();
             this.getApp();
           } else {
-            if(loans.message){
+            if (loans.message) {
               swal({
                 title: "Approval",
                 text: loans.message,
                 type: "error"
               });
             }
-            
+
             this.getApp();
 
             this.closeApproving();
@@ -568,14 +636,14 @@ export class StatementdetailsComponent implements OnInit {
                 showCancelButton: true,
                 confirmButtonText: loans.action,
                 cancelButtonText: 'Cancel'
-              }).then(function() {
+              }).then(function () {
 
                 swal(
                   'Deleted!',
                   'Your imaginary file has been deleted.',
                   'success'
                 )
-              }, function(dismiss) {
+              }, function (dismiss) {
                 // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
                 if (dismiss === 'cancel') {
                   swal(

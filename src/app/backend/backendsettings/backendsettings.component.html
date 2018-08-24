@@ -78,7 +78,7 @@
                                 </li>
                               </ul>
                             </div>
-                          </div> 
+                          </div>
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -1175,6 +1175,20 @@
                       <div class="col-md-12">
                         <ul>
                           <li class="text-left">
+                            <span> Request for Direct Debit</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="REQUEST_FOR_DIRECT_DEBIT" [(ngModel)]="contract.REQUEST_FOR_DIRECT_DEBIT">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
                             <span> Enable Signature</span>
                             <div class="pull-right">
                               <input type="checkbox" name="ENABLE_CONTRACT_SIGNATURE" name="ENABLE_CONTRACT_SIGNATURE" [(ngModel)]="contract.ENABLE_CONTRACT_SIGNATURE">
@@ -1200,28 +1214,86 @@
                     </div>
 
                     <div class="form-group row">
-                        <div class="col-md-12">
-                          <ul>
-                            <li class="text-left">
-                              <span> Get notification when contract is accepted</span>
-                              <div class="pull-right">
-                                <input type="checkbox" name="NOTIFY_CONTRACT_ACCEPTED" name="NOTIFY_CONTRACT_ACCEPTED" [(ngModel)]="contract.NOTIFY_CONTRACT_ACCEPTED">
-  
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div class="form-group row" *ngIf="contract.NOTIFY_CONTRACT_ACCEPTED">
-                          <div class="col-md-6">
-                            <label class="control-label">Email</label>
-                          </div>
-                          <div class="col-md-6">
-                              <input type="text" class="form-control" name="CONTRACT_ACCEPTED_EMAIL" [(ngModel)]="contract.CONTRACT_ACCEPTED_EMAIL">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Get notification when contract is accepted</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="NOTIFY_CONTRACT_ACCEPTED" name="NOTIFY_CONTRACT_ACCEPTED" [(ngModel)]="contract.NOTIFY_CONTRACT_ACCEPTED">
+
                             </div>
-                        </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="contract.NOTIFY_CONTRACT_ACCEPTED">
+                      <div class="col-md-6">
+                        <label class="control-label">Email</label>
+                      </div>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" name="CONTRACT_ACCEPTED_EMAIL" [(ngModel)]="contract.CONTRACT_ACCEPTED_EMAIL">
+                      </div>
+                    </div>
 
                     <button type="submit" (click)="saveContract(contractForm.value, contractForm.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                      <span *ngIf="!loading">Submit</span>
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default" *ngIf="gateway.CHOOSE_PAYMENT_PROCESSOR">
+            <div class="panel-heading" role="tab" id="headingPP">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePP" aria-expanded="true" aria-controls="collapsePP">
+                  Payment Gateway Settings
+                </a>
+              </h4>
+            </div>
+            <div id="collapsePP" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPP">
+              <div class="panel-body">
+                <div class="panel-body">
+                  <form #pp="ngForm" novalidate>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Active Payment Gateway</span>
+                            <div class="pull-right">
+                              <select class="form-control" name="ACTIVE_PAYMENT_GATEWAY" [(ngModel)]="gateway.ACTIVE_PAYMENT_GATEWAY">
+                                <option value="0"></option>
+                                <option [value]="gt.value" *ngFor="let gt of gateways">{{gt.display}}</option>
+                              </select>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="control-label col-md-4">Preferred Repayment Cards</label>
+                      <div class="col-md-8">
+                        <div class="row">
+                          <div class="col-md-6" *ngFor="let occ of cards;let i = index" style="padding-right:5px !important">
+                            <div class="form-group" style="margin-bottom:0px">
+                              <span class="pull-left text-primary">{{occ?.DISPLAY}}</span>
+                              <span class="pull-right">
+                                <div class="checkbox" style="margin:0px !important">
+                                  <label>
+                                    <input type="checkbox" [checked]="isAvailable(occ?.VALUE,'cards',i)" name="role_{{occ?.VALUE}}" (change)="checkCard(occ,$event.target.checked,i)">
+
+                                  </label>
+                                </div>
+                              </span>
+                              <div class="clearfix"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button type="submit" (click)="savePaymentSettings(pp.value, pp.valid)" [disabled]="loading" class="btn btn-white pull-right">
                       <span *ngIf="!loading">Submit</span>
                       <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                     </button>
@@ -1418,10 +1490,10 @@
                       <div class="col-md-6">
                         <select class="form-control" name="REPAYMENT_SOURCE" [(ngModel)]="reminders.REPAYMENT_SOURCE">
                           <option [value]="0"></option>
-                          <option [value]="1">Remita</option>
+                          <option [value]="1">Remita Inflight</option>
                           <option [value]="2">Cards</option>
                           <option [value]="3">Direct Bank Debit</option>
-                          <option [value]="4">Others</option>
+                          <option [value]="4">Manual</option>
 
                         </select>
                       </div>
@@ -1448,13 +1520,34 @@
                       </div>
                       <div class="col-md-6">
                         <!-- <input type="text" class="form-control" name="AUTODEBIT_INTERVAL" [ngModel]="reminders.AUTODEBIT_INTERVAL"> -->
-                          <select class="form-control" name="AUTODEBIT_INTERVAL"  [ngModel]="reminders.AUTODEBIT_INTERVAL">
-                            <option [value]="0"></option>
-                            <option [value]="5">5</option>
-                            <option [value]="6">6</option>
-                            <option [value]="7">7</option> 
-                            <option [value]="8">8</option> 
-                          </select>
+                        <select class="form-control" name="AUTODEBIT_INTERVAL" [ngModel]="reminders.AUTODEBIT_INTERVAL">
+                          <option [value]="0"></option>
+                          <option [value]="5">5</option>
+                          <option [value]="6">6</option>
+                          <option [value]="7">7</option>
+                          <option [value]="8">8</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Get notification when customers make a repayment</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="NOTIFY_REPAYMENT_MADE" name="NOTIFY_REPAYMENT_MADE" [(ngModel)]="reminders.NOTIFY_REPAYMENT_MADE">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="reminders.NOTIFY_REPAYMENT_MADE">
+                      <div class="col-md-6">
+                        <label class="control-label">Email</label>
+                      </div>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" name="NOTIFY_REPAYMENT_EMAIL" [(ngModel)]="reminders.NOTIFY_REPAYMENT_EMAIL">
                       </div>
                     </div>
                     <button type="submit" (click)="saveReminders(remind.value, remind.valid)" [disabled]="loading" class="btn btn-white pull-right">
@@ -1498,7 +1591,22 @@
             </div>
 
           </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingCompanies">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCompanies" aria-expanded="false"
+                  aria-controls="collapseCompanies">
+                  Companies
+                </a>
+              </h4>
+            </div>
+            <div id="collapseCompanies" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCompanies">
+              <div class="panel-body">
+                <app-companies></app-companies>
+              </div>
+            </div>
 
+          </div>
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingReferral">
               <h4 class="panel-title">
@@ -2376,17 +2484,18 @@
     <app-levelform (checkEmployee)="checkEmployee($event)" (saveLevel)="saveLevel($event)" [employees]="employees" [loading]="loading"
       [level]="level" [APPROVAL_LEVEL_ID_]="APPROVAL_LEVEL_ID_" [isedit]="isedit"></app-levelform>
   </div>
-   
+
 </div>
 <div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayOpen_">
 
-    <div class="col-md-12">
-      <a class="dismiss cancel_treat_ close" role="button" (click)="closeIsNewEmp()">
-        <i class="fa fa-times" aria-hidden="true"></i>
-      </a>
-    </div>
-     
-    <div class=" overpanel-content container" role="document" style="text-align:left;width:600px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
-        <app-newlevelform (checkEmployee)="checkEmployee($event)" (saveLevel)="saveLevel($event)" [employees]="employees" [loading]="loading" [APPROVAL_LEVEL_ID_]="APPROVAL_LEVEL_ID_" [isedit]="isedit"></app-newlevelform>
-      </div>
+  <div class="col-md-12">
+    <a class="dismiss cancel_treat_ close" role="button" (click)="closeIsNewEmp()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </a>
   </div>
+
+  <div class=" overpanel-content container" role="document" style="text-align:left;width:600px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+    <app-newlevelform (checkEmployee)="checkEmployee($event)" (saveLevel)="saveLevel($event)" [employees]="employees" [loading]="loading"
+      [APPROVAL_LEVEL_ID_]="APPROVAL_LEVEL_ID_" [isedit]="isedit"></app-newlevelform>
+  </div>
+</div>

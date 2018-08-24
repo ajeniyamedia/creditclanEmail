@@ -25,6 +25,14 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="">
+                            <select  name="PEOPLE_CUSTOMER" class="form-control" [(ngModel)]="PEOPLE_CUSTOMER">
+                                <option [value]="0">Select a customer</option>
+                                <option [ngValue]="customer" *ngFor="let customer of people_customers">{{customer.LEGAL_NAME}}</option> 
+                            </select>
+                        </div>
+                    </div>
             <div class="form-group">
                 <div class="ngui-datetime-picker-wrapper">
                     <input type="text" name="FISCAL_DATE_START" placeholder="Start Date" class="form-control" [(ngModel)]="FISCAL_DATE_START"

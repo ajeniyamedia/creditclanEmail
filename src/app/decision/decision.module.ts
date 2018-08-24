@@ -11,7 +11,7 @@ import { RepaymentanalyticsComponent } from './repaymentanalytics/repaymentanaly
 import { BureauanalyticsComponent } from './bureauanalytics/bureauanalytics.component';
 import { RemitaanalyticsComponent } from './remitaanalytics/remitaanalytics.component';
 import { CardsanalyticsComponent } from './cardsanalytics/cardsanalytics.component';
-import { BankaccountanalyticsComponent } from './bankaccountanalytics/bankaccountanalytics.component';
+import { BankaccountanalyticsComponent } from './bankaccountanalytics/bankaccountanalytics.component'; 
 
 @NgModule({
   imports: [

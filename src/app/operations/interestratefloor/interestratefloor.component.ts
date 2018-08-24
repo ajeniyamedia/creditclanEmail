@@ -9,7 +9,7 @@ export class InterestratefloorComponent implements OnInit {
 
   @Input('product') product: any;
   @Input('floor_rate') floor_rate: any;
-  @Output() saveForm = new EventEmitter();
+  @Output() saveFpayorm = new EventEmitter();
   @Input('special_interest_duration') special_interest_duration: any;
   @Input('loan_durations') loan_durations: any;
   @Input('loading') loading: any;
@@ -30,7 +30,7 @@ export class InterestratefloorComponent implements OnInit {
   }
 
   saveSpecialLoanInterest(value, valid){
-    this.saveForm.emit({ value: value, valid: valid });
+    this.saveFpayorm.emit({ value: value, valid: valid });
   }
 
 }

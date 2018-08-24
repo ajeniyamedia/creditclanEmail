@@ -308,7 +308,7 @@
 
                             <div *ngIf="magic_filter.loan_status=='1'||magic_filter.loan_status=='-4'||magic_filter.loan_status=='6'">
                                 <ul class="list list_border text-center">
-                                    <li class="txt_l4 {{loan.LOAN_STATUS | loanStatus}}">
+                                    <li *ngIf="loan?.IS_PEER_TO_PEER=='1'" class="txt_l4 {{loan.LOAN_STATUS | loanStatus}}">
                                         {{loan.LOAN_STATUS | loanStatusText}}</li>
                                     <li class="txt_l4">
                                         Expires {{loan?.EXPIRATION_DATE | amTimeAgo}}</li>
@@ -428,10 +428,12 @@
                                         <div [style.width]="percent_funded(loan.PERCENTAGE_FUNDED)" class="progress-bar {{loan.PERCENTAGE_FUNDED|safe}}" role="progressbar"
                                             attr.aria-valuenow="{{loan.PERCENTAGE_FUNDED|safe}}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    <small class="t_dull" style="display:block; font-size:12px">{{loan.PERCENTAGE_FUNDED}}% funded &nbsp; | &nbsp;{{getTotalFunded(loan.PERCENTAGE_FUNDED,loan.REQUEST_PRINCIPAL)|number:'.2-2'}}</small>
+                                    <small class="t_dull" style="display:block; font-size:12px">{{loan.PERCENTAGE_FUNDED|number:'.2-2'}}% funded &nbsp; | &nbsp;{{getTotalFunded(loan.PERCENTAGE_FUNDED,loan.REQUEST_PRINCIPAL)|number:'.2-2'}}</small>
                                 </div>
                                 <div *ngIf="loan?.IS_PEER_TO_PEER!='1'">
-                                    <p class="t_l4 t_cool" style="margin-bottom: 5px">{{loan.REQUEST_RATE}}% {{loan?.INTEREST_DURATION}}
+                                    <p class="t_l4 t_cool" style="margin-bottom: 5px">{{loan.REQUEST_RATE|number:'.2-2'}}% {{loan?.INTEREST_DURATION}}
+                                    </p>
+                                    <p class="t_l4 t_cool" *ngIf="loan?.USE_REMITA=='1'" style="margin-bottom: 5px">Remita ID - {{loan.CUSTOMER_ID}}
                                     </p>
                                     <!-- <div class="progress progress-xs" style="">
                                             <div [style.width]="100" class="progress-bar" role="progressbar" attr.aria-valuenow="100"

@@ -1,15 +1,20 @@
-<section class="panel contract_area hideable_area" style="margin-bottom: 10px">
+<section class="panel contract_area hideable_area" style="margin-bottom: 10px" >
     <header class="panel-heading">
-      <span class="tools pull-right">
+      <span class="tools pull-right" *ngIf="from_where=='1'">
         <ul class="list-inline">
             <li><a [routerLink]="['../contract']">Summary</a></li>
             <li><a [routerLink]="['../repayments']">Schedule</a></li>
             <li><a [routerLink]="['../more']">More</a></li>                    
         </ul>
       </span>
+      <span class="tools pull-right" *ngIf="from_where=='2'">
+        <button class="btn btn-xs btn-white" style="margin-right:10px" (click)="closeTheLoanFormPopUp()">Continue</button>
+        <button class="btn btn-xs btn-white" (click)="modifyTheContract()">Modify Contract</button>
+      </span>
       <span>LOAN REPAYMENTS</span>
     </header>
   </section>
+
 <section class="panel" *ngIf="!status">
 
 <div class="animated">

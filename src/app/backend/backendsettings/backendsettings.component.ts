@@ -30,6 +30,11 @@ export class BackendsettingsComponent implements OnInit {
     "INTEREST_DURATION": "",
     "INTRREST_RATE_BAND_ID": ""
   }
+  gateway = {
+    "CHOOSE_PAYMENT_PROCESSOR": false,
+    "ACTIVE_PAYMENT_GATEWAY": "1",
+    "ALLOWED_CARD_TYPES": []
+  }
   INTRREST_RATE_BAND_ID = 0;
   interest_bands: any;
   simpleSlider_ = { name: 'Simple Slider', onUpdate: undefined, onFinish: undefined };
@@ -55,6 +60,11 @@ export class BackendsettingsComponent implements OnInit {
   ownership_status = [
     { "id": "1", "name": "Owned" },
     { "id": "2", "name": "Rented" }
+  ]
+
+  gateways = [
+    { "display": "Paystack", "value": "2" },
+    { "display": "Flutterwave", "value": "1" }
   ]
 
   general_analytics_settings = {
@@ -119,7 +129,9 @@ export class BackendsettingsComponent implements OnInit {
     DAYS_TO: '0',
     REMINDER_INTERVAL: '0',
     AUTODEBIT_INTERVAL: '4',
-    REPAYMENT_SOURCE: '0'
+    REPAYMENT_SOURCE: '0',
+    NOTIFY_REPAYMENT_MADE: false,
+    NOTIFY_REPAYMENT_EMAIL: ''
   }
   mail_settings = {
     HAS_SMTP: false,
@@ -219,8 +231,9 @@ export class BackendsettingsComponent implements OnInit {
     REQUEST_FOR_ACCOUNT: false,
     ENABLE_CONTRACT_SIGNATURE: false,
     ADJUST_CONTRACT_DATE: false,
-    NOTIFY_CONTRACT_ACCEPTED:false,
-    CONTRACT_ACCEPTED_EMAIL:''
+    NOTIFY_CONTRACT_ACCEPTED: false,
+    CONTRACT_ACCEPTED_EMAIL: '',
+    REQUEST_FOR_DIRECT_DEBIT: false
   }
   public payment = {
     ALLOW_AUTO_APPROVE_PAYMENT: false,
@@ -357,6 +370,11 @@ export class BackendsettingsComponent implements OnInit {
     { value: '3', display: 'Divorced' },
     { value: '4', display: 'Widowed' }
   ];
+  cards = [
+    { VALUE: '1', DISPLAY: 'Mastercard' },
+    { VALUE: '2', DISPLAY: 'Visa' },
+    { VALUE: '3', DISPLAY: 'Interswitch Verve' }
+  ];
   public loan_durations = [{ "LOAN_INTEREST_DURATION_ID": '1', "LOAN_DURATION": "Days", "INTEREST_DURATION": "Per Day", "ADJECTIVAL": "Daily", "ABBREV": "d" },
   { "LOAN_INTEREST_DURATION_ID": '2', "LOAN_DURATION": "Months", "INTEREST_DURATION": "Per Month", "ADJECTIVAL": "Monthly", "ABBREV": "Mo" },
   { "LOAN_INTEREST_DURATION_ID": '3', "LOAN_DURATION": "Years", "INTEREST_DURATION": "Per Year", "ADJECTIVAL": "Yearly", "ABBREV": "Yr" },
@@ -411,6 +429,13 @@ export class BackendsettingsComponent implements OnInit {
     });
     this.operationsService.getAppSettings(this.currentUser.token)
       .subscribe(data => {
+
+        this.gateway.CHOOSE_PAYMENT_PROCESSOR = data.gateway.CHOOSE_PAYMENT_PROCESSOR;
+        this.gateway.ACTIVE_PAYMENT_GATEWAY = data.gateway.ACTIVE_PAYMENT_GATEWAY;
+
+        this.gateway.ALLOWED_CARD_TYPES = data.gateway.ALLOWED_CARD_TYPES;
+
+
         this.contract.MUST_ACCEPT_CONTRACT = data.contract.MUST_ACCEPT_CONTRACT;
         this.contract.SEND_CONTRACT_DOCS = data.contract.SEND_CONTRACT_DOCS;
         this.contract.REQUEST_FOR_ACCOUNT = data.contract.REQUEST_FOR_ACCOUNT;
@@ -420,6 +445,7 @@ export class BackendsettingsComponent implements OnInit {
         this.contract.ADJUST_CONTRACT_DATE = data.contract.ADJUST_CONTRACT_DATE;
         this.contract.NOTIFY_CONTRACT_ACCEPTED = data.contract.NOTIFY_CONTRACT_ACCEPTED;
         this.contract.CONTRACT_ACCEPTED_EMAIL = data.contract.CONTRACT_ACCEPTED_EMAIL;
+        this.contract.REQUEST_FOR_DIRECT_DEBIT = data.contract.REQUEST_FOR_DIRECT_DEBIT;
 
         this.general_analytics_settings.EXCLUDED_CALL_COUNTRY = data.general_analytics_settings.EXCLUDED_CALL_COUNTRY;
         this.general_analytics_settings.ACCEPTED_CALL_COUNTRY = data.general_analytics_settings.ACCEPTED_CALL_COUNTRY;
@@ -619,6 +645,8 @@ export class BackendsettingsComponent implements OnInit {
         this.reminders.REMINDER_INTERVAL = data.reminders.REMINDER_INTERVAL;
         this.reminders.AUTODEBIT_INTERVAL = data.reminders.AUTODEBIT_INTERVAL;
         this.reminders.REPAYMENT_SOURCE = data.reminders.REPAYMENT_SOURCE;
+        this.reminders.NOTIFY_REPAYMENT_MADE =  data.reminders.NOTIFY_REPAYMENT_MADE;
+        this.reminders.NOTIFY_REPAYMENT_EMAIL =  data.reminders.NOTIFY_REPAYMENT_EMAIL;
 
         this.investors.MAXIMUM_INVESTMENT_PERCENT = data.investors.MAXIMUM_INVESTMENT_PERCENT;
 
@@ -772,6 +800,9 @@ export class BackendsettingsComponent implements OnInit {
   checkSector(sector, event, index) {
     this.sectors[index]["checked_"] = event;
   }
+  checkCard(sector, event, index) {
+    this.cards[index]["checked_"] = event;
+  }
   checkOccupation(sector, event, index) {
     this.occupations[index]["checked_"] = event;
 
@@ -821,6 +852,7 @@ export class BackendsettingsComponent implements OnInit {
   saveOFFrom(event) {
     this.saveFee(event.value, event.valid);
   }
+
 
   saveContract(value, valid) {
 
@@ -993,6 +1025,19 @@ export class BackendsettingsComponent implements OnInit {
         }
       });
   }
+  savePaymentSettings(value, valid) {
+
+    this.loading = true;
+    this.operationsService.savePaymentSettings(this.currentUser.token, value, this.cards)
+      .subscribe(data => {
+        this.loading = false;
+        if (data.status === '1') {
+          this.showSuccess(data.message)
+        } else {
+          this.showError(data.message)
+        }
+      });
+  }
   saveSMSSettings(value, valid) {
 
     this.loading = true;
@@ -1037,7 +1082,7 @@ export class BackendsettingsComponent implements OnInit {
         }
       });
   }
-  saveInterestRateBand(value, valid) { 
+  saveInterestRateBand(value, valid) {
     this.loading = true;
     this.decisionService.addBand(this.currentUser.token, value, this.INTRREST_RATE_BAND_ID)
       .subscribe(data => {
@@ -1067,6 +1112,16 @@ export class BackendsettingsComponent implements OnInit {
 
     if (sectors == 'sector') {
       if (this.product.PREFERRED_OCCUPATION_SECTOR.indexOf(OCCUPATION_ID) > -1) {
+        this.sectors[index].checked = true;
+
+        return true;
+      } else {
+        return false;
+      }
+
+    }
+    if (sectors == 'cards') {
+      if (this.gateway.ALLOWED_CARD_TYPES.indexOf(OCCUPATION_ID) > -1) {
         this.sectors[index].checked = true;
 
         return true;

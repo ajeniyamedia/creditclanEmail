@@ -5,14 +5,14 @@ import { CommonModule } from '@angular/common';
 import { LoandetailsComponent } from '../../loandetails';
 
 import { AuthGuard } from '../../_guards/auth.guard';
-import { LoancontractComponent } from '../../loancontract'; 
+import { LoancontractComponent } from '../../loancontract';
 import { LoanlendersComponent } from '../../loanlenders/index';
 import { LoanapprovalsComponent } from '../../loanapprovals/index';
 import { LoancommentsComponent } from '../../loancomments/index';
 import { LoanguarantorsComponent } from '../../loanguarantors/index';
 import { LoanrepaymentComponent } from '../../loanrepayment/loanrepayment.component';
 import { LoaneirComponent } from '../../loaneir/loaneir.component';
-import { LoanlogsComponent } from '../../loanlogs/loanlogs.component'; 
+import { LoanlogsComponent } from '../../loanlogs/loanlogs.component';
 import { LoancustomerComponent } from '../../loancustomer/loancustomer.component';
 import { LoanpeertopeerComponent } from '../../loanpeertopeer/loanpeertopeer.component';
 import { LoanmoreComponent } from '../../loanmore/loanmore.component';
@@ -34,10 +34,11 @@ import { CustomerSocialAnalysisComponent } from '../../customer-social-analysis/
 import { CustomerSocialAnalysisDetailsComponent } from '../../customer-social-analysis-details/customer-social-analysis-details.component';
 import { LoanrejectionsComponent } from '../loanrejections/loanrejections.component';
 import { LoankycComponent } from '../loankyc/loankyc.component';
-
+import { CreditcheckComponent } from '../creditcheck/creditcheck.component';
+import { ContractofferComponent } from '../../shared/contractoffer/contractoffer.component';
 const routes: Routes = [
   {
-    path: '',component: LoandetailsComponent, canActivate: [AuthGuard],
+    path: '', component: LoandetailsComponent, canActivate: [AuthGuard],
 
     children: [
       { path: '', redirectTo: 'contract', pathMatch: 'full' },
@@ -45,7 +46,7 @@ const routes: Routes = [
       { path: 'customer-analysis-details', component: CustomerAnalysisDetailsComponent },
       { path: 'customer-analysis-fulldetails/:type', component: CustomerAnalysisFullDetailsComponent },
       { path: 'customer-social-analysis', component: CustomerSocialAnalysisComponent },
-      { path: 'customer-social-analysis-details/:type', component: CustomerSocialAnalysisDetailsComponent},
+      { path: 'customer-social-analysis-details/:type', component: CustomerSocialAnalysisDetailsComponent },
       { path: 'contract', component: LoancontractComponent },
       { path: 'lenders', component: LoanlendersComponent },
       { path: 'approvals', component: LoanapprovalsComponent },
@@ -66,11 +67,12 @@ const routes: Routes = [
       { path: 'cheque', component: LoanchequeComponent },
       { path: 'documents', component: LoandocumentComponent },
       { path: 'location', component: LoanlocationComponent },
-      { path: 'checklist', component: LoanchecklistComponent} ,
-      { path: 'chat', component: LoanchatComponent} ,
-      { path: 'rejections', component: LoanrejectionsComponent} ,
-      
-      { path: 'kyc', component: LoankycComponent} 
+      { path: 'checklist', component: LoanchecklistComponent },
+      { path: 'chat', component: LoanchatComponent },
+      { path: 'rejections', component: LoanrejectionsComponent },
+      { path: 'creditcheck', component: CreditcheckComponent },
+      { path: 'kyc', component: LoankycComponent },
+      { path: 'offer', component: ContractofferComponent }
     ]
   },
 

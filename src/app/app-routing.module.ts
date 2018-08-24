@@ -23,6 +23,8 @@ import { CustomerPhotosComponent } from './customers/customer-photos/customer-ph
 import { StatementscheduleComponent } from './statementschedule/statementschedule.component';
 import { PortfolioComponent } from './portfolio/portfolio.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+
+import { ForgotComponent } from './forgot/forgot.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { LoggedinGuard } from './_guards/loggedin.guard';
 const routes: Routes = [
@@ -35,6 +37,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   { path: 'login', component: LoginComponent },
+  { path: 'forgot', component: ForgotComponent },
   { path: 'signup', component: SignupComponent },
   { path: '', component: CreditdashboardComponent,
   canActivate: [AuthGuard] },

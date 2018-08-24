@@ -38,6 +38,7 @@ export class MainNavigationComponent implements OnInit {
   private postsSubscription: AnonymousSubscription;
   public enable_peer='0';
   public accounting = '0';
+  newCustomerRecord=false;
   constructor(private toastr: ToastrService,private DataService: DataService, 
     public router: Router, public operationsService: OperationsService, 
     public storageService: StorageService,
@@ -56,7 +57,10 @@ export class MainNavigationComponent implements OnInit {
         this.router.navigate(['../loan/' + res.request_id]);
       }
     })
-    
+    this.DataService.runOperationsTest.subscribe(res => {
+
+      this.operationsService.runOPTests();
+    })
     this.DataService.makeOfferToMarketLoan.subscribe(res => {
       
       this.overlayOpen=false;

@@ -48,10 +48,21 @@
         <div class="panel-heading">Work Details</div>
         <div class="panel-body">
             <ul class="list list_border sm">
+
+                <li class="text-left sub_list" style="padding-left: 20px">
+                    <div class="row">
+                      <div class="col-md-3" style="vertical-align: bottom;">
+                        <p style="margin:20px 0 0">Company Match</p>
+                      </div>
+                      <div class="col-md-9">
+                        <ion-range-slider [from]="remita_analytics?.company_exists" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'company_exists')"></ion-range-slider>
+                      </div>
+                    </div>
+                  </li>
                 <li class="text-left sub_list" style="padding-left: 20px">
                   <div class="row">
                     <div class="col-md-3" style="vertical-align: bottom;">
-                      <p style="margin:20px 0 0">Excluded Companies</p>
+                      <p style="margin:20px 0 0">Included Companies</p>
                     </div>
                     <div class="col-md-9">
                       <ion-range-slider [from]="remita_analytics?.excluded_companies" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'excluded_companies')"></ion-range-slider>
@@ -61,13 +72,14 @@
                 <li class="text-left sub_list" style="padding-left: 20px">
                     <div class="row">
                       <div class="col-md-3" style="vertical-align: bottom;">
-                        <p style="margin:20px 0 0">Company Exists</p>
+                        <p style="margin:20px 0 0">Included Companies List</p>
                       </div>
                       <div class="col-md-9">
-                        <ion-range-slider [from]="remita_analytics?.company_exists" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'company_exists')"></ion-range-slider>
+                        
                       </div>
                     </div>
                   </li>
+                
                   
             </ul>
         </div>
@@ -143,6 +155,23 @@
                     </div>
                   </li>
 
+
+              </ul>
+        </div>
+        <div class="panel-heading">Customer Bank</div>
+        <div class="panel-body">
+            <ul class="list list_border sm">
+                <li class="text-left" style="padding-left: 20px">
+                    <div class="row">
+                      <div class="col-md-3" style="vertical-align: bottom;">
+                        <p style="margin:20px 0 0">Customer Bank Details Match</p>
+                      </div>
+                      <div class="col-md-9">
+                        <ion-range-slider [from]="remita_analytics?.bank_account_match" [min]="0" [max]="10" (onChange)="updateProfilePercentage(simpleSlider_, $event, 'bank_account_match')"></ion-range-slider>
+                      </div>
+                    </div>
+                  </li>
+                  
 
               </ul>
         </div>

@@ -95,4 +95,13 @@ export class RepayComponent implements OnInit {
     //
 
   }
+  initiateSendDebitInstruction(repayment) {
+    this.DataService.initiateDebitInstruction.emit({ repayment: repayment, location: 'initiate_direct_debit' });
+  }
+  initiateCheckDebitInstruction(repayment) {
+    this.DataService.initiateCheckDebitInstruction.emit({ repayment: repayment, location: 'initiate_direct_debit_check' });
+  }
+  initiateCancelDebitInstruction(repayment) {
+    this.DataService.initiateDebitInstructionCancel.emit({ repayment: repayment, location: 'initiate_direct_debit_cancel' });
+  }
 }

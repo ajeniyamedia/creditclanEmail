@@ -280,6 +280,17 @@
                                 <div class="panel-body" style="padding: 15px 70px">
                                     <form #h="ngForm" novalidate>
                                         <ul class="list list_border sm">
+                                                <li class="text-left">
+                                                        <span>
+                                                            <p class="no-margin">
+                                                                <strong>Phone Confirmation</strong>
+                                                            </p>Skip phone confirmation
+                                                            </span>
+                                                        <div class="pull-right">
+                
+                                                            <input type="checkbox" name="skipphoneconfirmation" [(ngModel)]="mobile.skipphoneconfirmation">
+                                                        </div>
+                                                    </li>
                                             <li class="text-left">
                                                 <span>
                                                     <p class="no-margin">
@@ -416,6 +427,12 @@
                                                 </div>
                                             </li>
                                             <li class="text-left sub_list">
+                                                    <span>Enable list of companies </span>
+                                                    <div class="pull-right">
+                                                        <input type="checkbox" name="workinfo" [(ngModel)]="mobile.companylist">
+                                                    </div>
+                                                </li>
+                                            <li class="text-left sub_list">
                                                 <span>Must provide personal expense details(E.g phone,internet) </span>
                                                 <div class="pull-right">
                                                     <input type="checkbox" name="personalexpense" [(ngModel)]="mobile.personalexpense">
@@ -464,7 +481,7 @@
                                             <li class="text-left">
                                                 <span>Loan Option</span>
                                             </li>
-                                            <li class="text-left sub_list">
+                                            <li class="text-left sub_list hide">
                                                 <span>Must provide purpose of loan </span>
                                                 <div class="pull-right">
                                                     <input type="checkbox" name="mustprovideloanpurpose" [(ngModel)]="mobile.mustprovideloanpurpose">
@@ -506,6 +523,15 @@
                                                     <input type="textbox" name="notificationemail" [(ngModel)]="mobile.notificationemail">
                                                 </div>
                                             </li>
+                                            <li class="text-left">
+                                                <span>List of documents to be provided by the borrower</span>
+                                            </li>
+                                            <li class="text-left sub_list" *ngFor="let document of required_documents">
+                                                <span>{{ document.display }}</span>
+                                                <div class="pull-right">
+                                                    <input type="checkbox" name="{{document.display}}" [(ngModel)]="document.checked">
+                                                </div>
+                                            </li>
                                         </ul>
                                         <button type="submit" (click)="saveMobileApplication(i.value, i.valid)" [disabled]="loading" class="btn btn-white pull-right">
                                             <span *ngIf="!loading">Submit</span>
@@ -544,6 +570,30 @@
                                             <app-ngx-editor [config]="editorConfig" name="TERMS_AND_CONDITIONS" [(ngModel)]="tc.TERMS_AND_CONDITIONS"></app-ngx-editor>
                                         </div>
                                         <button type="submit" (click)="saveTC(tcs.value, tcs.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                                            <span *ngIf="!loading">Submit</span>
+                                            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingOL">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOL" aria-expanded="true" aria-controls="collapseOL">
+                                        Offer Letter
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOL" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOL">
+                                <div class="panel-body">
+                                    <form #ols="ngForm" novalidate>
+                                       
+                                        <div class="form-group">
+                                            <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="mobile.loan_product_id">
+                                            <app-ngx-editor [config]="editorConfig" name="OFFER_LETTER" [(ngModel)]="ol.OFFER_LETTER"></app-ngx-editor>
+                                        </div>
+                                        <button type="submit" (click)="saveOL(ols.value, ols.valid)" [disabled]="loading" class="btn btn-white pull-right">
                                             <span *ngIf="!loading">Submit</span>
                                             <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                                         </button>

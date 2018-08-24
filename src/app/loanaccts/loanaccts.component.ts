@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit, Input } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerService, StorageService } from '../_services/index';
 import { DataService, OptionsserviceService, LoansService, OperationsService } from '../_services/index';
@@ -12,12 +12,15 @@ export class LoanacctsComponent implements OnInit {
 
   public loading = false;
   @Input('parentRouteId') parentRouteId: number;
+  @Input('fromloan') fromloan = false;
   @Input('sub') sub: any;
   @Input('sub_summary') sub_summary: any;
+  @Output('showDirectDebitHistoryOnAccount') showDirectDebitHistoryOnAccount = new EventEmitter();
+  directdebitstatus = false;
   public currentUser: any;
   loan: any;
   accounts: any;
-  account= {
+  account = {
     'bank_id': '',
     'account_name': '',
     'account_number': '',
@@ -25,13 +28,15 @@ export class LoanacctsComponent implements OnInit {
     'i_certify': false,
   }
   nigerian_banks: any;
-  constructor(private DataService: DataService, 
-    public route: ActivatedRoute, 
-    public storageService: StorageService, 
-    public optionsService: OptionsserviceService, 
+  addingBank = false;
+  banks: any;
+  constructor(private DataService: DataService,
+    public route: ActivatedRoute,
+    public storageService: StorageService,
+    public optionsService: OptionsserviceService,
     public loansService: LoansService,
-    public operationsService:OperationsService) {
-      this.currentUser = this.storageService.read<any>('currentUser');
+    public operationsService: OperationsService) {
+    this.currentUser = this.storageService.read<any>('currentUser');
   }
   ngOnInit() {
     this.loanAnalysis();
@@ -40,24 +45,34 @@ export class LoanacctsComponent implements OnInit {
 
   loanAnalysis() {
     this.currentUser = this.storageService.read<any>('currentUser');
-    this.sub = this.route.parent.params.subscribe(params => {
-      this.parentRouteId = +params["id"];
+    if (!this.fromloan) {
+      this.sub = this.route.parent.params.subscribe(params => {
+        this.parentRouteId = +params["id"];
+        this.loansService.getLoanCardsAndAccounts(this.currentUser.token, this.parentRouteId)
+          .subscribe(loan => {
+            this.loan = loan.loan
+            this.accounts = loan.cards;
+            this.banks = loan.accounts;
+          });
+      });
+    } else {
       this.loansService.getLoanCardsAndAccounts(this.currentUser.token, this.parentRouteId)
         .subscribe(loan => {
-          this.loan = loan.loan
+          this.loan = loan.loan;
           this.accounts = loan.cards;
+          this.banks = loan.accounts;
         });
-    });
+    }
   }
-  addingBank = false;
-  addNewANewAccount(){
+
+  addNewANewAccount() {
 
   }
-  updateBank(value, valid){
+  updateBank(value, valid) {
 
   }
   verify_error = false;
-  
+
   verifyBankDetails() {
     this.loading = true;
     this.verify_error = false;
@@ -76,20 +91,48 @@ export class LoanacctsComponent implements OnInit {
         }
       });
   }
-  deleteCard(account_card_id,loan_id){
-    this.loading = true; 
+  deleteCard(account_card_id, loan_id) {
+    this.loading = true;
     this.operationsService.deleteConnectedCard(this.currentUser.token, account_card_id, loan_id)
-      .subscribe(status => { 
+      .subscribe(status => {
         this.loading = false;
         this.loanAnalysis();
       });
   }
-  setAsConnectedCard(loan_id,account_card_id){
-    this.loading = true; 
-    this.operationsService.setAsConnectedCard(this.currentUser.token, account_card_id, loan_id)
-      .subscribe(status => { 
+  deleteAccount(account_card_id, loan_id) {
+    this.loading = true;
+    this.operationsService.deleteConnectedCard(this.currentUser.token, account_card_id, loan_id)
+      .subscribe(status => {
         this.loading = false;
         this.loanAnalysis();
       });
+  }
+  setAsConnectedCard(loan_id, account_card_id) {
+    this.loading = true;
+    this.operationsService.setAsConnectedCard(this.currentUser.token, account_card_id, loan_id)
+      .subscribe(status => {
+        this.loading = false;
+        this.loanAnalysis();
+      });
+  }
+  setAsConnectedAccount(loan_id, account_card_id) {
+    this.loading = true;
+    this.operationsService.setAsConnectedCard(this.currentUser.token, account_card_id, loan_id)
+      .subscribe(status => {
+        this.loading = false;
+        this.loanAnalysis();
+      });
+  }
+  setUpDirectDebitMandate(loan, acc) {
+    this.DataService.onOpenLoanChildModal.emit({ 'location': 'setup_debit_mandate_', loan: loan, acc: acc });
+  }
+  checkdirectdebitstatus(loan, acc) {
+    this.DataService.onOpenLoanChildModal.emit({ 'location': 'check_debit_mandate', loan: loan, acc: acc });
+  }
+  stopdirectdebitmandate(loan, acc) {
+    this.DataService.onOpenLoanChildModal.emit({ 'location': 'stop_direct_debit', loan: loan, acc: acc });
+  }
+  checkTransactionStatus(loan, acc) {
+    this.showDirectDebitHistoryOnAccount.emit({ loan: loan, acc: acc });
   }
 }

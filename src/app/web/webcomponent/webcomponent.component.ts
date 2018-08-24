@@ -360,7 +360,10 @@ export class WebcomponentComponent implements OnInit {
   }
   saveMobileApplication(value, valid) {
     this.loading = true;
-    this.operationsService.saveMobileApplication(this.currentUser.token, value)
+    let required_documents = {
+
+    }
+    this.operationsService.saveMobileApplication(this.currentUser.token, value, required_documents)
       .subscribe(data => {
         this.loading = false;
         this.showSuccess(data.message);

@@ -70,7 +70,7 @@
                                                     <p class="no-margin t_lh1 t_l4 t_cool" style="font-size: 14px">Current Balance</p> 
                                                 </div>
                                                 <a class="pull-right btn btn-white wd_btn hover_show" (click)="view_statement(bank.ledger)" style="border-radius: 0">Statement</a>
-                                                <button class="pull-right btn btn-white wd_btn hover_show" (click)="deleteBank(bank)" style="border-radius: 0"><i class="fa fa-trash"></i></button>
+                                                <button class="pull-right btn btn-white wd_btn hover_show" (click)="deleteSingleBank(bank)" style="border-radius: 0"><i class="fa fa-trash"></i></button>
                                               </div> 
                                         </article>
                                     </div>
@@ -131,7 +131,7 @@
                    </a> 
                </div>
            <div class=" overpanel-content container" role="document" style="text-align:left;width:600px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
-            <app-newbankform [has_ebills_error]="has_ebills_error" [ebills_error]="ebills_error" (checkIfEbillsBankAlreadyExists)="checkIfEbillsBankAlreadyExists()" (doTheTransfer)="doTransfer()" (saveTheLenderBank)="saveLenderBank()" (testTheTransfer)="testTransfer($event)" (changeTheBankCode)="changeBankCode($event)" (changeTheBankCode_)="changeBankCode_($event)" (verifyTheAccount)="verifyAccount($event)" [nigerian_banks]="nigerian_banks" [fresponse]="fresponse" [otpConfirmed]="otpConfirmed" [otpHBSFC]="otpHBSFC" [showForm]="showForm" [confirming]="confirming" [loading]="loading" [VERIFY_STATUS]="VERIFY_STATUS" [charge_account]="charge_account" [credit]="credit" [bank]="bank" [showTestTransfer]=true></app-newbankform>
+            <app-newbankform [banking]="singlebank" (deleteBank)="deleteBank($event)" [isdelete]="isdelete" [has_ebills_error]="has_ebills_error" [ebills_error]="ebills_error" (checkIfEbillsBankAlreadyExists)="checkIfEbillsBankAlreadyExists()" (doTheTransfer)="doTransfer()" (saveTheLenderBank)="saveLenderBank()" (testTheTransfer)="testTransfer($event)" (changeTheBankCode)="changeBankCode($event)" (changeTheBankCode_)="changeBankCode_($event)" (verifyTheAccount)="verifyAccount($event)" [nigerian_banks]="nigerian_banks" [fresponse]="fresponse" [otpConfirmed]="otpConfirmed" [otpHBSFC]="otpHBSFC" [showForm]="showForm" [confirming]="confirming" [loading]="loading" [VERIFY_STATUS]="VERIFY_STATUS" [charge_account]="charge_account" [credit]="credit" [bank]="bank" [showTestTransfer]=true></app-newbankform>
           </div>
   </div> 
   <div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayOpen">

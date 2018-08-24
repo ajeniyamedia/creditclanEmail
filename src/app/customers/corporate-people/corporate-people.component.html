@@ -2,7 +2,7 @@
   <header class="panel-heading" style="background:#fff">
       People
       <span class="tools pull-right"><button (click)="isUploading=!isUploading" class="btn btn-white btn-xs">Upload</button></span>
-      <span class="tools pull-right"><a [routerLink]="['../customers']" class="btn btn-white btn-xs">Customers</a></span>
+      <span class="tools pull-right"><button (click)="exportCustomers()"  class="btn btn-white btn-xs">Export</button></span>
   </header>
   <div class="panel-body" style="background:#fff" *ngIf="isUploading">
 

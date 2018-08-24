@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NewempformComponent implements OnInit {
 
   @Input('loading') loading = false;
-  @Input('employee') employee = { "PEOPLE_PEOPLE_ID": "", "LEGAL_NAME": "", "EMAIL": "", "ROLES": "" };
+  @Input('employee') employee = { "PEOPLE_PEOPLE_ID": "", "LEGAL_NAME": "", "EMAIL": "", "ROLES": "", "SEND_WELCOME_EMAIL":true };
   @Input('isedit') isedit = false;
   @Input('roles') roles: RoleModel[];
   @Output() saveTheEmployee = new EventEmitter();

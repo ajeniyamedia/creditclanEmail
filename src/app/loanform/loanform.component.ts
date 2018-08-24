@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./loanform.component.css']
 })
 export class LoanformComponent implements OnInit {
+  editAfterAccepted = true;
   SEND_CONTRACT_DOCS = false;
   public myForm: FormGroup; // our model driven form
   public submitted: boolean; // keep track on whether form is submitted
@@ -50,7 +51,9 @@ export class LoanformComponent implements OnInit {
     ALL_INTERESTS_HAVE_BEEN_PAID: '0',
     REPAYMENT_TYPE: '',
     DISBURSEMENT_DATE: '0',
-    REPAYMENT_STARTED_WHEN: ''
+    REPAYMENT_STARTED_WHEN: '',
+    IS_ACCEPTED: '0',
+    CONTRACT_DOC_SENT: '0'
   };
   // options: DatepickerOptions = {
   //   minYear: 1970,
@@ -102,7 +105,7 @@ export class LoanformComponent implements OnInit {
   allfeesqueue: any;
   allchargesqueue: any;
   paidfeesandcharges: any;
-  constructor(private toastr: ToastrService,vcr: ViewContainerRef, private DataService: DataService, public router: Router,
+  constructor(private toastr: ToastrService, vcr: ViewContainerRef, private DataService: DataService, public router: Router,
     public _fb: FormBuilder, public storageService: StorageService,
     public customerService: CustomerService,
     public optionsService: OptionsserviceService, public loansService: LoansService) {
@@ -113,7 +116,7 @@ export class LoanformComponent implements OnInit {
     })
     if (this.sub == '2' || this.sub == '5' || this.sub == '8') {
       this.loan_request.PEOPLE_ID = this.selectedCustomer.PEOPLE_ID;
-    } 
+    }
   }
   showSuccess(msg) {
     this.toastr.success(msg);
@@ -182,8 +185,11 @@ export class LoanformComponent implements OnInit {
       this.loansService.getLoan(this.currentUser.token, this.request_id)
         .subscribe(loan => {
 
-          
+
           this.loan_request = loan;
+          if (loan.CONTRACT_DOC_SENT == '1' || loan.IS_ACCEPTED == '1') {
+            this.editAfterAccepted = false;
+          }
           this.selectedCustomer = loan;
           this.loan_request.REQUEST_RATE = loan.REQUEST_RATE
           if (loan.REPAYMENT_TYPE_ID === '3') {
@@ -269,7 +275,7 @@ export class LoanformComponent implements OnInit {
 
     }
     this.loansService.getLoanProducts(this.currentUser.token, 0).subscribe(loan_products => {
-      this.SEND_CONTRACT_DOCS = loan_products.people.SEND_CONTRACT_DOCS;
+      this.SEND_CONTRACT_DOCS = loan_products.people.SEND_CONTRACT_DOCS == '1' ? true : false;
       this.loan_products = loan_products.products;
       this.loan_product = loan_products.default;
       this.loan_purposes = loan_products.purposes;
@@ -342,11 +348,11 @@ export class LoanformComponent implements OnInit {
 
   }
   sendToMarket() {
-    
+
     this.loading = true;
     this.loansService.sendToLoanMarket(this.currentUser.token, parseInt(this.loan_request.REQUEST_ID), false)
       .subscribe(loan => {
-        
+
         this.loading = false;
         this.request_step = '3'
       });
@@ -357,10 +363,10 @@ export class LoanformComponent implements OnInit {
   createContract(model: Loan, isValid: boolean) {
     this.submitted = true; // set form submit to true
     this.loading = true;
-    
+
     this.loansService.save_contract(this.currentUser.token, this.myForm.value, this.allfeesqueue, this.allchargesqueue, this.fees, this.charges, this.paidfeesandcharges, this.loan_request, this.SEND_CONTRACT_DOCS)
       .subscribe(res => {
-        
+
         if (this.sub != '5' && this.sub != '8') {
           this.loading = false;
 
@@ -370,7 +376,7 @@ export class LoanformComponent implements OnInit {
           if (this.sub == '8') {
             this.loansService.finishTopUp(this.currentUser.token, this.loan_request.REQUEST_ID)
               .subscribe(resd => {
-                
+
                 this.loading = false;
                 if (resd.status == '1') {
                   this.openThePaymentForFinalBreaking.emit(resd)
@@ -381,7 +387,7 @@ export class LoanformComponent implements OnInit {
           } else {
             this.loansService.finishRollover(this.currentUser.token, this.loan_request.REQUEST_ID)
               .subscribe(resd => {
-                
+
                 this.loading = false;
                 if (resd.status == '1') {
                   this.request_step = 'finishedRollover';
@@ -423,7 +429,7 @@ export class LoanformComponent implements OnInit {
         this.loan_request.DISBURSEMENT_DATE = loan.disburse;
         this.loan_request.REPAYMENT_STARTED_WHEN = loan.repay;
         (<FormControl>this.myForm.controls['REPAYMENT_STARTED_WHEN'])
-      .setValue(loan.repay, { onlySelf: true });
+          .setValue(loan.repay, { onlySelf: true });
       });
   }
   getNet(loan_request) {
@@ -517,7 +523,7 @@ export class LoanformComponent implements OnInit {
   }
   view_loan(request_id) {
     this.router.navigate(['/loan', request_id]);
-    //this.DataService.onViewLoan.emit({ request_id: request_id, from: this.from });
+    this.DataService.onViewLoan.emit({ request_id: request_id, from: this.from });
 
   }
   selectCustomer(customer) {
@@ -626,5 +632,15 @@ export class LoanformComponent implements OnInit {
   }
   save(value, valid) {
 
+  }
+  viewingSchedule = false;
+  view_schedule() {
+    this.viewingSchedule = true;
+  }
+  closePopUp() {
+    this.viewingSchedule = false;
+  }
+  modifyContract() {
+    this.viewingSchedule = false;
   }
 }

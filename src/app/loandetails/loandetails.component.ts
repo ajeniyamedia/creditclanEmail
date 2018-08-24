@@ -13,6 +13,8 @@ import { LoancontractComponent } from '../loancontract/loancontract.component';
   encapsulation: ViewEncapsulation.None
 })
 export class LoandetailsComponent implements OnInit {
+  PASSWORD="";
+  account_for_direct_debit:any;
   adjustingWeights = false;
   NOTIFY_ALL_LENDERS = false;
   islarger = false;
@@ -20,7 +22,7 @@ export class LoandetailsComponent implements OnInit {
   enable_peer = '0';
   prev: any;
   next: any;
-  public is_done = "0";
+  public is_done = '0';
   public parentRouteId: number;
   public loading = false;
   public sub: any;
@@ -32,94 +34,103 @@ export class LoandetailsComponent implements OnInit {
   public rejecting = false;
   public level: any;
   public prev_levels: any;
-  public model_r = { ilo: 0, reject_reason: "", reject_action: "", approval_notes: "", reject_level: "", wtd: 0, request_id: "", level: "" };
-  public model_a = { chk_acts: [], past_one: 1, approval_all_waivers: 1, approval_all_checklist: 1, is_waiver_level: 0, has_waiver: 0, ilo: 0, istd: 0, approval_notes: "", wtd: 1, request_id: "", level: "" };
+  public model_r = { ilo: 0, reject_reason: '', reject_action: '', approval_notes: '', reject_level: '', wtd: 0, request_id: '', level: '' };
+  public model_a = { chk_acts: [], past_one: 1, approval_all_waivers: 1, approval_all_checklist: 1, is_waiver_level: 0, has_waiver: 0, ilo: 0, istd: 0, approval_notes: '', wtd: 1, request_id: '', level: '' };
   public other_docs = [
     {
-      "display": "Valid ID Card",
-      "value": '1',
-      "checked": false
+      'display': 'Valid ID Card',
+      'value': '1',
+      'checked': false
     },
     {
-      "display": "Other ID Card",
-      "value": '15',
-      "checked": false
-    },
-    // {
-    //   "display":"Driver's License",
-    //   "value":'2',
-    //   "checked":false
-    // },
-    // {
-    //   "display":"Voter's Card",
-    //   "value":'3',
-    //   "checked":false
-    // },
-    // {
-    //   "display":"Work Identity Card",
-    //   "value":'4',
-    //   "checked":false
-    // },
-    // {
-    //   "display":"Other Identity Card",
-    //   "value":'5',
-    //   "checked":false
-    // },
-    {
-      "display": "Payslips",
-      "value": '6',
-      "checked": false
+      'display': 'Other ID Card',
+      'value': '15',
+      'checked': false
     },
     {
-      "display": "Bank Statements",
-      "value": '7',
-      "checked": false
+      'display': 'Payslips',
+      'value': '6',
+      'checked': false
     },
     {
-      "display": "Employment Letter",
-      "value": '8',
-      "checked": false
+      'display': 'Bank Statements',
+      'value': '7',
+      'checked': false
     },
     {
-      "display": "Purchase Order",
-      "value": '9',
-      "checked": false
+      'display': 'Employment Letter',
+      'value': '8',
+      'checked': false
     },
     {
-      "display": "Invoices",
-      "value": '10',
-      "checked": false
+      'display': 'Purchase Order',
+      'value': '9',
+      'checked': false
     },
     {
-      "display": "Certificate of Incorporation",
-      "value": '11',
-      "checked": false
+      'display': 'Invoices',
+      'value': '10',
+      'checked': false
     },
     {
-      "display": "Company Profile",
-      "value": '12',
-      "checked": false
+      'display': 'Certificate of Incorporation',
+      'value': '11',
+      'checked': false
     },
     {
-      "display": "Allotment of Shares",
-      "value": '13',
-      "checked": false
+      'display': 'Company Profile',
+      'value': '12',
+      'checked': false
     },
     {
-      "display": "Particulars of Directors",
-      "value": '14',
-      "checked": false
+      'display': 'Allotment of Shares',
+      'value': '13',
+      'checked': false
     },
     {
-      "display": "Work ID Card",
-      "value": '16',
-      "checked": false
+      'display': 'Particulars of Directors',
+      'value': '14',
+      'checked': false
     },
     {
-      "display": "Utility Bill",
-      "value": '17',
-      "checked": false
+      'display': 'Work ID Card',
+      'value': '16',
+      'checked': false
     },
+    {
+      'display': 'Utility Bill',
+      'value': '17',
+      'checked': false
+    },
+    {
+      'display': 'National ID',
+      'value': '18',
+      'checked': false
+    },
+    {
+      'display': "Voter's ID",
+      'value': '19',
+      'checked': false
+    },
+    {
+      'display': 'International Passport',
+      'value': '20',
+      'checked': false
+    },
+  ]
+  public bureaus = [
+    {
+      'display': 'CRC',
+      'checked': true
+    },
+    {
+      'display': 'First Central(XDS)',
+      'checked': false
+    },
+    {
+      'display': 'CRServices',
+      'checked': false
+    }
   ]
   public editContract = false;
   public IS_PEER_TO_PEER: any;
@@ -153,8 +164,8 @@ export class LoandetailsComponent implements OnInit {
   }
   pickup = {
     KYC_COMMENTS: '',
-    PICKUP_ADDRESS_TYPE: "1",
-    CUSTOM_PICKUP_ADDRESS: "",
+    PICKUP_ADDRESS_TYPE: '1',
+    CUSTOM_PICKUP_ADDRESS: '',
     PICKUP_PACKAGE: ''
   }
   rejection = {
@@ -163,7 +174,9 @@ export class LoandetailsComponent implements OnInit {
   }
   reopen = {
     MESSAGE: '',
-    SEND_REOPEN_MAIL: false
+    SEND_REOPEN_MAIL: false,
+    SUSPEND_CUSTOMER: false,
+    SUSPEND_FOR_HOW_LONG: '24'
   }
   doctypes: any;
   dbAnalysisScore = {
@@ -180,9 +193,9 @@ export class LoandetailsComponent implements OnInit {
   disburse: any;
   overlayOpenPay = false;
   overlayOpenPayConfirm = false;
-  security_question = "";
+  security_question = '';
   canDisburse = false;
-  analysisModalView: any = "calculate";
+  analysisModalView: any = 'calculate';
   sub_profile_analysis: any;
   sub_address_analysis: any;
   sub_income_analysis: any;
@@ -207,6 +220,7 @@ export class LoandetailsComponent implements OnInit {
     call_log: 0,
     linkedln: 0
   };
+  banks:any;
   constructor(private toastr: ToastrService, private _elementRef: ElementRef,
     private authService: AuthenticationService,
     public operationsService: OperationsService, private DataService: DataService,
@@ -221,6 +235,7 @@ export class LoandetailsComponent implements OnInit {
         this.overlayOpen = true
       }
     })
+
     // this._animator = animationService.builder();
     this.DataService.onViewLoan.subscribe(res => {
 
@@ -230,7 +245,7 @@ export class LoandetailsComponent implements OnInit {
       }
     })
     this.DataService.adjustTheAnalyticsWeight.subscribe(res => {
-      
+
       this.adjustingWeights = true;
     })
     this.DataService.onBreakingLoan.subscribe(res => {
@@ -259,11 +274,35 @@ export class LoandetailsComponent implements OnInit {
       if (res.location == 'request_docs_mod') {
         this.doctypes = res.docpickups
       }
+      if (res.location == 'run_credit_check') {
+        this.loan = res.loan
+      }
+      if (res.location == 'delete_request_mod') {
+        this.loan = res.data
+        this.reopen.SUSPEND_CUSTOMER = res.data.SUSPEND_IF_FAIL_ELIGIBILITY;
+        this.reopen.SUSPEND_FOR_HOW_LONG = res.data.SUSPEND_FOR_HOW_LONG;
+      }
       if (res.location == 'request_to_get_paid') {
         this.loan = res.data
       } else {
         this.loan = res.data
 
+      }
+      if(res.location == 'check_debit_mandate'){
+         
+        this.account_for_direct_debit = res.acc;
+      }
+      
+      if(res.location == 'setup_debit_mandate'){
+        this.getBanksListForCustomer(this.loan);
+      }
+      if(res.location == 'setup_debit_mandate_'){
+         
+        this.account_for_direct_debit = res.acc;
+      }
+      if(res.location == 'stop_direct_debit'){
+         
+        this.account_for_direct_debit = res.acc;
       }
       if (res.location == 'customer-analysis-slider') {
         this.magic_filter.account = parseFloat(res.data.set_analytics.set_account);
@@ -275,7 +314,7 @@ export class LoandetailsComponent implements OnInit {
         this.magic_filter.education = parseFloat(res.data.set_analytics.set_education);
         this.magic_filter.call_log = parseFloat(res.data.set_analytics.set_call_log);
         this.magic_filter.linkedln = parseFloat(res.data.set_analytics.set_linkedln);
-        this.analysisModalView = "calculate";
+        this.analysisModalView = 'calculate';
         this.dbAnalysisScore.profile = parseFloat(res.data.profile);
         this.dbAnalysisScore.address = parseFloat(res.data.address);
         this.dbAnalysisScore.account = parseFloat(res.data.account);
@@ -299,6 +338,7 @@ export class LoandetailsComponent implements OnInit {
   closeShowInterest() {
 
   }
+ 
   choosingKYC = false;
   chooseKYCPlan() {
     this.choosingKYC = true;
@@ -372,7 +412,12 @@ export class LoandetailsComponent implements OnInit {
         }
       });
   }
-
+  getBanksListForCustomer(loan){
+    this.loansService.getBanksListForCustomer(this.currentUser.token, this.parentRouteId)
+    .subscribe(data => {
+      this.banks = data.banks;
+    });
+  }
   updateProfilePercentage(slider, event, type) {
     if (type == 'profile') {
       this.magic_filter.profile = event.from;
@@ -442,7 +487,7 @@ export class LoandetailsComponent implements OnInit {
   }
   checkLevel(sector, event, index) {
 
-    this.doctypes[index]["checked"] = event;
+    this.doctypes[index]['checked'] = event;
 
   }
   cancelPayment() {
@@ -451,14 +496,14 @@ export class LoandetailsComponent implements OnInit {
   checkWalletTransactionStatus() {
     this.loading = true;
     this.sub = this.route.params.subscribe(params => {
-      this.parentRouteId = +params["id"];
+      this.parentRouteId = +params['id'];
 
       this.loansService.checkWalletTStatus(this.currentUser.token, this.parentRouteId)
         .subscribe(loans => {
           this.loading = false;
-          if (loans.status == "success") {
-            if (loans.data.status == "completed") {
-              this.showSuccess("Transaction has been disbursed");
+          if (loans.status == 'success') {
+            if (loans.data.status == 'completed') {
+              this.showSuccess('Transaction has been disbursed');
               this.router.navigate(['/statement/', this.parentRouteId, 'schedule']);
             } else {
 
@@ -474,7 +519,7 @@ export class LoandetailsComponent implements OnInit {
     this.loading = true;
     //if (!isValid) return;
     this.sub = this.route.params.subscribe(params => {
-      this.parentRouteId = +params["id"];
+      this.parentRouteId = +params['id'];
 
       this.loansService.queueForDisbursement(this.currentUser.token, this.parentRouteId)
         .subscribe(loans => {
@@ -492,7 +537,7 @@ export class LoandetailsComponent implements OnInit {
     this.loading = true;
     //if (!isValid) return;
     this.sub = this.route.params.subscribe(params => {
-      this.parentRouteId = +params["id"];
+      this.parentRouteId = +params['id'];
 
       this.loansService.queueForDisbursement(this.currentUser.token, this.parentRouteId)
         .subscribe(loans => {
@@ -507,9 +552,9 @@ export class LoandetailsComponent implements OnInit {
 
             if (loans.action == 'Dismiss') {
               // swal({
-              //   title: "Disbursement",
+              //   title: 'Disbursement',
               //   text: loans.message,
-              //   type: "error"
+              //   type: 'error'
               // });
               this.showError(loans.message)
               this.closeApproving();
@@ -537,7 +582,7 @@ export class LoandetailsComponent implements OnInit {
               //     //   '',
               //     //   'error'
               //     // )
-              //     this.showError("Cancelled")
+              //     this.showError('Cancelled')
               //   }
               // })
             }
@@ -722,6 +767,7 @@ export class LoandetailsComponent implements OnInit {
     if (this.authService.canViewModule('3')) {
       this.canDisburse = true;
     }
+
   }
   getSecurityQuestion() {
     this.operationsService.getSecurityQuestion(this.currentUser.token)
@@ -734,7 +780,7 @@ export class LoandetailsComponent implements OnInit {
     this.currentUser = this.storageService.read<any>('currentUser');
 
     this.sub = this.route.params.subscribe(params => {
-      this.parentRouteId = +params["id"];
+      this.parentRouteId = +params['id'];
       this.loansService.getApprovalQueue(this.currentUser.token, this.parentRouteId)
         .subscribe(loans => {
 
@@ -819,7 +865,7 @@ export class LoandetailsComponent implements OnInit {
     this.model_r.level = this.loan.APPROVAL_LEVEL
     //if (!isValid) return;
     this.sub = this.route.params.subscribe(params => {
-      this.parentRouteId = +params["id"];
+      this.parentRouteId = +params['id'];
       this.loansService.rejectThisRequest(this.currentUser.token, this.model_r)
         .subscribe(loans => {
           this.closeApproving();
@@ -833,7 +879,7 @@ export class LoandetailsComponent implements OnInit {
     this.loading = true;
     //if (!isValid) return;
     this.sub = this.route.params.subscribe(params => {
-      this.parentRouteId = +params["id"];
+      this.parentRouteId = +params['id'];
 
       this.loansService.approveThisRequest(this.currentUser.token, this.model_a)
         .subscribe(loans => {
@@ -852,9 +898,9 @@ export class LoandetailsComponent implements OnInit {
           } else {
             if (loans.message) {
               // swal({
-              //   title: "Approval",
+              //   title: 'Approval',
               //   text: loans.message,
-              //   type: "error"
+              //   type: 'error'
               // });
               this.showError(loans.message)
             }
@@ -869,9 +915,8 @@ export class LoandetailsComponent implements OnInit {
 
   queueForDisbursement() {
     this.loading = true;
-    //if (!isValid) return;
     this.sub = this.route.params.subscribe(params => {
-      this.parentRouteId = +params["id"];
+      this.parentRouteId = +params['id'];
 
       this.loansService.queueForDisbursement(this.currentUser.token, this.parentRouteId)
         .subscribe(loans => {
@@ -883,19 +928,19 @@ export class LoandetailsComponent implements OnInit {
             this.ADDED_TO_PAYMENT_QUEUE = loans.ADDED_TO_PAYMENT_QUEUE;
             //this.DataService.onGetLoan.emit(loans.loan); 
             // swal({
-            //   title: "Disbursement",
-            //   text: "Added to payment queue.",
-            //   type: "success"
+            //   title: 'Disbursement',
+            //   text: 'Added to payment queue.',
+            //   type: 'success'
             // });
-            this.showSuccess("Added to payment queue")
+            this.showSuccess('Added to payment queue')
           } else {
 
 
             if (loans.action == 'Dismiss') {
               // swal({
-              //   title: "Disbursement",
+              //   title: 'Disbursement',
               //   text: loans.message,
-              //   type: "error"
+              //   type: 'error'
               // });
               this.showError(loans.message);
               this.closeApproving();
@@ -927,6 +972,102 @@ export class LoandetailsComponent implements OnInit {
               // })
             }
           }
+        });
+    });
+  }
+  sendForDirectDebit() {
+    this.sub = this.route.params.subscribe(params => {
+      this.parentRouteId = +params['id'];
+
+      this.loansService.sendForDirectDebit(this.currentUser.token, this.parentRouteId)
+        .subscribe(data => {
+          this.loading = false;
+          if (data.status) {
+            this.is_done = '1';
+            this.showSuccess('An email has been sent to the borrower to complete the mandate set up');
+          } else {
+            this.showError(data.message);
+          }
+        });
+    });
+  }
+  sendForDirectDebitOnAccount() {
+    this.sub = this.route.params.subscribe(params => {
+      this.parentRouteId = +params['id'];
+
+      this.loansService.sendForDirectDebitOnAccount(this.currentUser.token, this.parentRouteId, this.account_for_direct_debit,this.PASSWORD)
+        .subscribe(data => {
+          this.loading = false;
+          if (data.status) {
+            this.is_done = '1';
+            this.showSuccess('An email has been sent to the borrower to complete the mandate set up');
+          } else {
+            this.showError(data.message);
+          }
+        });
+    });
+  }
+  sendForStopDirectDebitMandate(){
+    this.loading=true;
+    this.sub = this.route.params.subscribe(params => {
+      this.parentRouteId = +params['id'];
+
+      this.loansService.sendForStopDirectDebitMandate(this.currentUser.token, this.parentRouteId, this.account_for_direct_debit,this.PASSWORD)
+        .subscribe(data => {
+
+          this.loading = false;
+          if(data.status==false){
+            if(data.message==""){
+
+              this.showError('Error occured.');
+            }else{
+              
+              this.showError(data.message);
+            }
+            this.is_done='0';
+          }else{
+            this.is_done = '1';
+          }
+          
+
+        });
+    });
+  }
+  sendForDirectDebitStatus() {
+    this.sub = this.route.params.subscribe(params => {
+      this.parentRouteId = +params['id'];
+
+      this.loansService.sendForDirectDebitStatus(this.currentUser.token, this.parentRouteId, this.account_for_direct_debit)
+        .subscribe(data => {
+          this.loading = false;
+
+          this.is_done = '1';
+
+          if (data.isActive == true) {
+            this.showSuccess('Mandate Is Active');
+          } else {
+            this.showError("Mandate is not active");
+          }
+        });
+    });
+  }
+  runCreditCheck() {
+    this.sub = this.route.params.subscribe(params => {
+      this.parentRouteId = +params['id'];
+      this.loading = true;
+      this.loansService.runCreditCheck(this.currentUser.token, this.parentRouteId)
+        .subscribe(data => {
+          this.loading = false;
+
+          this.is_done = '1';
+
+
+          if (data.status == false) {
+            this.showError(data.message)
+          } else {
+            this.showSuccess("Successful");
+          }
+          this.DataService.reloadCreditCheck.emit();
         });
     });
   }

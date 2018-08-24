@@ -1,0 +1,256 @@
+<section class="panel">
+  <header class="panel-heading">
+    Consumer Classic Report
+
+    <span class="tools pull-right">
+      <button class="btn btn-xs btn-white" (click)="goBackToList()">Back</button>
+      <!-- <button class="btn btn-xs btn-white" (click)="goBackToList()">
+        <i class="fa fa-download"></i> Download</button>
+      <button class="btn btn-xs btn-white" (click)="goBackToList()">
+        <i class="fa fa-print"></i> Print</button> -->
+    </span>
+  </header>
+  <table class="table table-striped" cellpadding="10" cellspacing="10">
+
+    <tr>
+      <td>Report Number</td>
+      <td>{{creditcheckrecord?.CREDITCHECK_DATA?.searchDetails?.reportNumber}}</td>
+    </tr>
+    <tr>
+      <td>Report Date</td>
+      <td>{{creditcheckrecord?.CREDITCHECK_DATA?.searchDetails?.reportDate}}</td>
+    </tr>
+    <tr>
+      <td>Product Name</td>
+      <td>{{creditcheckrecord?.CREDITCHECK_DATA?.searchDetails?.productName}}</td>
+    </tr>
+  </table>
+</section>
+<section class="panel">
+  <header class="panel-heading" style="color:#fff; background-color: #c3c3c3; border-radius:0px !important">
+    Consumer Score Details
+  </header>
+  <div class="row">
+    <div class="col-md-12" style="padding-right:0px !important">
+      <table class="table table-striped" cellpadding="10" cellspacing="10">
+        <tr>
+          <td width="25%">Score</td>
+          <td width="25%">{{creditcheckrecord?.CREDITCHECK_DATA?.creditscoredetails?.creditscore}}</td>
+
+        </tr>
+        <tr>
+          <td width="25%">Rating</td>
+          <td width="25%">{{creditcheckrecord?.CREDITCHECK_DATA?.creditscoredetails?.creditrating}}</td>
+
+        </tr> 
+      </table>
+
+    </div>
+    
+  </div>
+  <div class="row">
+    <div class="col-md-6" >
+     <p>Comments</p>
+
+    </div>
+    <div class="col-md-6" >
+
+      <table class="table table-striped" cellpadding="10" cellspacing="10">
+        <tr *ngFor="let reason of creditcheckrecord?.CREDITCHECK_DATA?.creditscoredetails?.reasons?.reasons"> 
+          <td width="50%">{{reason}}</td>
+        </tr>
+         
+      </table>
+    </div>
+  </div>
+
+  <!-- <table class="table table-striped">
+    <thead>
+      <th>Means of Identification</th>
+      <th>Identifier Value(Number)</th>
+      <th>Expiry Date</th>
+    </thead>
+    <tr *ngFor="let identity of creditcheckrecord?.CREDITCHECK_DATA?.userDetails?.identification">
+      <td>{{identity.id}}</td>
+      <td>{{identity.value}}</td>
+      <td>ND</td>
+    </tr>
+  </table> -->
+</section>
+<section class="panel">
+  <header class="panel-heading" style="color:#fff; background-color: #c3c3c3; border-radius:0px !important">
+    Consumer Details (Demographics)
+  </header>
+  <div class="row">
+    <div class="col-md-6" style="padding-right:0px !important">
+      <table class="table table-striped" cellpadding="10" cellspacing="10">
+        <tr>
+          <td width="25%">Fullname</td>
+          <td width="25%">{{creditcheckrecord?.CREDITCHECK_DATA?.userDetails?.demographics?.name}}</td>
+
+        </tr>
+        <tr>
+          <td width="25%">Date Of Birth</td>
+          <td width="25%">{{creditcheckrecord?.CREDITCHECK_DATA?.userDetails?.demographics?.dob}}</td>
+
+        </tr>
+        <tr>
+          <td width="25%">Address</td>
+          <td></td>
+        </tr>
+      </table>
+
+    </div>
+    <div class="col-md-6" style="padding-left:0px !important">
+
+      <table class="table table-striped" cellpadding="10" cellspacing="10">
+        <tr>
+          <td width="50%">Gender</td>
+          <td width="50%">{{creditcheckrecord?.CREDITCHECK_DATA?.userDetails?.demographics?.gender}}</td>
+        </tr>
+        <tr>
+          <td width="50%">Nationality</td>
+          <td width="50%">{{creditcheckrecord?.CREDITCHECK_DATA?.userDetails?.demographics?.nationality}}</td>
+        </tr>
+        <tr>
+          <td width="50%">Telephone Number(01)</td>
+          <td width="50%"></td>
+        </tr>
+        <tr>
+          <td width="50%">Telephone Number(02)</td>
+          <td width="50%"></td>
+        </tr>
+        <tr>
+          <td width="50%">Application Viability Score</td>
+          <td width="50%"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <th>Means of Identification</th>
+      <th>Identifier Value(Number)</th>
+      <th>Expiry Date</th>
+    </thead>
+    <tr *ngFor="let identity of creditcheckrecord?.CREDITCHECK_DATA?.userDetails?.identification">
+      <td>{{identity.id}}</td>
+      <td>{{identity.value}}</td>
+      <td>ND</td>
+    </tr>
+  </table>
+</section>
+<section class="panel">
+  <header class="panel-heading" style="color:#fff; background-color: #c3c3c3; border-radius:0px !important">
+   Addresses
+  </header>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Address</th>
+        <th>Date Added</th> 
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let address of creditcheckrecord?.CREDITCHECK_DATA?.addressdetails?.addresses">
+
+        <td>{{address?.address}}</td>
+        <td>{{address?.date}}</td> 
+
+      </tr>
+    </tbody>
+  </table>
+</section>
+<section class="panel">
+  <header class="panel-heading" style="color:#fff; background-color: #c3c3c3; border-radius:0px !important">
+    Credit Risk Overview
+  </header>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Indicator</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tr>
+      <td>Number of addresses</td>
+      <td>{{creditcheckrecord?.CREDITCHECK_DATA?.addressdetails?.count}}</td>
+    </tr>
+    <tr>
+      <td>
+        Number of enquiries
+      </td>
+      <td>
+        {{creditcheckrecord?.CREDITCHECK_DATA?.enquirydetails?.count}}
+      </td>
+      <tr>
+        <td>
+          Sum of facilities
+        </td>
+        <td>
+          {{creditcheckrecord?.CREDITCHECK_DATA?.credit?.approved}}
+        </td>
+      </tr>
+      <tr>
+        <td>Count of facilities</td>
+        <td>{{creditcheckrecord?.CREDITCHECK_DATA?.credit?.countoffacilities}}</td>
+      </tr>
+      <tr>
+        <td>
+          Number of performing facilities
+        </td>
+        <td>
+          {{creditcheckrecord?.CREDITCHECK_DATA?.credit?.countofperformingfacilities}}
+        </td>
+        <tr>
+          <td>Number of non performing facilities</td>
+          <td>{{creditcheckrecord?.CREDITCHECK_DATA?.credit?.countofnonperformingfacilities}}</td>
+        </tr>
+        <tr>
+          <td>
+            Balance
+          </td>
+          <td>
+            {{creditcheckrecord?.CREDITCHECK_DATA?.credit?.balance}}
+          </td>
+          <tr>
+            <td>Overdue</td>
+            <td>{{creditcheckrecord?.CREDITCHECK_DATA?.credit?.overdue}}</td>
+          </tr>
+  </table>
+</section>
+<section class="panel">
+  <header class="panel-heading" style="color:#fff; background-color: #c3c3c3; border-radius:0px !important">
+    Summary of performance
+  </header>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Institution</th>
+        <th>Facilities Count</th>
+        <th>Performing</th>
+        <th>Non Performing</th>
+        <th>Approved Amount</th>
+        <th>Account Balance</th>
+        <th>Overdue Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let performance of creditcheckrecord?.CREDITCHECK_DATA?.summary">
+
+        <td>{{performance?.name}}</td>
+        <td>{{performance?.facilityCount}}</td>
+        <td>{{performance?.performingFacility}}</td>
+        <td>{{performance?.nonPerformingFacility}}</td>
+        <td>{{performance?.approved}}</td>
+        <td>{{performance?.balance}}</td>
+        <td>{{performance?.overdue}}</td>
+
+      </tr>
+    </tbody>
+  </table>
+</section>

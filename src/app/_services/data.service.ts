@@ -69,4 +69,14 @@ export class DataService {
   viewTheLoan: EventEmitter<any> = new EventEmitter();
   geotagCustomerAddress: EventEmitter<any> = new EventEmitter();
   adjustTheAnalyticsWeight: EventEmitter<any> = new EventEmitter();
+  runCreditCheck: EventEmitter<any> = new EventEmitter();
+  initiateDebitInstruction: EventEmitter<any> = new EventEmitter();
+  initiateCheckDebitInstruction: EventEmitter<any> = new EventEmitter();
+  initiateDebitInstructionCancel: EventEmitter<any> = new EventEmitter();
+  stopDebitMandate: EventEmitter<any> = new EventEmitter();
+  reloadCreditCheck: EventEmitter<any> = new EventEmitter();
+  deleteBankAccount: EventEmitter<any> = new EventEmitter();
+  runOperationsTest: EventEmitter<any> = new EventEmitter();
+  acceptBorrowerPayment: EventEmitter<any> = new EventEmitter();
+  rejectBorrowerPayment: EventEmitter<any> = new EventEmitter();
 }

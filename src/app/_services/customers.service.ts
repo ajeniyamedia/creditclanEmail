@@ -51,6 +51,12 @@ export class CustomersService {
       .catch(this.httpHelper.handleError);
   }
   
+  saveVerification(value, token, customer): Observable<any> {
+    let options = this.httpHelper.setOptions(new Headers()); 
+    return this.http.post(this.api_base + 'customer/saveVerification', JSON.stringify({ data:value,token: token, customer:customer }))
+      .map(this.httpHelper.extractData)
+      .catch(this.httpHelper.handleError);
+  }
   getCompanies(category, start,magic_filter,durations,sector,occupation,token): Observable<any> {
     let options = this.httpHelper.setOptions(new Headers());
     //return this.http.get(this.api_base+'customers_/index_/'+category+'/'+this.currentUser.token)

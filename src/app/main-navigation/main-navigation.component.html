@@ -172,11 +172,14 @@
                 <button *ngIf="!is_company_staff" class="edged_box big_btn wd_btn btn-orange t_l4" style="padding: 5px; margin: 0; margin-right: 25px"
                     (click)="overlayOpen=true">Book Loan</button>
                 <button *ngIf="is_company_staff" class="edged_box big_btn wd_btn btn-orange t_l4" style="padding: 5px; margin: 0; margin-right: 25px"
+                    (click)="newCustomerRecord=true">Update Staff Record</button>
+                <button *ngIf="is_company_staff" class="edged_box big_btn wd_btn btn-orange t_l4" style="padding: 5px; margin: 0; margin-right: 25px"
                     (click)="newLoanOpen=true">Book Loan</button>
                 <button *ngIf="test_mode && !is_company_staff" class="edged_box big_btn wd_btn btn-orange t_l4" style="padding: 5px; margin: 0; margin-right: 25px"
                     (click)="webussd = !webussd">Go Live</button>
                 <button *ngIf="test_mode" class="edged_box big_btn wd_btn btn-orange t_l4" style="padding: 5px; margin: 0; margin-right: 25px"
-                    onclick="event.preventDefault(); CreditClan.open('iFNvz2BhpgddcgjybqDFNUAmHDYcTleACv99G8hZ')">Go Live</button>
+                    onclick="event.preventDefault(); CreditClan.open('iFNvz2BhpgddcgjybqDFNUAmHDYcTleACv99G8hZ')">Go
+                    Live</button>
             </div>
         </div>
 
@@ -236,6 +239,19 @@
             </div>
         </div>
     </div>
+    <div *ngIf="newCustomerRecord">
+        <div class="overlay_ app_overlay animated" style="overflow:auto;background:#fff;">
+
+            <div class="col-md-12">
+                <a class="dismiss cancel_treat_ close" role="button" (click)="newCustomerRecord=false">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class=" overpanel-content container" role="document" style="text-align:left; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+                <app-requestform [editing_customer]="true"></app-requestform>
+            </div>
+        </div>
+    </div>
     <div *ngIf="webussd">
         <div class="overlay_ app_overlay animated" style="overflow:auto;background:#fff;">
 
@@ -288,5 +304,5 @@
 
         </div>
     </div>
-     
+
 </div>

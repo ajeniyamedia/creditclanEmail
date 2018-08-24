@@ -22,7 +22,7 @@ export class EmployeeComponent implements OnInit {
   transactions: any;
   isedit = false;
   start = 0;
-  employee = { "PEOPLE_PEOPLE_ID": "", "LEGAL_NAME": "", "EMAIL": "" };
+  employee = { "PEOPLE_PEOPLE_ID": "", "LEGAL_NAME": "", "EMAIL": "", 'SEND_WELCOME_EMAIL': true };
   search = "";
   roles: RoleModel[];
   constructor(public toastr: ToastrService, vcr: ViewContainerRef, public fb: FormBuilder, public operationsService: OperationsService,

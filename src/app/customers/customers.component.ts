@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CustomersService } from '../_services/customers.service';
 import { ConstantsService } from '../_services/constants.service';
-import { DataService,UserService, CustomerService, AuthenticationService, StorageService } from '../_services/index';
+import { DataService, UserService, CustomerService, AuthenticationService, StorageService } from '../_services/index';
 import { InvestmentService, LoansService, OptionsserviceService } from '../_services/index';
+
+import { ToastrService } from 'ngx-toastr';
 // declare var $:any;
 import { Router } from '@angular/router';
 @Component({
@@ -27,24 +29,25 @@ export class CustomersComponent implements OnInit {
   searchTerm = '';
   navigation = { 'index': 0, 'next': 0, 'prev': 0, 'complete': true }; // Contains navigation params from the last request
   public currentUser: any;
-  public enable_peer='0'; 
+  public enable_peer = '0';
   action = 'normal'; // Search, Normal Request or Filter
   //category = 'all'; // The current active category of customers being viewed
   //navigation = {'index': 0, 'next': 0, 'prev': 0}; // Contains navigation params from the last request
   //searchTerm = '';
   investor_box = true;
   borrower_box = true;
-  ownershipCustomer:any;
-  owningStaff:any;
+  ownershipCustomer: any;
+  owningStaff: any;
 
-  view='main';
+  view = 'main';
   public statuses = [
     { value: '0', display: 'All' },
     { value: '2', display: 'USSD' },
-    { value: '1', display: 'Mobile' }, 
+    { value: '1', display: 'Mobile' },
     { value: '3', display: 'Web' },
     { value: '4', display: 'Back Office' }
   ];
+
   public durations = [
     { display: '0 - 1', checked: false, min: 0, max: 30 },
     { display: '0 - 3', checked: false, min: 31, max: 90 },
@@ -52,26 +55,36 @@ export class CustomersComponent implements OnInit {
     { display: '7 - 12', checked: false, min: 181, max: 365 },
     { display: '1+ Years', checked: false, min: 366, max: 3650 }
   ];
+  loading = false;
   sectors: any;
-  occupations:any;
-  magic_filter = { reset:false,account_officer:false,start: 0, token: '', registered_from: this.statuses[0].value, searchText: '', borrower: true, investor: true, loans: '', investments: '', ratings_one: false, ratings_two: false, ratings_three: false, ratings_four: false, ratings_five: false  };
-  // Constructor
-  constructor(public authService:AuthenticationService,public optionsService:OptionsserviceService, public router: Router,public DataService:DataService,protected customersSrvc: CustomersService, 
+  occupations: any;
+  verifier = { phone_verifier: false, email_verifier: false, bvn_verifier: false, PEOPLE_CUSTOMERS_ID: '' };
+  magic_filter = { reset: false, account_officer: false, start: 0, token: '', registered_from: this.statuses[0].value, searchText: '', borrower: true, investor: true, loans: '', investments: '', ratings_one: false, ratings_two: false, ratings_three: false, ratings_four: false, ratings_five: false };
+  // Constructor 
+  constructor(public toastr: ToastrService, public authService: AuthenticationService, public optionsService: OptionsserviceService,
+    public router: Router, public DataService: DataService, protected customersSrvc: CustomersService,
     protected constants: ConstantsService, public storageService: StorageService) {
     this.api_base = constants.read('api_base');
-    this.currentUser = this.storageService.read<any>('currentUser'); 
-    
+    this.currentUser = this.storageService.read<any>('currentUser');
+
     this.DataService.reloadCustomers.subscribe(res => {
-      this.normalLoad(this.navigation.next-10);
+      this.normalLoad(this.navigation.next - 10);
     })
     this.enable_peer = this.storageService.read<any>('enable_peer_to_peer');
-    if(!authService.canViewModule('1,7,2,3,4,5,1026')){
+    if (!authService.canViewModule('1,7,2,3,4,5,1026')) {
       this.router.navigate(['../unauthorized']);
     }
   }
-  open(page){
-    this.view=page;
-  } 
+  open(page) {
+    this.view = page;
+  }
+  showSuccess(message) {
+    this.toastr.success(message, 'Success!');
+  }
+
+  showError(message) {
+    this.toastr.error(message, 'Error');
+  }
   // Fetch the initial list of customers from the server
   ngOnInit() {
     this.normalLoad(0);
@@ -83,7 +96,7 @@ export class CustomersComponent implements OnInit {
   // Normal Loading
   normalLoad(start) {
     this.action = 'normal';
-    this.customersSrvc.getCustomersList(this.getCategory(), start,this.magic_filter,this.durations,this.sectors,this.occupations,this.currentUser).subscribe(data => {
+    this.customersSrvc.getCustomersList(this.getCategory(), start, this.magic_filter, this.durations, this.sectors, this.occupations, this.currentUser).subscribe(data => {
       this.data = data;
       this.customers = data.all_cus.a;
       this.count = data.COUNT;
@@ -98,16 +111,16 @@ export class CustomersComponent implements OnInit {
       this.setNavigationParams(data);
     });
   }
-  takeOwnership(customer){
-    this.action='1';
-    this.ownershipCustomer=customer;
-    this.owningStaff=this.currentUser;
+  takeOwnership(customer) {
+    this.action = '1';
+    this.ownershipCustomer = customer;
+    this.owningStaff = this.currentUser;
     this.DataService.onTakeOwnership.emit(customer);
-   
+
   }
-  changeOwnership(customer){ 
-    this.ownershipCustomer=customer;
-    this.owningStaff=this.currentUser;
+  changeOwnership(customer) {
+    this.ownershipCustomer = customer;
+    this.owningStaff = this.currentUser;
     this.DataService.onchangeOwnership.emit(customer);
   }
   // Search 
@@ -130,7 +143,7 @@ export class CustomersComponent implements OnInit {
     this.customersSrvc.searchCustomers(data).subscribe(data => {
       this.customers = data.all_cus.a;
       this.setNavigationParams(data);
-    }); 
+    });
   }
 
   // Navigation
@@ -223,11 +236,23 @@ export class CustomersComponent implements OnInit {
     this.durations[index]["checked"] = event;
 
   }
-  getCustomerType(CUSTOMER_TYPE){
-    if(CUSTOMER_TYPE==='1'){
+  getCustomerType(CUSTOMER_TYPE) {
+    if (CUSTOMER_TYPE === '1') {
       return "individual";
-    }else{
+    } else {
       return "corporate";
     }
+  }
+  saveVerification(value, valid, PEOPLE_CUSTOMERS_ID) {
+     
+    this.loading = true;
+    this.customersSrvc.saveVerification(value, this.currentUser.token, PEOPLE_CUSTOMERS_ID).subscribe(data => {
+      this.loading = false;
+      if (data.status == true) {
+        this.showSuccess("Update successful");
+      } else {
+        this.showError("Error occured")
+      }
+    });
   }
 }

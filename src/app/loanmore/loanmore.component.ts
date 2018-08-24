@@ -20,11 +20,13 @@ export class LoanmoreComponent implements OnInit {
 	public currentUser: any;
 	public status = false;
 	public docpickups: any;
+	has_remita = false;
 	constructor(public route: ActivatedRoute, public storageService: StorageService, public optionsService: OptionsserviceService, public loansService: LoansService, private DataService: DataService) {
 
 	}
 	ngOnInit() {
 		this.currentUser = this.storageService.read<any>('currentUser');
+		this.has_remita = this.storageService.read<any>('has_remita');
 		this.optionsService.getDocTypes().subscribe(docpickups => this.docpickups = docpickups);
 		this.sub = this.route.parent.params.subscribe(params => {
 			this.parentRouteId = +params["id"];
@@ -88,4 +90,10 @@ export class LoanmoreComponent implements OnInit {
 		this.DataService.onOpenLoanChildModal.emit({ 'location': 'confirm_account_mod', data: this.loan });
 	}
 
+	setupdirectdebit() {
+		this.DataService.onOpenLoanChildModal.emit({ 'location': 'setup_debit_mandate', data: this.loan });
+	}
+	checkdirectdebitstatus(){
+		this.DataService.onOpenLoanChildModal.emit({ 'location': 'check_debit_mandate', data: this.loan });
+	}
 }

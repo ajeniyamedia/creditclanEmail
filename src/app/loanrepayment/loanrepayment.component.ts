@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, Input,EventEmitter } from '@angular/core';
 import { OptionsserviceService, LoansService, StorageService } from '../_services/index';
 import { Loan } from '../_interfaces/loan.interface';
 import { Loan_ } from '../_models/loan_';
@@ -10,14 +10,16 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./loanrepayment.component.css']
 })
 export class LoanrepaymentComponent implements OnInit {
-
+  @Input('from_where') from_where = '1';
   public schedule: any;
   public parentRouteId: number;
   public sub: any;
   public loading = false;
   public currentUser: any;
   public status = false;
-  constructor(public route: ActivatedRoute, public storageService: StorageService, 
+  @Output() closePopUp = new EventEmitter();
+  @Output() modifyContract = new EventEmitter();
+  constructor(public route: ActivatedRoute, public storageService: StorageService,
     public optionsService: OptionsserviceService, public loansService: LoansService) {
 
 
@@ -40,27 +42,33 @@ export class LoanrepaymentComponent implements OnInit {
         });
     });
   }
-  getTotal(key,schedule){ 
-    if(schedule===undefined){}else{
-      let total=0;
-      if(key==="INITIAL_PRINCIPAL"){
-        total= schedule.reduce( function(cnt,o){ return cnt + parseFloat(o.INITIAL_PRINCIPAL); }, 0);
+  getTotal(key, schedule) {
+    if (schedule === undefined) { } else {
+      let total = 0;
+      if (key === "INITIAL_PRINCIPAL") {
+        total = schedule.reduce(function (cnt, o) { return cnt + parseFloat(o.INITIAL_PRINCIPAL); }, 0);
       }
-      if(key==="PRINCIPAL_REPAYMENT"){
-        total= schedule.reduce( function(cnt,o){ return cnt + parseFloat(o.PRINCIPAL_REPAYMENT); }, 0);
-      } 
-      if(key==="INTEREST_REPAYMENT"){
-        total= schedule.reduce( function(cnt,o){ return cnt + parseFloat(o.INTEREST_REPAYMENT); }, 0);
-      } 
-      if(key==="FEES"){
-        total= schedule.reduce( function(cnt,o){ return cnt + parseFloat(o.FEES) + parseInt(o.VAT_ON_FEES); }, 0);
-      } 
-      if(key==="TERM_REPAYMENT"){
-        total= schedule.reduce( function(cnt,o){ return cnt + parseFloat(o.TERM_REPAYMENT); }, 0);
-      } 
+      if (key === "PRINCIPAL_REPAYMENT") {
+        total = schedule.reduce(function (cnt, o) { return cnt + parseFloat(o.PRINCIPAL_REPAYMENT); }, 0);
+      }
+      if (key === "INTEREST_REPAYMENT") {
+        total = schedule.reduce(function (cnt, o) { return cnt + parseFloat(o.INTEREST_REPAYMENT); }, 0);
+      }
+      if (key === "FEES") {
+        total = schedule.reduce(function (cnt, o) { return cnt + parseFloat(o.FEES) + parseInt(o.VAT_ON_FEES); }, 0);
+      }
+      if (key === "TERM_REPAYMENT") {
+        total = schedule.reduce(function (cnt, o) { return cnt + parseFloat(o.TERM_REPAYMENT); }, 0);
+      }
       return total;
     }
     //
-     
+
+  }
+  closeTheLoanFormPopUp() {
+    this.closePopUp.emit()
+  }
+  modifyTheContract() {
+this.modifyContract.emit();
   }
 }
