@@ -976,6 +976,7 @@ export class LoandetailsComponent implements OnInit {
     });
   }
   sendForDirectDebit() {
+    this.loading =true;
     this.sub = this.route.params.subscribe(params => {
       this.parentRouteId = +params['id'];
 
@@ -992,6 +993,7 @@ export class LoandetailsComponent implements OnInit {
     });
   }
   sendForDirectDebitOnAccount() {
+  this.loading =true;
     this.sub = this.route.params.subscribe(params => {
       this.parentRouteId = +params['id'];
 
@@ -1034,6 +1036,7 @@ export class LoandetailsComponent implements OnInit {
     });
   }
   sendForDirectDebitStatus() {
+    this.loading =true;
     this.sub = this.route.params.subscribe(params => {
       this.parentRouteId = +params['id'];
 
@@ -1052,6 +1055,7 @@ export class LoandetailsComponent implements OnInit {
     });
   }
   runCreditCheck() {
+    this.loading =true;
     this.sub = this.route.params.subscribe(params => {
       this.parentRouteId = +params['id'];
       this.loading = true;

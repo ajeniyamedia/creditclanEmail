@@ -19,6 +19,11 @@ export class CustomerAccountSettingsComponent implements OnInit {
     TPDATE: '',
     IS_SUSPENDED:false
   }
+  public userexclude = {
+    PEOPLE_CUSTOMERS_ID: '0',
+    TPDATE: '',
+    EXCLUDE_FROM_ELIGIBILITY:false
+  }
   public userratings = {
     PEOPLE_CUSTOMERS_ID: '0',
     PEOPLE_RATING_ID: '0'
@@ -56,6 +61,8 @@ export class CustomerAccountSettingsComponent implements OnInit {
         this.usersuspend.PEOPLE_CUSTOMERS_ID = data.ussd.PEOPLE_CUSTOMERS_ID;
         this.usersuspend.IS_SUSPENDED = data.usersuspend.IS_SUSPENDED;
         this.usersuspend.TPDATE = data.usersuspend.TPDATE;
+        this.userexclude.PEOPLE_CUSTOMERS_ID = data.userexclude.PEOPLE_CUSTOMERS_ID;
+        this.userexclude.EXCLUDE_FROM_ELIGIBILITY = data.userexclude.EXCLUDE_FROM_ELIGIBILITY;
 
       });
     });
@@ -82,6 +89,18 @@ export class CustomerAccountSettingsComponent implements OnInit {
   suspendCustomer(value, valid) {
     this.loading = true;
     this.customersSrvc.suspendCustomer(this.currentUser.token, value, this.usersuspend.PEOPLE_CUSTOMERS_ID)
+      .subscribe(data => {
+        this.loading = false;
+        if (data.status === '1') {
+          this.showSuccess(data.message)
+        } else {
+          this.showError(data.message)
+        }
+      });
+  }
+  excludeCustomer(value, valid) {
+    this.loading = true;
+    this.customersSrvc.excludeCustomer(this.currentUser.token, value, this.userexclude.PEOPLE_CUSTOMERS_ID)
       .subscribe(data => {
         this.loading = false;
         if (data.status === '1') {

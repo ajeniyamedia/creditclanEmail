@@ -100,6 +100,7 @@ export class MobileComponent implements OnInit {
   };
   public mobile = {
     mustnotifyaccountofficer: '1',
+    validate_work_email:false,
     notificationemail: '',
     customerconfirmsemailafterregisteration: false,
     shouldthecustomerporvidebvnaftersigningup: false,
@@ -227,6 +228,8 @@ export class MobileComponent implements OnInit {
         this.mobile.mustprovideloanpurpose = data.mobile.mustprovideloanpurpose;
         this.mobile.addreferralcode = data.mobile.addreferralcode;
         this.mobile.mustnotifyaccountofficer = data.mobile.mustnotifyaccountofficer;
+        
+        this.mobile.validate_work_email = data.mobile.validate_work_email;
         this.mobile.notificationemail = data.mobile.notificationemail;
         this.mobile.ENABLE_GEOTAGGING = data.mobile.ENABLE_GEOTAGGING;
         this.mobile.GPS_RETRY = data.mobile.GPS_RETRY;

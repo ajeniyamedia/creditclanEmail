@@ -226,6 +226,12 @@ export class CustomersService {
       .map(this.httpHelper.extractData)
       .catch(this.httpHelper.handleError);
   }
+  excludeCustomer(token,value,user_id): Observable<any> {
+    let options = this.httpHelper.setOptions(new Headers());
+    return this.http.post(this.api_base + 'customer/excludeCustomer/', JSON.stringify({ token: token, value: value,user_id:user_id }))
+      .map(this.httpHelper.extractData)
+      .catch(this.httpHelper.handleError);
+  }
   saveUserRatings(token,value,userid): Observable<any> {
     let options = this.httpHelper.setOptions(new Headers());
     return this.http.post(this.api_base + 'customer/saveUserRatings/', JSON.stringify({ token: token, value: value, userid:userid }))

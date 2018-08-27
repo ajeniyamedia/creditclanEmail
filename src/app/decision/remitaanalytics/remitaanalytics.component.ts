@@ -18,7 +18,11 @@ export class RemitaanalyticsComponent implements OnInit {
   remitaconnection = {
     'MERCHANT_ID': '',
     'API_KEY': '',
-    'API_TOKEN': ''
+    'API_TOKEN': '',
+    'SERVICE_ID':'',
+    'SERVICE_NAME':'',
+    'ENCRYPTION_KEY':'',
+    'ENCRYPTION_VECTOR':''
   }
   remita_analytics = {
     excluded_companies: '0',
@@ -47,6 +51,10 @@ export class RemitaanalyticsComponent implements OnInit {
         this.remitaconnection.MERCHANT_ID = data.data.MERCHANT_ID;
         this.remitaconnection.API_KEY = data.data.API_KEY;
         this.remitaconnection.API_TOKEN = data.data.API_TOKEN;
+        this.remitaconnection.SERVICE_ID = data.data.SERVICE_ID;
+        this.remitaconnection.SERVICE_NAME = data.data.SERVICE_NAME;
+        this.remitaconnection.ENCRYPTION_KEY = data.data.ENCRYPTION_KEY;
+        this.remitaconnection.ENCRYPTION_VECTOR = data.data.ENCRYPTION_VECTOR;
         this.remita_analytics = {
           excluded_companies: data.analytics.excluded_companies,
           company_exists: data.analytics.company_exists,

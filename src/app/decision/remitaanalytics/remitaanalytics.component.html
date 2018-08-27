@@ -22,6 +22,22 @@
           <div class="col-md-6"><label class="control-label">API Token</label></div>
           <div class="col-md-6"><input class="form-control" name="API_TOKEN" [(ngModel)]="remitaconnection.API_TOKEN"></div>
         </div>
+        <div class="form-group row">
+            <div class="col-md-6"><label class="control-label">Direct Debit Service Name</label></div>
+            <div class="col-md-6"><input class="form-control" name="SERVICE_NAME" [(ngModel)]="remitaconnection.SERVICE_NAME"></div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-6"><label class="control-label">Direct Debit Service ID</label></div>
+            <div class="col-md-6"><input class="form-control" name="SERVICE_ID" [(ngModel)]="remitaconnection.SERVICE_ID"></div>
+          </div>
+          <div class="form-group row">
+              <div class="col-md-6"><label class="control-label">Encryption Key</label></div>
+              <div class="col-md-6"><input class="form-control" name="ENCRYPTION_KEY" [(ngModel)]="remitaconnection.ENCRYPTION_KEY"></div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6"><label class="control-label">Encryption Vector</label></div>
+              <div class="col-md-6"><input class="form-control" name="ENCRYPTION_VECTOR" [(ngModel)]="remitaconnection.ENCRYPTION_VECTOR"></div>
+            </div>
         <!-- <div class="form-group row">
           <div class="col-md-6"><label class="control-label">Refresh Data Interval</label></div>
           <div class="col-md-6"><input class="form-control" name="REMITA_REFRESH_DAYS" [(ngModel)]="remitaconnection.REMITA_REFRESH_DAYS"></div>

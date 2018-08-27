@@ -3,10 +3,9 @@ import { CustomersService } from '../_services/customers.service';
 import { ConstantsService } from '../_services/constants.service';
 import { DataService, UserService, CustomerService, AuthenticationService, StorageService } from '../_services/index';
 import { InvestmentService, LoansService, OptionsserviceService } from '../_services/index';
-
 import { ToastrService } from 'ngx-toastr';
-// declare var $:any;
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
@@ -16,7 +15,6 @@ import { Router } from '@angular/router';
 
 export class CustomersComponent implements OnInit {
 
-  // Data
   data: any;
   customers: any; // Main customers model
   count: any; // sidebar stat
@@ -31,9 +29,6 @@ export class CustomersComponent implements OnInit {
   public currentUser: any;
   public enable_peer = '0';
   action = 'normal'; // Search, Normal Request or Filter
-  //category = 'all'; // The current active category of customers being viewed
-  //navigation = {'index': 0, 'next': 0, 'prev': 0}; // Contains navigation params from the last request
-  //searchTerm = '';
   investor_box = true;
   borrower_box = true;
   ownershipCustomer: any;
@@ -60,6 +55,7 @@ export class CustomersComponent implements OnInit {
   occupations: any;
   verifier = { phone_verifier: false, email_verifier: false, bvn_verifier: false, PEOPLE_CUSTOMERS_ID: '' };
   magic_filter = { reset: false, account_officer: false, start: 0, token: '', registered_from: this.statuses[0].value, searchText: '', borrower: true, investor: true, loans: '', investments: '', ratings_one: false, ratings_two: false, ratings_three: false, ratings_four: false, ratings_five: false };
+  
   // Constructor 
   constructor(public toastr: ToastrService, public authService: AuthenticationService, public optionsService: OptionsserviceService,
     public router: Router, public DataService: DataService, protected customersSrvc: CustomersService,
@@ -244,7 +240,7 @@ export class CustomersComponent implements OnInit {
     }
   }
   saveVerification(value, valid, PEOPLE_CUSTOMERS_ID) {
-     
+
     this.loading = true;
     this.customersSrvc.saveVerification(value, this.currentUser.token, PEOPLE_CUSTOMERS_ID).subscribe(data => {
       this.loading = false;

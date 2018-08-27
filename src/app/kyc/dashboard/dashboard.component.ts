@@ -34,6 +34,8 @@ export class DashboardComponent implements OnInit {
   ];
   loading=false;
   kycs:any;
+  view = 'master';
+  kycrecord:any;
   public currentUser: any;
   constructor(private kycService:KycService,public storageService:StorageService,public router:Router) { 
     this.currentUser = this.storageService.read<any>('currentUser');
@@ -64,6 +66,24 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
+  viewKYCDetails(loan){
+    this.view = 'detail';
+    this.kycrecord = loan;
+  }
+  // loadKYCDetails() {
+  //   this.currentUser = this.storageService.read<any>('currentUser');
+  //   this.sub = this.route.parent.params.subscribe(params => {
+  //     this.parentRouteId = +params["id"];
+  //     this.kycService.getLoanKYC(this.currentUser.token, this.parentRouteId)
+  //       .subscribe(data => {
+  //         if(data.status == true){
+  //           this.kycdetails = data.data;
+  //         }else{
+
+  //         }
+  //       });
+  //   });
+  // }
   orderingBy(type){
     if(type==='1'){
       this.ordering = 'DATE_ADDED';

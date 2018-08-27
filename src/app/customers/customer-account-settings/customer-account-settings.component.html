@@ -4,45 +4,74 @@
 
     </header>
     <div class="panel-body" style="padding: 0;">
-            <div class="panel" style="margin-bottom: 5px;">
-                    <div class="panel-body">
-        
-                        <div class="pull-left">
-                            <h5 class="text-primary no-margin" style="margin-bottom: 0">Suspend Customer</h5>
-                            <p style="margin-bottom: 0">
-                                <small>Suspend the customer till the selected date</small>
-                            </p>
-                        </div>
-                        <!-- <button class="pull-right btn btn-white btn-blue_line wid_20 tbda_" style=" " data-content-id="_gen_statement">Generate</button> -->
-                        <div class="clearfix"></div>
-        
-                        <form #suspendForm="ngForm" novalidate>
-                                <ul class="list list_border sm">
-                                        <li class="text-left">
-                                          <span>Enable </span>
-                                          <div class="pull-right">
-                                            <input type="checkbox" name="IS_SUSPENDED" [(ngModel)]="usersuspend.IS_SUSPENDED">
-                                          </div>
-                                        </li>
-                                      </ul>
-                            <div class="form-group row" *ngIf="usersuspend.IS_SUSPENDED">
-        
-        
-                                <label class="col-md-6">
-                                   Date
-                                </label>
-                                <div class="col-md-6">
-                                    <input type="hidden" name="PEOPLE_CUSTOMERS_ID" [(ngModel)]="usersuspend.PEOPLE_CUSTOMERS_ID">
-                                    <input type="text" name="TPDATE" class="form-control" [(ngModel)]="usersuspend.TPDATE" ngui-datetime-picker date-only="true" />
-                                </div>
-                            </div>
-                            <button type="submit" (click)="suspendCustomer(suspendForm.value, suspendForm.valid)" [disabled]="loading" class="btn btn-white pull-right">
-                                <span *ngIf="!loading">Submit</span>
-                                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
-                            </button>
-                        </form>
-                    </div>
+        <div class="panel" style="margin-bottom: 5px;">
+            <div class="panel-body">
+
+                <div class="pull-left">
+                    <h5 class="text-primary no-margin" style="margin-bottom: 0">Suspend Customer</h5>
+                    <p style="margin-bottom: 0">
+                        <small>Suspend the customer till the selected date</small>
+                    </p>
                 </div>
+                <!-- <button class="pull-right btn btn-white btn-blue_line wid_20 tbda_" style=" " data-content-id="_gen_statement">Generate</button> -->
+                <div class="clearfix"></div>
+
+                <form #suspendForm="ngForm" novalidate>
+                    <ul class="list list_border sm">
+                        <li class="text-left">
+                            <span>Enable </span>
+                            <div class="pull-right">
+                                <input type="checkbox" name="IS_SUSPENDED" [(ngModel)]="usersuspend.IS_SUSPENDED">
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="form-group row" *ngIf="usersuspend.IS_SUSPENDED">
+
+
+                        <label class="col-md-6">
+                            Date
+                        </label>
+                        <div class="col-md-6">
+                            <input type="hidden" name="PEOPLE_CUSTOMERS_ID" [(ngModel)]="usersuspend.PEOPLE_CUSTOMERS_ID">
+                            <input type="text" name="TPDATE" class="form-control" [(ngModel)]="usersuspend.TPDATE" ngui-datetime-picker date-only="true"
+                            />
+                        </div>
+                    </div>
+                    <button type="submit" (click)="suspendCustomer(suspendForm.value, suspendForm.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                        <span *ngIf="!loading">Submit</span>
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="panel" style="margin-bottom: 5px;">
+            <div class="panel-body">
+
+                <div class="pull-left">
+                    <h5 class="text-primary no-margin" style="margin-bottom: 0">Eligibility</h5>
+                    <p style="margin-bottom: 0">
+                        <small>Exclude customer from eligibility</small>
+                    </p>
+                </div>
+                <div class="clearfix"></div>
+
+                <form #eligibilityForm="ngForm" novalidate>
+                    <ul class="list list_border sm">
+                        <li class="text-left">
+                            <span>Enable </span>
+                            <div class="pull-right">
+                                <input type="checkbox" name="EXCLUDE_FROM_ELIGIBILITY" [(ngModel)]="userexclude.EXCLUDE_FROM_ELIGIBILITY">
+                            </div>
+                        </li>
+                    </ul>
+
+                    <button type="submit" (click)="excludeCustomer(eligibilityForm.value, eligibilityForm.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                        <span *ngIf="!loading">Submit</span>
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
         <div class="panel" style="margin-bottom: 5px;">
             <div class="panel-body">
 
@@ -76,35 +105,35 @@
             </div>
         </div>
         <div class="panel" style="margin-bottom: 5px;">
-                <div class="panel-body">
-    
-                    <div class="pull-left">
-                        <h5 class="text-primary no-margin" style="margin-bottom: 0">USSD Ratings</h5>
-                         
-                    </div>
-                    <!-- <button class="pull-right btn btn-white btn-blue_line wid_20 tbda_" style=" " data-content-id="_gen_statement">Generate</button> -->
-                    <div class="clearfix"></div>
-    
-                    <form #rating="ngForm" novalidate>
-    
-                        <div class="form-group row">
-    
-    
-                            <label class="col-md-6">
-                                Ratings
-                            </label>
-                            <div class="col-md-6">
-                                <input type="hidden" name="PEOPLE_CUSTOMERS_ID" [(ngModel)]="userratings.PEOPLE_CUSTOMERS_ID">
-                                <input name="PEOPLE_RATING_ID" [(ngModel)]="userratings.PEOPLE_RATING_ID" id="PEOPLE_RATING_ID" type="text" class="form-control">
-                            </div>
-                        </div>
-                        <button type="submit" (click)="saveUserRatings(rating.value, rating.valid)" [disabled]="loading" class="btn btn-white pull-right">
-                            <span *ngIf="!loading">Submit</span>
-                            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
-                        </button>
-                    </form>
+            <div class="panel-body">
+
+                <div class="pull-left">
+                    <h5 class="text-primary no-margin" style="margin-bottom: 0">USSD Ratings</h5>
+
                 </div>
+                <!-- <button class="pull-right btn btn-white btn-blue_line wid_20 tbda_" style=" " data-content-id="_gen_statement">Generate</button> -->
+                <div class="clearfix"></div>
+
+                <form #rating="ngForm" novalidate>
+
+                    <div class="form-group row">
+
+
+                        <label class="col-md-6">
+                            Ratings
+                        </label>
+                        <div class="col-md-6">
+                            <input type="hidden" name="PEOPLE_CUSTOMERS_ID" [(ngModel)]="userratings.PEOPLE_CUSTOMERS_ID">
+                            <input name="PEOPLE_RATING_ID" [(ngModel)]="userratings.PEOPLE_RATING_ID" id="PEOPLE_RATING_ID" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <button type="submit" (click)="saveUserRatings(rating.value, rating.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                        <span *ngIf="!loading">Submit</span>
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                </form>
             </div>
+        </div>
         <div class="panel" style="margin-bottom: 5px;">
             <div class="panel-body">
 
@@ -178,14 +207,15 @@
                 <div class="panel-body">
 
                     <div style="width:50%; margin:10px auto;">
-                        <p style="border-bottom: 1px solid #d9d9d9; padding-bottom: 4px; margin-bottom: 20px" class="blue_c">Please Select Transaction to send Statement for:</p>
+                        <p style="border-bottom: 1px solid #d9d9d9; padding-bottom: 4px; margin-bottom: 20px" class="blue_c">Please
+                            Select Transaction to send Statement for:</p>
 
                         <div style="border-bottom: 1px solid #d9d9d9; margin-bottom: 10px; padding-bottom: 10px">
                             <label class="radio-inline" style="padding-left:0px; min-width: 50%;">
-                                <input type="radio" checked="" name="ASSET_DEPRECIATION_METHOD" id="ASSET_DEPRECIATION_METHOD" value="1"> Loans
+                                <input type="radio" checked="" name="ASSET_DEPRECIATION_METHOD" id="ASSET_DEPRECIATION_METHOD" value="1">                                Loans
                             </label>
                             <label class="radio-inline" style="padding-left:0; margin-left: 0">
-                                <input type="radio" name="ASSET_DEPRECIATION_METHOD" id="ASSET_DEPRECIATION_METHOD_" value="2"> Investment
+                                <input type="radio" name="ASSET_DEPRECIATION_METHOD" id="ASSET_DEPRECIATION_METHOD_" value="2">                                Investment
                             </label>
                         </div>
 
@@ -204,7 +234,8 @@
                             <div class="clearfix"></div>
                         </div>
 
-                        <a href="#customers/update_/6757" class="btn btn-block btn-blue" style="padding: 6px 12px; color: #fff">Send Statement</a>
+                        <a href="#customers/update_/6757" class="btn btn-block btn-blue" style="padding: 6px 12px; color: #fff">Send
+                            Statement</a>
                     </div>
 
                 </div>
@@ -219,7 +250,8 @@
                 <div class="panel-body">
 
                     <div style="width:50%; margin:10px auto;">
-                        <p style="border-bottom: 1px solid #d9d9d9; padding-bottom: 4px; margin-bottom: 20px" class="blue_c">Kindly Reset the Password.</p>
+                        <p style="border-bottom: 1px solid #d9d9d9; padding-bottom: 4px; margin-bottom: 20px" class="blue_c">Kindly
+                            Reset the Password.</p>
 
                         <div class="form-group" style="padding: 10px 0; border-bottom: 1px solid #d9d9d9">
                             <span class="pull-left text-primary">Email</span>
@@ -227,7 +259,8 @@
                             <div class="clearfix"></div>
                         </div>
 
-                        <a href="#customers/update_/6757" class="btn btn-block btn-blue" style="padding: 6px 12px; color: #fff">Reset Password</a>
+                        <a href="#customers/update_/6757" class="btn btn-block btn-blue" style="padding: 6px 12px; color: #fff">Reset
+                            Password</a>
                     </div>
 
                 </div>

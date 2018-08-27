@@ -100,7 +100,7 @@
     <div class="row" *ngIf="count>0">
         <div class="col-md-4" *ngFor="let lender of lenders; let i = index" style="height: 260px; padding-right: 0;margin-bottom: 15px">
             <!-- <section class="panel lndrs" *ngIf="slaveOpen==lender?.REQUEST_LENDER_ID"> -->
-            <div style="position: relative;" class="hover_toggle">
+            <div style="position: relative;" [ngClass]="{'hover_toggle': loan?.BOOKED!=1}" class="">
                 <section class="panel lndrs hover_show">
                     <div class="panel-body">
                         <!-- <button *ngIf="lender?.OFFER_STATUS<='3'" (click)="acceptOffer(lender?.REQUEST_LENDER_ID)" class="btn btn-space btn-block btn-white edged_box" type="button">
@@ -161,7 +161,7 @@
                             <li class="active">
                                 <p class="headline">{{lender?.BID_PRINCIPAL | money}}
                                     <br>
-                                    <span>Loans</span>
+                                    <span>Amount</span>
                                 </p>
                             </li>
                             <li>

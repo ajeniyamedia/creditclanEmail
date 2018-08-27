@@ -22,7 +22,7 @@
           </div>
           <div class="panel-body gal"  style="padding: 60px; padding-top: 0">
               <div *ngFor="let attach of attachments">
-                    <a *ngIf="attach?.FILE_TYPE=='2'&&attach?.FILE_NAME!=''" class="pull-left" href="" data-lightbox="roadtrip">
+                    <a *ngIf="attach?.FILE_TYPE=='2'&&attach?.FILE_NAME!=''" class="pull-left" target="_blank" href="https://dataupload.creditclan.com/pub/attachments/{{attach?.FILE_NAME}}" >
                         <img class="thumb" src="https://dataupload.creditclan.com/pub/attachments/{{attach?.FILE_NAME}}">
                     </a>
               </div>

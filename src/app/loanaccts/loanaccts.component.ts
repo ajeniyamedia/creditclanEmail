@@ -10,7 +10,7 @@ import { DataService, OptionsserviceService, LoansService, OperationsService } f
 })
 export class LoanacctsComponent implements OnInit {
 
-  public loading = false;
+  @Input('parentRouteId') loading = false;
   @Input('parentRouteId') parentRouteId: number;
   @Input('fromloan') fromloan = false;
   @Input('sub') sub: any;
