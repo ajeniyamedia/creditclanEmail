@@ -53,7 +53,8 @@ export class LoanformComponent implements OnInit {
     DISBURSEMENT_DATE: '0',
     REPAYMENT_STARTED_WHEN: '',
     IS_ACCEPTED: '0',
-    CONTRACT_DOC_SENT: '0'
+    CONTRACT_DOC_SENT: '0',
+    TOTAL_FEES_CHARGES: 0
   };
   // options: DatepickerOptions = {
   //   minYear: 1970,
@@ -642,5 +643,11 @@ export class LoanformComponent implements OnInit {
   }
   modifyContract() {
     this.viewingSchedule = false;
+  }
+  recalculateFees() {
+    this.loansService.recalculateFees(this.currentUser.token, this.myForm.value)
+        .subscribe(data => {
+          this.loan_request.TOTAL_FEES_CHARGES = data.TOTAL_FEES_CHARGES
+        });
   }
 }

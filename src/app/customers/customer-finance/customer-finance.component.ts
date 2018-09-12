@@ -14,6 +14,12 @@ import { StorageService } from '../../_services/index';
 
 export class CustomerFinanceComponent implements OnInit {
 
+  work = {
+    OCCUPATION_ID:'',
+    NET_MONTHLY_INCOME:'',
+    GROSS_ANNUAL_INCOME:'',
+    
+  }
   currentUser: any;
   records = []; // Customer Information
   sub; // Instance of the route subscription

@@ -1,24 +1,25 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CustomersService } from '../../_services/customers.service';
-
+import { LoansService, StorageService } from '../../_services/index';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
   selector: 'app-customer-update',
-  templateUrl: './customer-update.component.html', 
+  templateUrl: './customer-update.component.html',
   styleUrls: ['./customer-update.component.css']
 })
 
 // styleUrls: ['./customer-update.component.css'] - This style is more like it
 
 export class CustomerUpdateComponent implements OnInit {
-loading=false;
+  loading = false;
   // Basic
   @Input('userType') userType = "individual"; // Type of user
   @Input('userId') userId; // User Id
   @Input('external') external = false;
-
+  currentUser: any;
   // Select Options
   months = [
     { value: '1', display: 'January' },
@@ -55,7 +56,9 @@ loading=false;
     director: { open: false, data: {}, prev: {} },
     phone: { open: false, data: {}, prev: {} },
     edu: { open: false, data: {}, prev: {} },
-    dump: {},
+    dump: {
+      profile_photo: null
+    },
     individualExtra: {}
   }
 
@@ -77,14 +80,53 @@ loading=false;
   }
 
   edu_levels = [];
-
+  photoHasBeenUploaded = false
 
   // Open form
   openForm = false;
-
+  @ViewChild('file') file;
+  filesUploaded = [];
+  public files: Set<File> = new Set();
+  uploadingfile = false;
+  btnText = "Upload Photo";
+  fileAdded = false;
   constructor(protected customersSrvc: CustomersService,
-    public route: ActivatedRoute) { }
+    public route: ActivatedRoute, private toastr: ToastrService,
+    public loansService: LoansService, public storageService: StorageService) {
+    this.currentUser = this.storageService.read<any>('currentUser');
+  }
+  showSuccess(message) {
+    this.toastr.success(message, 'Success!');
+  }
 
+  showError(message) {
+    this.toastr.error(message, 'Error');
+  }
+  openUploadDialog() {
+    if (!this.fileAdded) {
+      this.file.nativeElement.click();
+    } else {
+      this.uploadingfile = true;
+      this.customersSrvc.updateProfilePhoto(this.currentUser.token, this.model.basicInfo.data, this.model.dump.profile_photo).subscribe(data => {
+        this.uploadingfile = false;
+this.btnText = 'Upload Photo';
+        this.showSuccess(data.message);
+      });
+    }
+
+  }
+  onFilesAdded(event) {
+    this.uploadingfile = true;
+    const files = event.target.files;
+    this.loansService.doUploadPhoto(files[0])
+      .subscribe(result => {
+        this.uploadingfile = false;
+        this.fileAdded = true;
+        this.btnText = "Save";
+        this.model.dump.profile_photo = result.data.upload_data.file_name;
+
+      });
+  }
   loadRecords() {
 
     // Load Basic informtion
@@ -161,63 +203,64 @@ loading=false;
 
   // Update Basic Info
   updateBasicInfo() {
-    this.loading=true;
+    this.loading = true;
     this.customersSrvc.updateBasicInfo(this.model.basicInfo.data).subscribe(data => {
       this.loading = false;
       if (data) {
         this.model.director.data = data.directors;
       }
+      this.showSuccess(data.message);
     });
   }
 
   // Update Education Information
   updateEducation() {
-    this.loading=true;
+    this.loading = true;
     this.customersSrvc.updateEducation(this.userId, this.model.edu.data).subscribe(data => {
-      this.loading=false;
+      this.loading = false;
       if (data) {
-        alert(data.message);
+        this.showSuccess(data.message);
       }
     });
   }
 
   /*======== Individual Functions ==========*/
   updateAddress() {
-    this.loading=true;
+    this.loading = true;
     this.customersSrvc.updateAddress(this.model.address.data).subscribe(data => {
-      this.loading=false;
+      this.loading = false;
       if (data.status) {
-        alert(data.message);
+        this.showSuccess(data.message);
       }
     });
   }
 
   updateWork() {
-    this.loading=true;
+    this.loading = true;
     this.customersSrvc.updateWork(this.model.work.data).subscribe(data => {
-      this.loading=false;
+      this.loading = false;
       if (data.status) {
-        alert(data.message);
+        this.showSuccess(data.message);
       }
     });
   }
 
   updateId() {
-    this.loading=true;
+    this.loading = true;
     this.customersSrvc.updateId(this.model.id.data).subscribe(data => {
-      this.loading=false;
+      this.loading = false;
       if (data.status) {
-        alert(data.message);
+        this.showSuccess(data.message);
       }
     });
   }
 
   updateNok() {
-    this.loading=true;
+    this.loading = true;
     this.customersSrvc.updateNok(this.model.nok.data).subscribe(data => {
-      this.loading=false;
+      this.loading = false;
       if (data.status) {
-        alert(data.message);
+        this.showSuccess(data.message);
       }
     });
   }
@@ -226,11 +269,11 @@ loading=false;
 
   // Update Phone number
   updatePhone() {
-    this.loading=true;
+    this.loading = true;
     this.customersSrvc.updatePhone(this.model.phone.data).subscribe(data => {
-      this.loading=false;
+      this.loading = false;
       if (data.status) {
-        alert(data.message);
+        this.showSuccess(data.message);
       }
     });
   }
@@ -259,7 +302,7 @@ loading=false;
   addDirector() {
     this.customersSrvc.addDirector(this.userId).subscribe(data => {
       if (data.status) {
-        alert("Directors Successfully Updated");
+        this.showSuccess("Directors Successfully Updated");
       }
     });
   }

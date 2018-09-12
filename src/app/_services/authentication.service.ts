@@ -59,8 +59,12 @@ export class AuthenticationService {
 
   changePassword(newpassword: string, confirmpassword: string, token: string) {
 
-    return this.http.post('https://dataupload.creditclan.com/api/v2/loan/changePassword',
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/loan/changePassword',
       JSON.stringify({ newpassword: newpassword, confirmpassword: confirmpassword, token: token }));
+  }
+  changeSecurityQuestion(model: any, token: any): Observable<any>  {
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/loan/changeSecurity',
+      JSON.stringify({ model: model, token: token }));
   }
   logout(): void {
     // clear token remove user from local storage to log user out
@@ -72,11 +76,11 @@ export class AuthenticationService {
   }
   forgot(email: any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/loan/forgot', JSON.stringify({ email: email }))
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/loan/forgot', JSON.stringify({ email: email }))
       .map((response: Response) => response.json());
   }
   login(email: string, password: string): Observable<boolean> {
-    return this.http.post('https://dataupload.creditclan.com/api/v2/loan/token', JSON.stringify({ email: email, password: password, grant_type: "password" }))
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/loan/token', JSON.stringify({ email: email, password: password, grant_type: "password" }))
       .map((response: Response) => {
         localStorage.removeItem('currentUser');
         // login successful if there's a jwt token in the response
@@ -114,7 +118,7 @@ export class AuthenticationService {
           localStorage.setItem('is_company_staff', is_company_staff);
           localStorage.setItem('company_id', company_id);
           localStorage.setItem('test_mode', test_mode);
-          
+
           localStorage.setItem('has_remita', has_remita);
           localStorage.setItem('decision_type', decision_type);
           const type_of_view = localStorage.getItem('type_of_view');
@@ -145,7 +149,7 @@ export class AuthenticationService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     let options = new RequestOptions({ headers: headers });
-    return this.http.post('https://dataupload.creditclan.com/api/v2/onboard', this.serializeParams(lender), options)
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/onboard', this.serializeParams(lender), options)
       .map((response: Response) => {
         localStorage.removeItem('currentUser');
         // login successful if there's a jwt token in the response
@@ -193,7 +197,7 @@ export class AuthenticationService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     const options = new RequestOptions({ headers: headers });
-    return this.http.post('https://dataupload.creditclan.com/api/v2/onboard', this.serializeParams(lender), options)
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/onboard', this.serializeParams(lender), options)
       .map((response: Response) => {
         localStorage.removeItem('currentUser');
         // login successful if there's a jwt token in the response

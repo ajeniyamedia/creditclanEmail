@@ -80,12 +80,14 @@
                                             <div *ngIf="!openForm" class="_profile_edit_toogle collapse in">
                                                 <div class="panel-body bio">
                                                     <div class="col-md-4">
-                                                        <div class="form-group row profile-nav " style="margin-bottom:0;">
-                                                            <div class="user-heading round" style="background:none;padding-top: 0px !important;">
+                                                        <div class="form-group row profile-nav text-center" style="margin-bottom:0;">
+                                                                <input #file style="display: none" (change)="onFilesAdded($event)" type="file" accept=".png,.jpg,.jpeg">
+                                                            <div class="user-heading round"  style="background:none;padding-top: 0px !important;">
                                                                 <a class="staff-education_add" style="cursor:pointer;">
                                                                     <img class="prev_img_1" src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507989748/{{model.dump.profile_photo == null ? 'avatar-mini.jpg' : model.dump.profile_photo}}">
                                                                 </a>
                                                             </div>
+                                                            <button  *ngIf="!external" style="margin-top:16px; margin-left:24px;" [disabled]="uploadingfile" class="btn btn-white" (click)="openUploadDialog()">{{btnText}}</button>
                                                         </div>
                                                     </div>
                                                     <div class="bio-d" style="overflow:hidden">
@@ -1641,7 +1643,7 @@
                         <div *ngIf="!external" class="col-md-3" style="padding:0px">
                             <div class="text-center" style="color: #fff; background: #718FC8;padding: 30px; margin-bottom: 5px">
                                 <div style=" margin-bottom: 10px;">
-                                    <img src="assets/images/time.PNG">
+                                    <img style="width:60% !important" src="assets/images/time.PNG">
                                 </div>
                                 <div style="margin-bottom: 25px">
                                     <p class="txt t_lh1" style="font-size: 14px">

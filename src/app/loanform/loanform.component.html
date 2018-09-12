@@ -342,15 +342,7 @@
                   <div class="clearfix"></div>
                 </div>
               </div>
-              <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;">
-                <!-- <div class="form-group">
-                  <span class="pull-left text-primary">
-                    <span *ngIf="loan_request?.IS_PEER_TO_PEER=='0'">Est.</span> Fees</span>
-                  <span class="pull-right" style="cursor:pointer" (click)="request_step='6'">
-                    {{loan_request?.LENDER_FEES | number:'.2-2'}}
-                  </span>
-                  <div class="clearfix"></div>
-                </div> -->
+              <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 10px;"> 
                 <div class="form-group">
                   <span class="pull-left text-primary">
                     <span *ngIf="loan_request?.IS_PEER_TO_PEER=='0'">Est.</span> Fees & Charges</span>
@@ -561,7 +553,7 @@
             <div *ngIf="request_step=='6'">
               <div style="margin-bottom:15px;border-bottom:1px solid #eee; overflow:auto">
                 <h3 class="pull-left">Review and modify terms</h3>
-                <a class="btn btn-xs btn-white pull-right" style="margin-right:15px;margin-top:20px" (click)="request_step='2'">Close</a>
+                <a class="btn btn-xs btn-white pull-right" style="margin-right:15px;margin-top:20px" (click)="request_step='2'; recalculateFees();">Close</a>
               </div>
               <!-- <app-loanfees [totalsecuritydeposit]="myForm.controls.TOTAL_SECURITY_DEPOSIT.value" [paidfeesandcharges]="paidfeesandcharges"
                 [fees]="fees" [charges]="charges" [allfeesqueue]="allfeesqueue" [allchargesqueue]="allchargesqueue" [loan]="loan"
@@ -572,7 +564,7 @@
                   </div>
                   <div class="col-md-7">
                       <div class="search_box" style="padding-top: 5px; padding-bottom: 5px">
-                          <select style="width: 85%;border: 0px;background: #fafafa;" name="FEE_TYPE" formControlName="FEE_TYPE">
+                          <select  style="width: 85%;border: 0px;background: #fafafa;" name="FEE_TYPE" formControlName="FEE_TYPE">
                               <option [value]="0">Upfront</option>
                               <option [value]="1">Capitalized</option>
                               <!-- <option [value]="2">Backend</option> -->

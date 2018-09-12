@@ -18,7 +18,7 @@ import {
 import {
   RouterModule,
   Routes
-} from '@angular/router'; 
+} from '@angular/router';
 // import {CalendarComponent} from 'angular2-fullcalendar/src/calendar/calendar';
 import { CalendarComponent } from 'ap-angular2-fullcalendar/src/calendar/calendar';
 
@@ -56,8 +56,8 @@ import { ScheduleComponent } from '../schedule/schedule.component';
 import { UserlocationComponent } from '../userlocation/userlocation.component';
 import { WalletdetailsComponent } from '../walletdetails/walletdetails.component';
 import { MyDatePickerModule } from 'mydatepicker';
-import { IonRangeSliderModule } from 'ng2-ion-range-slider'; 
-import { NguiDatetimePickerModule } from '@ngui/datetime-picker'; 
+import { IonRangeSliderModule } from 'ng2-ion-range-slider';
+import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 // import { TagInputModule } from 'ngx-chips';
 import { OrderModule } from 'ngx-order-pipe';
 
@@ -74,8 +74,8 @@ import { LoanformComponent } from '../loanform/loanform.component';
 import { MainNavigationComponent } from '../main-navigation/main-navigation.component';
 import { RatingComponent } from '../rating/rating.component';
 import { EmpsearchComponent } from '../operations/empsearch/empsearch.component';
-import { PaymentComponent } from '../payment/payment.component'; 
-import { UiSwitchModule } from '../../../node_modules/ngx-ui-switch'; 
+import { PaymentComponent } from '../payment/payment.component';
+import { UiSwitchModule } from '../../../node_modules/ngx-ui-switch';
 import { NewbankformComponent } from '../newbankform/newbankform.component';
 import { LoanchecklistComponent } from '../loanchecklist/loanchecklist.component';
 import { LoanmoreComponent } from '../loanmore/loanmore.component';
@@ -93,16 +93,16 @@ import { QueuecancelComponent } from '../operations/queuecancel/queuecancel.comp
 import { CustomeranalysisComponent } from '../customers/customeranalysis/customeranalysis.component';
 import { NewempformComponent } from '../newempform/newempform.component';
 import { RequestformComponent } from '../requestform/requestform.component';
-import { LoancustomerformComponent } from '../loancustomerform/loancustomerform.component'; 
+import { LoancustomerformComponent } from '../loancustomerform/loancustomerform.component';
 import { BulkpaymentComponent } from '../operations/bulkpayment/bulkpayment.component';
 import { AgefilterPipe } from '../_pipes/agefilter.pipe';
 import { MycurrencyPipe } from '../_pipes/mycurrency.pipe';
 import { NgxEditorModule } from 'ngx-editor';
-import { PercentageFundedPipe } from '../_pipes/percentage-funded.pipe'; 
+import { PercentageFundedPipe } from '../_pipes/percentage-funded.pipe';
 import { SelectModule } from 'ng2-select';
-import {BackendsettingsComponent} from '../backend/backendsettings/backendsettings.component';
-import {LevelformComponent} from '../backend/levelform/levelform.component';
-import {MobileComponent} from '../mobile/mobile/mobile.component';
+import { BackendsettingsComponent } from '../backend/backendsettings/backendsettings.component';
+import { LevelformComponent } from '../backend/levelform/levelform.component';
+import { MobileComponent } from '../mobile/mobile/mobile.component';
 import { WebUssdComponent } from '../web-ussd/web-ussd.component';
 import { GeneralformComponent } from '../operations/generalform/generalform.component';
 import { InterestformComponent } from '../operations/interestform/interestform.component';
@@ -129,74 +129,79 @@ import { ContractofferComponent } from './contractoffer/contractoffer.component'
 import { AllcustomersComponent } from './allcustomers/allcustomers.component';
 import { BankslistComponent } from './bankslist/bankslist.component';
 import { CompaniesComponent } from './companies/companies.component';
-import { NotificationsComponent } from './notifications/notifications.component'; 
+import { NotificationsComponent } from './notifications/notifications.component';
+import { TimelineComponent } from './timeline/timeline.component';
+import { UploadModule } from '../upload/upload.module';
+import { ChangepaymentComponent } from './changepayment/changepayment.component';
+import { ChangeloanofficerComponent } from './changeloanofficer/changeloanofficer.component';
 @NgModule({
   imports: [
     CommonModule, FormsModule, RouterModule, ReactiveFormsModule, MyDatePickerModule,
-    IonRangeSliderModule, MomentModule, UiSwitchModule,NgxEditorModule,
+    IonRangeSliderModule, MomentModule, UiSwitchModule, NgxEditorModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDo9iJ7vED5HmaBJQcqrpqcQlxEo2jlRqA'
     }),
-    OrderModule,NguiDatetimePickerModule
+    OrderModule, UploadModule, NguiDatetimePickerModule
   ],
   declarations: [
-    LimittoPipe, SafePipe, LoanStatusPipe, OfferstatusPipe, PeertopeerPipe, 
-    DateinvalidPipe,PercentageFundedPipe,AgefilterPipe,MycurrencyPipe,
-    FilterpipePipe, ImagenotfoundPipe, PayscheduleComponent,BackendsettingsComponent,LevelformComponent,MobileComponent,
+    LimittoPipe, SafePipe, LoanStatusPipe, OfferstatusPipe, PeertopeerPipe,
+    DateinvalidPipe, PercentageFundedPipe, AgefilterPipe, MycurrencyPipe,
+    FilterpipePipe, ImagenotfoundPipe, PayscheduleComponent, BackendsettingsComponent, LevelformComponent, MobileComponent,
     JournalapprovedPipe, MoneyPipe, MainNavigationComponent, LoanapprovalsComponent,
     LoanformComponent, LoanfeesComponent, LoanchargesComponent, LoanchecklistComponent, WebUssdComponent,
-    LoanguarantorsComponent,LoanpeertopeerComponent,NewempformComponent,
-    RequestformComponent,LoancustomerformComponent,
+    LoanguarantorsComponent, LoanpeertopeerComponent, NewempformComponent,
+    RequestformComponent, LoancustomerformComponent,
     CalendarComponent, UnauthorizedComponent,
     ViewguarantorComponent, LoananalysisComponent, LoanworkflowComponent,
     CalendarviewComponent, CalendardetailsComponent, LoanmoreComponent,
     RatingComponent, BorroweridComponent, BreakloanComponent, LoansummaryComponent, PaymentrollbackComponent,
     MakepaymentComponent, CustomersummaryComponent, ScheduleComponent, RepayComponent, LoanprofileComponent,
-    CustomerFinanceComponent, CustomerInvestmentsComponent, 
+    CustomerFinanceComponent, CustomerInvestmentsComponent,
     CustomerLoansComponent, LoancontractComponent, LoandocumentComponent,
-    ChangeproductComponent, LoanlogsComponent, LoancontractformComponent, 
+    ChangeproductComponent, LoanlogsComponent, LoancontractformComponent,
     UserlocationComponent, LoancontractformComponent, LoanlendersComponent,
     LoanStatusTextPipe, WalletdetailsComponent, EmpsearchComponent, LoanlocationComponent, LoanchequeComponent, LoanphotosComponent,
-    LoandocumentComponent, LoanacctsComponent, LoancollateralComponent, 
-    LoanlogsComponent, PaymentComponent, ApprovalviewComponent, NewbankformComponent,QueuecancelComponent,
+    LoandocumentComponent, LoanacctsComponent, LoancollateralComponent,
+    LoanlogsComponent, PaymentComponent, ApprovalviewComponent, NewbankformComponent, QueuecancelComponent,
     LoanchatComponent,
-    CustomeranalysisComponent,BulkpaymentComponent,CustomerUpdateComponent,LedgerComponent, GeneralformComponent,
+    CustomeranalysisComponent, BulkpaymentComponent, CustomerUpdateComponent, LedgerComponent, GeneralformComponent,
     InterestformComponent, LoanamountComponent, InterestratefloorComponent, OriginationfeeComponent, NewlevelformComponent,
     CustomerRemitaComponent, KycdetailsComponent, CustomerkycComponent, AdjustweightsComponent,
-    IncludedcompaniesComponent,LoanrepaymentComponent,DirectdebitComponent, CreditcheckComponent, 
-    DirectdebitinitiateComponent, DirectdebitstatusComponent, DirectdebitcancelComponent, 
-    StopmandateComponent, CreditcheckdetailsComponent, ContractofferComponent, AllcustomersComponent, BankslistComponent, CompaniesComponent, 
-    NotificationsComponent
+    IncludedcompaniesComponent, LoanrepaymentComponent, DirectdebitComponent, CreditcheckComponent,
+    DirectdebitinitiateComponent, DirectdebitstatusComponent, DirectdebitcancelComponent,
+    StopmandateComponent, CreditcheckdetailsComponent, ContractofferComponent, AllcustomersComponent, BankslistComponent, CompaniesComponent,
+    NotificationsComponent, TimelineComponent, ChangepaymentComponent,ChangepaymentComponent, ChangeloanofficerComponent
   ],
   exports: [
-    LimittoPipe, SafePipe, LoanStatusPipe, OfferstatusPipe, LoanStatusTextPipe, PeertopeerPipe,WebUssdComponent,
+    LimittoPipe, SafePipe, LoanStatusPipe, OfferstatusPipe, LoanStatusTextPipe, PeertopeerPipe, WebUssdComponent,
     FilterpipePipe, ImagenotfoundPipe, PayscheduleComponent, DateinvalidPipe, LoanworkflowComponent,
-    JournalapprovedPipe, RouterModule, IonRangeSliderModule,BackendsettingsComponent,LevelformComponent,MobileComponent,
+    JournalapprovedPipe, RouterModule, IonRangeSliderModule, BackendsettingsComponent, LevelformComponent, MobileComponent,
     MoneyPipe, FormsModule, MyDatePickerModule, LoananalysisComponent, LoanapprovalsComponent,
     RequestformComponent,
     MomentModule, ReactiveFormsModule, MainNavigationComponent, ViewguarantorComponent,
-    LoanformComponent, LoanfeesComponent, LoanchargesComponent, EmpsearchComponent,LoanchatComponent,
-    PaymentComponent,NgxEditorModule,
+    LoanformComponent, LoanfeesComponent, LoanchargesComponent, EmpsearchComponent, LoanchatComponent,
+    PaymentComponent, NgxEditorModule,
     UiSwitchModule, LoanguarantorsComponent, LoanlocationComponent, LoanchequeComponent, LoanphotosComponent,
-    LoandocumentComponent, LoanacctsComponent, LoancollateralComponent, LoanlogsComponent,NewempformComponent,
+    LoandocumentComponent, LoanacctsComponent, LoancollateralComponent, LoanlogsComponent, NewempformComponent,
     CalendarComponent, UnauthorizedComponent,
-    ApprovalviewComponent, NewbankformComponent,NguiDatetimePickerModule,
+    ApprovalviewComponent, NewbankformComponent,ChangepaymentComponent,
+    NguiDatetimePickerModule,
     CalendarviewComponent, LoanchecklistComponent, LoanmoreComponent,
-    CalendardetailsComponent, RatingComponent, BorroweridComponent, NewlevelformComponent, 
+    CalendardetailsComponent, RatingComponent, BorroweridComponent, NewlevelformComponent,
     BreakloanComponent, LoansummaryComponent, PaymentrollbackComponent,
     MakepaymentComponent, CustomersummaryComponent, ScheduleComponent, RepayComponent, LoanprofileComponent,
-    CustomerFinanceComponent, CustomerInvestmentsComponent, CustomerLoansComponent, 
+    CustomerFinanceComponent, CustomerInvestmentsComponent, CustomerLoansComponent,
     LoancontractComponent, LoandocumentComponent, WalletdetailsComponent,
-    ChangeproductComponent, LoanlogsComponent, LoancontractComponent, UserlocationComponent, 
+    ChangeproductComponent, LoanlogsComponent, LoancontractComponent, UserlocationComponent,
     LoancontractformComponent, LoanlendersComponent, OrderModule,
-    QueuecancelComponent,LoanpeertopeerComponent,KycdetailsComponent,IncludedcompaniesComponent,
-    CustomeranalysisComponent,BulkpaymentComponent,CustomerUpdateComponent,SelectModule,LedgerComponent,GeneralformComponent,
+    QueuecancelComponent, LoanpeertopeerComponent, KycdetailsComponent, IncludedcompaniesComponent,
+    CustomeranalysisComponent, BulkpaymentComponent, CustomerUpdateComponent, SelectModule, LedgerComponent, GeneralformComponent,
     InterestformComponent, LoanamountComponent, InterestratefloorComponent, OriginationfeeComponent,
-    CustomerRemitaComponent,LoanrepaymentComponent,BankslistComponent,
-    AdjustweightsComponent, DirectdebitComponent, CreditcheckComponent, 
-    DirectdebitinitiateComponent, DirectdebitstatusComponent, DirectdebitcancelComponent, 
-    StopmandateComponent,CreditcheckdetailsComponent,ContractofferComponent,AllcustomersComponent, CompaniesComponent,
-    NotificationsComponent
+    CustomerRemitaComponent, LoanrepaymentComponent, BankslistComponent,
+    AdjustweightsComponent, DirectdebitComponent, CreditcheckComponent,
+    DirectdebitinitiateComponent, DirectdebitstatusComponent, DirectdebitcancelComponent,
+    StopmandateComponent, CreditcheckdetailsComponent, ContractofferComponent, AllcustomersComponent, CompaniesComponent,
+    NotificationsComponent, ChangeloanofficerComponent
   ]
 })
 export class SharedModule {

@@ -90,7 +90,7 @@
           <li class="sub basic animated">
             <!-- Information preview side -->
             <div class="_profile_edit_toogle collapse in">
-              <div class="panel-body bio">
+              <div class="">
 
                 <div class="panel-body bio">
                   <div class="bio-d" style="overflow:hidden">
@@ -116,6 +116,19 @@
                     </div>
                   </div>
                 </div>
+                <table class="table table-striped">
+                  <thead>
+                    <th>Date</th>
+                    <th>Amount</th>
+                  </thead>
+                  <tbody>
+
+                    <tr *ngFor="let sal of remita_records?.SALARY_PAYMENT_DETAILS">
+                      <td>{{sal.paymentDate}}</td>
+                      <td>{{sal.amount|number:'.2-2'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 

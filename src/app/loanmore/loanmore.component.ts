@@ -96,4 +96,7 @@ export class LoanmoreComponent implements OnInit {
 	checkdirectdebitstatus(){
 		this.DataService.onOpenLoanChildModal.emit({ 'location': 'check_debit_mandate', data: this.loan });
 	}
+	assignLoanOfficer(){
+		this.DataService.onChangeLoanOfficer.emit({loan: this.loan});
+	}
 }

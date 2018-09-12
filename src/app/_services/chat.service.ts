@@ -6,8 +6,8 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ChatService {
 
-  private postsUrl = 'https://dataupload.creditclan.com/api/v2/chats/';
-  private replyUrl = 'https://dataupload.creditclan.com/api/v2/chats/reply';
+  private postsUrl = 'http://137.117.105.90/dataupload_test/api/v2/chats/';
+  private replyUrl = 'http://137.117.105.90/dataupload_test/api/v2/chats/reply';
   constructor(private http: Http, private loggingService: LoggingService) {
 
   }

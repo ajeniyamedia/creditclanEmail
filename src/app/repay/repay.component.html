@@ -42,7 +42,7 @@
                             <thead>
                                 <!-- <th>#</th> -->
                                 <th>Date</th>
-                                <th>Principal</th>
+                                <th>Prin. Outstanding</th>
                                 <th>Interest</th>
                                 <th>Repayment</th>
                                 <th>Paid</th>
@@ -71,7 +71,7 @@
                                             </button>
                                             <ul role="menu" class="dropdown-menu">
                                                 <li>
-                                                    <a (click)="initiateRecollection(repayment)">Push for recollection</a>
+                                                    <a (click)="initiateRecollection(repayment)">Push for Card Recollection</a>
                                                 </li>
                                                 <li *ngIf="loan?.USE_REMITA=='1'">
                                                     <a (click)="initiateStopRemitaCollection(repayment)">Stop Remita Collections</a>
@@ -91,7 +91,7 @@
                                 </tr>
                                 <tr>
                                     <td></td>
-                                                                     <td>{{getTotal('OUTSTANDING_PRINCIPAL',loan?.repayment?.schedule) | number:'.2-2'}}</td>
+                                                                     <td></td>
                                                                      <td>{{getTotal('INTEREST_REPAYMENT',loan?.repayment?.schedule) | number:'.2-2'}}</td>
                                                                      <td>{{getTotal('TERM_REPAYMENT',loan?.repayment?.schedule) | number:'.2-2'}}</td>
                                                                      <td>{{getTotal('HOW_MUCH_PAID',loan?.repayment?.schedule) | number:'.2-2'}}</td>

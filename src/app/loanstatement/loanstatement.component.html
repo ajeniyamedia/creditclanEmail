@@ -12,9 +12,12 @@
                     <span class="caret"></span>
                 </button>
                 <ul role="menu" class="dropdown-menu">
-                        <li>
-                                <a (click)="requestForCard()">Request For Card</a>
-                            </li>
+                    <li>
+                        <a (click)="changeDefaultRepayment()">Change Default Repayment</a>
+                    </li>
+                    <li>
+                        <a (click)="requestForCard()">Request For Card</a>
+                    </li>
                     <li>
                         <a (click)="sendAccountStatement()">Send Statement</a>
                     </li>
@@ -108,7 +111,8 @@
                 <td>
                     <div class="btn-group" *ngIf="type_of_entry=='4'">
 
-                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">
+                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button"
+                            aria-expanded="false">
                             <span class="caret"></span>
                         </button>
                         <ul role="menu" class="dropdown-menu">

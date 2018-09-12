@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy, Output, Input } from '@angular/core';
-import { DataService, OptionsserviceService, LoansService, StorageService } from '../_services/index'; 
+import { Component, OnInit, OnDestroy, Output, Input, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { DataService, OptionsserviceService, LoansService, StorageService } from '../_services/index';
 import { Loan } from '../_interfaces/loan.interface';
 import { Loan_ } from '../_models/loan_';
 import { ActivatedRoute } from '@angular/router';
@@ -21,13 +22,56 @@ export class LoanphotosComponent implements OnInit {
   file_field: any;
   loading = false;
   file_type = '2';
-  constructor(private DataService: DataService, public route: ActivatedRoute, public storageService: StorageService, public optionsService: OptionsserviceService, public loansService: LoansService) {
+  photoHasBeenUploaded = false;
+  fileHasBeenUploaded = false;
+  doc_types: any;
+  DOCTYPE: any;
+  @ViewChild('file') file;
+  filesUploaded = [];
+  public files: Set<File> = new Set();
+  uploadingfile = false;
+  constructor(private sanitizer: DomSanitizer,
+    private DataService: DataService,
+    public route: ActivatedRoute,
+    public storageService: StorageService,
+    public optionsService: OptionsserviceService,
+    public loansService: LoansService) {
 
   }
-
-
+  fileUploadeds(event) {
+    console.log(event)
+  }
+  sanitize(url: string) {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
+  }
   ngOnInit() {
     this.loadRecords()
+  }
+  uploadThePhoto(){
+    this.currentUser = this.storageService.read<any>('currentUser');
+    this.loading = true;
+    this.sub = this.route.parent.params.subscribe(params => {
+      this.parentRouteId = +params["id"];
+      this.loansService.uploadTheLoanPhoto(this.currentUser.token, this.parentRouteId, this.filesUploaded, this.DOCTYPE, this.description)
+        .subscribe(result => {
+          this.attachments = result.data.attachments;
+          this.doc_types = result.data.doctypes;
+          this.open('photo');
+        });
+    });
+  }
+  uploadTheFile(){
+    this.currentUser = this.storageService.read<any>('currentUser');
+    this.loading = true;
+    this.sub = this.route.parent.params.subscribe(params => {
+      this.parentRouteId = +params["id"];
+      this.loansService.uploadTheLoanPhoto(this.currentUser.token, this.parentRouteId, this.filesUploaded, this.DOCTYPE, this.description)
+        .subscribe(result => {
+          this.attachments = result.data.attachments;
+          this.doc_types = result.data.doctypes;
+          this.open('attach');
+        });
+    });
   }
   loadRecords() {
     this.currentUser = this.storageService.read<any>('currentUser');
@@ -35,12 +79,28 @@ export class LoanphotosComponent implements OnInit {
     this.sub = this.route.parent.params.subscribe(params => {
       this.parentRouteId = +params["id"];
       this.loansService.getLoanAttachments(this.currentUser.token, this.parentRouteId)
-        .subscribe(attachments => {
-          this.attachments = attachments.data
-
-
+        .subscribe(result => {
+          this.attachments = result.data.attachments;
+          this.doc_types = result.data.doctypes;
+         
         });
     });
+  }
+  onFilesAdded(event) {
+    this.uploadingfile = true;
+    let files = event.target.files;
+    this.loansService.doUpload(files[0])
+      .subscribe(result => {
+        this.uploadingfile = false;
+        if (result.status == true) {
+          this.photoHasBeenUploaded = true;
+          this.filesUploaded.push(result.result);
+        }
+
+      });
+  }
+  openUploadDialog() {
+    this.file.nativeElement.click();
   }
   uploadFile(event) {
     // let files = event.target.files;

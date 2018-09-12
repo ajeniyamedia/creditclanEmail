@@ -1,4 +1,18 @@
 <app-main-navigation></app-main-navigation>
-<router-outlet></router-outlet>
+<div *ngIf="loadingRouteConfig">
+    <img src="assets/images/process.svg" style="max-height: 50%;
+      max-width: 50%;
+      height: auto;
+      width: auto;
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      box-sizing: border-box;
+      margin: auto;"  *ngIf="loadingRouteConfig"/>
+</div>
+<router-outlet *ngIf="!loadingRouteConfig"></router-outlet> 
 
  

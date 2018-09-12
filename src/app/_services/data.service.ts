@@ -79,4 +79,9 @@ export class DataService {
   runOperationsTest: EventEmitter<any> = new EventEmitter();
   acceptBorrowerPayment: EventEmitter<any> = new EventEmitter();
   rejectBorrowerPayment: EventEmitter<any> = new EventEmitter();
+  loadingRoute: EventEmitter<any> = new EventEmitter();
+  onFileUploaded: EventEmitter<any> = new EventEmitter();
+  onreloadAccountsAndCards: EventEmitter<any> = new EventEmitter(); 
+  onChangeDefaultPayment: EventEmitter<any> = new EventEmitter(); 
+  onChangeLoanOfficer: EventEmitter<any> = new EventEmitter();
 }

@@ -181,7 +181,7 @@ export class CustomersService {
   }
   saveAllCountries(country: any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/options/saveAllCountries', {country:country})
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/options/saveAllCountries', {country:country})
       .map((response: Response) => response.json());
   }
   // Load customer referrals
@@ -211,6 +211,12 @@ export class CustomersService {
   getCustomerSettings(id, token): Observable<any> {
     let options = this.httpHelper.setOptions(new Headers());
     return this.http.post(this.api_base + 'customer/getCustomerSettings/', JSON.stringify({ token: token, id: id }))
+      .map(this.httpHelper.extractData)
+      .catch(this.httpHelper.handleError);
+  }
+  saveRequestLimit(token,value): Observable<any> {
+    let options = this.httpHelper.setOptions(new Headers());
+    return this.http.post(this.api_base + 'customer/saveRequestLimit/', JSON.stringify({ token: token, value: value }))
       .map(this.httpHelper.extractData)
       .catch(this.httpHelper.handleError);
   }
@@ -320,11 +326,31 @@ export class CustomersService {
       .map(this.httpHelper.extractData)
       .catch(this.httpHelper.handleError);
   }
-  saveCompanyInterest(company_interest:any){
+  saveCompanyInterest(company_interest:any,token:any){
     company_interest['token'] = this.currentUser.token;
     return this.http.post(this.api_base + 'company/save_company_interest/', JSON.stringify(company_interest))
       .map(this.httpHelper.extractData)
       .catch(this.httpHelper.handleError);
+  }
+  saveCompanyNotify(notify:any, token:any){ 
+    return this.http.post(this.api_base + 'company/save_company_notify/', {notify:notify, token:token})
+      .map(this.httpHelper.extractData)
+      .catch(this.httpHelper.handleError);
+  }
+  saveEnableApproval(notify:any, token:any){ 
+    return this.http.post(this.api_base + 'company/disableCompanyApprove/', {notify:notify, token:token})
+      .map(this.httpHelper.extractData)
+      .catch(this.httpHelper.handleError);
+  }
+  saveNewCompanyApproval(approve:any, token:any){
+    return this.http.post(this.api_base + 'company/addCompanyApproval/', {approve:approve, token:token})
+    .map(this.httpHelper.extractData)
+    .catch(this.httpHelper.handleError);
+  }
+  deleteCompanyApprovals(approval:any, token:any){
+    return this.http.post(this.api_base + 'company/deletepproval/', {approval:approval, token:token})
+    .map(this.httpHelper.extractData)
+    .catch(this.httpHelper.handleError);
   }
   updateCompanyPhone(company_phone:any) {
     company_phone['token'] = this.currentUser.token;
@@ -524,5 +550,9 @@ export class CustomersService {
       .catch(this.httpHelper.handleError);
   }
 
-
+  updateProfilePhoto(token:any, basicInfo:any, profile_photo:any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/customer/updateProfilePicture', JSON.stringify({ token: token, basicInfo: basicInfo, profile_photo: profile_photo }))
+      .map((response: Response) => response.json());
+  }
 }

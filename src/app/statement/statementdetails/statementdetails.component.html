@@ -17,6 +17,9 @@
                             <!-- New Menu -->
                             <section class="panel" style="background: transparent;">
                                 <ul class="xgv">
+                                        <li class="text-left black_c  left-border pink">
+                                                <a [routerLink]="['timeline']">Timeline</a>
+                                            </li>
                                     <li class="text-left black_c  left-border pink">
                                         <a [routerLink]="['schedule']">Schedule</a>
                                     </li>
@@ -133,7 +136,50 @@
     </div>
 </div>
 
+<div class="overlay_ app_overlay animated ln_mdl" style="overflow:hidden" *ngIf="childModal.location == 'check_debit_mandate'">
 
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="closeChildModal()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <div class=" overpanel-content animated bounceIn  container smaller" role="document" style="background:rgba(255, 255, 255, 0.95); height:100%; text-align:left;width:650px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden">
+
+        <div class="modl text-center">
+
+            <div>
+                <div class="modl_title" style="margin-bottom: 30px">
+                    <h2>
+                        <span class="text-success">Check Direct Debit Mandate Status</span>
+                        <br>
+                        <!-- <small class="modl_sub">A direct debit mandate will be setup on the customer's account</small> -->
+                    </h2>
+                </div>
+
+
+
+                <div>
+
+
+                    <div style="width: 200px; margin: 0 auto">
+                        <div style="margin-bottom: 30px">
+                            <button class="text-center txt t_l4 btn-block" [ngClass]="{'btn-danger': is_done=='0', 'btn-success': is_done=='1'}" style="padding-top: 12px; padding-bottom: 12px"
+                                (click)="sendForDirectDebitStatus()" [disabled]="loading||is_done=='1'">
+                                <strong *ngIf="is_done=='0'">Check Status</strong>
+                                <i class="fa fa-spinner fa-spin" *ngIf="loading && is_done=='0'"></i>
+                                <i class="fa fa-check" *ngIf="!loading && is_done=='1'"></i>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
 <!-- Fund Loan -->
 <div class="overlay_ app_overlay animated ln_mdl" style="overflow:hidden" *ngIf="childModal.location == 'send_account_statement'">
 
@@ -787,5 +833,16 @@
     </div>
     <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
         <app-stopmandate [repayment]="repayment" (modalClosed)="closeOverlay($event)"></app-stopmandate>
+    </div>
+</div>
+<div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="changingpayment">
+
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+        <app-changepayment [loan]="loan.loan" [currentUser]='currentUser'></app-changepayment>
     </div>
 </div>

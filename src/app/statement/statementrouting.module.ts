@@ -23,7 +23,10 @@ import { LoanpeertopeerComponent } from '../loanpeertopeer/loanpeertopeer.compon
 import { LoanlendersComponent } from '../loanlenders';
 import { DirectdebitComponent } from '../loan/directdebit/directdebit.component';
 
+import { ContractofferComponent } from '../shared/contractoffer/contractoffer.component';
 import { NotificationsComponent } from '../shared/notifications/notifications.component';
+import { CreditcheckComponent } from '../loan/creditcheck/creditcheck.component';
+import { TimelineComponent } from '../shared/timeline/timeline.component';
 const routes: Routes = [
   {
     path: '',component: StatementdetailsComponent, canActivate: [AuthGuard],
@@ -48,8 +51,11 @@ const routes: Routes = [
       { path: 'logs', component: LoanlogsComponent},
       { path: 'p2p', component: LoanpeertopeerComponent},
       { path: 'lenders', component: LoanlendersComponent},
+      { path: 'creditcheck', component: CreditcheckComponent},
       { path: 'directdebit', component: DirectdebitComponent},
-      { path: 'customer_repayment', component: NotificationsComponent}
+      { path: 'customer_repayment', component: NotificationsComponent},
+      { path: 'timeline', component: TimelineComponent},
+      { path: 'offer' , component: ContractofferComponent}
     ]
   },
 

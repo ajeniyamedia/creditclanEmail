@@ -15,7 +15,7 @@ declare var swal: any;
   encapsulation: ViewEncapsulation.None
 })
 export class StatementdetailsComponent implements OnInit {
-  record_type='3';
+  record_type = '3';
   notification: any;
   initiate_debit_instruction = false;
   initiate_debit_instruction_cancel = false;
@@ -116,7 +116,9 @@ export class StatementdetailsComponent implements OnInit {
   };
   result: any;
   has_remita = false;
-  PASSWORD='';
+  PASSWORD = '';
+  account_for_direct_debit: any;
+  changingpayment = false;
   constructor(public operationsService: OperationsService, public toastr: ToastrService,
     vcr: ViewContainerRef, private DataService: DataService,
     public router: Router, public route: ActivatedRoute,
@@ -130,6 +132,10 @@ export class StatementdetailsComponent implements OnInit {
     this.DataService.acceptBorrowerPayment.subscribe(res => {
       this.notification = res.notify;
       this.acceptingBorrowerPayment();
+    })
+    this.DataService.onChangeDefaultPayment.subscribe(res => {
+      this.loan = res.loan;
+      this.changingpayment = true;
     })
     this.DataService.rejectBorrowerPayment.subscribe(res => {
       this.notification = res.notify;
@@ -181,6 +187,10 @@ export class StatementdetailsComponent implements OnInit {
       this.is_done = '0'
       this.done = false;
       this.childModal = res;
+      if (res.location == 'check_debit_mandate') {
+
+        this.account_for_direct_debit = res.acc;
+      }
 
     })
     this.DataService.onMakePaymentFromStatement.subscribe(res => {
@@ -197,7 +207,7 @@ export class StatementdetailsComponent implements OnInit {
       this.loan = res.data.loan;
     })
   }
-  acceptingBorrowerPayment(){ 
+  acceptingBorrowerPayment() {
     this.loansService.confirmPayment(this.currentUser.token, this.notification)
       .subscribe(result => {
         this.viewing_loan = false;
@@ -236,7 +246,7 @@ export class StatementdetailsComponent implements OnInit {
     const sub = this.route.params.subscribe(params => {
       this.parentRouteId = +params['id'];
 
-      this.loansService.cancelCustomerNotification(this.currentUser.token, this.parentRouteId, this.notification,this.PASSWORD)
+      this.loansService.cancelCustomerNotification(this.currentUser.token, this.parentRouteId, this.notification, this.PASSWORD)
         .subscribe(data => {
           this.loading = false;
           if (data.status) {
@@ -263,6 +273,7 @@ export class StatementdetailsComponent implements OnInit {
     this.initiate_debit_instruction_cancel = false;
     this.stopdebitmandates = false;
     this.initiate_debit_instruction_status = false;
+    this.changingpayment = false;
   }
   checkLevel(sector, event, index) {
 
@@ -502,21 +513,25 @@ export class StatementdetailsComponent implements OnInit {
       this.loansService.getApprovalQueue(this.currentUser.token, this.parentRouteId)
         .subscribe(loans => {
 
+
+
           this.canDoApproval = loans.status;
           this.approvals_queue = loans.approvals_queue;
           this.level = loans.level;
           this.prev_levels = loans.prev_levels;
-          this.model_r.request_id = this.approvals_queue.REQUEST_ID;
-          this.model_r.level = this.approvals_queue.LEVEL_ID;
-          this.model_a.request_id = this.approvals_queue.REQUEST_ID;
-          this.model_a.level = this.approvals_queue.LEVEL_ID;
-          this.model_a.ilo = this.approvals_queue.ILO;
-          this.model_a.istd = this.approvals_queue.ISTD;
-          this.IS_PEER_TO_PEER = loans.IS_PEER_TO_PEER;
-          this.ADDED_TO_PAYMENT_QUEUE = loans.ADDED_TO_PAYMENT_QUEUE;
+          if (loans.queue == '1') {
+            this.model_r.request_id = this.approvals_queue.REQUEST_ID;
+            this.model_r.level = this.approvals_queue.LEVEL_ID;
+            this.model_a.request_id = this.approvals_queue.REQUEST_ID;
+            this.model_a.level = this.approvals_queue.LEVEL_ID;
+            this.model_a.ilo = this.approvals_queue.ILO;
+            this.model_a.istd = this.approvals_queue.ISTD;
+          }
+          this.IS_PEER_TO_PEER = loans.loan.IS_PEER_TO_PEER;
+          this.ADDED_TO_PAYMENT_QUEUE = loans.loan.ADDED_TO_PAYMENT_QUEUE;
           this.loan_approvals = loans.loan_approvals_count;
           this.queue_disbursement = loans.queue_disbursement;
-          this.loan = loans.loan
+          this.loan = loans.loan;
         });
     });
   }
@@ -654,6 +669,25 @@ export class StatementdetailsComponent implements OnInit {
                 }
               })
             }
+          }
+        });
+    });
+  }
+  sendForDirectDebitStatus() {
+    this.loading = true;
+    this.subb = this.route.params.subscribe(params => {
+      this.parentRouteId = +params['id'];
+
+      this.loansService.sendForDirectDebitStatus(this.currentUser.token, this.parentRouteId, this.account_for_direct_debit)
+        .subscribe(data => {
+          this.loading = false;
+
+          this.is_done = '1';
+
+          if (data.isActive == true) {
+            this.showSuccess('Mandate Is Active');
+          } else {
+            this.showError("Mandate is not active");
           }
         });
     });

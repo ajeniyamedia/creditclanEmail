@@ -28,6 +28,13 @@ export class CustomerAccountSettingsComponent implements OnInit {
     PEOPLE_CUSTOMERS_ID: '0',
     PEOPLE_RATING_ID: '0'
   }
+  public request_limit = {
+    MIN_REQUEST_AMOUNT: '0',
+    MAX_REQUEST_AMOUNT: '0',
+    MIN_REQUEST_DURATION: '0',
+    MAX_REQUEST_DURATION: '0',
+    PEOPLE_CUSTOMERS_ID: '0',
+  }
   cust = []; // Customer Information
   sub; // Instance of the route subscription
   userType; // Type of user
@@ -47,7 +54,7 @@ export class CustomerAccountSettingsComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.parent.params.subscribe(params => {
       this.userType = params["type"];
-      this.userId = params["id"];
+      this.userId = params["id"]; 
       console.log(this.userId)
       this.customersSrvc.getCustomerSettings(this.userId, this.currentUser.token).subscribe(data => {
 
@@ -64,6 +71,12 @@ export class CustomerAccountSettingsComponent implements OnInit {
         this.userexclude.PEOPLE_CUSTOMERS_ID = data.userexclude.PEOPLE_CUSTOMERS_ID;
         this.userexclude.EXCLUDE_FROM_ELIGIBILITY = data.userexclude.EXCLUDE_FROM_ELIGIBILITY;
 
+        this.request_limit.PEOPLE_CUSTOMERS_ID = data.request_limit.PEOPLE_CUSTOMERS_ID;
+        this.request_limit.MIN_REQUEST_AMOUNT = data.request_limit.MIN_REQUEST_AMOUNT;
+        this.request_limit.MAX_REQUEST_AMOUNT = data.request_limit.MAX_REQUEST_AMOUNT;
+        this.request_limit.MIN_REQUEST_DURATION = data.request_limit.MIN_REQUEST_DURATION; 
+        this.request_limit.MAX_REQUEST_DURATION = data.request_limit.MAX_REQUEST_DURATION;
+
       });
     });
   }
@@ -77,6 +90,18 @@ export class CustomerAccountSettingsComponent implements OnInit {
   saveUSSD(value, valid) {
     this.loading = true;
     this.customersSrvc.saveUSSD(this.currentUser.token, value)
+      .subscribe(data => {
+        this.loading = false;
+        if (data.status === '1') {
+          this.showSuccess(data.message)
+        } else {
+          this.showError(data.message)
+        }
+      });
+  }
+  saveRequestLimit(value, valid) {
+    this.loading = true;
+    this.customersSrvc.saveRequestLimit(this.currentUser.token, value)
       .subscribe(data => {
         this.loading = false;
         if (data.status === '1') {

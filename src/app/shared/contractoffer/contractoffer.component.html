@@ -57,14 +57,16 @@
               <input type="hidden" name="REQUEST_ID" [(ngModel)]="offer.REQUEST_ID">
               <app-ngx-editor [config]="editorConfig" name="OFFER_LETTER" [(ngModel)]="offer.OFFER_LETTER"></app-ngx-editor>
             </div>
-            <button type="submit" (click)="saveOL(ols.value, ols.valid)" [disabled]="loading" class="btn btn-white pull-right">
-              <span *ngIf="!loading">Submit</span>
+            <button style="margin-left:16px" type="submit" (click)="saveOL(ols.value, ols.valid)" [disabled]="loading" class="btn btn-white pull-right">
+              <span *ngIf="!loading">Update</span>
               <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
             </button>
-            <button type="button" (click)="sendingContract=!sendingContract" class="btn btn-white pull-right">
+            <button style="margin-left:16px" type="button" (click)="sendingContract=!sendingContract" class="btn btn-white pull-right">
               <span>Send Offer Letter</span>
-              <!-- <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> -->
             </button>
+            <button style="margin-left:16px" type="button" [disabled]="printing" (click)="printTheOfferLetter()" class="btn btn-white pull-right">
+                <span>Print Offer Letter <i class="fa fa-spinner fa-spin" *ngIf="printing"></i></span>
+              </button>
           </form>
         </div>
     </div>

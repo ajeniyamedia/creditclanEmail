@@ -1,137 +1,164 @@
 <div class="profile_area animated fadeIn">
 
-      <section class="panel contract_area hideable_area" style="margin-bottom: 10px">
+    <section class="panel contract_area hideable_area" style="margin-bottom: 10px">
         <header class="panel-heading">
-          <span class="tools pull-right">
-            <ul class="list-inline">
-                <li><a [routerLink]="['../contract']">Summary</a></li>
-                <li><a [routerLink]="['../repayments']">Schedule</a></li>
-                <li><a [routerLink]="['../more']">More</a></li>                    
-            </ul>
-          </span>
-          <span><a (click)="open('photo')" href="javascript:;">Photos</a> / <a (click)="open('attach')" href="javascript:;">Attachments</a></span>
+            <span class="tools pull-right">
+                <ul class="list-inline">
+                    <li><a [routerLink]="['../contract']">Summary</a></li>
+                    <li><a [routerLink]="['../repayments']">Schedule</a></li>
+                    <li><a [routerLink]="['../more']">More</a></li>
+                </ul>
+            </span>
+            <span><a (click)="open('photo')" href="javascript:;">Photos</a> / <a (click)="open('attach')" href="javascript:;">Attachments</a></span>
         </header>
-      </section>
+    </section>
 
-      <!-- Photots -->
-      <section class="panel" *ngIf="view == 'photo'">
-          <div class="panel" style="margin-bottom: -10px">
-              <p class="text-right" style="padding: 10px 20px">
-                  <a href="javascript:;" (click)="file_type='2';open('photo_form')">Add</a>
-              </p>
-          </div>
-          <div class="panel-body gal"  style="padding: 60px; padding-top: 0">
-              <div *ngFor="let attach of attachments">
-                    <a *ngIf="attach?.FILE_TYPE=='2'&&attach?.FILE_NAME!=''" class="pull-left" target="_blank" href="https://dataupload.creditclan.com/pub/attachments/{{attach?.FILE_NAME}}" >
-                        <img class="thumb" src="https://dataupload.creditclan.com/pub/attachments/{{attach?.FILE_NAME}}">
-                    </a>
-              </div>
-              
-          </div>
-      </section>
+    <!-- Photots -->
+    <section class="panel" *ngIf="view == 'photo'">
+        <div class="panel" style="margin-bottom: -10px">
+            <p class="text-right" style="padding: 10px 20px">
+                <a href="javascript:;" (click)="file_type='2';open('photo_form')">Add</a>
+            </p>
+        </div>
+        <div class="panel-body gal" style="padding: 60px; padding-top: 0">
+            <div *ngFor="let attach of attachments">
+                <a *ngIf="attach?.FILE_TYPE=='2'&&attach?.FILE_NAME!=''" class="pull-left" target="_blank" href="http://137.117.105.90/dataupload_test/pub/attachments/{{attach?.FILE_NAME}}">
+                    <img class="thumb" src="http://137.117.105.90/dataupload_test/pub/attachments/{{attach?.FILE_NAME}}">
+                </a>
+            </div>
 
-      <!-- Attachments -->
-      <section class="panel" *ngIf="view == 'attach'">
-          <div class="panel" style="margin-bottom: -10px">
-              <p class="text-right" style="padding: 10px 20px">
-                  <a href="javascript:;" (click)="file_type='1';open('attach_form')">Add</a>
-              </p>
-          </div>
-          <div class="panel-body" style="padding: 60px; padding-top: 0">
-              <div id="uploadedAttachment" class="artcles" style="max-width:350px;">
-                   
-                      
-                    
-                      <div *ngFor="let attach of attachments">
-                <div *ngIf="attach?.FILE_TYPE=='1'&&attach?.FILE_NAME!=''" class="media x-mod" style="border-bottom: 1px solid #d9d9d9;padding: 10px 0;">
-                    <a class="pull-left thumb">
-                        <img src="assets/images/file2.PNG">
-                    </a>
-                    <div class="media-body">
-                        <div class="pull-left">
-                            <a class="text-primary" style="float: none; font-size: 14px">{{attach?.COMMENTS}}</a>
-                            <small>Added : {{attach?.DATE_ADDED | amDateFormat:'LL'}}</small>
+        </div>
+    </section>
+
+    <!-- Attachments -->
+    <section class="panel" *ngIf="view == 'attach'">
+        <div class="panel" style="margin-bottom: -10px">
+            <p class="text-right" style="padding: 10px 20px">
+                <a href="javascript:;" (click)="file_type='1';open('attach_form')">Add</a>
+            </p>
+        </div>
+        <div class="panel-body" style="padding: 60px; padding-top: 0">
+            <div id="uploadedAttachment" class="artcles" style="max-width:350px;">
+
+
+
+                <div *ngFor="let attach of attachments">
+                    <div *ngIf="attach?.FILE_TYPE=='1'&&attach?.FILE_NAME!=''" class="media x-mod" style="border-bottom: 1px solid #d9d9d9;padding: 10px 0;">
+                        <a class="pull-left thumb">
+                            <img src="assets/images/file2.PNG">
+                        </a>
+                        <div class="media-body">
+                            <div class="pull-left">
+                                <a class="text-primary" style="float: none; font-size: 14px">{{attach?.COMMENTS}}</a>
+                                <small>Added : {{attach?.DATE_ADDED | amDateFormat:'LL'}}</small>
+                            </div>
+
+                            <div class="pull-right">
+                                <a target="_blank" href="http://137.117.105.90/dataupload_test/pub/attachments/{{attach?.FILE_NAME}}" class="btn-white" style="border:0">
+                                    <img src="assets/images/download.PNG">
+                                </a>
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-
-                        <div class="pull-right">
-                            <a target="_blank" href="https://dataupload.creditclan.com/pub/attachments/{{attach?.FILE_NAME}}" class="btn-white" style="border:0">
-                                <img src="assets/images/download.PNG">
-                            </a>                            
-                        </div>
-                        <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
-            </div>
-          </div>
-      </section>
+        </div>
+    </section>
 
-      <!-- Add photo Form -->
-      <section class="panel" *ngIf="view == 'photo_form'">
-          <div class="panel-body" style="padding: 30px">
-              <div class="row">
-                  <div class="col-md-6 sharp_form">
-                      <p class="text-right" style="padding: 5px 20px">
-                          <a href="javascript:;" (click)="open('photo')">Close</a>
-                      </p>
-                      <div>
-                            <div class="form-group">
-                                    <label class="control-label">Description</label>
-                                    <input type="text" name="description" [(ngModel)]="description" class="form-control">
-                                </div>
-                          <div class="form-group" *ngIf="description">
-                              <!-- <label class="control-label">Full Name</label> -->
-                              <!-- <p-fileUpload mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload> -->
-                              <input id="file" name="file" (change)="uploadFile($event)" type="file" accept=".png,.jpg,.jpeg,.txt,.doc,.docx,.xls,.xlsx">
-                              
-                          </div>
-                          
-
-                          <button class="btn btn-pink btn-block edged_box"  [disabled]="description==''||loading"><span *ngIf="!loading">Upload Attachment</span><i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
-                      </div>
-                  </div>
-                  <div class="col-md-6">
-                      <div class="text-right">
-                          <img src="assets/images/profile3.PNG" style="width: 75px">
-                          <p class="t_l3 t_cool"><strong>Photos</strong></p>
-                      </div>
-                  </div>
-              </div>  
-          </div>    
-      </section>
-
-      <!-- Add guarantor Form -->
-      <section class="panel" *ngIf="view == 'attach_form'">
-          <div class="panel-body" style="padding: 30px">
-              <div class="row">
-                  <div class="col-md-6 sharp_form">
-                      <p class="text-right" style="padding: 5px 20px">
-                          <a href="javascript:;" (click)="open('attach')">Close</a>
-                      </p>
-                      <div>
+    <!-- Add photo Form -->
+    <section class="panel" *ngIf="view == 'photo_form'">
+        <div class="panel-body" style="padding: 30px">
+            <div class="row">
+                <div class="col-md-6 sharp_form">
+                    <p class="text-right" style="padding: 5px 20px">
+                        <a href="javascript:;" (click)="open('photo')">Close</a>
+                    </p>
+                    <div>
+                        <div class="form-group">
+                            <label class="control-label">Document Type</label>
+                            <select class="form-control" name="DOCTYPE" [(ngModel)]="DOCTYPE">
+                                <option *ngFor="let doc of doc_types" [ngValue]="doc">{{doc?.display}}</option>
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label class="control-label">Description</label>
                             <input type="text" name="description" [(ngModel)]="description" class="form-control">
                         </div>
-                        <div class="form-group" *ngIf="description">
-                            <!-- <label class="control-label">Full Name</label> -->
-                            <!-- <p-fileUpload mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload> -->
-                            <input id="file" name="file" (change)="uploadFile($event)" type="file" accept=".txt,.doc,.docx,.xls,.xlsx">
-                            
+                        <div class="form-group" *ngIf="photoHasBeenUploaded">
+                            <ul>
+                                <li *ngFor="let d of filesUploaded">{{d}}</li>
+                            </ul>
                         </div>
-                        
-                          
-                        <button class="btn btn-pink btn-block edged_box"  [disabled]="description_==''||loading"><span *ngIf="!loading">Upload Attachment</span><i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                        <div class="form-group">
+                            <!-- <input type="file" #file style="display: none" (change)="onFilesAdded()" multiple /> -->
+                            <input #file style="display: none" (change)="onFilesAdded($event)" type="file" accept=".png,.jpg,.jpeg,.txt,.doc,.docx,.xls,.xlsx">
+                            <button class="btn btn-whitebtn-block" [disabled]="uploadingfile||loading" (click)="openUploadDialog()">Add
+                                Files <i class="fa fa-spinner fa-spin" *ngIf="uploadingfile"></i></button>
+                        </div>
+
+
+                        <button class="btn btn-pink btn-block edged_box" (click)="uploadThePhoto()" [disabled]="description==''||loading||uploadingfile"><span
+                                *ngIf="!loading">Upload Document
+                            </span><i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                      <div class="text-right">
-                          <img src="assets/images/file2.PNG" style="width: 75px">
-                          <p class="t_l3 t_cool"><strong>Attachments</strong></p>
-                      </div>
-                  </div>
-              </div>  
-          </div>    
-      </section>
+                    <!-- <app-upload (fileUploaded)="fileUploadeds($event)" *ngIf="!photoHasBeenUploaded"></app-upload> -->
+                </div>
+                <div class="col-md-6">
+                    <div class="text-right">
+                        <img src="assets/images/profile3.PNG" style="width: 75px">
+                        <p class="t_l3 t_cool"><strong>Photos</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add guarantor Form -->
+    <section class="panel" *ngIf="view == 'attach_form'">
+        <div class="panel-body" style="padding: 30px">
+            <div class="row">
+                <div class="col-md-6 sharp_form">
+                    <p class="text-right" style="padding: 5px 20px">
+                        <a href="javascript:;" (click)="open('attach')">Close</a>
+                    </p>
+                    <div>
+                        <div class="form-group">
+                            <label class="control-label">Document Type</label>
+                            <select class="form-control" name="DOCTYPE" [(ngModel)]="DOCTYPE">
+                                <option *ngFor="let doc of doc_types" [ngValue]="doc">{{doc?.display}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Description</label>
+                            <input type="text" name="description" [(ngModel)]="description" class="form-control">
+                        </div>
+                        <div class="form-group" *ngIf="photoHasBeenUploaded">
+                            <ul>
+                                <li *ngFor="let d of filesUploaded">{{d}}</li>
+                            </ul>
+                        </div>
+                        <div class="form-group">
+                            <!-- <input type="file" #file style="display: none" (change)="onFilesAdded()" multiple /> -->
+                            <input #file style="display: none" (change)="onFilesAdded($event)" type="file" accept=".png,.jpg,.jpeg,.txt,.doc,.docx,.xls,.xlsx">
+                            <button class="btn btn-whitebtn-block" [disabled]="uploadingfile||loading" (click)="openUploadDialog()">Add
+                                Files <i class="fa fa-spinner fa-spin" *ngIf="uploadingfile"></i></button>
+                        </div>
+
+
+                        <button class="btn btn-pink btn-block edged_box" (click)="uploadTheFile()" [disabled]="description==''||loading||uploadingfile"><span
+                                *ngIf="!loading">Upload Document
+                            </span><i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-right">
+                        <img src="assets/images/file2.PNG" style="width: 75px">
+                        <p class="t_l3 t_cool"><strong>Attachments</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 </div>

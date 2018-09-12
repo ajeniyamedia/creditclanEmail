@@ -22,7 +22,8 @@ export class RemitaanalyticsComponent implements OnInit {
     'SERVICE_ID':'',
     'SERVICE_NAME':'',
     'ENCRYPTION_KEY':'',
-    'ENCRYPTION_VECTOR':''
+    'ENCRYPTION_VECTOR':'',
+    'DIRECT_DEBIT_MERCHANT_ID':''
   }
   remita_analytics = {
     excluded_companies: '0',
@@ -55,6 +56,7 @@ export class RemitaanalyticsComponent implements OnInit {
         this.remitaconnection.SERVICE_NAME = data.data.SERVICE_NAME;
         this.remitaconnection.ENCRYPTION_KEY = data.data.ENCRYPTION_KEY;
         this.remitaconnection.ENCRYPTION_VECTOR = data.data.ENCRYPTION_VECTOR;
+        this.remitaconnection.DIRECT_DEBIT_MERCHANT_ID = data.data.DIRECT_DEBIT_MERCHANT_ID;
         this.remita_analytics = {
           excluded_companies: data.analytics.excluded_companies,
           company_exists: data.analytics.company_exists,

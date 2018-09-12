@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ApprovalsService {
 
-  private postsUrl = 'https://dataupload.creditclan.com/api/v2/operations/getApprovals';
+  private postsUrl = 'http://137.117.105.90/dataupload_test/api/v2/operations/getApprovals';
   constructor(private http: HttpClient, private loggingService: LoggingService) {
 
   }

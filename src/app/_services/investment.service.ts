@@ -15,7 +15,7 @@ export class InvestmentService {
   }
   getInvestments(token: string, customer_id: number): Observable<Investment[]> {
     // get customer investments from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/investment/getInvestments', JSON.stringify({ token: token, customer_id: customer_id }))
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/investment/getInvestments', JSON.stringify({ token: token, customer_id: customer_id }))
       .map((response: Response) => response.json());
   }
 }

@@ -28,7 +28,9 @@ export class ContractofferComponent implements OnInit {
     'REQUEST_ID': '',
     'TIME_TO_SEND': ''
   };
-  contractSending=false;
+
+  printing = false;
+  contractSending = false;
   sendingContract = false;
   constructor(public toastr: ToastrService, public route: ActivatedRoute, public storageService: StorageService,
     public optionsService: OptionsserviceService, public loansService: LoansService,
@@ -60,7 +62,7 @@ export class ContractofferComponent implements OnInit {
   }
   sendContract(value, valid) {
     this.loading = true;
-    this.loansService.sendContract(this.currentUser.token, value,this.offer)
+    this.loansService.sendContract(this.currentUser.token, value, this.offer)
       .subscribe(data => {
         this.loading = false;
         this.showSuccess(data.message);
@@ -74,5 +76,18 @@ export class ContractofferComponent implements OnInit {
         this.showSuccess(data.message);
       });
   }
+  printTheOfferLetter() {
+    this.printing = true;
+    this.currentUser = this.storageService.read<any>('currentUser');
 
+    this.sub = this.route.parent.params.subscribe(params => {
+
+      this.parentRouteId = +params["id"];
+      this.loansService.printTheOfferLetter(this.currentUser.token, this.parentRouteId, this.offer)
+        .subscribe(data => {
+          this.printing = false;
+          window.open(data.link);
+        });
+    });
+  }
 }

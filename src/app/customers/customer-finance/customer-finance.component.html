@@ -492,7 +492,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" *ngIf="model.work.data['OCCUPATION_ID']=='1'||model.work.data['OCCUPATION_ID']=='2'||model.work.data['OCCUPATION_ID']=='4'||model.work.data['OCCUPATION_ID']=='5'">
                                 <div class="col-md-6">
                                     <div class="form-group not_for_un not_for_ret row company ">
                                         <div class="col-md-12">
@@ -522,7 +522,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group not_for_un not_for_ret row institution  hide">
+                            <div class="form-group not_for_un not_for_ret row institution" *ngIf="model.work.data['OCCUPATION_ID']=='3'">
                                 <div class="col-md-12">
                                     <label class="control-label" style="padding:0;">
                                         I school in
@@ -533,7 +533,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group not_for_un for_ret row company ">
+                            <div class="form-group not_for_un for_ret row company " *ngIf="model.work.data['OCCUPATION_ID']=='1'||model.work.data['OCCUPATION_ID']=='2'||model.work.data['OCCUPATION_ID']=='4'||model.work.data['OCCUPATION_ID']=='5'">
                                 <div class="col-md-12">
                                     <label class="control-label" style="padding:0;">
                                         Company
@@ -542,7 +542,16 @@
                                         style="">
                                 </div>
                             </div>
-                            <div class="form-group not_for_un not_for_ret row institution hide">
+                            <div class="form-group not_for_un for_ret row company " *ngIf="model.work.data['OCCUPATION_ID']=='1'||model.work.data['OCCUPATION_ID']=='2'||model.work.data['OCCUPATION_ID']=='4'||model.work.data['OCCUPATION_ID']=='5'">
+                                <div class="col-md-12">
+                                    <label class="control-label" style="padding:0;">
+                                        Work Email
+                                    </label>
+                                    <input type="text" name="WORK_EMAIL" id="WORK_EMAIL" class="form-control " [(ngModel)]="model.work.data['WORK_EMAIL']"
+                                        style="">
+                                </div>
+                            </div>
+                            <div class="form-group not_for_un not_for_ret row institution" *ngIf="model.work.data['OCCUPATION_ID']=='3'">
                                 <div class="col-md-12">
                                     <label class="control-label" style="padding:0;">
                                         Institution Name
@@ -551,13 +560,13 @@
                                         style="">
                                 </div>
                             </div>
-                            <div class="form-group company institution row not_for_un for_ret ">
+                            <div class="form-group company institution row not_for_un for_ret " *ngIf="model.work.data['OCCUPATION_ID']=='3'||model.work.data['OCCUPATION_ID']=='1'||model.work.data['OCCUPATION_ID']=='2'||model.work.data['OCCUPATION_ID']=='4'||model.work.data['OCCUPATION_ID']=='5'">
                                 <input type="hidden" name="ADDRESS_ID" id="ADDRESS_ID" value="">
                                 <div class="col-md-6">
                                     <label class="control-label" style="padding:0;">
                                         Country
                                     </label>
-                                    <select id="COUNTRY_ID_" name="COUNTRY_ID_" class="form-control" [(ngModel)]="model.work.data['COUNTRY_ID_']">
+                                    <select id="COUNTRY_ID_" name="COUNTRY_ID_" class="form-control" [(ngModel)]="model.work.data['WORK_COUNTRY_ID']">
                                         <option value="0"></option>
                                         <option *ngFor="let country of model.dump.countries" [value]="country['COUNTRY_ID']"> {{country["COUNTRY_NAME"]}}
                                         </option>
@@ -567,7 +576,7 @@
                                     <label class="control-label" style="padding:0;">
                                         State
                                     </label>
-                                    <select id="STATE_ID_" name="STATE_ID_" class="form-control" [(ngModel)]="model.work.data['STATE_ID_']">
+                                    <select id="STATE_ID_" name="STATE_ID_" class="form-control" [(ngModel)]="model.work.data['WORK_STATE_ID']">
                                         <option value="">Select an option</option>
                                         <option value="1">Abia </option>
                                         <option value="2">Adamawa </option>
@@ -609,7 +618,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group company institution row not_for_un for_ret  ">
+                            <div class="form-group company institution row not_for_un for_ret  "  *ngIf="model.work.data['OCCUPATION_ID']=='3'||model.work.data['OCCUPATION_ID']=='1'||model.work.data['OCCUPATION_ID']=='2'||model.work.data['OCCUPATION_ID']=='4'||model.work.data['OCCUPATION_ID']=='5'">
                                 <div class="col-md-12">
                                     <label class="control-label" style="padding:0;">
                                         Address
@@ -618,7 +627,7 @@
                                     <textarea id="ADDRESS_" name="ADDRESS_" class="form-control" [(ngModel)]="model.work.data['ADDRESS_']">{{model.work.data['ADDRESS_']}}</textarea>
                                 </div>
                             </div>
-                            <div class="not_for_un form-group row for_ret  hide">
+                            <div class="not_for_un form-group row for_ret" *ngIf="model.work.data['OCCUPATION_ID']=='20'">
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -642,20 +651,20 @@
                                     <input type="text" class="form-control" id="YEARS_OF_SERVICE" [(ngModel)]="model.work.data['YEARS_OF_SERVICE']">
                                 </div>
                             </div>
-                            <div class="not_for_un form-group institution income row not_for_ret  ">
+                            <div class="not_for_un form-group institution income row not_for_ret  "  *ngIf="model.work.data['OCCUPATION_ID']=='3'||model.work.data['OCCUPATION_ID']=='1'||model.work.data['OCCUPATION_ID']=='2'||model.work.data['OCCUPATION_ID']=='4'||model.work.data['OCCUPATION_ID']=='5'">
                                 <div class="col-md-6">
-                                    <label for="" class="control-label">Start Year</label>
+                                    <label for="" class="control-label">Start Month</label>
                                     <select id="WORK_START_DATE" name="WORK_START_DATE" class="form-control" [(ngModel)]="model.work.data['WORK_START_DATE']">
                                         <option value=""></option>
-                                        <!-- <option *ngFor="let month of months" [value]="month.value">{{month.display}}</option> -->
-                                        <option *ngFor="let year of model.dump.years" [value]="year">{{year}}</option>
+                                        <option *ngFor="let month of months" [value]="month.value">{{month.display}}</option>
+                                        <!-- <option *ngFor="let year of model.dump.years" [value]="year">{{year}}</option> -->
                                     </select>
                                 </div>
                                 <div class="col-md-6 ">
                                     <label for="" class="control-label">End Year</label>
                                     <select id="WORK_END_DATE" name="WORK_END_DATE" class="form-control" [(ngModel)]="model.work.data['WORK_END_DATE']">
                                         <option value="0">Actives</option>
-                                        <option *ngFor="let year of model.dump.years" [value]="year">{{year}}</option>
+                                        <option *ngFor="let year of model.dump.wyears" [value]="year">{{year}}</option>
                                     </select>
                                 </div>
                             </div>

@@ -85,7 +85,7 @@ export class RepayComponent implements OnInit {
         total = schedule.reduce(function (cnt, o) { return cnt + parseInt(o.HOW_MUCH_PAID); }, 0);
       }
       if (key === "HOW_MUCH_REMAINING") {
-        total = schedule.reduce(function (cnt, o) { return cnt + parseInt(o.HOW_MUCH_REMAINING) + parseInt(o.TOTAL_FINES_SO_FAR); }, 0);
+        total = schedule.reduce(function (cnt, o) { return cnt + parseInt(o.HOW_MUCH_REMAINING) }, 0);
       }
       if (key === "INTEREST_REPAYMENT") {
         total = schedule.reduce(function (cnt, o) { return cnt + parseInt(o.INTEREST_REPAYMENT); }, 0);

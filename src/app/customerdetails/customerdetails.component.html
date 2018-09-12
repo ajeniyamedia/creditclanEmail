@@ -22,7 +22,7 @@
                     <strong>Home</strong>
                 </p>
             </div>
-            
+
             <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/','corporate',userId]">Back</a>
         </div>
 
@@ -41,7 +41,8 @@
                 <p class="txt t_l2 t_lh1 t_hot">N{{section?.ledger?.cu}}</p>
                 <p class="txt t_dull">Wallet Balance</p>
             </div>
-            <a *ngIf="enable_peer=='1'" class="btn btn-white btn-full egded-box" style="display: inline" [routerLink]="['/customer/',userType,userId,'wallet']">View History</a>
+            <a *ngIf="enable_peer=='1'" class="btn btn-white btn-full egded-box" style="display: inline" [routerLink]="['/customer/',userType,userId,'wallet']">View
+                History</a>
         </div>
         <div class="panel-body text-center b_grey crd_theme_o" *ngIf="section.location == 'referrals'">
             <div class="text-center crd_top" style="margin-bottom:6px;">
@@ -49,7 +50,7 @@
                 <p class="txt t_dull">Referral Balance</p>
                 <a class="btn btn-primary btn-sm text-center">Pay</a>
             </div>
-            
+
             <a class="btn btn-white btn-full egded-box" style="display: inline" (click)="overlayOpen = true">View Statement</a>
         </div>
         <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'loans'">
@@ -184,24 +185,24 @@
         </div>
         <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'guarantors'">
             <div class="text-center" style="padding: 15px 0px; margin-top: 20px; margin-bottom: 25px;">
-              <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data}}</p>
-              <p class="txt"><strong>Guarantors</strong></p>
+                <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data}}</p>
+                <p class="txt"><strong>Guarantors</strong></p>
             </div>
             <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
         </div>
 
         <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'photos'">
             <div class="text-center" style="padding: 15px 0px; margin-top: 20px; margin-bottom: 25px;">
-              <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data}}</p>
-              <p class="txt"><strong>Photos</strong></p>
+                <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data}}</p>
+                <p class="txt"><strong>Photos</strong></p>
             </div>
             <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
         </div>
 
         <div class="panel-body text-center b_grey crd_theme" *ngIf="section.location == 'attachment'">
             <div class="text-center" style="padding: 15px 0px; margin-top: 20px; margin-bottom: 25px;">
-              <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data}}</p>
-              <p class="txt"><strong>Attachments</strong></p>
+                <p class="txt t_l1 t_lh1" style="font-size: 75px;">{{section.data}}</p>
+                <p class="txt"><strong>Attachments</strong></p>
             </div>
             <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline" [routerLink]="['/customer/',userType,userId]">Back</a>
         </div>
@@ -212,7 +213,7 @@
                     <li>
                         <a [routerLink]="['/customer/','corporate',userId,'upload']" class="txt_l4">Upload</a>
                     </li>
-                  
+
                 </ul>
             </div>
         </section>
@@ -222,9 +223,12 @@
         <section class="panel" style="border: 1px solid #E6E7E8" *ngIf="userType=='individual'">
             <div class="panel-body" style="padding: 10px 25px">
                 <ul class="list list_border">
-                        <li>
-                                <a [routerLink]="['/customer/',userType,userId,'kyc']" class="txt_l4">KYC</a>
-                            </li>
+                    <!-- <li>
+                        <a [routerLink]="['/customer/',userType,userId,'creditcheck']" class="txt_l4">Credit Check</a>
+                    </li> -->
+                    <li>
+                        <a [routerLink]="['/customer/',userType,userId,'kyc']" class="txt_l4">KYC</a>
+                    </li>
                     <li>
                         <a [routerLink]="['/customer/',userType,userId,'financials']" class="txt_l4">Financials</a>
                     </li>
@@ -264,7 +268,7 @@
     </div>
     <div class=" overpanel-content container" role="document" style="text-align:left;width:1000px;min-height:500px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
         <!-- <app-payment [record_type]="record_type" [schedule_type]="schedule_type" [disburse]="disburse" [security_question]="state?.security_question.QUESTION"></app-payment> -->
-        <app-referral-statement  [customer_id]="userId"></app-referral-statement>
+        <app-referral-statement [customer_id]="userId"></app-referral-statement>
     </div>
 </div>
 <!-- Request To Get Paid -->
@@ -333,7 +337,7 @@
                 <h2>
                     <span class="text-success">Resend Welcome Email</span>
                     <br>
-                     
+
 
                 </h2>
             </div>

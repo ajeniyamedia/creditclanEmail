@@ -35,8 +35,12 @@ export class LoanacctsComponent implements OnInit {
     public storageService: StorageService,
     public optionsService: OptionsserviceService,
     public loansService: LoansService,
-    public operationsService: OperationsService) {
+    public operationsService: OperationsService,
+    public dataService: DataService) {
     this.currentUser = this.storageService.read<any>('currentUser');
+    this.dataService.onreloadAccountsAndCards.subscribe(res=>{
+      this.loanAnalysis();
+    })
   }
   ngOnInit() {
     this.loanAnalysis();
@@ -117,7 +121,7 @@ export class LoanacctsComponent implements OnInit {
   }
   setAsConnectedAccount(loan_id, account_card_id) {
     this.loading = true;
-    this.operationsService.setAsConnectedCard(this.currentUser.token, account_card_id, loan_id)
+    this.operationsService.setAsConnectedAccount(this.currentUser.token, account_card_id, loan_id)
       .subscribe(status => {
         this.loading = false;
         this.loanAnalysis();
@@ -128,6 +132,9 @@ export class LoanacctsComponent implements OnInit {
   }
   checkdirectdebitstatus(loan, acc) {
     this.DataService.onOpenLoanChildModal.emit({ 'location': 'check_debit_mandate', loan: loan, acc: acc });
+  }
+  cancelDirectDebit(loan, acc) {
+    this.DataService.onOpenLoanChildModal.emit({ 'location': 'cancel_debit_mandate', loan: loan, acc: acc });
   }
   stopdirectdebitmandate(loan, acc) {
     this.DataService.onOpenLoanChildModal.emit({ 'location': 'stop_direct_debit', loan: loan, acc: acc });

@@ -1,1 +1,2 @@
 ﻿export * from './loandetails.component';
+ 

@@ -5,10 +5,10 @@ export class ConstantsService {
 
   public obj = {
     // api_base : 'http://app.creditclan.com/creditclan_demo/p2p_admin/',
-    api_base: 'https://dataupload.creditclan.com/api/v2/',
-    api_creditclan: 'https://dataupload.creditclan.com/',
+    api_base: 'http://137.117.105.90/dataupload_test/api/v2/',
+    api_creditclan: ' http://137.117.105.90/dataupload_test/',
     img_base: 'http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507989748/',
-    attachments: 'https://dataupload.creditclan.com/pub/attachments/'
+    attachments: ' http://137.117.105.90/dataupload_test/pub/attachments/'
   };
 
   constructor() { }

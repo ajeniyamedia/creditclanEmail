@@ -49,10 +49,10 @@ export class WalletComponent implements OnInit {
     this.getLenderBanks();
     this.loading = true;
     
-    this.operationsService.refreshData(this.currentUser.token).subscribe(data => {
-      this.loading = false;
-      this.dashboarddata = data
-    });
+    // this.operationsService.refreshData(this.currentUser.token).subscribe(data => {
+    //   this.loading = false;
+    //   this.dashboarddata = data
+    // });
   }
   getLenderBanks(){
     this.operationsService.getBanks_(this.currentUser.token)
@@ -144,10 +144,10 @@ export class WalletComponent implements OnInit {
   getRecords() {
     this.operationsService.getWalletSummary(this.currentUser.token)
       .subscribe(data => {
+        this.loading = false;
         this.state = data.data;
         this.account_details = data.account_details;
         this.ledger = data.data;
-        //this.calculateTotal(data.chart_account_transactions, data.contra_charts_size)
       });
   }
   back() {

@@ -1,8 +1,8 @@
-import { Component, OnInit,ViewContainerRef, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, ViewEncapsulation, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CustomersService } from '../../_services/customers.service';
 import { ConstantsService } from '../../_services/constants.service';
-import { DataService } from '../../_services/index';
+import { DataService, StorageService } from '../../_services/index';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 @Component({
@@ -12,70 +12,89 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class InterestComponent implements OnInit {
   days = new Array(31)
-  loading=false;
-  enable_peer='0'
-  customers:any;
+  loading = false;
+  deleting = false;
+  enable_peer = '0'
+  customers: any;
   openedTab: any;
-  sub:any;
+  sub: any;
   mainSection = true;
-  showEmptyState=false;
-  count='0';
-  interest_duration="Per Month";
+  showEmptyState = false;
+  count = '0';
+  interest_duration = "Per Month";
+  currentUser: any
   constructor(public route: ActivatedRoute,
     protected customersSrvc: CustomersService,
     protected constants: ConstantsService,
-    public DataService: DataService, public router: Router,public toastr: ToastrService, vcr: ViewContainerRef, ) {
-     
+    public DataService: DataService, public router: Router,
+    public toastr: ToastrService, vcr: ViewContainerRef,
+    public storageService: StorageService) {
+    this.currentUser = this.storageService.read<any>('currentUser');
   }
   company_interest = {
-    PEOPLE_CUSTOMERS_ID:'',
-    REQUEST_RATE:'6',
-    REQUEST_RATE_PERIOD_ID:'2',
-    INTEREST_RATE_TYPE_ID:'1',
-    REPAYMENT_TYPE_ID:'1',
-    INSTALLMENT_FREQUENCY:'2',
-    RP_SET_TYPE:'1',
-    MONTHLY_PERIOD:'1',
-    LOAN_INTEREST_TYPE:'',
-    REPAYMENT_DAY:'',
-    COMPANY_DISBURSEMENT:0
+    PEOPLE_CUSTOMERS_ID: '',
+    REQUEST_RATE: '6',
+    REQUEST_RATE_PERIOD_ID: '2',
+    INTEREST_RATE_TYPE_ID: '1',
+    REPAYMENT_TYPE_ID: '1',
+    INSTALLMENT_FREQUENCY: '2',
+    RP_SET_TYPE: '1',
+    MONTHLY_PERIOD: '1',
+    LOAN_INTEREST_TYPE: '',
+    REPAYMENT_DAY: '',
+    COMPANY_DISBURSEMENT: 0
+  }
+  notify = {
+    NOTIFY: false,
+    NOTIFY_EMAIL: '',
+    PEOPLE_CUSTOMERS_ID: ''
+  }
+  company_approval = {
+    ENABLE_COMPANY_APPROVAL: false,
+    PEOPLE_CUSTOMERS_ID: ''
   }
   public loan_durations = [{ "LOAN_INTEREST_DURATION_ID": '1', "LOAN_DURATION": "Days", "INTEREST_DURATION": "Per Day", "ADJECTIVAL": "Daily", "ABBREV": "d" },
   { "LOAN_INTEREST_DURATION_ID": '2', "LOAN_DURATION": "Months", "INTEREST_DURATION": "Per Month", "ADJECTIVAL": "Monthly", "ABBREV": "Mo" },
   { "LOAN_INTEREST_DURATION_ID": '3', "LOAN_DURATION": "Years", "INTEREST_DURATION": "Per Year", "ADJECTIVAL": "Yearly", "ABBREV": "Yr" },
   { "LOAN_INTEREST_DURATION_ID": '4', "LOAN_DURATION": "Weeks", "INTEREST_DURATION": "Per Week", "ADJECTIVAL": "Weekly", "ABBREV": "Wk" }]
-  ;
-  start='0';
-  customerPreview = { 'corporate': {}, 'individual': {} }; 
+    ;
+  approve = {
+    "NAME": '',
+    'EMAIL': '',
+    'PEOPLE_CUSTOMERS_ID': ''
+  }
+  start = '0';
+  customerPreview = { 'corporate': {}, 'individual': {} };
+  approvals: any;
   // Load the basic information on navigation to this page
   ngOnInit() {
 
     this.sub = this.route.parent.params.subscribe(params => {
       this.getCompanyInterest(params["id"]);
-      
+
     });
 
   }
-  changeFrequency(event){
-    if(event.target.value==='1'){
-      this.company_interest.REPAYMENT_TYPE_ID='3';
+  changeFrequency(event) {
+    if (event.target.value === '1') {
+      this.company_interest.REPAYMENT_TYPE_ID = '3';
     }
-   }
-  changeDuration(d, T) { 
-    
+  }
+  changeDuration(d, T) {
+
     if (T === 2) {
       this.interest_duration = this.loan_durations[d]["INTEREST_DURATION"];
       this.company_interest.LOAN_INTEREST_TYPE = this.loan_durations[d]["LOAN_INTEREST_DURATION_ID"];
       this.company_interest.REQUEST_RATE_PERIOD_ID = this.loan_durations[d]["LOAN_INTEREST_DURATION_ID"];
-      
+
     }
-    
+
   }
 
   // load and reload functions
   getCompanyInterest(company_id) {
 
-    this.customersSrvc.getCompanyInterest({company_id:company_id}).subscribe(data => {
+    this.customersSrvc.getCompanyInterest({ company_id: company_id }).subscribe(data => {
       //this.customers = data;
       this.company_interest.PEOPLE_CUSTOMERS_ID = data.company_interest.PEOPLE_CUSTOMERS_ID;
       this.company_interest.INSTALLMENT_FREQUENCY = data.company_interest.INSTALLMENT_FREQUENCY;
@@ -89,19 +108,52 @@ export class InterestComponent implements OnInit {
       this.company_interest.COMPANY_DISBURSEMENT = data.company_interest.COMPANY_DISBURSEMENT;
       //this.DataService.onProfileNav.emit({ 'location': 'home_corporate', 'data': data });
       this.DataService.onProfileNav.emit({ 'location': 'home_corporate', 'data': data });
-      
+
+
+      this.notify.NOTIFY = data.notify.NOTIFY;
+      this.notify.NOTIFY_EMAIL = data.notify.NOTIFY_EMAIL;
+      this.notify.PEOPLE_CUSTOMERS_ID = data.notify.PEOPLE_CUSTOMERS_ID;
+
+      this.company_approval.ENABLE_COMPANY_APPROVAL = data.company_approval.ENABLE_COMPANY_APPROVAL;
+      this.company_approval.PEOPLE_CUSTOMERS_ID = data.company_approval.PEOPLE_CUSTOMERS_ID;
+      this.approve.PEOPLE_CUSTOMERS_ID = data.notify.PEOPLE_CUSTOMERS_ID;
+      this.approvals = data.approvals;
+
     });
 
   }
-  saveCompanyInterest(value,is_valid){
-    this.loading=true;
-    this.customersSrvc.saveCompanyInterest(this.company_interest).subscribe(data => {
-     this.loading =false
-      //this.customers = data;
-       this.showSuccess('Request Successful')
-      
+  saveNewCompanyApproval(value, valid) {
+    this.loading = true;
+    this.customersSrvc.saveNewCompanyApproval(this.approve, this.currentUser.token).subscribe(data => {
+      this.loading = false;
+      this.showSuccess('Request Successful')
+      this.approvals = data.company_approvals;
+    });
+  }
+  saveCompanyInterest(value, is_valid) {
+    this.loading = true;
+    this.customersSrvc.saveCompanyInterest(this.company_interest, this.currentUser.token).subscribe(data => {
+      this.loading = false;
+      this.showSuccess('Request Successful')
+
     });
 
+  }
+  saveRequestNotify(value, is_valid) {
+    this.loading = true;
+    this.customersSrvc.saveCompanyNotify(this.notify, this.currentUser.token).subscribe(data => {
+      this.loading = false;
+      this.showSuccess('Request Successful')
+
+    });
+  }
+  saveEnableApproval(value, valid) {
+    this.loading = true;
+    this.customersSrvc.saveEnableApproval(this.company_approval, this.currentUser.token).subscribe(data => {
+      this.loading = false;
+      this.showSuccess('Request Successful')
+
+    });
   }
   showSuccess(message) {
     this.toastr.success(message, 'Success!');
@@ -114,8 +166,8 @@ export class InterestComponent implements OnInit {
 
     event.preventDefault();
 
-     // If the data is not loaded, then open it.
-     if (this.customerPreview[category][id] == undefined) {
+    // If the data is not loaded, then open it.
+    if (this.customerPreview[category][id] == undefined) {
       this.openedTab = id;
       this.customerPreview[category][id] = { data: {} };
       this.customersSrvc.getCustomerPreview(category, id).subscribe(data => {
@@ -127,7 +179,16 @@ export class InterestComponent implements OnInit {
       return;
     }
   }
-
+  deleteCompanyApprovals(approval) {
+    this.loading = true;
+    this.deleting = true;
+    this.customersSrvc.deleteCompanyApprovals(approval, this.currentUser.token).subscribe(data => {
+      this.loading = false;
+      this.deleting = false;
+      this.showSuccess('Request Successful')
+      this.approvals = data.company_approvals;
+    });
+  }
 
   nextRecords(records) {
 

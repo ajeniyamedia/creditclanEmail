@@ -19,7 +19,8 @@
                         <strong>{{prev?.loan?.LEGAL_NAME}}</strong>
                     </p>
                     <p class="no-margin" style="font-size: 9px">N{{prev?.loan?.REQUEST_PRINCIPAL|money}} for {{prev?.loan?.REQUEST_TENOR}}
-                        {{prev?.loan?.LOAN_DURATION}}</p>
+                        {{prev?.loan?.LOAN_DURATION}}
+                    </p>
                 </div>
             </div>
 
@@ -85,6 +86,9 @@
                             <!-- New Menu -->
                             <section class="panel" style="background: transparent;">
                                 <ul class="xgv">
+                                    <li class="text-left black_c  left-border pink">
+                                        <a [routerLink]="['timeline']">Timeline</a>
+                                    </li>
                                     <li class="text-left black_c  left-border pink" *ngIf="loan?.LOAN_STATUS>2">
                                         <a [routerLink]="['schedule']">Schedule</a>
                                     </li>
@@ -1846,6 +1850,10 @@
                         </ul>
                     </div>
                 </div>
+                <!-- <div class="form-group">
+                    <label class="control-label">Enter your password</label>
+                    <input type="password" class="form-control" name="PASSWORD" [(ngModel)]="PASSWORD">
+                </div> -->
 
                 <div>
 
@@ -1855,6 +1863,50 @@
                             <button class="text-center txt t_l4 btn-block" [ngClass]="{'btn-danger': is_done=='0', 'btn-success': is_done=='1'}" style="padding-top: 12px; padding-bottom: 12px"
                                 (click)="runCreditCheck()" [disabled]="loading||is_done=='1'">
                                 <strong *ngIf="is_done=='0'">Confirm</strong>
+                                <i class="fa fa-spinner fa-spin" *ngIf="loading && is_done=='0'"></i>
+                                <i class="fa fa-check" *ngIf="!loading && is_done=='1'"></i>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="overlay_ app_overlay animated ln_mdl" style="overflow:hidden" *ngIf="childModal.location == 'cancel_debit_mandate'">
+
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="closeChildModal()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <div class=" overpanel-content animated bounceIn  container smaller" role="document" style="background:rgba(255, 255, 255, 0.95); height:100%; text-align:left;width:650px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden">
+
+        <div class="modl text-center">
+
+            <div>
+                <div class="modl_title" style="margin-bottom: 30px">
+                    <h2>
+                        <span class="text-success">Cancel Direct Debit</span>
+                        <br>
+                        <small class="modl_sub">Direct debit will be cancelled</small>
+                    </h2>
+                </div>
+
+
+
+                <div>
+
+
+                    <div style="width: 200px; margin: 0 auto">
+                        <div style="margin-bottom: 30px">
+                            <button class="text-center txt t_l4 btn-block" [ngClass]="{'btn-danger': is_done=='0', 'btn-success': is_done=='1'}" style="padding-top: 12px; padding-bottom: 12px"
+                                (click)="sendForCancelDirectDebitStatus()" [disabled]="loading||is_done=='1'">
+                                <strong *ngIf="is_done=='0'">Cancel Direct Debit</strong>
                                 <i class="fa fa-spinner fa-spin" *ngIf="loading && is_done=='0'"></i>
                                 <i class="fa fa-check" *ngIf="!loading && is_done=='1'"></i>
                             </button>
@@ -4641,7 +4693,8 @@
                                 </a>
                             </div>
                             <a (click)="calculateAnalysis()" style="text-align: center;font-size:12px;margin-bottom: 10px;">Tweak
-                                again</a>
+                                again
+                            </a>
                         </div>
                     </section>
                 </div>
@@ -4918,5 +4971,17 @@
     </div>
     <div class=" overpanel-content container" role="document" style="text-align:left;width:600px; height:500px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
         <app-adjustweights [loan]='loan'></app-adjustweights>
-        </div>
+    </div>
+</div>
+
+<div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="changingofficer">
+
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+        <app-changeloanofficer [loan]="loan" [currentUser]='currentUser'></app-changeloanofficer>
+    </div>
 </div>

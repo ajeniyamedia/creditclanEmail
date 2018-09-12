@@ -19,10 +19,10 @@ export class PaidloanComponent implements OnInit {
             'display': 'Date Range',
             'value': 'date_duration'
         },
-        // {
-        //     'display':'Customer',
-        //     'value':'customer'
-        // },
+        {
+            'display': 'Customer',
+            'value': 'customer'
+        },
         // {
         //     'display':'Gender',
         //     'value':'gender'
@@ -94,13 +94,18 @@ export class PaidloanComponent implements OnInit {
         WORK_SECTOR: '',
         MARITAL_STATUS: '',
         GUARANTOR_PROVIDED: '',
-        COMPANY: ''
+        COMPANY: '',
+        CUSTOMER: ''
     };
     constructor(public operationsService: OperationsService, public storageService: StorageService,
         protected customersSrvc: CustomersService) {
         this.currentUser = this.storageService.read<any>('currentUser');
     }
-
+    getListOfCustomersInLoans() {
+        this.operationsService.getListOfCustomersInLoans(this.currentUser.token).subscribe(data => {
+            this.customers = data.people_customer;
+        });
+    }
     ngOnInit() {
         this.columns = {
             'Customer': true,
@@ -117,6 +122,7 @@ export class PaidloanComponent implements OnInit {
             'Balance': true
         }
         this.getCompanies();
+        this.getListOfCustomersInLoans();
     }
     getCompanies() {
         this.customersSrvc.getCompanies(0, 0, {}, {}, {}, {}, this.currentUser.token).subscribe(data => {

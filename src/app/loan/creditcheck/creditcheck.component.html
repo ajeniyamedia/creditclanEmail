@@ -4,7 +4,7 @@
     <header class="panel-heading" style="overflow:auto">
         Credit Check
         <span class="tools pull-right">
-            <a (click)="refreshCreditCheck()" class="btn btn-white">Run Credit Check</a>
+            <button [disabled]="!ready" (click)="refreshCreditCheck()" class="btn btn-white">Run Credit Check</button>
 
         </span>
     </header>

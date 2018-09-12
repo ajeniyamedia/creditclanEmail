@@ -32,27 +32,41 @@ const routes: Routes = [
     path: 'loan/:id',
     loadChildren: '../app/loan/loan.module#LoanModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
   { path: 'login', component: LoginComponent },
   { path: 'forgot', component: ForgotComponent },
   { path: 'signup', component: SignupComponent },
-  { path: '', component: CreditdashboardComponent,
-  canActivate: [AuthGuard] },
+  {
+    path: '', component: CreditdashboardComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'password',
     loadChildren: '../app/change-password/change-password.module#ChangePasswordModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
-  { path: 'portfolio', component: PortfolioComponent,
-  canActivate: [AuthGuard] },
-  { path: 'porfolio', component: PortfolioComponent,
-  canActivate: [AuthGuard] }, 
+  {
+    path: 'security',
+    loadChildren: '../app/security/security.module#SecurityModule',
+    data: {
+      preload: true
+    },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'portfolio', component: PortfolioComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'porfolio', component: PortfolioComponent,
+    canActivate: [AuthGuard]
+  },
 
   {
     path: 'credit', component: CreditComponent,
@@ -64,17 +78,23 @@ const routes: Routes = [
     ],
     canActivate: [AuthGuard]
   },
-  { path: 'credit/schedule/:id', component: ScheduleComponent,
-  canActivate: [AuthGuard]},
-  { path: 'customer/create/:type', component: CustomerCreateComponent,
-  canActivate: [AuthGuard]},
-  { path: 'customer/update/:type/:id', component: CustomerUpdateComponent,
-  canActivate: [AuthGuard]},
+  {
+    path: 'credit/schedule/:id', component: ScheduleComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'customer/create/:type', component: CustomerCreateComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'customer/update/:type/:id', component: CustomerUpdateComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'reports',
     loadChildren: '../app/reports/reports.module#ReportsModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -82,7 +102,7 @@ const routes: Routes = [
     path: 'crm',
     loadChildren: '../app/crm/crm.module#CrmModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -90,7 +110,7 @@ const routes: Routes = [
     path: 'chat',
     loadChildren: '../app/chat/chat.module#ChatModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -98,7 +118,7 @@ const routes: Routes = [
     path: 'setup',
     loadChildren: '../app/onboarding/onboarding.module#OnboardingModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -106,7 +126,7 @@ const routes: Routes = [
     path: 'investments',
     loadChildren: '../app/investments/investments.module#InvestmentsModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -114,7 +134,7 @@ const routes: Routes = [
     path: 'statement/:id',
     loadChildren: '../app/statement/statement.module#StatementModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -122,7 +142,7 @@ const routes: Routes = [
     path: 'customer/:type/:id',
     loadChildren: '../app/customers/customers.module#CustomersModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -135,7 +155,7 @@ const routes: Routes = [
     path: 'operations',
     loadChildren: '../app/operations/operations.module#OperationsModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -143,7 +163,7 @@ const routes: Routes = [
     path: 'requests',
     loadChildren: '../app/requests/requests.module#RequestsModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -151,14 +171,14 @@ const routes: Routes = [
     path: 'settings',
     loadChildren: '../app/settings/settings.module#SettingsModule',
     data: {
-      preload : true
+      preload: true
     }
   },
   {
     path: 'settings/mobile',
     loadChildren: '../app/mobile/mobile.module#MobileModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -166,7 +186,7 @@ const routes: Routes = [
     path: 'settings/web',
     loadChildren: '../app/web/web.module#WebModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -174,7 +194,7 @@ const routes: Routes = [
     path: 'settings/decision-engine',
     loadChildren: '../app/decision/decision.module#DecisionModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -182,7 +202,7 @@ const routes: Routes = [
     path: 'settings/investors',
     loadChildren: '../app/investors/investors.module#InvestorsModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -190,7 +210,7 @@ const routes: Routes = [
     path: 'settings/ussd',
     loadChildren: '../app/mobile/mobile.module#MobileModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -198,7 +218,7 @@ const routes: Routes = [
     path: 'settings/backend',
     loadChildren: '../app/backend/backend.module#BackendModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -206,7 +226,7 @@ const routes: Routes = [
     path: 'kyc',
     loadChildren: '../app/kyc/kyc.module#KycModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -214,7 +234,7 @@ const routes: Routes = [
     path: 'investments',
     loadChildren: '../app/investments/investments.module#InvestmentsModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -222,7 +242,7 @@ const routes: Routes = [
     path: 'messages',
     loadChildren: '../app/messages/messages.module#MessagesModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },
@@ -230,7 +250,7 @@ const routes: Routes = [
     path: 'pickup',
     loadChildren: '../app/pickup/pickup.module#PickupModule',
     data: {
-      preload : true
+      preload: true
     },
     canActivate: [AuthGuard]
   },

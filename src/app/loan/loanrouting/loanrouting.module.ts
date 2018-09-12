@@ -36,6 +36,7 @@ import { LoanrejectionsComponent } from '../loanrejections/loanrejections.compon
 import { LoankycComponent } from '../loankyc/loankyc.component';
 import { CreditcheckComponent } from '../creditcheck/creditcheck.component';
 import { ContractofferComponent } from '../../shared/contractoffer/contractoffer.component';
+import { TimelineComponent } from '../../shared/timeline/timeline.component';
 const routes: Routes = [
   {
     path: '', component: LoandetailsComponent, canActivate: [AuthGuard],
@@ -72,7 +73,8 @@ const routes: Routes = [
       { path: 'rejections', component: LoanrejectionsComponent },
       { path: 'creditcheck', component: CreditcheckComponent },
       { path: 'kyc', component: LoankycComponent },
-      { path: 'offer', component: ContractofferComponent }
+      { path: 'offer', component: ContractofferComponent },
+      { path: 'timeline', component: TimelineComponent}
     ]
   },
 

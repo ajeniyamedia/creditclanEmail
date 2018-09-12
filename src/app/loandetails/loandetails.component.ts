@@ -13,8 +13,8 @@ import { LoancontractComponent } from '../loancontract/loancontract.component';
   encapsulation: ViewEncapsulation.None
 })
 export class LoandetailsComponent implements OnInit {
-  PASSWORD="";
-  account_for_direct_debit:any;
+  PASSWORD = "";
+  account_for_direct_debit: any;
   adjustingWeights = false;
   NOTIFY_ALL_LENDERS = false;
   islarger = false;
@@ -115,6 +115,16 @@ export class LoandetailsComponent implements OnInit {
     {
       'display': 'International Passport',
       'value': '20',
+      'checked': false
+    },
+    {
+      'display': "Offer Letter (Previous Loan)",
+      'value': '21',
+      'checked': false
+    },
+    {
+      'display': 'Confirmation Letter',
+      'value': '22',
       'checked': false
     },
   ]
@@ -220,11 +230,17 @@ export class LoandetailsComponent implements OnInit {
     call_log: 0,
     linkedln: 0
   };
-  banks:any;
+  banks: any;
+  changingofficer = false;
   constructor(private toastr: ToastrService, private _elementRef: ElementRef,
     private authService: AuthenticationService,
     public operationsService: OperationsService, private DataService: DataService,
     public router: Router, public route: ActivatedRoute, public loansService: LoansService, public storageService: StorageService) {
+
+    this.DataService.onChangeLoanOfficer.subscribe(res => {
+      this.loan = res.loan;
+      this.changingofficer = true;
+    })
 
     if (!this.authService.canViewModule('1,2,3,5,1026')) {
       this.router.navigate(['../unauthorized']);
@@ -288,20 +304,23 @@ export class LoandetailsComponent implements OnInit {
         this.loan = res.data
 
       }
-      if(res.location == 'check_debit_mandate'){
-         
+      if (res.location == 'check_debit_mandate') {
+
         this.account_for_direct_debit = res.acc;
       }
-      
-      if(res.location == 'setup_debit_mandate'){
+      if (res.location == 'cancel_debit_mandate') {
+
+        this.account_for_direct_debit = res.acc;
+      }
+      if (res.location == 'setup_debit_mandate') {
         this.getBanksListForCustomer(this.loan);
       }
-      if(res.location == 'setup_debit_mandate_'){
-         
+      if (res.location == 'setup_debit_mandate_') {
+
         this.account_for_direct_debit = res.acc;
       }
-      if(res.location == 'stop_direct_debit'){
-         
+      if (res.location == 'stop_direct_debit') {
+
         this.account_for_direct_debit = res.acc;
       }
       if (res.location == 'customer-analysis-slider') {
@@ -338,7 +357,7 @@ export class LoandetailsComponent implements OnInit {
   closeShowInterest() {
 
   }
- 
+
   choosingKYC = false;
   chooseKYCPlan() {
     this.choosingKYC = true;
@@ -412,11 +431,11 @@ export class LoandetailsComponent implements OnInit {
         }
       });
   }
-  getBanksListForCustomer(loan){
+  getBanksListForCustomer(loan) {
     this.loansService.getBanksListForCustomer(this.currentUser.token, this.parentRouteId)
-    .subscribe(data => {
-      this.banks = data.banks;
-    });
+      .subscribe(data => {
+        this.banks = data.banks;
+      });
   }
   updateProfilePercentage(slider, event, type) {
     if (type == 'profile') {
@@ -484,6 +503,7 @@ export class LoandetailsComponent implements OnInit {
     this.viewing_loan = false
     this.overlayOpenPay = false
     this.overlayOpenPayConfirm = false
+    this.changingofficer = false;
   }
   checkLevel(sector, event, index) {
 
@@ -788,21 +808,22 @@ export class LoandetailsComponent implements OnInit {
           this.approvals_queue = loans.approvals_queue;
           this.level = loans.level;
           this.prev_levels = loans.prev_levels;
-          this.model_r.request_id = this.approvals_queue.REQUEST_ID;
-          this.model_r.level = this.approvals_queue.LEVEL_ID;
-          this.model_a.request_id = this.approvals_queue.REQUEST_ID;
-          this.model_a.level = this.approvals_queue.LEVEL_ID;
-          this.model_a.ilo = this.approvals_queue.ILO;
-          this.model_a.istd = this.approvals_queue.ISTD;
-          this.IS_PEER_TO_PEER = loans.IS_PEER_TO_PEER;
-          this.ADDED_TO_PAYMENT_QUEUE = loans.ADDED_TO_PAYMENT_QUEUE;
+          if (loans.queue == '1') {
+            this.model_r.request_id = loans.loan.REQUEST_ID;
+            this.model_r.level = this.approvals_queue.LEVEL_ID;
+            this.model_a.request_id = this.approvals_queue.REQUEST_ID;
+            this.model_a.level = this.approvals_queue.LEVEL_ID;
+            this.model_a.ilo = this.approvals_queue.ILO;
+            this.model_a.istd = this.approvals_queue.ISTD;
+          }
+          this.IS_PEER_TO_PEER = loans.loan.IS_PEER_TO_PEER;
+          this.ADDED_TO_PAYMENT_QUEUE = loans.loan.ADDED_TO_PAYMENT_QUEUE;
           this.loan_approvals = loans.loan_approvals_count;
           this.queue_disbursement = loans.queue_disbursement;
           this.pay_from_loan = loans.pay_from_loan;
           this.loan = loans.loan
           this.prev = loans.prev;
           this.next = loans.next;
-          console.log(this.loan)
         });
     });
 
@@ -976,7 +997,7 @@ export class LoandetailsComponent implements OnInit {
     });
   }
   sendForDirectDebit() {
-    this.loading =true;
+    this.loading = true;
     this.sub = this.route.params.subscribe(params => {
       this.parentRouteId = +params['id'];
 
@@ -993,11 +1014,11 @@ export class LoandetailsComponent implements OnInit {
     });
   }
   sendForDirectDebitOnAccount() {
-  this.loading =true;
+    this.loading = true;
     this.sub = this.route.params.subscribe(params => {
       this.parentRouteId = +params['id'];
 
-      this.loansService.sendForDirectDebitOnAccount(this.currentUser.token, this.parentRouteId, this.account_for_direct_debit,this.PASSWORD)
+      this.loansService.sendForDirectDebitOnAccount(this.currentUser.token, this.parentRouteId, this.account_for_direct_debit, this.PASSWORD)
         .subscribe(data => {
           this.loading = false;
           if (data.status) {
@@ -1009,34 +1030,34 @@ export class LoandetailsComponent implements OnInit {
         });
     });
   }
-  sendForStopDirectDebitMandate(){
-    this.loading=true;
+  sendForStopDirectDebitMandate() {
+    this.loading = true;
     this.sub = this.route.params.subscribe(params => {
       this.parentRouteId = +params['id'];
 
-      this.loansService.sendForStopDirectDebitMandate(this.currentUser.token, this.parentRouteId, this.account_for_direct_debit,this.PASSWORD)
+      this.loansService.sendForStopDirectDebitMandate(this.currentUser.token, this.parentRouteId, this.account_for_direct_debit, this.PASSWORD)
         .subscribe(data => {
 
           this.loading = false;
-          if(data.status==false){
-            if(data.message==""){
+          if (data.status == false) {
+            if (data.message == "") {
 
               this.showError('Error occured.');
-            }else{
-              
+            } else {
+
               this.showError(data.message);
             }
-            this.is_done='0';
-          }else{
+            this.is_done = '0';
+          } else {
             this.is_done = '1';
           }
-          
+
 
         });
     });
   }
   sendForDirectDebitStatus() {
-    this.loading =true;
+    this.loading = true;
     this.sub = this.route.params.subscribe(params => {
       this.parentRouteId = +params['id'];
 
@@ -1053,9 +1074,28 @@ export class LoandetailsComponent implements OnInit {
           }
         });
     });
+
+  }
+  sendForCancelDirectDebitStatus() {
+    this.loading = true;
+    this.sub = this.route.params.subscribe(params => {
+      this.parentRouteId = +params['id'];
+
+      this.loansService.sendForCancelDirectDebitStatus(this.currentUser.token, this.parentRouteId, this.account_for_direct_debit)
+        .subscribe(data => {
+          this.loading = false;
+
+          this.is_done = '1';
+
+          if (data.isActive == true) {
+            this.showSuccess('Mandate Is Cancelled');
+            this.DataService.onreloadAccountsAndCards.emit({});
+          }
+        });
+    });
   }
   runCreditCheck() {
-    this.loading =true;
+    this.loading = true;
     this.sub = this.route.params.subscribe(params => {
       this.parentRouteId = +params['id'];
       this.loading = true;

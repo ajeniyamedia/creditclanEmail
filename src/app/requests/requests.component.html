@@ -402,6 +402,9 @@
                                 <span *ngIf="loan?.LOAN_STATUS>2">
                                     {{loan?.REQUEST_PRINCIPAL | money}} | {{loan?.REQUEST_TENOR}}{{loan?.LOAN_DURATION}}
                                 </span>
+                                <span *ngIf="loan?.LOAN_STATUS>2" style="display: block">
+                                    Repayment Mode - {{loan?.REPAYMENT_MODE}}
+                                </span>
                             </p>
                             <app-rating *ngIf="loan?.LOAN_STATUS<=2" [rating]='loan?.PEOPLE_RATING_ID'></app-rating>
 
@@ -473,7 +476,7 @@
                             <div *ngIf="loan?.LOAN_STATUS>2">
                                 <div class="">
 
-                                    <h4 class="" style="margin-top: 125px;font-size:13px">{{loan?.TOTAL_PAID|money}} ({{loan?.PERCENT_PAID}}%) Paids
+                                    <h4 class="" style="margin-top: 100px;font-size:13px">{{loan?.TOTAL_PAID|money}} ({{loan?.PERCENT_PAID}}%) Paid
                                         <br>
                                         <span *ngIf="loan?.USE_REMITA=='1'">Remita - {{loan?.REMITA_MANDATE_REF}}</span>
                                     </h4>

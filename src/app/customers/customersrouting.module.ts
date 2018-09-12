@@ -26,6 +26,7 @@ import { AuthGuard } from '../_guards/auth.guard';
 import { CorporatePeopleComponent } from '../customers/corporate-people/corporate-people.component';
 import { LoankycComponent } from '../loan/loankyc/loankyc.component';
 import { CustomerkycComponent } from '../customerkyc/customerkyc.component';
+import { CreditcheckComponent } from '../loan/creditcheck/creditcheck.component';
 const routes: Routes = [
   {
     path: '',component: CustomerdetailsComponent, data: [{ category: 'corporate' }], canActivate: [AuthGuard],
@@ -34,6 +35,7 @@ const routes: Routes = [
       { path: 'attachments', component: CustomerAttachmentsComponent },
       // { path: 'messages', component: CustomerMessagesComponent },
       { path: 'financials', component: CustomerFinanceComponent },
+      { path: 'creditcheck', component: CreditcheckComponent },
       { path: 'kyc', component: CustomerkycComponent },
       { path: 'loans', component: CustomerLoansComponent },
       { path: 'investments', component: CustomerInvestmentsComponent },

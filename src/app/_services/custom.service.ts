@@ -15,13 +15,13 @@ import { LoggingService } from './logging.service';
 })
 export class CustomService {
 
-  private postsUrl = 'https://dataupload.creditclan.com/api/v2/';
+  private postsUrl = 'http://137.117.105.90/dataupload_test/api/v2/';
 
   constructor(public http: Http, private loggingService: LoggingService) { }
 
   getAllCustomers(token: any, start:any, searchTerm:any): Observable<any> {
     // get users from api
-    return this.http.post('https://dataupload.creditclan.com/api/v2/custom/allCustomers', JSON.stringify({ token: token, start:start, searchTerm:searchTerm }))
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/custom/allCustomers', JSON.stringify({ token: token, start:start, searchTerm:searchTerm }))
       .map((response: Response) => response.json());
   }
 }

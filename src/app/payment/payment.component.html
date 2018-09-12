@@ -24,13 +24,13 @@
       <div class="col-md-6">
         <div class="checkbox">
           <label>
-            <input type="radio" (ngModelChange)="changewithtype($event)" name="record_type_" [(ngModel)]="record_type_" [value]="1"> Yes</label>
+            <input type="radio" (ngModelChange)="changewithtype($event)" name="record_type_" [(ngModel)]="record_type_" [value]="1">            Yes</label>
         </div>
       </div>
       <div class="col-md-6">
         <div class="checkbox">
           <label>
-            <input type="radio" (ngModelChange)="changewithtype($event)" name="record_type_" [(ngModel)]="record_type_" [value]="2"> No</label>
+            <input type="radio" (ngModelChange)="changewithtype($event)" name="record_type_" [(ngModel)]="record_type_" [value]="2">            No</label>
         </div>
       </div>
     </div>
@@ -63,7 +63,8 @@
         </div>
         <div class="row">
           <div class="col-md-6">
-            <button class="btn btn-block btn-white btn-block" [disabled]="!investorConfirmPayment.valid" type="submit">Confirm Payment
+            <button class="btn btn-block btn-white btn-block" [disabled]="!investorConfirmPayment.valid" type="submit">Confirm
+              Payment
               <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
             </button>
           </div>
@@ -179,7 +180,8 @@
             </div>
             <div class="form-group row" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
               <div class="col-md-12">
-                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="saveBorrowerAccount()">Use Account
+                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="saveBorrowerAccount()">Use
+                  Account
                   <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                 </button>
               </div>
@@ -215,12 +217,14 @@
 
           <div class="form-group row">
             <div class="col-md-6">
-              <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="choosingPayProcess=!choosingPayProcess">Make Payment
+              <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="choosingPayProcess=!choosingPayProcess">Make
+                Payment
                 <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
               </button>
             </div>
             <div class="col-md-6">
-              <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="withdrawal_step=='1'">Cancel Payment</button>
+              <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="withdrawal_step=='1'">Cancel
+                Payment</button>
             </div>
           </div>
         </div>
@@ -258,7 +262,8 @@
             </div>
             <div class="row">
               <div class="col-md-6">
-                <button class="btn btn-block btn-white btn-block" [disabled]="!investorConfirmPayment_.valid" type="submit">Confirm Payment
+                <button class="btn btn-block btn-white btn-block" [disabled]="!investorConfirmPayment_.valid" type="submit">Confirm
+                  Payment
                   <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                 </button>
               </div>
@@ -367,7 +372,8 @@
             </div>
             <div class="row">
               <div class="col-md-6">
-                <button class="btn btn-block btn-white btn-block" [disabled]="!repaymentConfirmPayment.valid" type="submit">Confirm Payment
+                <button class="btn btn-block btn-white btn-block" [disabled]="!repaymentConfirmPayment.valid" type="submit">Confirm
+                  Payment
                   <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                 </button>
               </div>
@@ -445,12 +451,14 @@
 
                 <div class="form-group row">
                   <div class="col-md-6">
-                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="confirmCardAD=!confirmCardAD">Make Payment
+                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="confirmCardAD=!confirmCardAD">Make
+                      Payment
                       <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                     </button>
                   </div>
                   <div class="col-md-6">
-                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel
+                      Payment</button>
                   </div>
                 </div>
               </div>
@@ -539,7 +547,8 @@
       </a>
       <div class="borrower-text pull-left" style="text-align:left">
         <p class="" style="margin-bottom: 0px">{{disbursement?.LEGAL_NAME}}</p>
-        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP!='8'&&disburse?.IS_TOP_UP!='6'">{{disbursement?.HOW_MUCH_WAS_GIVEN | number:'.2-2'}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP!='8'&&disburse?.IS_TOP_UP!='6'">{{disbursement?.HOW_MUCH_WAS_GIVEN
+          | number:'.2-2'}}</p>
         <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='8'">{{disbursement?.TOP_UP_AMOUNT | number:'.2-2'}}</p>
         <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='6'">{{disbursement?.REQUEST_PRINCIPAL | number:'.2-2'}}</p>
       </div>
@@ -669,19 +678,19 @@
             style="margin-bottom:0px">
             <div class="row" *ngIf="disburse?.ADJUST_CONTRACT_DATE">
               <div class="col-md-9">
-                  <label class="control_label">Adjust Contract Date</label>
+                <label class="control_label">Adjust Contract Date</label>
               </div>
               <div class="col-md-3">
-                  <div class="checkbox pull-right">
-             
-                      <input [formControl]="complexForm.controls['ADJUST_CONTRACT_DATE']" type="checkbox" name="ADJUST_CONTRACT_DATE"> 
-                  </div>
+                <div class="checkbox pull-right">
+
+                  <input [formControl]="complexForm.controls['ADJUST_CONTRACT_DATE']" type="checkbox" name="ADJUST_CONTRACT_DATE">
+                </div>
               </div>
             </div>
-            
+
 
           </div>
-          <div *ngIf="disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'" class="form-group"
+          <!-- <div *ngIf="disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'" class="form-group"
             style="margin-bottom:0px">
             <div class="row" *ngFor="let mode of mode_of_repayment">
               <div class="col-md-9">
@@ -689,13 +698,23 @@
               </div>
               <div class="col-md-3">
                   <div class="checkbox pull-right">
-             
+                      <select name="REPAYMENT_MODE" [formControl]="complexForm.controls['REPAYMENT_MODE']">
+                        <option [value]='0'>1</option>
+                        <option 
+                      </select>
                       <input [value]='mode.value' [formControl]="complexForm.controls['REPAYMENT_MODE']" type="radio" name="REPAYMENT_MODE"> 
                   </div>
               </div>
             </div>
             
 
+          </div> -->
+          <div class="form-group" *ngIf="disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'" style="margin-bottom:15px">
+            <label for="exampleInputEmail1">Repayment Mode</label>
+            <select class="form-control" [formControl]="complexForm.controls['REPAYMENT_MODE']" name="REPAYMENT_MODE" id="REPAYMENT_MODE">
+              <option value="0"></option>
+              <option *ngFor="let mode of mode_of_repayment" [value]="mode.value">{{mode.display}}</option>
+            </select>
           </div>
           <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['LENDER_BANK_ACCOUNT_ID'].valid && complexForm.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
             style="margin-bottom:15px">
@@ -706,7 +725,7 @@
               <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
             </select>
           </div>
-          
+
           <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['SECURITY_QUESTION_ANSWER'].valid && complexForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
             style="margin-bottom:15px">
             <label for="exampleInputEmail1">{{security_question}}</label>
@@ -778,7 +797,8 @@
               </div>
               <div class="form-group row" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
                 <div class="col-md-12">
-                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="saveBorrowerAccount()">Use Account
+                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="saveBorrowerAccount()">Use
+                    Account
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
                 </div>
@@ -819,7 +839,8 @@
                 </button>
               </div>
               <div class="col-md-6">
-                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel
+                  Payment</button>
               </div>
             </div>
           </div>
@@ -851,6 +872,41 @@
                 <h4>Wallet Balance</h4>
                 <h1>{{wallet_balance | number:'.2-2'}}</h1>
                 <div *ngIf="wallet_status">
+                  
+
+                  <div *ngIf="disburse?.ADJUST_CONTRACT_DATE" class="row">
+                    <div class="col-md-9">
+                      <label class="control_label">Adjust Contract Date</label>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="checkbox pull-right">
+
+                        <input [formControl]="walletPaymentForm.controls['ADJUST_CONTRACT_DATE']" type="checkbox" name="ADJUST_CONTRACT_DATE">
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div *ngIf="disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'" class="form-group" style="margin-bottom:0px">
+                    <div class="row" *ngFor="let mode of mode_of_repayment">
+                      <div class="col-md-9">
+                        <label class="control_label">{{mode.display}}</label>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="checkbox pull-right">
+
+                          <input [value]='mode.value' [formControl]="walletPaymentForm.controls['REPAYMENT_MODE']" type="radio" name="REPAYMENT_MODE">
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div> -->
+                  <div class="form-group" *ngIf="disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'" style="margin-bottom:15px">
+                    <label for="exampleInputEmail1">Repayment Mode</label>
+                    <select class="form-control" [formControl]="walletPaymentForm.controls['REPAYMENT_MODE']" name="REPAYMENT_MODE" id="REPAYMENT_MODE">
+                      <option value="0"></option>
+                      <option *ngFor="let mode of mode_of_repayment" [value]="mode.value">{{mode.display}}</option>
+                    </select>
+                  </div>
                   <div class="form-group" [ngClass]="{'has-error':!walletPaymentForm.controls['SECURITY_QUESTION_ANSWER'].valid && walletPaymentForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
                     style="margin-bottom:15px">
                     <label for="exampleInputEmail1">{{security_question}}</label>
@@ -860,42 +916,16 @@
                       {{otpmessage}}
                     </div>
                   </div>
-                   
-                  <div *ngIf="disburse?.ADJUST_CONTRACT_DATE" class="row">
-                      <div class="col-md-9">
-                          <label class="control_label">Adjust Contract Date</label>
-                      </div>
-                      <div class="col-md-3">
-                          <div class="checkbox pull-right">
-                     
-                              <input [formControl]="walletPaymentForm.controls['ADJUST_CONTRACT_DATE']" type="checkbox" name="ADJUST_CONTRACT_DATE"> 
-                          </div>
-                      </div>
-                    </div>
-                  <div *ngIf="disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'" class="form-group"
-                      style="margin-bottom:0px">
-                      <div class="row" *ngFor="let mode of mode_of_repayment">
-                        <div class="col-md-9">
-                            <label class="control_label">{{mode.display}}</label>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="checkbox pull-right">
-                      
-                                <input [value]='mode.value' [formControl]="walletPaymentForm.controls['REPAYMENT_MODE']" type="radio" name="REPAYMENT_MODE"> 
-                            </div>
-                        </div>
-                      </div>
-                      
-
-                    </div>
                   <div class="form-group row">
                     <div class="col-md-6">
-                      <button class="btn btn-block btn-white" [disabled]="!walletPaymentForm.valid||loading" type="submit">Confirm Payment
+                      <button class="btn btn-block btn-white" [disabled]="!walletPaymentForm.valid||loading" type="submit">Confirm
+                        Payment
                         <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                       </button>
                     </div>
                     <div class="col-md-6">
-                      <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                      <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel
+                        Payment</button>
                     </div>
                   </div>
                 </div>
@@ -937,7 +967,8 @@
                 <div *ngIf="disburse?.ADJUST_CONTRACT_DATE" class="form-group" style="margin-bottom:15px">
                   <div class="checkbox" style="margin:0px !important">
                     <label style="padding-left:0px !important" class="control_label">
-                      <input [formControl]="bankPaymentForm.controls['ADJUST_CONTRACT_DATE']" type="checkbox" name="ADJUST_CONTRACT_DATE"> Adjust Contract Date</label>
+                      <input [formControl]="bankPaymentForm.controls['ADJUST_CONTRACT_DATE']" type="checkbox" name="ADJUST_CONTRACT_DATE">                      Adjust
+                      Contract Date</label>
                   </div>
 
                 </div>
@@ -951,7 +982,8 @@
                     </button>
                   </div>
                   <div class="col-md-6">
-                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel
+                      Payment</button>
                   </div>
                 </div>
               </form>
@@ -1026,12 +1058,14 @@
 
                 <div class="form-group row">
                   <div class="col-md-6">
-                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="confirmCardAD=!confirmCardAD">Make Payment
+                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="confirmCardAD=!confirmCardAD">Make
+                      Payment
                       <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                     </button>
                   </div>
                   <div class="col-md-6">
-                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel
+                      Payment</button>
                   </div>
                 </div>
               </div>
@@ -1174,7 +1208,8 @@
               </div>
               <div class="form-group row" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
                 <div class="col-md-12">
-                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="saveBorrowerAccount()">Use Account
+                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="saveBorrowerAccount()">Use
+                    Account
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
                 </div>
@@ -1210,12 +1245,14 @@
 
             <div class="form-group row">
               <div class="col-md-6">
-                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="doWithdrawal()">Make Payment
+                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="doWithdrawal()">Make
+                  Payment
                   <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                 </button>
               </div>
               <div class="col-md-6">
-                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel
+                  Payment</button>
               </div>
             </div>
           </div>
@@ -1262,12 +1299,14 @@
                     </div>
                     <div class="form-group row">
                       <div class="col-md-6">
-                        <button class="btn btn-block btn-white" [disabled]="!walletWithdrawalForm.valid||loading" type="submit">Confirm Payment
+                        <button class="btn btn-block btn-white" [disabled]="!walletWithdrawalForm.valid||loading" type="submit">Confirm
+                          Payment
                           <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                         </button>
                       </div>
                       <div class="col-md-6">
-                        <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                        <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel
+                          Payment</button>
                       </div>
                     </div>
                   </div>
@@ -1314,7 +1353,8 @@
                     </button>
                   </div>
                   <div class="col-md-6">
-                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                    <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel
+                      Payment</button>
                   </div>
                 </div>
               </form>
@@ -1416,12 +1456,14 @@
               </div>
               <div class="form-group row">
                 <div class="col-md-6">
-                  <button class="btn btn-block btn-white" [disabled]="!walletFundingForm.valid||loading" type="submit">Confirm Payment
+                  <button class="btn btn-block btn-white" [disabled]="!walletFundingForm.valid||loading" type="submit">Confirm
+                    Payment
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
                 </div>
                 <div class="col-md-6">
-                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel
+                    Payment</button>
                 </div>
               </div>
             </div>
@@ -1491,14 +1533,14 @@
         <h4>Transaction Details</h4>
         <p>Please confirm that the payment has been made.</p>
         <div class="form-group" [ngClass]="{'has-error':!customerrepaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID'].valid && customerrepaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
-        style="margin-bottom:15px">
-        <label for="exampleInputEmail1">Payment Bank</label>
-        <select class="form-control" [formControl]="customerrepaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
-          id="LENDER_BANK_ACCOUNT_ID">
-          <option value="0"></option>
-          <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
-        </select>
-      </div>
+          style="margin-bottom:15px">
+          <label for="exampleInputEmail1">Payment Bank</label>
+          <select class="form-control" [formControl]="customerrepaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
+            id="LENDER_BANK_ACCOUNT_ID">
+            <option value="0"></option>
+            <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
+          </select>
+        </div>
         <div class="form-group" [ngClass]="{'has-error':!customerrepaymentConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].valid && customerrepaymentConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].touched}"
           style="margin-bottom:15px">
           <label for="exampleInputEmail1">{{security_question}}</label>
@@ -1510,7 +1552,8 @@
         </div>
         <div class="row">
           <div class="col-md-6">
-            <button class="btn btn-block btn-white btn-block" [disabled]="!customerrepaymentConfirmPayment.valid" type="submit">Confirm Payment
+            <button class="btn btn-block btn-white btn-block" [disabled]="!customerrepaymentConfirmPayment.valid" type="submit">Confirm
+              Payment
               <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
             </button>
           </div>
@@ -1548,7 +1591,8 @@
       </a>
       <div class="borrower-text pull-left" style="text-align:left">
         <p class="" style="margin-bottom: 0px">{{disbursement?.LEGAL_NAME}}</p>
-        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP!='8'&&disburse?.IS_TOP_UP!='6'">{{disbursement?.HOW_MUCH_WAS_GIVEN | number:'.2-2'}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP!='8'&&disburse?.IS_TOP_UP!='6'">{{disbursement?.HOW_MUCH_WAS_GIVEN
+          | number:'.2-2'}}</p>
         <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='8'">{{disbursement?.TOP_UP_AMOUNT | number:'.2-2'}}</p>
         <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='6'">{{disbursement?.REQUEST_PRINCIPAL | number:'.2-2'}}</p>
       </div>
@@ -1621,7 +1665,8 @@
           <div class="row">
 
             <div class="col-md-12">
-              <button class="btn btn-block btn-white" [disabled]="!paymentConfirmRollbackForm.valid" type="submit">Confirm Payment
+              <button class="btn btn-block btn-white" [disabled]="!paymentConfirmRollbackForm.valid" type="submit">Confirm
+                Payment
                 <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
               </button>
             </div>
@@ -2063,12 +2108,14 @@
 
               <div class="form-group row">
                 <div class="col-md-6">
-                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="confirmCardAD=!confirmCardAD">Make Payment
+                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="confirmCardAD=!confirmCardAD">Make
+                    Payment
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
                 </div>
                 <div class="col-md-6">
-                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel Payment</button>
+                  <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel
+                    Payment</button>
                 </div>
               </div>
             </div>
@@ -2085,7 +2132,8 @@
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <button class="btn btn-block btn-white" [disabled]="autodebit_form.SECURITY_ANSWER==''||loading" (click)="initiateAutodebit()">Confirm Payment
+                  <button class="btn btn-block btn-white" [disabled]="autodebit_form.SECURITY_ANSWER==''||loading" (click)="initiateAutodebit()">Confirm
+                    Payment
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
                 </div>
@@ -2107,7 +2155,8 @@
       </a>
       <div class="borrower-text pull-left" style="text-align:left">
         <p class="" style="margin-bottom: 0px">{{disbursement?.LEGAL_NAME}}</p>
-        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP!='8'&&disburse?.IS_TOP_UP!='6'">{{disbursement?.HOW_MUCH_WAS_GIVEN | number:'.2-2'}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP!='8'&&disburse?.IS_TOP_UP!='6'">{{disbursement?.HOW_MUCH_WAS_GIVEN
+          | number:'.2-2'}}</p>
       </div>
     </div>
   </div>
@@ -2151,4 +2200,3 @@
     <!-- <app-queuecancel [currentUser]="currentUser" (close)="closeOverlay()" (rejectRequest)="rejectRequest($event)" (moveToLevel)="moveToLevel($event)" [disburse]="disburse" [record_type]="record_type" [schedule_type]="schedule_type"></app-queuecancel> -->
   </div>
 </section>
-

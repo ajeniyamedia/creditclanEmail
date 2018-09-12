@@ -4,23 +4,23 @@ import { UserService, OperationsService, AuthenticationService, StorageService }
 import { CustomersService } from '../../_services/customers.service';
 
 @Component({
-  selector: 'app-loanportfolio',
-  templateUrl: './loanportfolio.component.html',
-  styleUrls: ['./loanportfolio.component.css']
+    selector: 'app-loanportfolio',
+    templateUrl: './loanportfolio.component.html',
+    styleUrls: ['./loanportfolio.component.css']
 })
 export class LoanportfolioComponent implements OnInit {
- public loading = false;
-  public showAdvSearch = false;
-    showAdvSearchBody=true;
+    public loading = false;
+    public showAdvSearch = false;
+    showAdvSearchBody = true;
     public filter_types = [
         {
-            'display':'Date Range',
-            'value':'date_duration'
+            'display': 'Date Range',
+            'value': 'date_duration'
         },
-        // {
-        //     'display':'Customer',
-        //     'value':'customer'
-        // },
+        {
+            'display': 'Customer',
+            'value': 'customer'
+        },
         // {
         //     'display':'Gender',
         //     'value':'gender'
@@ -51,89 +51,107 @@ export class LoanportfolioComponent implements OnInit {
         // }  
         // ,
         {
-            'display':'Company',
-            'value':'company'
-        }  
+            'display': 'Company',
+            'value': 'company'
+        }
     ]
-    aggregate={
-      total_count_loans_in_portfolio:'0',
-      summary:{
-        'total_loans_in_portfolio':'0',
-        'total_repayment':'0',
-        'total_paid':'0',
-        'total_balance':'0'
-      },
-      total_repayment:'0',
-      total_paid:'0',
-      total_remaining:'0' 
+    aggregate = {
+        total_count_loans_in_portfolio: '0',
+        summary: {
+            'total_loans_in_portfolio': '0',
+            'total_repayment': '0',
+            'total_paid': '0',
+            'total_balance': '0'
+        },
+        total_repayment: '0',
+        total_paid: '0',
+        total_remaining: '0'
     };
-    customers:any;
-    occupations:any;
-    sectors:any;
-    companies:any;
-    filterStatus='date_duration';
-    downloadLinkReceived=false;
-    downloadLink="";
-  	public currentUser: any;
+    customers: any;
+    occupations: any;
+    sectors: any;
+    companies: any;
+    filterStatus = 'date_duration';
+    downloadLinkReceived = false;
+    downloadLink = "";
+    public currentUser: any;
     public data: any;
     public rows = [];
     public columns = {};
     objectKeys = Object.keys;
 
     filter = {
-        TPDATE:'',
-        TPDATE_:'',
-        PEOPLE_ID:'',
-        LOAN_OFFICER:'',
-        GENDER:'',
-        FILTER_TYPE:'',
-        LOAN_STATUS:'',
-        OCCUPATION_ID:'',
-        WORK_SECTOR:'',
-        MARITAL_STATUS:'',
-        GUARANTOR_PROVIDED:'', 
-        COMPANY:''
+        TPDATE: '',
+        TPDATE_: '',
+        PEOPLE_ID: '',
+        LOAN_OFFICER: '',
+        GENDER: '',
+        FILTER_TYPE: '',
+        LOAN_STATUS: '',
+        OCCUPATION_ID: '',
+        WORK_SECTOR: '',
+        MARITAL_STATUS: '',
+        GUARANTOR_PROVIDED: '',
+        COMPANY: '',
+        CUSTOMER: ''
     };
-    constructor( public operationsService: OperationsService, public storageService: StorageService,
+    constructor(public operationsService: OperationsService, public storageService: StorageService,
         protected customersSrvc: CustomersService) {
-        this.currentUser = this.storageService.read<any>('currentUser');        
+        this.currentUser = this.storageService.read<any>('currentUser');
     }
-
+    getListOfCustomersInLoans() {
+        this.operationsService.getListOfCustomersInLoans(this.currentUser.token).subscribe(data => {
+            this.customers = data.people_customer;
+        });
+    }
     ngOnInit() {
         this.columns = {
-            'Customer' : true,
-            'Principal' : true,
-            'Interest Rate' : true,
-            'Duration' : true,
-            'Date' : true,
+            'Customer': true,
+            'Email': true,
+            'Phone': true,
+            'Industry': true,
+            'Staff Number': true,
+            'Account Number':true,
+            'Payment':true,
+            'Principal': true,
+            'Amount Disbursed':true,
+            'Interest Rate': true,
+            'Duration': true,
+            'Date': true,
             'Installments': true,
-            'Total Repayment' : true,
-            'Monthly Installment' : true,
-            'Repayment Starts' : true,
-            'Repayment End' : true,
-            'Paid' : true,
-            'Balance' : true
+            'Total Repayment': true,
+            'Monthly Installment': true,
+            'Repayment Starts': true,
+            'Repayment End': true,
+            'Paid': true,
+            'Balance': true,
+            'Amount Overdue':true,
+            'Amount Not Yet Due':true,
+            'Next Payment Date':true,
+            'Last Due Date':true,
+            
         }
         this.getCompanies();
+        this.getListOfCustomersInLoans();
     }
-    getCompanies(){
-        this.customersSrvc.getCompanies(0, 0,{},{},{},{},this.currentUser.token).subscribe(data => {
+    getCompanies() {
+        this.customersSrvc.getCompanies(0, 0, {}, {}, {}, {}, this.currentUser.token).subscribe(data => {
             this.companies = data.all_cus.a;
         });
     }
-    changeFilter(event){
-        this.filterStatus=event.target.value
-     }
+    changeFilter(event) {
+        this.filterStatus = event.target.value
+    }
     // set the keys of the response object as column names on the table
     resetColumn(obj) {
         var cols = {};
-        for(var key in obj) {
+        for (var key in obj) {
             cols[key] = true;
         }
         this.columns = cols;
-    } 
+    }
 
-    exportReport(){
+    exportReport() {
         if (typeof this.rows == 'undefined' || this.rows.length < 1) {
             alert("There are no data to export.");
             return;
@@ -144,29 +162,29 @@ export class LoanportfolioComponent implements OnInit {
         let field_names = [];
         for (var i = 0; i < this.rows.length; i++) {
             let cols = {};
-            for (let column of this.objectKeys(this.columns)) {                
+            for (let column of this.objectKeys(this.columns)) {
                 if (this.columns[column]) {
-                   cols[column] = this.rows[i][column];
-                   field_names.push(column);
+                    cols[column] = this.rows[i][column];
+                    field_names.push(column);
                 }
             }
-             rows.push(cols);
+            rows.push(cols);
         }
-this.loading = true
+        this.loading = true
         // Send to the server
-        this.operationsService.exportReport(this.currentUser.token, {'report': 'due_loans', 'rows': rows, 'field_names': field_names}).subscribe(data => {
+        this.operationsService.exportReport(this.currentUser.token, { 'report': 'due_loans', 'rows': rows, 'field_names': field_names }).subscribe(data => {
             this.loading = false;
             if (data.status) {
                 alert("Data Successfully exported. Download would start automatically.");
                 window.open(data.message);
                 return;
-            }else{
+            } else {
                 alert("Data could not be exported.");
             }
         });
     }
-    
-    getLoans(){
+
+    getLoans() {
         this.loading = true
         this.operationsService.getLoanPortfolio(this.currentUser.token, this.filter).subscribe(data => {
             this.loading = false;
@@ -175,7 +193,7 @@ this.loading = true
                 this.resetColumn(data.message[0]);
             }
             this.aggregate = data.aggregate;
-             
+
         });
     }
 

@@ -27,7 +27,7 @@
                <li *ngIf="enable_peer=='1'&&customer?.CUSTOMER_TYPE=='1'"><a  [routerLink]="['/customer/',userType,userId,'investments']">Investments</a></li>
                <li><a [routerLink]="['/customer/',userType,userId,'schedule']">Schedule</a></li>
                <li *ngIf="customer?.CUSTOMER_TYPE=='2'"><a [routerLink]="['/customer/',userType,userId,'people']">People</a></li>
-               <li *ngIf="customer?.CUSTOMER_TYPE=='2'"><a [routerLink]="['/customer/',userType,userId,'interest']">Interest Settings</a></li>
+               <li *ngIf="customer?.CUSTOMER_TYPE=='2'"><a [routerLink]="['/customer/',userType,userId,'interest']">Settings</a></li>
                <li *ngIf="customer?.CUSTOMER_TYPE=='2'"><a [routerLink]="['/customer/',userType,userId,'users']">Users</a></li>
             </ul>
           </div>

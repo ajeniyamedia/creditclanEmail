@@ -1,0 +1,53 @@
+<section class="panel" style="margin-bottom: 10px">
+    <header class="panel-heading">
+        <span class="tools pull-right">
+            <ul class="list-inline">
+                <li>
+                    <a [routerLink]="['../contract']">Summary</a>
+                </li>
+                <li>
+                    <a [routerLink]="['../repayments']">Schedule</a>
+                </li>
+                <li>
+                    <a [routerLink]="['../more']">More</a>
+                </li>
+            </ul>
+        </span>
+        <span>Request Timeline</span>
+    </header>
+</section>
+<section class="panel">
+  <div class="panel-body">
+        
+          <div class="timeline">
+             
+              <article class="timeline-item" *ngFor="let item of timeline; let idx = index" [ngClass]="{'alt':idx % 2 > 0}">
+                  <div class="timeline-desk"  *ngIf="idx % 2 > 0">
+                      <div class="panel">
+                          <div class="panel-body">
+                              <span class="arrow"></span>
+                              <span class="timeline-icon red"></span>
+                              <span class="timeline-date">{{ item?.DATE_ADDED  | amDateFormat:'h:mm a'}}</span>
+                              <h1 class="red">{{ item?.DATE_ADDED  | amDateFormat:'D'}} {{ item?.DATE_ADDED  | amDateFormat:'MMMM'}} | {{ item?.DATE_ADDED  | amDateFormat:'dddd'}}</h1>
+                              <p>{{item?.LEGAL_NAME}} | {{item?.TIMELINE_ACTIVITY}}</p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="timeline-desk" *ngIf="idx % 2 == 0">
+                      <div class="panel">
+                          <div class="panel-body">
+                              <span class="arrow-alt"></span>
+                              <span class="timeline-icon green"></span>
+                              <span class="timeline-date">{{ item?.DATE_ADDED  | amDateFormat:'h:mm a'}}</span>
+                              <h1 class="green">{{ item?.DATE_ADDED  | amDateFormat:'D'}} {{ item?.DATE_ADDED  | amDateFormat:'MMMM'}} | {{ item?.DATE_ADDED | amAdd: 1 : 'hours'  | amDateFormat:'dddd'}}</h1>
+                              <p>{{item?.LEGAL_NAME}} | {{item?.TIMELINE_ACTIVITY}}</p>
+                          </div>
+                      </div>
+                  </div>
+              </article> 
+               
+          </div>
+
+          <div class="clearfix">&nbsp;</div>
+      </div>
+</section>

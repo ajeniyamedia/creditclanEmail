@@ -64,7 +64,7 @@
                                 <li *ngIf="loan?.SCHEDULE_HAS_BEEN_SAVED==='1' && loan?.IS_ACCEPTED!='1'">
                                     <a class="t_l3 t_dull" href="javascript:;" (click)="sendContract()">Send Contract Docs.</a>
                                 </li>
-                                <li *ngIf="loan?.CONNECTED_ACCOUNT_ID==='0'||loan?.CONNECTED_ACCOUNT_ID===null">
+                                <li>
                                     <a class="t_l3 t_dull" href="javascript:;" (click)="confirmAccount()">Request Acct. Confimration</a>
                                 </li>
                                 <!-- <li *ngIf="has_remita && loan?.LOAN_STATUS < 2 && loan?.SCHEDULE_HAS_BEEN_SAVED=='1' && loan?.DIRECT_DEBIT_STATUS=='0'">
@@ -73,6 +73,9 @@
                                 <li *ngIf="has_remita && loan?.LOAN_STATUS < 2 && loan?.SCHEDULE_HAS_BEEN_SAVED=='1' && loan?.DIRECT_DEBIT_RETRIEVAL_REFERENCE!=''">
                                     <a class="t_l3 t_dull" href="javascript:;" (click)="checkdirectdebitstatus()">Check Direct Debit Status</a>
                                 </li>  -->
+                                <li>
+                                    <a class="t_l3 t_dull" href="javascript:;" (click)="assignLoanOfficer()">Assign Officer</a>
+                                </li>
                                 <li *ngIf="loan?.LOAN_STATUS=='1'||loan?.LOAN_STATUS=='2'">
                                     <a class="t_l3 t_dull" href="javascript:;" (click)="deleteRequest()">Delete Request</a>
                                 </li>

@@ -102,4 +102,7 @@ export class LoanstatementComponent implements OnInit {
   break_loan() {
     this.DataService.onBreakLoan.emit();
   }
+  changeDefaultRepayment(){
+    this.DataService.onChangeDefaultPayment.emit({loan: this.loan});
+  }
 }

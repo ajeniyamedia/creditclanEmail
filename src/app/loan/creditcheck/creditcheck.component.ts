@@ -11,7 +11,7 @@ declare var swal: any;
   styleUrls: ['./creditcheck.component.css']
 })
 export class CreditcheckComponent implements OnInit {
-
+  ready = false;
   loan: any;
   currentUser: any;
   subb: any;
@@ -45,6 +45,7 @@ export class CreditcheckComponent implements OnInit {
       this.operationsService.getLoanCreditCheck(this.currentUser.token, this.parentRouteId)
         .subscribe(result => {
           this.loan = result.loan;
+          this.ready = true;
         });
     });
   }

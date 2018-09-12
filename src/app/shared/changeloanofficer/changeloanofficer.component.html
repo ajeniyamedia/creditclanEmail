@@ -1,0 +1,65 @@
+<section class="panel" style="overflow:hidden;">
+  <div style="padding:24px 20px; overflow: auto;">
+    <div class="text-center borrower-info">
+      <a class="pull-left" style="margin-right: 25px">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{loan?.FILE_NAME | imagenotfound}}?q=auto"
+          style="width:50px; height:50px">
+      </a>
+      <div class="borrower-text pull-left" style="text-align:left">
+        <p class="" style="margin-bottom: 0px">{{loan?.LEGAL_NAME}}</p>
+        <p class="" style="font-weight: bold">{{loan?.REQUEST_PRINCIPAL | number:'.2-2'}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    <p class="" style="font-weight: bold">Loan Officer</p>
+  </div>
+  <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
+    <a class="paystack-switch-make active text-center" style="width:100% !important">Change Loan Officer</a>
+  </div>
+  <div>
+
+    <div class="panel-body">
+
+      <form #interestBandForm="ngForm" novalidate>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="control-label">Loan Officer</label>
+              <select class="form-control" name="LOAN_OFFICER" [(ngModel)]="change_officer_form.LOAN_OFFICER">
+                <option value="0"></option>
+                <option *ngFor="let mode of officers" [value]="mode.PEOPLE_PEOPLE_ID">{{mode?.LEGAL_NAME}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9">
+            <label class="control_label">Send email notification</label>
+          </div>
+          <div class="col-md-3">
+            <div class="checkbox pull-right">
+
+              <input type="checkbox" name="SEND_EMAIL_NOTIFICATION" [(ngModel)]="change_officer_form.SEND_EMAIL_NOTIFICATION" >
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="control-label">Password</label>
+              <input type="password" class="form-control" name="SECURITY_QUESTION_ANSWER" [(ngModel)]="change_officer_form.SECURITY_QUESTION_ANSWER">
+              <input type="hidden" name="REQUEST_ID" [(ngModel)]="change_officer_form.REQUEST_ID">
+            </div>
+          </div>
+        </div>
+        <button type="submit" (click)="changeTheLoanOfficer(interestBandForm.value, interestBandForm.valid)"
+          [disabled]="loading" class="btn btn-white pull-right">
+          <span *ngIf="!loading">Submit</span>
+          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

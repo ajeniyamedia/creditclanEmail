@@ -3,7 +3,7 @@ import 'rxjs/add/operator/map'
 import { Injectable } from '@angular/core';
 import {
   Headers,
-  Http,
+  Http, 
   RequestOptions,
   Response
 } from '@angular/http';
@@ -34,7 +34,7 @@ export class RemitaService {
       .map((response: Response) => response.json());
   }
   getRemitaRecords(token:any, userId:any){
-    return this.http.post('https://dataupload.creditclan.com/api/v2/remita/getRemitaRecords', JSON.stringify({ token: token, userId:userId }))
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/remita/getRemitaRecords', JSON.stringify({ token: token, userId:userId }))
       .map((response: Response) => response.json());
   }
 }
