@@ -136,8 +136,11 @@ export class LoanacctsComponent implements OnInit {
   cancelDirectDebit(loan, acc) {
     this.DataService.onOpenLoanChildModal.emit({ 'location': 'cancel_debit_mandate', loan: loan, acc: acc });
   }
+  resendMandateLink(loan, acc) {
+    this.DataService.onOpenLoanChildModal.emit({ 'location': 'resend_debit_mandate', loan: loan, acc: acc });
+  }
   stopdirectdebitmandate(loan, acc) {
-    this.DataService.onOpenLoanChildModal.emit({ 'location': 'stop_direct_debit', loan: loan, acc: acc });
+    this.DataService.stopDebitMandate.emit({ 'location': 'stop_direct_debit', loan: loan, acc: acc });
   }
   checkTransactionStatus(loan, acc) {
     this.showDirectDebitHistoryOnAccount.emit({ loan: loan, acc: acc });

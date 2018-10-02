@@ -358,6 +358,16 @@ export class CustomersService {
       .map(this.httpHelper.extractData)
       .catch(this.httpHelper.handleError);
   }
+  saveMobileApplication(token: any, value: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/company/saveMobileApplication', JSON.stringify({ token: token, data: value }))
+      .map((response: Response) => response.json());
+  }
+  saveCompanyDetails(token: any, value: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/company/saveCompanyDetails', JSON.stringify({ token: token, data: value }))
+      .map((response: Response) => response.json());
+  }
   updateCompanyAddress(company_address:any) {
     company_address['token'] = this.currentUser.token;
     return this.http.post(this.api_base + 'company/update_address/', JSON.stringify(company_address))

@@ -22,6 +22,7 @@
                                 <div class="col-lg-4 col-sm-4">
                                     <h4>CLIENT INFO</h4>
                                     <p>Client : {{loan?.LEGAL_NAME}}</p>
+                                    <p>Repayment Mode : {{repayment_mode[loan?.REPAYMENT_MODE]}}</p>
                                 </div>
                                 <div class="col-lg-4 col-sm-4">
                                     <h4>REQUEST INFO</h4>
@@ -33,6 +34,8 @@
                                 <div class="col-lg-4 col-sm-4">
                                     <h4>REPAYMENTS</h4>
                                     <p>Total Repayment : {{loan?.repayment.tr| number:'.2-2'}}</p>
+                                    <p *ngIf="loan?.REPAYMENT_MODE=='1'">Remita Inflight : {{loan?.REMITA_MANDATE_REF}}</p>
+                                    <p *ngIf="loan?.REPAYMENT_MODE=='3'">Direct Debit : {{loan?.DIRECT_DEBIT_RETRIEVAL_REFERENCE}}</p>
                                     
                                 </div>
                             </div>
@@ -42,27 +45,29 @@
                             <thead>
                                 <!-- <th>#</th> -->
                                 <th>Date</th>
-                                <th>Prin. Outstanding</th>
+                                <!-- <th>Prin. Outstanding</th> -->
                                 <th>Interest</th>
                                 <th>Repayment</th>
+                                <th>Fines</th>
                                 <th>Paid</th>
                                 <th>Balance</th>
                                 
-                                <th *ngIf="loan?.USE_REMITA=='1'">Remita Mandate Ref</th>
-                                <th *ngIf="loan?.DIRECT_DEBIT_STATUS=='1'">Direct Debit Reference</th>
+                                <!-- <th *ngIf="loan?.USE_REMITA=='1'">Remita Mandate Ref</th>
+                                <th *ngIf="loan?.DIRECT_DEBIT_STATUS=='1'">Direct Debit Reference</th> -->
                                 <th></th>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let repayment of loan?.repayment.schedule"> 
                                     <td>{{repayment?.REPAYMENT_DATE| amDateFormat:'DD MMM YYYY'}}</td>
-                                    <td>{{repayment?.OUTSTANDING_PRINCIPAL| number:'.2-2'}}</td> 
+                                    <!-- <td>{{repayment?.OUTSTANDING_PRINCIPAL| number:'.2-2'}}</td>  -->
                                     <td>{{repayment?.INTEREST_REPAYMENT| number:'.2-2'}}</td>
                                     <td>{{repayment?.TERM_REPAYMENT| number:'.2-2'}}</td>
+                                    <td>{{repayment?.TOTAL_FINES_SO_FAR| number:'.2-2'}}</td>
                                     <td>{{repayment?.HOW_MUCH_PAID| number:'.2-2'}}</td>
                                     <td>{{repayment?.HOW_MUCH_REMAINING| number:'.2-2'}}</td>
-                                    <td *ngIf="loan?.USE_REMITA=='1'">{{repayment?.REMITA_MANDATE_REF}}</td>
+                                    <!-- <td *ngIf="loan?.USE_REMITA=='1'">{{repayment?.REMITA_MANDATE_REF}}</td>
                                     
-                                    <td *ngIf="loan?.DIRECT_DEBIT_STATUS=='1'">{{repayment?.DIRECT_DEBIT_RETRIEVAL_REFERENCE}}</td>
+                                    <td *ngIf="loan?.DIRECT_DEBIT_STATUS=='1'">{{repayment?.DIRECT_DEBIT_RETRIEVAL_REFERENCE}}</td> -->
                                     <td>
                                         <div class="btn-group" *ngIf="repayment?.HOW_MUCH_REMAINING > 0 && authService.canViewModule('1,7') && repayment?.AUTODEBIT_NOW">
 
@@ -73,8 +78,11 @@
                                                 <li>
                                                     <a (click)="initiateRecollection(repayment)">Push for Card Recollection</a>
                                                 </li>
-                                                <li *ngIf="loan?.USE_REMITA=='1'">
-                                                    <a (click)="initiateStopRemitaCollection(repayment)">Stop Remita Collections</a>
+                                                <li>
+                                                    <a (click)="initiateClearFines(repayment)">Clear Fines</a>
+                                                </li>
+                                                <li *ngIf="loan?.USE_REMITA=='1' && loan?.REMITA_MANDATE_REF !=''">
+                                                    <a (click)="initiateStopRemitaCollection(repayment)">Stop Remita Inflight</a>
                                                 </li>
                                                 <li *ngIf="loan?.DIRECT_DEBIT_STATUS=='1'">
                                                         <a (click)="initiateSendDebitInstruction(repayment)">Send Debit Instructions</a>
@@ -85,6 +93,20 @@
                                                     <li *ngIf="loan?.DIRECT_DEBIT_STATUS=='1'">
                                                         <a (click)="initiateCancelDebitInstruction(repayment)">Cancel Direct Debit</a>
                                                     </li>
+                                                    <li *ngIf="repayment?.HOW_MUCH_PAID > 0">
+                                                        <a (click)="initiateReverseTransaction(repayment)">Reverse Transaction</a>
+                                                    </li>
+                                            </ul>
+                                        </div>
+                                        <div class="btn-group" *ngIf="repayment?.HOW_MUCH_REMAINING <= 0 && authService.canViewModule('1,7')">
+
+                                            <button data-toggle="dropdown" class="btn btn-white btn-xs dropdown-toggle" type="button" aria-expanded="false">
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul role="menu" class="dropdown-menu">
+                                                <li>
+                                                    <a (click)="initiateReverseTransaction(repayment)">Reverse Transaction</a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </td>

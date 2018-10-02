@@ -820,7 +820,7 @@
 </div> -->
 
 
-<div *ngIf="approvalsOpen">
+<div *ngIf="approvalsOpen && canViewModule">
   <app-loansummary [pending_approvals]="approvals_size" [is_approval]=true [loan_viewed]="loan_viewed" [view_state]="0" [dontshownext]="0"
     (modalClosed)="closeShowInterest($event)"></app-loansummary>
 </div>

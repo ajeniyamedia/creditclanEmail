@@ -27,7 +27,13 @@ export class LoanlogsComponent implements OnInit {
         this.calllogs = loan.output;
       });
     });
-    
+    // this.sub = this.route.parent.params.subscribe(params => {
+    //   this.parentRouteId = +params["id"];
+    //   this.loansService.getCallLogs(this.currentUser.token, this.parentRouteId)
+    //     .subscribe(loan => {
+    //       this.calllogs = loan.output;
+    //     });
+    // });
   }
 
 }

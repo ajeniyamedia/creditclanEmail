@@ -3,7 +3,7 @@
     
       <header class="panel-heading" style="overflow:auto">
           Loan Schedule
-          <span class="tools pull-right" *ngIf="loan_status!='5'&&authService.canViewModule('1,7')">
+          <span class="tools pull-right" *ngIf="loan_status!='5'&&canViewLinks">
             <a (click)="makeLoanPayment()" class="btn btn-white">Make Payment</a>
             <a (click)="breakLoan()" class="btn btn-white">Break Loan</a>
             <!-- <a [routerLink]="['../schedule']">Schedule</a>  -->

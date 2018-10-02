@@ -3,13 +3,13 @@
 
     <header class="panel-heading" style="overflow:auto">
         Credit Check
-        <span class="tools pull-right">
+        <span class="tools pull-right" *ngIf="where == 'loan'">
             <button [disabled]="!ready" (click)="refreshCreditCheck()" class="btn btn-white">Run Credit Check</button>
 
         </span>
     </header>
 
-    <div class="panel-body">
+    <div class="panel-body"  *ngIf="where == 'loan'">
         <div class="row invoice-list">
 
             <div class="col-lg-4 col-sm-4">

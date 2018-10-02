@@ -139,26 +139,26 @@
 
           <span class="tools pull-right">
             <ul class="list-inline">
-              <li>
+              <li *ngIf="canViewLinks || isloanofficer">
                 <a [routerLink]="['../customer-analysis']">Customer Analysis</a>
               </li>
-              <li>
+              <li *ngIf="canViewLinks || isloanofficer">
                 <a [routerLink]="['../contract']">Summary</a>
               </li>
-              <li>
+              <li *ngIf="canViewLinks || isloanofficer">
                 <a [routerLink]="['../checklist']">Checklist</a>
               </li>
-              <li *ngIf="loan?.LOAN_STATUS<=2">
+              <li *ngIf="loan?.LOAN_STATUS<=2 && (canViewLinks || isloanofficer)">
                 <a [routerLink]="['../repayments']">Schedule</a>
               </li>
               <!-- <li><a [routerLink]="['../chat']">Chat</a></li> -->
-              <li>
+              <li *ngIf="canViewLinks || isloanofficer">
                 <a [routerLink]="['../kyc']">KYC</a>
               </li>
               <!-- <li *ngIf="loan?.DIRECT_DEBIT_RETRIEVAL_REFERENCE != ''">
                 <a [routerLink]="['../directdebit']">Direct Debit</a>
               </li> -->
-              <li>
+              <li *ngIf="canViewLinks || isloanofficer">
                 <a [routerLink]="['../more']">More</a>
               </li>
             </ul>
@@ -367,7 +367,7 @@
                   <div class="clearfix"></div>
                 </div>
               </div>
-              <div>
+              <div *ngIf="canViewLinks || isloanofficer">
                 <div class="row" *ngIf="loan?.IS_REJECTED!='1' && loan?.LOAN_STATUS < 3 && loan?.PENDING_WALLET_DISBURSE !=1">
                   <div class="col-md-6">
                     <button [disabled]="loading" *ngIf="loan?.IS_PEER_TO_PEER==='1'&&loan?.LOAN_STATUS==='1'&&loan?.ADDED_TO_PAYMENT_QUEUE!='1'"

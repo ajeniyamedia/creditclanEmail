@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DataService, OperationsService,StorageService,CustomerService } from '../_services/index';
+import { DataService, OperationsService,StorageService,CustomerService, AuthenticationService } from '../_services/index';
 import { CustomersService } from '../_services/customers.service';
 import { Router } from '@angular/router';
 @Component({
@@ -26,9 +26,13 @@ export class CustomerdetailsComponent implements OnInit {
   prev: any;
   next: any;
   nce:any;
+  canSeeLinks=false;
   constructor(protected customersSrvc: CustomersService,public router: Router,
     public customerServ:CustomerService,public storageService:StorageService,public operationsService: OperationsService, 
-    public route: ActivatedRoute, public DataService: DataService, ) {
+    public route: ActivatedRoute, public DataService: DataService, public authService: AuthenticationService ) {
+      if(!authService.canViewModule('1,4,5')){
+        this.canSeeLinks = true;
+      }
     this.enable_peer = this.storageService.read<any>('enable_peer_to_peer');
     // Subscribe to the Event that is being emitted on navigation on the profile page.
     // The appropriate side card is loaded based on the section navigated to.

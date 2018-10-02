@@ -19,12 +19,14 @@ export class CreditcheckComponent implements OnInit {
   history: any;
   view = 'master';
   creditcheckrecord: any;
+  where = 'loan';
   constructor(public dataService: DataService, public operationsService: OperationsService, public toastr: ToastrService,
     public router: Router, public route: ActivatedRoute, public loansService: LoansService, public storageService: StorageService) {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.dataService.reloadCreditCheck.subscribe(res => {
       this.getData();
-    })
+    });
+    this.where = route.snapshot.data[0]['where'];
   }
   showSuccess(message) {
     this.toastr.success(message, 'Success!');
@@ -42,7 +44,7 @@ export class CreditcheckComponent implements OnInit {
     this.subb = this.route.parent.params.subscribe(params => {
 
       this.parentRouteId = +params["id"];
-      this.operationsService.getLoanCreditCheck(this.currentUser.token, this.parentRouteId)
+      this.operationsService.getLoanCreditCheck(this.currentUser.token, this.parentRouteId, this.where)
         .subscribe(result => {
           this.loan = result.loan;
           this.ready = true;

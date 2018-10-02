@@ -20,6 +20,7 @@ export class DirectdebitComponent implements OnInit {
   view = 'master';
   accountfordirectdebit: any;
   records_found = false;
+  checking_instructions = true;
 
   constructor(public operationsService: OperationsService, public toastr: ToastrService,
     public router: Router, public route: ActivatedRoute, public loansService: LoansService,
@@ -61,8 +62,10 @@ export class DirectdebitComponent implements OnInit {
     this.dataService.stopDebitMandate.emit({ loan: this.loan });
   }
   debitMandateHistory(loan, acc) {
+    this.checking_instructions = true;
     this.operationsService.getMandateTransactionHistory(this.currentUser.token, loan, acc)
       .subscribe(data => {
+        this.checking_instructions = false;
         if (data.statuscode == "00") {
           this.records_found = true;
           this.history = data.data.data.paymentDetails;

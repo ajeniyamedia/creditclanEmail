@@ -63,7 +63,7 @@ export class RequestsdashComponent implements OnInit {
   sectors: any;
   approval_levels;
   magic:any;
-  magic_filter = { customer_category: '0', ompany_id: '', peer_to_peer: '', reset: false, my_approvals: false, account_officer: false, start: 0, funding: '100', token: '', min: 0, max: 10000000, loan_status: this.statuses[0].value, searchText: '', ratings_one: false, ratings_two: false, ratings_three: false, ratings_four: false, ratings_five: false, funding_amount_one: 1, funding_amount_two: 1, funding_amount_three: false, funding_status_disbursement: false, funding_status_contract_created: false, funding_status_applied: false, funding_status_funded: false, funding_status: false, amount: false, approval_level: false, rating: false, sector: false, date: false };
+  magic_filter = { repayment_mode:'0',customer_category: '0', ompany_id: '', peer_to_peer: '', reset: false, my_approvals: false, account_officer: false, start: 0, funding: '100', token: '', min: 0, max: 10000000, loan_status: this.statuses[0].value, searchText: '', ratings_one: false, ratings_two: false, ratings_three: false, ratings_four: false, ratings_five: false, funding_amount_one: 1, funding_amount_two: 1, funding_amount_three: false, funding_status_disbursement: false, funding_status_contract_created: false, funding_status_applied: false, funding_status_funded: false, funding_status: false, amount: false, approval_level: false, rating: false, sector: false, date: false };
   loans: any;
   miniSearch = false;
   dontshownext = '0';
@@ -87,6 +87,9 @@ export class RequestsdashComponent implements OnInit {
     public fb: FormBuilder,
     public loansService: LoansService,
     public storageService: StorageService, ) {
+      if (!this.authService.canViewModule('1,2,3,5,1026')) {
+        this.router.navigate(['../unauthorized']);
+      }
     this.currentUser = this.storageService.read<any>('currentUser');
     this.type_of_view = this.storageService.read<any>('type_of_view');
     this.DataService.viewTheLoan.subscribe(res => {

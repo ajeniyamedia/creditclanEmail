@@ -67,7 +67,7 @@ export class RequestsComponent implements OnInit {
   loan_viewed = '0';
   public slaveOpen = '0';
   public masterClosed = '0';
-  magic_filter = { customer_category: '0', peer_to_peer: '', reset: false, my_approvals: false, account_officer: false, start: 0, funding: '100', token: '', min: 0, max: 10000000, loan_status: this.statuses[0].value, searchText: '', ratings_one: false, ratings_two: false, ratings_three: false, ratings_four: false, ratings_five: false, funding_amount_one: 1, funding_amount_two: 1, funding_amount_three: false, funding_status_disbursement: false, funding_status_contract_created: false, funding_status_applied: false, funding_status_funded: false, funding_status: false, amount: false, approval_level: false, rating: false, sector: false, date: false };
+  magic_filter = { repayment_mode:'0', customer_category: '0', peer_to_peer: '', reset: false, my_approvals: false, account_officer: false, start: 0, funding: '100', token: '', min: 0, max: 10000000, loan_status: this.statuses[0].value, searchText: '', ratings_one: false, ratings_two: false, ratings_three: false, ratings_four: false, ratings_five: false, funding_amount_one: 1, funding_amount_two: 1, funding_amount_three: false, funding_status_disbursement: false, funding_status_contract_created: false, funding_status_applied: false, funding_status_funded: false, funding_status: false, amount: false, approval_level: false, rating: false, sector: false, date: false };
   loans: any;
   miniSearch = false;
   dontshownext = '0';
@@ -75,6 +75,7 @@ export class RequestsComponent implements OnInit {
   enable_bulk_disbursements = false;
   openforbulkpay = false;
   public applyMethod = { '1': 'USSD', '2': 'Mobile', '3': 'Back Office', '4': 'Back Office' };
+  canViewModule = false;
   constructor(public authService: AuthenticationService,
     @Inject(DOCUMENT) private document: Document,
     private DataService: DataService,
@@ -84,7 +85,7 @@ export class RequestsComponent implements OnInit {
     public loansService: LoansService, public storageService: StorageService
   ) {
     this.currentUser = this.storageService.read<any>('currentUser');
-    if (!this.authService.canViewModule('1,2,3,4,5,1026')) {
+    if (!this.authService.canViewModule('1,2,3,5,1026')) {
       this.router.navigate(['../unauthorized']);
     }
     this.type_of_view = this.storageService.read<any>('type_of_view');

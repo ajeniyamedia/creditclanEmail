@@ -11,7 +11,9 @@ declare var swal: any;
   styleUrls: ['./payment.component.css']
 })
 export class PaymentComponent implements OnInit {
-  mode_of_repayment =  [
+  otpconfirmwalletWithdrawalFormError = false;
+  ihavechosencard = false;
+  mode_of_repayment = [
     { "value": "1", "display": "Remita Inflight" },
     { "value": "2", "display": "Cards" },
     { "value": "3", "display": "Direct Debit Mandate" },
@@ -21,6 +23,8 @@ export class PaymentComponent implements OnInit {
   loan: any;
   cards: any;
   debit_all_card: any;
+  needsToCheckDirectDebit = false;
+  checking_direct_debit = false;
   @Input('record_type') record_type = '1';
   @Input('is_cancel') is_cancel = '0';
   @Input('schedule_type') schedule_type = '1';
@@ -34,7 +38,9 @@ export class PaymentComponent implements OnInit {
   @Output() paymentHasBeenProcessedFinally = new EventEmitter();
   @Output() closePaymentDialog = new EventEmitter();
   autodebit_form = {
-    SECURITY_QUESTION_ANSWER: ''
+    SECURITY_QUESTION_ANSWER: '',
+    CHARGE_TYPE: '1',
+    AMOUNT_TO_DEBIT: ''
   }
   record_type_ = '';
   payment_type = 'Disbursement';
@@ -53,9 +59,11 @@ export class PaymentComponent implements OnInit {
   public confirm_model = { PAYMENT_QUEUE_ID: '', LENDER_BANK_ACCOUNT_ID: '', SECURITY_QUESTION_ANSWER: '' };
   public nigerian_banks = [];
   complexForm: FormGroup;
+  complexFormCancel: FormGroup;
   newAccountForm: FormGroup;
   walletPaymentForm: FormGroup;
   walletWithdrawalForm: FormGroup;
+  walletWithdrawalFormCancel: FormGroup;
   bankPaymentForm: FormGroup;
   investorConfirmPayment: FormGroup;
   investorConfirmPayment_: FormGroup;
@@ -148,9 +156,15 @@ export class PaymentComponent implements OnInit {
       'PEOPLE_ID': '',
       'REQUEST_ID': '',
       'ADJUST_CONTRACT_DATE': false,
-      'REPAYMENT_MODE': ['1', Validators.required],
+      'REPAYMENT_MODE': ['1', Validators.required]
     })
-    
+    this.complexFormCancel = fb.group({
+      'PAYMENT_QUEUE_ID': '',
+      'PEOPLE_ID': '',
+      'REQUEST_ID': '' ,
+      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
+    })
+
     this.debitInstruction = fb.group({
       'PAYMENT_QUEUE_ID': '',
       'INVESTMENT_QUEUE_ID': '',
@@ -216,6 +230,12 @@ export class PaymentComponent implements OnInit {
     })
     this.walletWithdrawalForm = fb.group({
       // We can set default values by passing in the corresponding value or leave blank if we wish to not set the value. For our example, we’ll default the gender to female.
+      'WALLET_WITHDRAWAL_REQUEST_ID': '',
+      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
+      'PEOPLE_ID': '',
+    })
+    this.walletWithdrawalFormCancel = fb.group({
+      
       'WALLET_WITHDRAWAL_REQUEST_ID': '',
       'SECURITY_QUESTION_ANSWER': [null, Validators.required],
       'PEOPLE_ID': '',
@@ -398,7 +418,9 @@ export class PaymentComponent implements OnInit {
 
       });
   }
-
+  cancellationDone(){
+    this.DataService.cancelationDone.emit();
+  }
   paymentProcessDone() {
     if (this.sub != '0') {
       this.paymentHasBeenProcessedFinally.emit(this.sub);
@@ -512,6 +534,7 @@ export class PaymentComponent implements OnInit {
   }
   dopaymentConfirmRollbackForm(value: any): void {
     this.loading = true;
+
     this.operationsService.dopaymentConfirmRollbackForm(this.currentUser.token, value, this.schedule_type, this.record_type)
       .subscribe(status => {
         this.loading = false;
@@ -658,6 +681,35 @@ export class PaymentComponent implements OnInit {
 
       });
   }
+  checkDirectDebitStatus() {
+    this.checking_direct_debit = true;
+    this.operationsService.checkDirectDebitStatus(this.currentUser.token, this.complexForm.value)
+      .subscribe(status => {
+        this.checking_direct_debit = false;
+
+        if (status.isActive == true) {
+          this.otpError = false;
+          this.paytype = 'confirm';
+          this.makingFinalPayment = true;
+          this.paymentHasBeenProcessed = false;
+          this.payment_status = false;
+          this.loading = true;
+          this.checking_direct_debit = false;
+          this.needsToCheckDirectDebit = false
+        } else {
+          this.showError("Mandate is not active");
+        }
+      });
+  }
+  repaymentModeChanged(event) {
+    this.otpError = false;
+    this.makingFinalPayment = false;
+    this.paymentHasBeenProcessed = false;
+    this.payment_status = false;
+    this.loading = false;
+    this.checking_direct_debit = false;
+    this.needsToCheckDirectDebit = false;
+  }
   doPaymentConfirm(value: any): void {
     this.otpError = false;
     this.paytype = 'confirm';
@@ -665,9 +717,11 @@ export class PaymentComponent implements OnInit {
     this.paymentHasBeenProcessed = false;
     this.payment_status = false;
     this.loading = true;
+    this.checking_direct_debit = false;
+    this.needsToCheckDirectDebit = false
     this.operationsService.doPaymentConfirm(this.currentUser.token, value, this.schedule_type, this.record_type)
       .subscribe(status => {
-        this.DataService.runOperationsTest.emit();
+
         this.loading = false;
         if (this.record_type == '2') {
           this.withdrawal_step = '2';
@@ -694,12 +748,17 @@ export class PaymentComponent implements OnInit {
               this.otpError = true;
             }
           } else {
-            if (status.status) {
+            if (status.status == true) {
+              this.DataService.runOperationsTest.emit();
               this.paymentHasBeenProcessed = true;
               this.otpError = false;
               this.paymentConfirmed = true;
               this.payment_status = true;
             } else {
+              this.loading = false;
+              if (status.check_direct_debit == true) {
+                this.needsToCheckDirectDebit = true;
+              }
               this.makingFinalPayment = false;
               this.paymentHasBeenProcessed = false;
               this.otpError = true;
@@ -710,6 +769,22 @@ export class PaymentComponent implements OnInit {
 
         }
 
+
+
+      });
+  }
+  doPaymentCancel(value: any): void {
+    this.loading = true;
+    this.operationsService.doPaymentCancel(this.currentUser.token, value, this.schedule_type, this.record_type)
+      .subscribe(status => {
+        this.loading = false;
+        if(status.status === true){
+          this.paymentHasBeenProcessed = true;
+          this.showSuccess(status.message)
+        }else{
+          this.loading = false;
+          this.showError(status.message)
+        }
 
 
       });
@@ -860,9 +935,10 @@ export class PaymentComponent implements OnInit {
     this.loading = true;
     this.operationsService.confirmBorrowerHasBeenPaid(this.currentUser.token, value)
       .subscribe(status => {
-        this.DataService.runOperationsTest.emit();
         this.loading = false;
-        if (status.status) {
+        if (status.status == true) {
+
+          this.DataService.runOperationsTest.emit();
           this.paymentHasBeenProcessed = true;
           this.otpError = false;
           this.paymentConfirmed = true;
@@ -872,9 +948,17 @@ export class PaymentComponent implements OnInit {
             this.payment_status = false;
           }
         } else {
+          if (status.check_direct_debit == true) {
+            this.needsToCheckDirectDebit = true;
+          }
+          this.makingFinalPayment = false;
+          this.paymentHasBeenProcessed = false;
+          this.otpError = true;
+          this.otpmessage = status.message;
           this.paymentHasBeenProcessed = false;
           this.otpError = true;
           this.otpmessage = status.message
+          this.showError(status.message);
         }
 
 
@@ -909,8 +993,34 @@ export class PaymentComponent implements OnInit {
           this.otpmessage = status.message;
           this.makingFinalPayment = false;
           this.paymentHasBeenProcessed = false;
-          this.otpError = true;
+          this.otpconfirmwalletWithdrawalFormError = true;
           this.showError(status.message);
+          console.log(status)
+        }
+
+
+      });
+  }
+  confirmwalletWithdrawalFormCancel(value: any): void {
+    this.otpError = false;
+    this.paytype = 'make';
+    this.makingFinalPayment = true;
+    this.paymentHasBeenProcessed = false;
+    this.loading = true;
+    this.operationsService.confirmWalletWithdrawalCancel(this.currentUser.token, value)
+      .subscribe(status => {
+        this.loading = false;
+        if (status.status == true) {
+          this.paymentHasBeenProcessed = true;
+          this.otpError = false;
+          this.paymentConfirmed = true;
+          this.showSuccess(status.data.message);
+        } else {
+          this.otpmessage = status.message;
+          this.makingFinalPayment = false;
+          this.paymentHasBeenProcessed = false;
+          this.otpconfirmwalletWithdrawalFormError = true;
+          this.showError(status.data.message);
           console.log(status)
         }
 
@@ -965,7 +1075,7 @@ export class PaymentComponent implements OnInit {
     this.paymentHasBeenProcessed = false;
     this.paymentConfirmed = false;
     this.otpError = false;
-
+    this.ihavechosencard = false;
     this.confirmCardAD = false
   }
   addBorrowerAccount(disbursement) {
@@ -991,30 +1101,30 @@ export class PaymentComponent implements OnInit {
     this.paymentConfirmed = false;
     this.otpError = false;
     if (this.record_type == '1' || this.record_type == '2' || this.record_type == '7' || this.record_type == '20' || this.record_type == '4') {
-      if(this.record_type=='1'){
-        
+      if (this.record_type == '1') {
+
         (<FormControl>this.complexForm.controls['REPAYMENT_MODE'])
-        .setValue(disburse.REPAYMENT_SOURCE, { onlySelf: true });
+          .setValue(disburse.REPAYMENT_SOURCE, { onlySelf: true });
 
         (<FormControl>this.walletPaymentForm.controls['REPAYMENT_MODE'])
-        .setValue(disburse.REPAYMENT_SOURCE, { onlySelf: true });
-        
-        if(disburse.USE_REMITA=='1'){ 
+          .setValue(disburse.REPAYMENT_SOURCE, { onlySelf: true });
+
+        if (disburse.USE_REMITA == '1') {
           (<FormControl>this.complexForm.controls['REPAYMENT_MODE'])
-          .setValue('1', { onlySelf: true });
+            .setValue('1', { onlySelf: true });
           (<FormControl>this.walletPaymentForm.controls['REPAYMENT_MODE'])
-          .setValue('1', { onlySelf: true });
+            .setValue('1', { onlySelf: true });
         }
-        if(disburse.USE_REMITA=='0'){ 
-          if(disburse.DIRECT_DEBIT_STATUS=='1'){ 
+        if (disburse.USE_REMITA == '0') {
+          if (disburse.DIRECT_DEBIT_STATUS == '1') {
             (<FormControl>this.complexForm.controls['REPAYMENT_MODE'])
-            .setValue('3', { onlySelf: true });
+              .setValue('3', { onlySelf: true });
             (<FormControl>this.walletPaymentForm.controls['REPAYMENT_MODE'])
-          .setValue('3', { onlySelf: true });
+              .setValue('3', { onlySelf: true });
           }
-          
+
         }
-        
+
       }
       this.operationsService.getWalletSummary(this.currentUser.token, disburse.HOW_MUCH_WAS_GIVEN)
         .subscribe(data => {
@@ -1039,8 +1149,12 @@ export class PaymentComponent implements OnInit {
         .setValue(this.disburse.PEOPLE_ID, { onlySelf: true });
     }
     if (this.record_type == '1' || this.record_type == '3' || this.record_type == '20') {
-
+      if (this.record_type == '3') {
+        this.paytype = 'make';
+      }
       (<FormControl>this.complexForm.controls['PAYMENT_QUEUE_ID'])
+        .setValue(disburse.PAYMENT_QUEUE_ID, { onlySelf: true });
+        (<FormControl>this.complexFormCancel.controls['PAYMENT_QUEUE_ID'])
         .setValue(disburse.PAYMENT_QUEUE_ID, { onlySelf: true });
       (<FormControl>this.debitAllForm.controls['PAYMENT_QUEUE_ID'])
         .setValue(disburse.PAYMENT_QUEUE_ID, { onlySelf: true });
@@ -1087,6 +1201,8 @@ export class PaymentComponent implements OnInit {
 
     (<FormControl>this.complexForm.controls['PEOPLE_ID'])
       .setValue(disburse.PEOPLE_CUSTOMERS_ID, { onlySelf: true });
+      (<FormControl>this.complexFormCancel.controls['PEOPLE_ID'])
+      .setValue(disburse.PEOPLE_CUSTOMERS_ID, { onlySelf: true });
     (<FormControl>this.debitAllForm.controls['PEOPLE_ID'])
       .setValue(disburse.PEOPLE_CUSTOMERS_ID, { onlySelf: true });
     (<FormControl>this.repaymentConfirmPayment.controls['PEOPLE_ID'])
@@ -1100,7 +1216,7 @@ export class PaymentComponent implements OnInit {
 
     (<FormControl>this.complexForm.controls['REQUEST_ID'])
       .setValue(disburse.REQUEST_ID, { onlySelf: true });
-    (<FormControl>this.complexForm.controls['REQUEST_ID'])
+    (<FormControl>this.complexFormCancel.controls['REQUEST_ID'])
       .setValue(disburse.REQUEST_ID, { onlySelf: true });
     (<FormControl>this.debitAllForm.controls['REQUEST_ID'])
       .setValue(disburse.REQUEST_ID, { onlySelf: true });
@@ -1132,6 +1248,8 @@ export class PaymentComponent implements OnInit {
 
       (<FormControl>this.walletWithdrawalForm.controls['WALLET_WITHDRAWAL_REQUEST_ID'])
         .setValue(disburse.WALLET_WITHDRAWAL_REQUEST_ID, { onlySelf: true });
+        (<FormControl>this.walletWithdrawalFormCancel.controls['WALLET_WITHDRAWAL_REQUEST_ID'])
+        .setValue(disburse.WALLET_WITHDRAWAL_REQUEST_ID, { onlySelf: true });
       (<FormControl>this.walletFundingForm.controls['WALLET_WITHDRAWAL_REQUEST_ID'])
         .setValue(disburse.WALLET_WITHDRAWAL_REQUEST_ID, { onlySelf: true });
       (<FormControl>this.walletFundingConfimForm.controls['WALLET_WITHDRAWAL_REQUEST_ID'])
@@ -1140,6 +1258,8 @@ export class PaymentComponent implements OnInit {
     (<FormControl>this.walletPaymentForm.controls['PEOPLE_ID'])
       .setValue(disburse.PEOPLE_CUSTOMERS_ID, { onlySelf: true });
     (<FormControl>this.walletWithdrawalForm.controls['PEOPLE_ID'])
+      .setValue(disburse.PEOPLE_CUSTOMERS_ID, { onlySelf: true });
+      (<FormControl>this.walletWithdrawalFormCancel.controls['PEOPLE_ID'])
       .setValue(disburse.PEOPLE_CUSTOMERS_ID, { onlySelf: true });
     (<FormControl>this.walletFundingForm.controls['PEOPLE_ID'])
       .setValue(disburse.PEOPLE_CUSTOMERS_ID, { onlySelf: true });
@@ -1178,6 +1298,7 @@ export class PaymentComponent implements OnInit {
       this.paymentHasBeenProcessed = false;
       this.doPaymentTransactionConfirm(this.disburse)
     }
+    this.paytype = 'confirm';
   }
   doPaymentTransactionConfirm(disburse) {
     this.loansService.checkWalletTStatus(this.currentUser.token, this.disburse.REQUEST_ID)
@@ -1249,7 +1370,7 @@ export class PaymentComponent implements OnInit {
     this.makingFinalPayment = false;
     this.paymentHasBeenProcessed = false;
     this.otpError = false;
-
+    this.getBorrowerCards(this.disburse);
     if (this.autodebit == '1') {
       if (this.repayment) {
 
@@ -1284,7 +1405,6 @@ export class PaymentComponent implements OnInit {
           if (this.record_type == '3') {
             this.payment_type = 'Loan Repayment';
             this.paytype = 'confirm';
-
             this.getBorrowerCards(this.disburse);
           }
         } else {
@@ -1340,9 +1460,9 @@ export class PaymentComponent implements OnInit {
         }
       }
     }
-    
+
   }
-  
+
   rejectRequest(event) {
     this.operationsService.cancelQueuedOperation(this.currentUser.token, event)
       .subscribe(result => {
@@ -1379,7 +1499,6 @@ export class PaymentComponent implements OnInit {
   }
 
   getBorrowerCards(disburse) {
-    console.log(this.disburse)
     this.loansService.getLoanCards(this.currentUser.token, this.disburse.TOP_UP_REFERENCE)
       .subscribe(banks => {
         this.cards = banks.cards;

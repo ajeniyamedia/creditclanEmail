@@ -50,10 +50,16 @@ export class LoancontractComponent implements OnInit {
   public model: any;
   // @ViewChild(LoancontractformComponent)
   // public loancontractformComponent: LoancontractformComponent;
+canViewLinks = true;
 
-  constructor(private DataService: DataService, public optionsService: OptionsserviceService, public route: ActivatedRoute, 
+isloanofficer = false;
+  constructor(private authService:AuthenticationService,private DataService: DataService, public optionsService: OptionsserviceService, public route: ActivatedRoute, 
     public loansService: LoansService, public customerService: CustomerService, public userService: UserService, 
     public storageService: StorageService, public router: Router) {
+      if (!this.authService.canViewModule('1,3')) {
+        this.canViewLinks = false;
+      }
+
     //overlay.defaultViewContainer = vcRef;
     this.DataService.onGetLoan.subscribe(res => {
       // console.log(res)
@@ -153,6 +159,7 @@ export class LoancontractComponent implements OnInit {
   //   this.modal.open(NewloancontractComponent, new NewloancontractComponentData(this.loan));
   // }
   ngOnInit() {
+   
     if (this.sub_summary != "0") {
       if (this.sub_summary == "4") {
         this.currentUser = this.storageService.read<any>('currentUser');
@@ -201,7 +208,17 @@ export class LoancontractComponent implements OnInit {
           this.lat = loan.LAT;
           this.lng = loan.LNG;
           this.PEOPLE_RATING_ID = loan.PEOPLE_RATING_ID;
+          if(loan.ACCOUNT_OFFICER !="0"){
+            if(this.currentUser.account_id === loan.ACCOUNT_OFFICER){
+              this.isloanofficer = true;
+            }else{
+              this.isloanofficer = false;
+            }
+          }else{
+            this.isloanofficer = true;
+          } 
         });
+
     });
   }
   cancelContractAsk(){

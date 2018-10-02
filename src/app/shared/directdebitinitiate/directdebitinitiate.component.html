@@ -38,6 +38,39 @@
               </div>
 
             </div>
+            <div class="row">
+                <div class="col-md-9">
+                  <label class="control_label">Debit total amount</label>
+                </div>
+                <div class="col-md-3">
+                  <div class="checkbox pull-right">
+                    <input type="radio" name="CHARGE_TYPE" [value]="1" [formControl]="debitInstruction.controls['CHARGE_TYPE']">
+
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-9">
+                  <label class="control_label">Specify amount</label>
+                </div>
+                <div class="col-md-3">
+                  <div class="checkbox pull-right">
+                    <input type="radio" name="CHARGE_TYPE" [value]="2" [formControl]="debitInstruction.controls['CHARGE_TYPE']">
+
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="debitInstruction.controls['CHARGE_TYPE'].value=='2'">
+                <div class="col-md-6">
+                  <label class="control_label">Amount</label>
+                </div>
+                <div class="col-md-6">
+                  <div class="checkbox pull-right">
+                    <input type="text" class="form-control" name="AMOUNT_TO_DEBIT" [formControl]="debitInstruction.controls['AMOUNT_TO_DEBIT']">
+
+                  </div>
+                </div>
+              </div>
           <div class="form-group" [ngClass]="{'has-error':!debitInstruction.controls['SECURITY_QUESTION_ANSWER'].valid && debitInstruction.controls['SECURITY_QUESTION_ANSWER'].touched}"
             style="margin-bottom:15px">
             <label for="exampleInputEmail1">Enter your password</label>

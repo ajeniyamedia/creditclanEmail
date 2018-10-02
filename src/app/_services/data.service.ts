@@ -84,4 +84,11 @@ export class DataService {
   onreloadAccountsAndCards: EventEmitter<any> = new EventEmitter(); 
   onChangeDefaultPayment: EventEmitter<any> = new EventEmitter(); 
   onChangeLoanOfficer: EventEmitter<any> = new EventEmitter();
+  onCreditLoanStatement: EventEmitter<any> = new EventEmitter();
+  cancelationDone: EventEmitter<any> = new EventEmitter();
+  oninitiateReverseTransaction: EventEmitter<any> = new EventEmitter();
+  initStopRemita: EventEmitter<any> = new EventEmitter(); 
+  onInitiateClearFines: EventEmitter<any> = new EventEmitter();
+  remitaLoanNotification: EventEmitter<any> = new EventEmitter();
+  refreshRemitaDetails: EventEmitter<any> = new EventEmitter();
 }

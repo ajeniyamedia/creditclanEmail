@@ -26,6 +26,12 @@ export class OperationsService {
       .map((response: Response) => response.json());
   }
 
+  saveDirectDebitSettings(token: any, value: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/operations/save_direct_debit_settings', JSON.stringify({ token: token, data: value }))
+      .map((response: Response) => response.json());
+  }
+
   saveAnalytics(token: any, value: any): Observable<any> {
     // get users from api
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/analytics/saveAnalyticsSettings', JSON.stringify({ token: token, data: value }))
@@ -95,9 +101,14 @@ export class OperationsService {
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/company/saveEmployee', JSON.stringify({ token: token, data: data, company_id: company_id, isedit: is_edit }))
       .map((response: Response) => response.json());
   }
-  saveRole(role: RoleModel, token: any, is_edit: any, role_id: any): Observable<any> {
+  saveRole(role: RoleModel, token: any, is_edit: any, role_id: any, chosenRights: any): Observable<any> {
     // get users from api
-    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/employee/saveRole', JSON.stringify({ is_edit: is_edit, role_id: role_id, role: role, token: token }))
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/employee/saveRole', JSON.stringify({ chosenRights: chosenRights, is_edit: is_edit, role_id: role_id, role: role, token: token }))
+      .map((response: Response) => response.json());
+  }
+  deleteRole(role: RoleModel, token: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/employee/deleteRole', JSON.stringify({ role: role, token: token }))
       .map((response: Response) => response.json());
   }
   getCompanyEmployees(token: any, start: any, search: any, company_id: any): Observable<any> {
@@ -113,6 +124,11 @@ export class OperationsService {
   getRoles(token: any): Observable<any> {
     // get users from api
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/employee/getRoles', JSON.stringify({ token: token }))
+      .map((response: Response) => response.json());
+  }
+  getRoleRights(token: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/employee/getRoleRights', JSON.stringify({ token: token }))
       .map((response: Response) => response.json());
   }
   getBanks_(token: any): Observable<any> {
@@ -268,6 +284,10 @@ export class OperationsService {
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/reports/exportRecords', JSON.stringify({ token: token, account_details: account_details, date_start: date_start, date_end: date_end, contra_charts: contra_charts }))
       .map((response: Response) => response.json());
   }
+  checkDirectDebitStatus(token: any, value:any){
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/mandate/checkDirectDebitStatus', JSON.stringify({ token: token, value: value }))
+      .map((response: Response) => response.json());
+  }
   saveFloorRate(token: any, value: any): Observable<any> {
     // get users from api
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/operations/saveFloorRate', JSON.stringify({ token: token, data: value }))
@@ -276,6 +296,16 @@ export class OperationsService {
   changeTheDefaultPayment(token: any, value: any): Observable<any> {
     // get users from api
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/operations/changeTheDefaultPayment', JSON.stringify({ token: token, data: value }))
+      .map((response: Response) => response.json());
+  }
+  notifyRemitaOfLoan(token: any, value: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/remita/notifyRemita', JSON.stringify({ token: token, data: value }))
+      .map((response: Response) => response.json());
+  }
+  creditTheStatement(token: any, value: any, ttype:any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/operations/credit_statement', JSON.stringify({ token: token, data: value, ttype:ttype }))
       .map((response: Response) => response.json());
   }
   changeTheLoanOfficer(token: any, value: any): Observable<any> {
@@ -494,6 +524,11 @@ export class OperationsService {
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/operations/confirmWalletWithdrawal', JSON.stringify({ token: token, payment_queue: payment_queue }))
       .map((response: Response) => response.json());
   }
+  confirmWalletWithdrawalCancel(token: any, payment_queue: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/operations/confirmWalletWithdrawalCancel', JSON.stringify({ token: token, payment_queue: payment_queue }))
+      .map((response: Response) => response.json());
+  }
   walletFundingComplete(token: any, payment_queue: any): Observable<any> {
     // get users from api
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/operations/walletFundingComplete', JSON.stringify({ token: token, payment_queue: payment_queue }))
@@ -548,6 +583,11 @@ export class OperationsService {
   doPaymentConfirm(token: any, payment_queue: any, schedule_type: any, record_type: any): Observable<any> {
     // get users from api
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/operations/doPaymentConfirm', JSON.stringify({ token: token, payment_queue: payment_queue, schedule_type: schedule_type, record_type: record_type }))
+      .map((response: Response) => response.json());
+  }
+  doPaymentCancel(token: any, payment_queue: any, schedule_type: any, record_type: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/operations/doPaymentCancel', JSON.stringify({ token: token, payment_queue: payment_queue, schedule_type: schedule_type, record_type: record_type }))
       .map((response: Response) => response.json());
   }
   doPaymentConfirmForBulk(token: any, payment_queue: any, bulkpayrequests: any): Observable<any> {
@@ -908,8 +948,8 @@ export class OperationsService {
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/mandate/ddtranshistory', JSON.stringify({ token: token, loan: loan, account:account }))
       .map((response: Response) => response.json());
   }
-  getLoanCreditCheck(token: any, request_id: any): Observable<any> {
-    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/credit/getLoanCreditCheck', JSON.stringify({ token: token, request_id: request_id }))
+  getLoanCreditCheck(token: any, request_id: any, where: any): Observable<any> {
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/credit/getLoanCreditCheck', JSON.stringify({ token: token, request_id: request_id, where: where }))
       .map((response: Response) => response.json());
   }
   doSendDebitInstruction(token: any, payment_queue: any, repayment: any, directdebitrequest:any): Observable<any> {
@@ -917,11 +957,26 @@ export class OperationsService {
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/mandate/sendDebitInstruction', JSON.stringify({ repayment: repayment, token: token, payment_queue: payment_queue, directdebitrequest:directdebitrequest }))
       .map((response: Response) => response.json());
   }
+  doSendReverseTransaction(token: any, payment_queue: any, repayment: any, directdebitrequest:any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/operations/doSendReverseTransaction', JSON.stringify({ repayment: repayment, token: token, payment_queue: payment_queue, directdebitrequest:directdebitrequest }))
+      .map((response: Response) => response.json());
+  }
+  doClearFines(token: any, payment_queue: any, repayment: any, directdebitrequest:any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/operations/clear_fines', JSON.stringify({ repayment: repayment, token: token, payment_queue: payment_queue, directdebitrequest:directdebitrequest }))
+      .map((response: Response) => response.json());
+  }
   doCheckDirectDebitStatus(token: any, repayment: any): Observable<any> {
     // get users from api
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/mandate/doCheckDirectDebitStatus', JSON.stringify({ repayment: repayment, token: token }))
       .map((response: Response) => response.json());
   } 
+  doCancelRemitaInflight(token: any, payment_queue: any, repayment: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/remita/doCancelRemitaInflight', JSON.stringify({ repayment: repayment, token: token, payment_queue: payment_queue }))
+      .map((response: Response) => response.json());
+  }
   doCancelDirectDebit(token: any, payment_queue: any, repayment: any): Observable<any> {
     // get users from api
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/mandate/doStopDirectDebitMandate', JSON.stringify({ repayment: repayment, token: token, payment_queue: payment_queue }))
@@ -930,6 +985,16 @@ export class OperationsService {
   doStopDirectDebitMandate(token: any, payment_queue: any, repayment: any): Observable<any> {
     // get users from api
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/mandate/sendDebitInstruction', JSON.stringify({ repayment: repayment, token: token, payment_queue: payment_queue }))
+      .map((response: Response) => response.json());
+  }
+  doConfirmRepayment(token: any, value: any, payment:any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/operations/queueThePayment', JSON.stringify({ payment: payment, token: token, value:value }))
+      .map((response: Response) => response.json());
+  }
+  queueThePayment(token: any, repayment: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/operations/queueThePayment', JSON.stringify({ repayment: repayment, token: token }))
       .map((response: Response) => response.json());
   }
   getListOfCustomers(token:any){
@@ -952,5 +1017,10 @@ export class OperationsService {
         );
     });
     return promise;
+  }
+  deleteEmployee(token: any, employee: any) {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/employee/deleteEmployee', JSON.stringify({ token: token, employee: employee }))
+      .map((response: Response) => response.json());
   }
 }

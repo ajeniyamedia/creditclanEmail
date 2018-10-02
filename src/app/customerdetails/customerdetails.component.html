@@ -220,16 +220,16 @@
 
 
         <!-- Bottom Navigation -->
-        <section class="panel" style="border: 1px solid #E6E7E8" *ngIf="userType=='individual'">
+        <section class="panel" style="border: 1px solid #E6E7E8">
             <div class="panel-body" style="padding: 10px 25px">
                 <ul class="list list_border">
-                    <!-- <li>
+                    <li *ngIf="canSeeLinks">
                         <a [routerLink]="['/customer/',userType,userId,'creditcheck']" class="txt_l4">Credit Check</a>
-                    </li> -->
-                    <li>
+                    </li>
+                    <li *ngIf="canSeeLinks">
                         <a [routerLink]="['/customer/',userType,userId,'kyc']" class="txt_l4">KYC</a>
                     </li>
-                    <li>
+                    <li *ngIf="canSeeLinks">
                         <a [routerLink]="['/customer/',userType,userId,'financials']" class="txt_l4">Financials</a>
                     </li>
                     <!-- <li>
@@ -238,20 +238,20 @@
                     <!-- <li>
                     <a href="javascript:;" class="txt_l4">Verification</a>
                   </li> -->
-                    <li>
+                    <li *ngIf="canSeeLinks">
                         <a class="txt_l4" [routerLink]="['/customer/',userType,userId,'guarantors']">Guarantors</a>
                     </li>
                     <!-- <li>
                         <a [routerLink]="['/customer/',userType,userId,'messages']" class="txt_l4">Messages</a>
                     </li> -->
 
-                    <li>
+                    <li *ngIf="canSeeLinks">
                         <a [routerLink]="['/customer/',userType,userId,'attachments']" class="txt_l4">Attachments</a>
                     </li>
-                    <li>
+                    <li *ngIf="canSeeLinks">
                         <a [routerLink]="['/customer/',userType,userId,'photos']" class="txt_l4">Photos</a>
                     </li>
-                    <li>
+                    <li *ngIf="canSeeLinks">
                         <a [routerLink]="['/customer/',userType,userId,'referrals']" class="txt_l4">Referrals</a>
                     </li>
                 </ul>

@@ -47,7 +47,12 @@ export class LoanphotosComponent implements OnInit {
   ngOnInit() {
     this.loadRecords()
   }
-  uploadThePhoto(){
+  addingphoto() {
+    this.file_type = '2';
+    this.open('photo_form');
+    this.filesUploaded = [];
+  }
+  uploadThePhoto() {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.loading = true;
     this.sub = this.route.parent.params.subscribe(params => {
@@ -57,10 +62,11 @@ export class LoanphotosComponent implements OnInit {
           this.attachments = result.data.attachments;
           this.doc_types = result.data.doctypes;
           this.open('photo');
+          this.loading = false;
         });
     });
   }
-  uploadTheFile(){
+  uploadTheFile() {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.loading = true;
     this.sub = this.route.parent.params.subscribe(params => {
@@ -70,6 +76,7 @@ export class LoanphotosComponent implements OnInit {
           this.attachments = result.data.attachments;
           this.doc_types = result.data.doctypes;
           this.open('attach');
+          this.loading = false;
         });
     });
   }
@@ -82,7 +89,7 @@ export class LoanphotosComponent implements OnInit {
         .subscribe(result => {
           this.attachments = result.data.attachments;
           this.doc_types = result.data.doctypes;
-         
+
         });
     });
   }
@@ -128,9 +135,11 @@ export class LoanphotosComponent implements OnInit {
   open(section) {
     this.view = section;
     this.description = '';
+    this.filesUploaded = [];
   }
   close() {
     this.view = 'photo';
+    this.filesUploaded = [];
   }
 
 }

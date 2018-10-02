@@ -30,7 +30,9 @@ export class DirectdebitinitiateComponent implements OnInit {
   @Output() paymentHasBeenProcessedFinally = new EventEmitter();
   @Output() closePaymentDialog = new EventEmitter();
   autodebit_form = {
-    SECURITY_QUESTION_ANSWER: ''
+    SECURITY_QUESTION_ANSWER: '',
+    CHARGE_TYPE:'1',
+    AMOUNT_TO_DEBIT:'0'
   }
   record_type_ = '';
   payment_type = 'Disbursement';
@@ -153,6 +155,8 @@ export class DirectdebitinitiateComponent implements OnInit {
       'PEOPLE_ID': '',
       'REQUEST_ID': '',
       'ADJUST_CONTRACT_DATE': false,
+      'CHARGE_TYPE':'1',
+      'AMOUNT_TO_DEBIT':'0'
     })
     this.debitAllForm = fb.group({
       'PAYMENT_QUEUE_ID': '',

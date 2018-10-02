@@ -1,0 +1,95 @@
+<section class="panel" style="overflow:hidden;">
+  <div style="padding:24px 20px; overflow: auto;">
+    <div class="text-center borrower-info">
+      <a class="pull-left" style="margin-right: 25px">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{disbursement?.FILE_NAME | imagenotfound}}?q=auto"
+          style="width:50px; height:50px">
+      </a>
+      <div class="borrower-text pull-left" style="text-align:left">
+        <p class="" style="margin-bottom: 0px">{{repayment?.LEGAL_NAME}}</p>
+        <p class="" style="font-weight: bold">{{repayment?.HOW_MUCH_PAID | number:'.2-2'}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    <p class="" style="font-weight: bold">Reverse Transaction</p>
+  </div>
+  <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
+    <a class="paystack-switch-make active" style="width:100% !important">Reverse Transaction</a>
+  </div>
+  <div>
+
+    <div class="panel-body">
+      <div *ngIf="!paymentHasBeenProcessed">
+        <form [formGroup]="debitInstruction" (ngSubmit)="doSendReverseTransaction(debitInstruction.value)">
+         
+            <div class="row">
+                <div class="col-md-9">
+                  <label class="control_label">Reverse total amount</label>
+                </div>
+                <div class="col-md-3">
+                  <div class="checkbox pull-right">
+                    <input type="radio" name="CHARGE_TYPE" [value]="1" [formControl]="debitInstruction.controls['CHARGE_TYPE']">
+
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-9">
+                  <label class="control_label">Specify amount</label>
+                </div>
+                <div class="col-md-3">
+                  <div class="checkbox pull-right">
+                    <input type="radio" name="CHARGE_TYPE" [value]="2" [formControl]="debitInstruction.controls['CHARGE_TYPE']">
+
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="debitInstruction.controls['CHARGE_TYPE'].value=='2'">
+                <div class="col-md-6">
+                  <label class="control_label">Amount</label>
+                </div>
+                <div class="col-md-6">
+                  <div class="checkbox pull-right">
+                    <input type="text" class="form-control" name="AMOUNT_TO_DEBIT" [formControl]="debitInstruction.controls['AMOUNT_TO_DEBIT']">
+
+                  </div>
+                </div>
+              </div>
+          <div class="form-group" [ngClass]="{'has-error':!debitInstruction.controls['SECURITY_QUESTION_ANSWER'].valid && debitInstruction.controls['SECURITY_QUESTION_ANSWER'].touched}"
+            style="margin-bottom:15px">
+            <label for="exampleInputEmail1">Enter your password</label>
+            <input [formControl]="debitInstruction.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
+              name="SECURITY_QUESTION_ANSWER">
+            <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+              Wrong answer.
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <button class="btn btn-block btn-white" [disabled]="!debitInstruction.valid" type="submit">Confirm Payment
+                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div *ngIf="paymentHasBeenProcessed">
+        <div class="">
+          <h4 class="text-center">Amount Reversed</h4>
+
+          <div style="width: 120px;margin:20px auto;">
+            <svg style="width: 100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
+              y="0px" viewBox="0 0 100 125" enable-background="new 0 0 100 100" xml:space="preserve">
+              <g>
+                <circle fill="none" stroke="#1CA261" stroke-width="6" stroke-miterlimit="10" cx="50" cy="50" r="47" />
+                <polygon style="color:#1CA261" points="72,25 42,71 27,56 23,60 43,80 77,28  " />
+              </g>
+            </svg>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

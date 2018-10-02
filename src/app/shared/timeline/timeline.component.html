@@ -17,6 +17,21 @@
     </header>
 </section>
 <section class="panel">
+<div class="panel-body">
+    <button (click)="adding_notes=!adding_notes" class="btn btn-white pull-right">Add Notes</button>
+</div>
+<div class="panel-body" *ngIf="adding_notes">
+        <form #ols="ngForm" novalidate>
+  
+          <div class="form-group">
+            <app-ngx-editor [config]="editorConfig" name="CONTENT" [(ngModel)]="notes.CONTENT"></app-ngx-editor>
+          </div>
+          <button style="margin-left:16px" type="submit" (click)="saveNotes(ols.value, ols.valid)" [disabled]="loading" class="btn btn-white pull-right">
+            <span *ngIf="!loading">Update</span>
+            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+          </button>
+        </form>
+      </div>
   <div class="panel-body">
         
           <div class="timeline">
@@ -29,7 +44,7 @@
                               <span class="timeline-icon red"></span>
                               <span class="timeline-date">{{ item?.DATE_ADDED  | amDateFormat:'h:mm a'}}</span>
                               <h1 class="red">{{ item?.DATE_ADDED  | amDateFormat:'D'}} {{ item?.DATE_ADDED  | amDateFormat:'MMMM'}} | {{ item?.DATE_ADDED  | amDateFormat:'dddd'}}</h1>
-                              <p>{{item?.LEGAL_NAME}} | {{item?.TIMELINE_ACTIVITY}}</p>
+                              <p>{{item?.LEGAL_NAME}} | <span>{{item?.TIMELINE_ACTIVITY | safehtml: 'style'}}</span></p>
                           </div>
                       </div>
                   </div>

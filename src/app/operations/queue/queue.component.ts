@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./queue.component.css']
 })
 export class QueueComponent implements OnInit {
+  openWithdrawal = false;
   is_cancel='0';
   @Input('schedule_type') schedule_type = '1';
   @Input('record_type') record_type = '1';
@@ -51,7 +52,11 @@ export class QueueComponent implements OnInit {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.DataService.onCancelPayment.subscribe(res => {
       this.overlayOpen = false
-    }) 
+    })
+    this.DataService.cancelationDone.subscribe(res => {
+      this.overlayOpen = false
+      this.getRecords();
+    })  
     if(!authService.canViewModule('1,3,5')){
       this.router.navigate(['../unauthorized']);
     }
@@ -145,6 +150,14 @@ export class QueueComponent implements OnInit {
     this.disburse = disburse;
     this.is_cancel = "0";
   }
+  processWalletWithdrawal(disburse){
+    this.openWithdrawal = true;
+    this.disburse = disburse;
+    this.is_cancel = "0";
+  }
+  cancelDisbursement(disburse){
+
+  }
   cancelQueue(disburse) {
     this.overlayOpen = true;
     this.disburse = disburse;
@@ -165,7 +178,8 @@ export class QueueComponent implements OnInit {
   closeOverlay() {
     this.overlayOpen = false;
     this.getRecords();
-    this.is_cancel='0'
+    this.is_cancel='0';
+    this.openWithdrawal = false;
   }
   otpError = false;
   makingFinalPayment = false;

@@ -1,19 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
-
-
 import { StatementdetailsComponent } from './statementdetails/statementdetails.component';
 import { LoanstatementComponent } from '../loanstatement/loanstatement.component';
 import { StatementscheduleComponent } from '../statementschedule/statementschedule.component';
-
 import {StatementroutingModule} from '../statement/statementrouting.module'; 
+import { MatButtonModule, MatDialogModule, MatListModule, MatProgressBarModule } from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    StatementroutingModule
+    StatementroutingModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatListModule,
+    MatProgressBarModule
   ],
   declarations: [ 
     StatementdetailsComponent,

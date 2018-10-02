@@ -12,10 +12,13 @@ export class StatementscheduleComponent implements OnInit {
   sub: any;
   public parentRouteId: number;
   loan_status = '0'
+  canViewLinks=false;
   constructor(public authService:AuthenticationService,public DataService: DataService, public route: ActivatedRoute) {
 
     this.parentRouteId = route.snapshot.parent.params['id'];
-   
+    if (!this.authService.canViewModule('1,3,1026')) {
+      this.canViewLinks = true;
+    }
   }
 
   ngOnInit() {

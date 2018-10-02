@@ -8,7 +8,7 @@ import { DataService } from '../_services/data.service'
   styleUrls: ['./repay.component.css']
 })
 export class RepayComponent implements OnInit {
-
+  public repayment_mode = { 1: 'Remita Inflight', 2: 'Cards', 3: 'Direct Debit Mandate', 4: 'Others', 5: 'Cheques' };
   @Input('parentRouteId') parentRouteId: number;
   @Input('sub_summary') sub_summary = '0';
   @Input('external') external = false;
@@ -21,11 +21,15 @@ export class RepayComponent implements OnInit {
   registerPayment = false;
   open_approval = false;
   state: any;
+  canViewLinks = false;
   constructor(public DataService: DataService, public optionsService: OptionsserviceService,
     public router: Router, public route: ActivatedRoute, public loansService: LoansService,
     public customerService: CustomerService, public userService: UserService,
     public storageService: StorageService,
     public authService: AuthenticationService) {
+    if (!this.authService.canViewModule('1,3,1026')) {
+      this.canViewLinks = true;
+    }
     this.currentUser = this.storageService.read<any>('currentUser');
     this.parentRouteId = route.snapshot.parent.params['id'];
     //console.log(this.parentRouteId)
@@ -42,7 +46,7 @@ export class RepayComponent implements OnInit {
     this.initiate_recollection.emit(repayment);
   }
   initiateStopRemitaCollection(repayment) {
-
+    this.DataService.initStopRemita.emit({ loan: this.loan, repayment: repayment });
   }
   getStatement() {
     this.loansService.getStatement(this.currentUser.token, this.parentRouteId, '2', '-1')
@@ -75,19 +79,19 @@ export class RepayComponent implements OnInit {
   getTotal(key, schedule) {
     if (schedule === undefined || schedule === null) { } else {
       let total = 0;
-      if (key === "OUTSTANDING_PRINCIPAL") {
+      if (key === 'OUTSTANDING_PRINCIPAL') {
         total = schedule.reduce(function (cnt, o) { return cnt + parseInt(o.OUTSTANDING_PRINCIPAL); }, 0);
       }
-      if (key === "TERM_REPAYMENT") {
+      if (key === 'TERM_REPAYMENT') {
         total = schedule.reduce(function (cnt, o) { return cnt + parseInt(o.TERM_REPAYMENT); }, 0);
       }
-      if (key === "HOW_MUCH_PAID") {
+      if (key === 'HOW_MUCH_PAID') {
         total = schedule.reduce(function (cnt, o) { return cnt + parseInt(o.HOW_MUCH_PAID); }, 0);
       }
-      if (key === "HOW_MUCH_REMAINING") {
+      if (key === 'HOW_MUCH_REMAINING') {
         total = schedule.reduce(function (cnt, o) { return cnt + parseInt(o.HOW_MUCH_REMAINING) }, 0);
       }
-      if (key === "INTEREST_REPAYMENT") {
+      if (key === 'INTEREST_REPAYMENT') {
         total = schedule.reduce(function (cnt, o) { return cnt + parseInt(o.INTEREST_REPAYMENT); }, 0);
       }
       return total;
@@ -97,6 +101,12 @@ export class RepayComponent implements OnInit {
   }
   initiateSendDebitInstruction(repayment) {
     this.DataService.initiateDebitInstruction.emit({ repayment: repayment, location: 'initiate_direct_debit' });
+  }
+  initiateClearFines(repayment) {
+    this.DataService.onInitiateClearFines.emit({ repayment: repayment, location: 'initiate_direct_debit' });
+  }
+  initiateReverseTransaction(repayment) {
+    this.DataService.oninitiateReverseTransaction.emit({ repayment: repayment, location: 'initiate_direct_debit' });
   }
   initiateCheckDebitInstruction(repayment) {
     this.DataService.initiateCheckDebitInstruction.emit({ repayment: repayment, location: 'initiate_direct_debit_check' });

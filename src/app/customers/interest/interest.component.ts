@@ -23,13 +23,27 @@ export class InterestComponent implements OnInit {
   count = '0';
   interest_duration = "Per Month";
   currentUser: any
-  constructor(public route: ActivatedRoute,
-    protected customersSrvc: CustomersService,
-    protected constants: ConstantsService,
-    public DataService: DataService, public router: Router,
-    public toastr: ToastrService, vcr: ViewContainerRef,
-    public storageService: StorageService) {
-    this.currentUser = this.storageService.read<any>('currentUser');
+  public others = {
+    mustprovidestaffnumber: false,
+    musttprovidelocation: false,
+    validate_work_email:false,
+    PEOPLE_CUSTOMERS_ID: ''
+  }
+  public mobile = {
+    mustprovideselfie: false,
+    mustprovideloanpurpose: false,
+    nextofkin: false,
+    education: false,
+    homeaddress: false,
+    proofofaddress: false,
+    workinfo: false,
+    personalexpense: false,
+    PEOPLE_CUSTOMERS_ID: '',
+    shouldthecustomerporvidebvnaftersigningup: false,
+    shouldthebvnbevalidatedrealtime: false,
+    checkifuserhasvalidatedbvn: false,
+    skipphoneconfirmation: false,
+    customerconfirmsemailafterregisteration: false
   }
   company_interest = {
     PEOPLE_CUSTOMERS_ID: '',
@@ -66,6 +80,15 @@ export class InterestComponent implements OnInit {
   start = '0';
   customerPreview = { 'corporate': {}, 'individual': {} };
   approvals: any;
+  constructor(public route: ActivatedRoute,
+    protected customersSrvc: CustomersService,
+    protected constants: ConstantsService,
+    public DataService: DataService, public router: Router,
+    public toastr: ToastrService, vcr: ViewContainerRef,
+    public storageService: StorageService) {
+    this.currentUser = this.storageService.read<any>('currentUser');
+  }
+
   // Load the basic information on navigation to this page
   ngOnInit() {
 
@@ -119,6 +142,27 @@ export class InterestComponent implements OnInit {
       this.approve.PEOPLE_CUSTOMERS_ID = data.notify.PEOPLE_CUSTOMERS_ID;
       this.approvals = data.approvals;
 
+
+      this.mobile.mustprovideselfie = data.mobile.mustprovideselfie;
+      this.mobile.nextofkin = data.mobile.nextofkin;
+      this.mobile.education = data.mobile.education;
+      this.mobile.homeaddress = data.mobile.homeaddress;
+      this.mobile.proofofaddress = data.mobile.proofofaddress;
+      this.mobile.workinfo = data.mobile.workinfo;
+      this.mobile.personalexpense = data.mobile.personalexpense;
+      this.mobile.shouldthecustomerporvidebvnaftersigningup = data.mobile.shouldthecustomerporvidebvnaftersigningup;
+      this.mobile.shouldthebvnbevalidatedrealtime = data.mobile.shouldthebvnbevalidatedrealtime;
+      this.mobile.checkifuserhasvalidatedbvn = data.mobile.checkifuserhasvalidatedbvn;
+      this.mobile.checkifuserhasvalidatedbvn = data.mobile.checkifuserhasvalidatedbvn;
+      this.mobile.customerconfirmsemailafterregisteration = data.mobile.customerconfirmsemailafterregisteration;
+      this.mobile.skipphoneconfirmation = data.mobile.skipphoneconfirmation;
+      this.mobile.PEOPLE_CUSTOMERS_ID = data.notify.PEOPLE_CUSTOMERS_ID;
+      this.mobile.mustprovideloanpurpose = data.mobile.mustprovideloanpurpose;
+
+      this.others.mustprovidestaffnumber = data.others.mustprovidestaffnumber;
+      this.others.musttprovidelocation = data.others.musttprovidelocation;
+      this.others.validate_work_email = data.others.validate_work_email;
+      this.others.PEOPLE_CUSTOMERS_ID = data.notify.PEOPLE_CUSTOMERS_ID;
     });
 
   }
@@ -189,7 +233,22 @@ export class InterestComponent implements OnInit {
       this.approvals = data.company_approvals;
     });
   }
-
+  saveMobileApplication(value, valid) {
+    this.loading = true;
+    this.customersSrvc.saveMobileApplication(this.currentUser.token, value)
+      .subscribe(data => {
+        this.loading = false;
+        this.showSuccess(data.message);
+      });
+  }
+  saveCompanyDetails(value, valid) {
+    this.loading = true;
+    this.customersSrvc.saveCompanyDetails(this.currentUser.token, value)
+      .subscribe(data => {
+        this.loading = false;
+        this.showSuccess(data.message);
+      });
+  }
   nextRecords(records) {
 
   }

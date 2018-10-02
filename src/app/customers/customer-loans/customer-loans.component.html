@@ -16,7 +16,7 @@
             </section>
 
             <!-- List of loans -->
-            <div class='loan_list'>
+            <div class='loan_list' *ngIf="canViewModule">  
                 <div class="panel no-margin box hover_toggle_desc" *ngFor="let loan of loans">
                     <div class="panel-body">
                           <article class="media">
@@ -45,6 +45,9 @@
                     <a (click)="loadMoreRecords(data?.start)" class="pull-right btn btn-white wd_btn" style="border-radius: 0">Load More...</a>
                 </div>
 
+            </div>
+            <div  *ngIf="!canViewModule">
+                
             </div>
         </div>
         <!--// New View -->

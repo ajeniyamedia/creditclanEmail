@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { RemitaService } from '../_services/remita.service';
-
+import { DataService } from '../_services/index';
 @Component({
   selector: 'app-customer-remita',
   templateUrl: './customer-remita.component.html',
@@ -13,7 +13,7 @@ export class CustomerRemitaComponent implements OnInit {
   loading = false;
   remita_records: any;
   record_found=false;
-  constructor(public remitaService: RemitaService) { }
+  constructor(public remitaService: RemitaService,public dataservice:DataService) { }
 
   ngOnInit() {
     this.loading = true;
@@ -31,5 +31,7 @@ export class CustomerRemitaComponent implements OnInit {
   toogleView(section) {
     this.section_open = section;
   }
-
+  refreshRemitaRecords(records:any){
+    this.dataservice.refreshRemitaDetails.emit({ remita_records: records });
+  }
 }

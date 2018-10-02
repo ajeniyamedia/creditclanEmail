@@ -15,17 +15,17 @@
                 <p class="no-margin t_lh1">Individual</p> 
                 <p *ngIf="cust?.IS_SUSPENDED=='1'" class="no-margin t_lh1">Suspended till {{cust?.SUSPENDED_TILL}}</p> 
               </div>
-              <a [routerLink]="['/customer/',userType,userId,'settings']" class="pull-right btn btn-white wd_btn btn-orange" style="border-radius: 0; color: #fff">Settings</a>
-              <button (click)="deleteCustomer(userId)" class="pull-right btn btn-white" style="border-radius: 0">Delete</button>
-              <button *ngIf="showresendemail && customer?.CUSTOMER_TYPE=='1'" (click)="resendWelcomeMail(userId)" class="pull-right btn btn-white" style="border-radius: 0;">Resend Welcome Mail</button>
+              <a [routerLink]="['/customer/',userType,userId,'settings']" *ngIf="canViewlinks" class="pull-right btn btn-white wd_btn btn-orange" style="border-radius: 0; color: #fff">Settings</a>
+              <button *ngIf="canViewlinks" (click)="deleteCustomer(userId)" class="pull-right btn btn-white" style="border-radius: 0">Delete</button>
+              <button *ngIf="showresendemail && customer?.CUSTOMER_TYPE=='1' && canViewlinks" (click)="resendWelcomeMail(userId)" class="pull-right btn btn-white" style="border-radius: 0;">Resend Welcome Mail</button>
           </article>
 
           <div>
             <ul class="nav nav_" style="margin-top: 35px">
                <li><a [routerLink]="['/customer/',userType,userId]">Summary</a></li>
-               <li *ngIf="customer?.CUSTOMER_TYPE=='1'"><a [routerLink]="['/customer/',userType,userId,'loans']">Loans</a></li>
-               <li *ngIf="enable_peer=='1'&&customer?.CUSTOMER_TYPE=='1'"><a  [routerLink]="['/customer/',userType,userId,'investments']">Investments</a></li>
-               <li><a [routerLink]="['/customer/',userType,userId,'schedule']">Schedule</a></li>
+               <li *ngIf="customer?.CUSTOMER_TYPE=='1' && canViewlinks"><a [routerLink]="['/customer/',userType,userId,'loans']">Loans</a></li>
+               <li *ngIf="enable_peer=='1'&&customer?.CUSTOMER_TYPE=='1' && canViewlinks"><a  [routerLink]="['/customer/',userType,userId,'investments']">Investments</a></li>
+               <li *ngIf="canViewlinks"><a [routerLink]="['/customer/',userType,userId,'schedule']">Schedule</a></li>
                <li *ngIf="customer?.CUSTOMER_TYPE=='2'"><a [routerLink]="['/customer/',userType,userId,'people']">People</a></li>
                <li *ngIf="customer?.CUSTOMER_TYPE=='2'"><a [routerLink]="['/customer/',userType,userId,'interest']">Settings</a></li>
                <li *ngIf="customer?.CUSTOMER_TYPE=='2'"><a [routerLink]="['/customer/',userType,userId,'users']">Users</a></li>
@@ -82,7 +82,7 @@
                         <li>
                           <a class="txt_l4 t_dull">Secure Access</a>
                         </li>
-                        <li>
+                        <li *ngIf="canViewModule">
                           <a [routerLink]="['/customer/update/',userType,userId]" class="pull-right btn btn-orange wd_btn" style="border-radius: 0">Update</a>
                         </li>
                     </ul>
@@ -108,7 +108,7 @@
                         </div>
                     </article>
                 </div>
-      				  <div class="panel-body b_grey hover_show">
+      				  <div class="panel-body b_grey hover_show" *ngIf="canViewModule">
       			       <a [routerLink]="['/customer/',userType,userId,'loans']" class="btn btn-white btn-block egded-box" style="height: 40px; line-height: 25px">View Loans</a>
       			    </div>
     			    </section>
@@ -125,7 +125,7 @@
       		              </div>
       		          </article>
       			    </div>
-                <div class="panel-body b_grey hover_show" *ngIf="enable_peer=='1'">
+                <div class="panel-body b_grey hover_show" *ngIf="enable_peer=='1' && canViewModule">
                    <a [routerLink]="['/customer/',userType,userId,'investments']" class="btn btn-white btn-block egded-box" style="height: 40px; line-height: 25px">View Investments</a>
                 </div>
     	    	  </section>
@@ -142,7 +142,7 @@
                         </div>
                     </article>
                 </div>
-    				    <div class="panel-body b_grey hover_show">
+    				    <div class="panel-body b_grey hover_show" *ngIf="canViewModule">
       			       <a [routerLink]="['/customer/',userType,userId,'bank']" class="btn btn-white btn-block egded-box" style="height: 40px; line-height: 25px">View Accounts</a>
       			    </div>
       			  </section>

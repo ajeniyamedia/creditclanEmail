@@ -36,6 +36,11 @@ export class LoansService {
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/loan/getRequestTimeline', JSON.stringify({ token: token, id: id }))
       .map((response: Response) => response.json());
   }
+  saveNotes(token: string, id: number, note: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/timeline/save_note', JSON.stringify({ token: token, id: id, note: note }))
+      .map((response: Response) => response.json());
+  }
   analysisAmount(token: any) {
     return this.http.post('http://app.creditclan.com/dataupload/api/v2/analytics/getAnalyticsAmount', JSON.stringify({ token: token }))
       .map((response: Response) => response.json());
@@ -325,6 +330,16 @@ export class LoansService {
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/loan/getUserLogs', JSON.stringify({ token: token, id: id }))
       .map((response: Response) => response.json());
   }
+  getUserSMSLogs(token: string, id: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/loan/getSMSLogs', JSON.stringify({ token: token, id: id }))
+      .map((response: Response) => response.json());
+  }
+  getCallLogs(token: string, id: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/loan/getCallLogs', JSON.stringify({ token: token, id: id }))
+      .map((response: Response) => response.json());
+  }
   getLoanGuarantors(token: string, id: number): Observable<any> {
     // get users from api
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/loan/getLoanGuarantors', JSON.stringify({ token: token, id: id }))
@@ -562,6 +577,12 @@ export class LoansService {
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/mandate/sendForCancelDirectDebitStatus', JSON.stringify({ token: token, request_id: request_id, account: account }))
       .map((response: Response) => response.json());
   }
+  sendForResendDirectDebitStatus(token: string, request_id: any, account: any): Observable<any> {
+    // get users from api
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/mandate/sendForResendDirectDebitStatus', JSON.stringify({ token: token, request_id: request_id, account: account }))
+      .map((response: Response) => response.json());
+  }
+
   runCreditCheck(token: string, request_id: any): Observable<any> {
     // get users from api
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/credit/runCreditCheck', JSON.stringify({ token: token, request_id: request_id }))
@@ -601,9 +622,9 @@ export class LoansService {
     return this.http.post('http://137.117.105.90/dataupload_test/api/v2/loan/uploadImage', formData)
       .map((response: Response) => response.json());
   }
-  printTheOfferLetter(token: string, request_id: any, offer:any): Observable<any> {
+  printTheOfferLetter(token: string, request_id: any, offer: any): Observable<any> {
     // get users from api
-    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/reports/printTheOfferLetter', JSON.stringify({ token: token, request_id: request_id, offer:offer }))
+    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/reports/printTheOfferLetter', JSON.stringify({ token: token, request_id: request_id, offer: offer }))
       .map((response: Response) => response.json());
   }
 }

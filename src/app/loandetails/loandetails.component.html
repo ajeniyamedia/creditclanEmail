@@ -1920,6 +1920,50 @@
 
     </div>
 </div>
+<div class="overlay_ app_overlay animated ln_mdl" style="overflow:hidden" *ngIf="childModal.location == 'resend_debit_mandate'">
+
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="closeChildModal()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <div class=" overpanel-content animated bounceIn  container smaller" role="document" style="background:rgba(255, 255, 255, 0.95); height:100%; text-align:left;width:650px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden">
+
+        <div class="modl text-center">
+
+            <div>
+                <div class="modl_title" style="margin-bottom: 30px">
+                    <h2>
+                        <span class="text-success">Resend Mandate Link</span>
+                        <br>
+                        <small class="modl_sub">Direct debit activation link will be resend to the customer</small>
+                    </h2>
+                </div>
+
+
+
+                <div>
+
+
+                    <div style="width: 200px; margin: 0 auto">
+                        <div style="margin-bottom: 30px">
+                            <button class="text-center txt t_l4 btn-block" [ngClass]="{'btn-danger': is_done=='0', 'btn-success': is_done=='1'}" style="padding-top: 12px; padding-bottom: 12px"
+                                (click)="sendForResendDirectDebitStatus()" [disabled]="loading||is_done=='1'">
+                                <strong *ngIf="is_done=='0'">Submit</strong>
+                                <i class="fa fa-spinner fa-spin" *ngIf="loading && is_done=='0'"></i>
+                                <i class="fa fa-check" *ngIf="!loading && is_done=='1'"></i>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
 <div class="overlay_ app_overlay animated ln_mdl" style="overflow:hidden" *ngIf="childModal.location == 'check_debit_mandate'">
 
     <div class="col-md-12">

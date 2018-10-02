@@ -25,6 +25,8 @@ export class EmployeeComponent implements OnInit {
   employee = { "PEOPLE_PEOPLE_ID": "", "LEGAL_NAME": "", "EMAIL": "", 'SEND_WELCOME_EMAIL': true };
   search = "";
   roles: RoleModel[];
+  deleting = false;
+
   constructor(public toastr: ToastrService, vcr: ViewContainerRef, public fb: FormBuilder, public operationsService: OperationsService,
     public storageService: StorageService) {
     this.currentUser = this.storageService.read<any>('currentUser');
@@ -44,6 +46,20 @@ export class EmployeeComponent implements OnInit {
     this.employee = employee;
     this.overlayOpen = true;
     this.isedit = true;
+  }
+  delete(employee){
+    this.deleting = true;
+    this.operationsService.deleteEmployee(this.currentUser.token, employee)
+      .subscribe(status => {
+        this.deleting = false;
+
+        if (status.status) {
+          this.showSuccess(status.message) ;
+          this.getEmployees();
+        } else {
+          this.showError(status.message);
+        }
+      });
   }
   saveEmployee() {
     // this.loading = true;

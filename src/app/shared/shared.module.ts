@@ -24,6 +24,7 @@ import { CalendarComponent } from 'ap-angular2-fullcalendar/src/calendar/calenda
 
 import { MomentModule } from 'angular2-moment';
 import { DateinvalidPipe } from '../_pipes/dateinvalid.pipe';
+import { SafehtmlPipe } from '../_pipes/safehtml.pipe';
 import { LoanStatusTextPipe } from '../_pipes/loan-status-text.pipe';
 import { LoanStatusPipe } from '../_pipes/loan-status.pipe';
 import { OfferstatusPipe } from '../_pipes/offerstatus.pipe';
@@ -134,6 +135,15 @@ import { TimelineComponent } from './timeline/timeline.component';
 import { UploadModule } from '../upload/upload.module';
 import { ChangepaymentComponent } from './changepayment/changepayment.component';
 import { ChangeloanofficerComponent } from './changeloanofficer/changeloanofficer.component';
+import { CreditingstatementComponent } from './creditingstatement/creditingstatement.component';
+import { SmslogsComponent } from './smslogs/smslogs.component';
+import { MakeloanpaymentComponent } from './makeloanpayment/makeloanpayment.component';
+import { CardcollectionComponent } from './cardcollection/cardcollection.component';
+import { ClearingfinesComponent } from './clearingfines/clearingfines.component';
+import { CustomerwithdrawalComponent } from './customerwithdrawal/customerwithdrawal.component';
+import { StopremitaComponent } from './stopremita/stopremita.component';
+import { NotifyremitaComponent } from './notifyremita/notifyremita.component';
+import { RefreshremitaComponent } from './refreshremita/refreshremita.component';
 @NgModule({
   imports: [
     CommonModule, FormsModule, RouterModule, ReactiveFormsModule, MyDatePickerModule,
@@ -143,8 +153,9 @@ import { ChangeloanofficerComponent } from './changeloanofficer/changeloanoffice
     }),
     OrderModule, UploadModule, NguiDatetimePickerModule
   ],
+  entryComponents: [ChangepaymentComponent],
   declarations: [
-    LimittoPipe, SafePipe, LoanStatusPipe, OfferstatusPipe, PeertopeerPipe,
+    LimittoPipe, SafePipe, LoanStatusPipe, OfferstatusPipe, PeertopeerPipe,SafehtmlPipe,
     DateinvalidPipe, PercentageFundedPipe, AgefilterPipe, MycurrencyPipe,
     FilterpipePipe, ImagenotfoundPipe, PayscheduleComponent, BackendsettingsComponent, LevelformComponent, MobileComponent,
     JournalapprovedPipe, MoneyPipe, MainNavigationComponent, LoanapprovalsComponent,
@@ -169,23 +180,29 @@ import { ChangeloanofficerComponent } from './changeloanofficer/changeloanoffice
     CustomerRemitaComponent, KycdetailsComponent, CustomerkycComponent, AdjustweightsComponent,
     IncludedcompaniesComponent, LoanrepaymentComponent, DirectdebitComponent, CreditcheckComponent,
     DirectdebitinitiateComponent, DirectdebitstatusComponent, DirectdebitcancelComponent,
-    StopmandateComponent, CreditcheckdetailsComponent, ContractofferComponent, AllcustomersComponent, BankslistComponent, CompaniesComponent,
-    NotificationsComponent, TimelineComponent, ChangepaymentComponent,ChangepaymentComponent, ChangeloanofficerComponent
+    StopmandateComponent, CreditcheckdetailsComponent, ContractofferComponent,
+    AllcustomersComponent, BankslistComponent, CompaniesComponent,
+    NotificationsComponent, TimelineComponent, ChangepaymentComponent, ChangeloanofficerComponent,
+    CreditingstatementComponent, SmslogsComponent, MakeloanpaymentComponent, CardcollectionComponent, ClearingfinesComponent,
+    CustomerwithdrawalComponent,
+    StopremitaComponent,
+    NotifyremitaComponent,
+    RefreshremitaComponent
   ],
   exports: [
-    LimittoPipe, SafePipe, LoanStatusPipe, OfferstatusPipe, LoanStatusTextPipe, PeertopeerPipe, WebUssdComponent,
-    FilterpipePipe, ImagenotfoundPipe, PayscheduleComponent, DateinvalidPipe, LoanworkflowComponent,
+    LimittoPipe, SafePipe, LoanStatusPipe, OfferstatusPipe, LoanStatusTextPipe, PeertopeerPipe, WebUssdComponent,SafehtmlPipe,
+    FilterpipePipe, ImagenotfoundPipe, PayscheduleComponent, DateinvalidPipe, LoanworkflowComponent, CreditingstatementComponent,
     JournalapprovedPipe, RouterModule, IonRangeSliderModule, BackendsettingsComponent, LevelformComponent, MobileComponent,
     MoneyPipe, FormsModule, MyDatePickerModule, LoananalysisComponent, LoanapprovalsComponent,
     RequestformComponent,
     MomentModule, ReactiveFormsModule, MainNavigationComponent, ViewguarantorComponent,
-    LoanformComponent, LoanfeesComponent, LoanchargesComponent, EmpsearchComponent, LoanchatComponent,
-    PaymentComponent, NgxEditorModule,
+    LoanformComponent, LoanfeesComponent, LoanchargesComponent, EmpsearchComponent, LoanchatComponent, MakeloanpaymentComponent,
+    PaymentComponent, NgxEditorModule, SmslogsComponent,
     UiSwitchModule, LoanguarantorsComponent, LoanlocationComponent, LoanchequeComponent, LoanphotosComponent,
     LoandocumentComponent, LoanacctsComponent, LoancollateralComponent, LoanlogsComponent, NewempformComponent,
-    CalendarComponent, UnauthorizedComponent,
-    ApprovalviewComponent, NewbankformComponent,ChangepaymentComponent,
-    NguiDatetimePickerModule,
+    CalendarComponent, UnauthorizedComponent, CardcollectionComponent, ClearingfinesComponent,
+    ApprovalviewComponent, NewbankformComponent, ChangepaymentComponent,
+    NguiDatetimePickerModule, CustomerwithdrawalComponent,
     CalendarviewComponent, LoanchecklistComponent, LoanmoreComponent,
     CalendardetailsComponent, RatingComponent, BorroweridComponent, NewlevelformComponent,
     BreakloanComponent, LoansummaryComponent, PaymentrollbackComponent,
@@ -201,7 +218,9 @@ import { ChangeloanofficerComponent } from './changeloanofficer/changeloanoffice
     AdjustweightsComponent, DirectdebitComponent, CreditcheckComponent,
     DirectdebitinitiateComponent, DirectdebitstatusComponent, DirectdebitcancelComponent,
     StopmandateComponent, CreditcheckdetailsComponent, ContractofferComponent, AllcustomersComponent, CompaniesComponent,
-    NotificationsComponent, ChangeloanofficerComponent
+    NotificationsComponent, ChangeloanofficerComponent, StopremitaComponent,
+    NotifyremitaComponent,
+    RefreshremitaComponent
   ]
 })
 export class SharedModule {

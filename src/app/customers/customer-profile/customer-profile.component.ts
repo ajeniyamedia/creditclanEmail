@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CustomersService } from '../../_services/customers.service';
-import { DataService,StorageService } from '../../_services/index';
+import { DataService,StorageService, AuthenticationService } from '../../_services/index';
 
 @Component({
   selector: 'app-customer-profile',
@@ -11,7 +11,7 @@ import { DataService,StorageService } from '../../_services/index';
 })
 
 export class CustomerProfileComponent implements OnInit {
-
+  public canViewModule = true;
   cust:any; // Customer Information
   sub; // Instance of the route subscription
   userType; // Type of user
@@ -20,10 +20,18 @@ export class CustomerProfileComponent implements OnInit {
   cust_meta = {};
   enable_peer='0';
   customer:any;
+  canViewlinks=true;
   constructor(public route: ActivatedRoute,
     public DataService: DataService,
     protected customersSrvc: CustomersService,
-    public storageService: StorageService) { 
+    public storageService: StorageService,
+    public authService: AuthenticationService) { 
+      if(!authService.canViewModule('1,3,5')){
+        this.canViewlinks = false;
+      }
+      if(!authService.canViewModule('1,3,5')){
+        this.canViewModule = false;
+      }
       this.enable_peer = this.storageService.read<any>('enable_peer_to_peer');
       this.DataService.reloadCustomer.subscribe(res => {
         this.userType = "individual";

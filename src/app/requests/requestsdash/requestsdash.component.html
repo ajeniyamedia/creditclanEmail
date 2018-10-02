@@ -168,7 +168,34 @@
                                                         style="">
                                                         <div class="panel-body">
                                                             <select (change)="getLoans()" name="magic_filter.company_id" class="form-control" [(ngModel)]="magic_filter.company_id">
+                                                               <option [value]='0'>Individual</option>
                                                                 <option *ngFor="let company of companies?.a" [value]="company.PEOPLE_CUSTOMERS_ID">{{company.LEGAL_NAME}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default mbot0 edged_box">
+                                                    <div class="panel-heading" id="headingRM" role="tab">
+                                                        <h4 class="panel-title">
+                                                            <a aria-controls="collapseRM" aria-expanded="true" class="" data-parent="#accordion" data-toggle="collapse" href="#collapseRM"
+                                                                role="button">
+                                                                Repayment Mode
+                                                                <span class="pull-right">
+                                                                    <i class="fa fa-chevron-down"></i>
+                                                                </span>
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div aria-labelledby="headingRM" class="panel-collapse collapse in" id="collapseRM" role="tabpanel" aria-expanded="true"
+                                                        style="">
+                                                        <div class="panel-body">
+                                                            <select (change)="getLoans()" name="magic_filter.repayment_mode" class="form-control" [(ngModel)]="magic_filter.repayment_mode">
+                                                               <option [value]='0'></option>
+                                                               <option [value]='1'>Remita Inflight</option>
+                                                               <option [value]='3'>Direct Debit</option>
+                                                               <option [value]='2'>Cards</option>
+                                                               <option [value]='5'>Cheques</option>
+                                                               <option [value]='4'>Others</option>
                                                             </select>
                                                         </div>
                                                     </div>

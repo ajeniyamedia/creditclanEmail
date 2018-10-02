@@ -11,6 +11,7 @@ import { OptionsserviceService, UserService, LoansService, OperationsService, Au
 })
 export class OperationsdashboardComponent implements OnInit {
   public canViewModule = true;
+  public canSeeLinks = true;
   public currentUser: any;
   private timerSubscription: AnonymousSubscription;
   private postsSubscription: AnonymousSubscription;
@@ -20,6 +21,9 @@ export class OperationsdashboardComponent implements OnInit {
   constructor(public authService:AuthenticationService,public storageService: StorageService, public router: Router, public operationsService: OperationsService) {
     if(!authService.canViewModule('1,3,5')){
       this.router.navigate(['../unauthorized']);
+    }
+    if(!authService.canViewModule('1,2,4,5,1026')){
+      this.canSeeLinks = false;
     }
     this.currentUser = this.storageService.read<any>('currentUser');
     

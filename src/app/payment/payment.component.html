@@ -24,13 +24,15 @@
       <div class="col-md-6">
         <div class="checkbox">
           <label>
-            <input type="radio" (ngModelChange)="changewithtype($event)" name="record_type_" [(ngModel)]="record_type_" [value]="1">            Yes</label>
+            <input type="radio" (ngModelChange)="changewithtype($event)" name="record_type_" [(ngModel)]="record_type_"
+              [value]="1"> Yes</label>
         </div>
       </div>
       <div class="col-md-6">
         <div class="checkbox">
           <label>
-            <input type="radio" (ngModelChange)="changewithtype($event)" name="record_type_" [(ngModel)]="record_type_" [value]="2">            No</label>
+            <input type="radio" (ngModelChange)="changewithtype($event)" name="record_type_" [(ngModel)]="record_type_"
+              [value]="2"> No</label>
         </div>
       </div>
     </div>
@@ -55,8 +57,8 @@
         <div class="form-group" [ngClass]="{'has-error':!investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].valid && investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].touched}"
           style="margin-bottom:15px">
           <label for="exampleInputEmail1">{{security_question}}</label>
-          <input [formControl]="investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
-            name="SECURITY_QUESTION_ANSWER">
+          <input [formControl]="investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+            id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
           <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
             Wrong answer.
           </div>
@@ -150,8 +152,8 @@
             <div class="form-group" [ngClass]="{'has-error':!newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].valid && newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].touched}"
               style="margin-bottom:15px">
               <label for="exampleInputEmail1">Account Number</label>
-              <input [formControl]="newAccountForm.controls['LENDER_ACCOUNT_NUMBER']" type="text" class="form-control" id="LENDER_ACCOUNT_NUMBER"
-                name="LENDER_ACCOUNT_NUMBER">
+              <input [formControl]="newAccountForm.controls['LENDER_ACCOUNT_NUMBER']" type="text" class="form-control"
+                id="LENDER_ACCOUNT_NUMBER" name="LENDER_ACCOUNT_NUMBER">
               <div class="error phone_error alert alert-block alert-danger fade in hide" style="margin:10px 0px !important">
 
               </div>
@@ -159,8 +161,8 @@
             <div class="form-group" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
 
               <label class="control-label">Account Name</label>
-              <input [formControl]="newAccountForm.controls['LENDER_BANK_ACCOUNT_NAME']" type="text" disabled="" class="form-control" id="LENDER_BANK_ACCOUNT_NAME"
-                name="LENDER_BANK_ACCOUNT_NAME">
+              <input [formControl]="newAccountForm.controls['LENDER_BANK_ACCOUNT_NAME']" type="text" disabled="" class="form-control"
+                id="LENDER_BANK_ACCOUNT_NAME" name="LENDER_BANK_ACCOUNT_NAME">
             </div>
             <div class="form-group" *ngIf="!newaccountconfirmed&&VERIFY_STATUS">
               <div class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
@@ -245,8 +247,8 @@
             <div class="form-group" [ngClass]="{'has-error':!investorConfirmPayment_.controls['LENDER_BANK_ACCOUNT_ID'].valid && investorConfirmPayment_.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
               style="margin-bottom:15px">
               <label for="exampleInputEmail1">Disbursement Bank</label>
-              <select class="form-control" [formControl]="investorConfirmPayment_.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
-                id="LENDER_BANK_ACCOUNT_ID">
+              <select class="form-control" [formControl]="investorConfirmPayment_.controls['LENDER_BANK_ACCOUNT_ID']"
+                name="LENDER_BANK_ACCOUNT_ID" id="LENDER_BANK_ACCOUNT_ID">
                 <option value="0"></option>
                 <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
               </select>
@@ -296,8 +298,8 @@
             <div class="form-group" [ngClass]="{'has-error':!investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].valid && investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].touched}"
               style="margin-bottom:15px">
               <label for="exampleInputEmail1">{{security_question}}</label>
-              <input [formControl]="investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
-                name="SECURITY_QUESTION_ANSWER">
+              <input [formControl]="investorConfirmPayment.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+                id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
               <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
                 Wrong answer.
               </div>
@@ -336,7 +338,41 @@
     <div class="text-center">
       <p class="" style="font-weight: bold">Cancel {{payment_type}}</p>
     </div>
-    <!-- <app-queuecancel [currentUser]="currentUser" (rejectRequest)="rejectRequest($event)" (moveToLevel)="moveToLevel($event)" [disburse]="disburse" [record_type]="record_type" [schedule_type]="schedule_type"></app-queuecancel> -->
+    <div class="panel-body animated" *ngIf="paytype=='confirm' && !paymentHasBeenProcessed">
+      <form [formGroup]="complexFormCancel" (ngSubmit)="doPaymentCancel(complexFormCancel.value)">
+         
+         
+
+        <div class="form-group" [ngClass]="{'has-error':!complexFormCancel.controls['SECURITY_QUESTION_ANSWER'].valid && complexFormCancel.controls['SECURITY_QUESTION_ANSWER'].touched}"
+          style="margin-bottom:15px">
+          <label for="exampleInputEmail1">{{security_question}}</label>
+          <input [formControl]="complexFormCancel.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+            id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
+          <div *ngIf="otpError" class="error alert alert-block alert-danger fade in"
+            style="margin:10px 0px !important">
+            {{otpmessage}}
+          </div>
+        </div>
+         
+        <div class="row">
+          <div class="col-md-12">
+            <button class="btn btn-block btn-white" [disabled]="!complexFormCancel.valid || loading" type="submit">Submit
+              <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="paymentHasBeenProcessed">
+      <div>
+        <a href="javascript:;" style="font-size:40px">
+          <i class="fa fa-check"></i>
+        </a>
+        <span style="display: block;">Payment Cancelled</span>
+      </div>
+       
+      <button type="button" class="btn btn-white" (click)="cancellationDone()">Close</button>
+    </div>
   </div>
   <div *ngIf="is_cancel=='0'">
     <div *ngIf="withdrawal_step=='0'">
@@ -344,8 +380,10 @@
         <a class="paystack-switch-confirm active" style="width:100% !important">Confirm Repayment</a>
       </div> -->
       <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
-        <a class="paystack-switch-confirm {{paytype=='confirm'?'active':''}}" (click)="switchpay('confirm')">Confirm Repayment</a>
-        <a class="paystack-switch-make {{paytype=='card_make'?'active':''}}" (click)="switchpay('card_make')">Card Autodebit</a>
+        <a class="paystack-switch-confirm {{paytype=='confirm'?'active':''}}" (click)="switchpay('confirm')">Confirm
+          Repayment</a>
+        <a class="paystack-switch-make {{paytype=='card_make'?'active':''}}" (click)="switchpay('card_make')">Card
+          Autodebit</a>
       </div>
       <div *ngIf="paytype=='confirm'">
         <div class="panel-body animated">
@@ -355,8 +393,8 @@
             <div class="form-group" [ngClass]="{'has-error':!repaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID'].valid && repaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
               style="margin-bottom:15px">
               <label for="exampleInputEmail1">Repayment Bank</label>
-              <select class="form-control" [formControl]="repaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
-                id="LENDER_BANK_ACCOUNT_ID">
+              <select class="form-control" [formControl]="repaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID']"
+                name="LENDER_BANK_ACCOUNT_ID" id="LENDER_BANK_ACCOUNT_ID">
                 <option value="0"></option>
                 <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
               </select>
@@ -387,6 +425,9 @@
       <div *ngIf="paytype=='card_make'">
 
         <div class="panel-body">
+          <div *ngIf="disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'" class="form-group" style="margin-bottom:0px">
+
+          </div>
           <div>
             <div *ngIf="cards?.total=='0'">
               <div style="background:#FFFFFF;padding:15px">
@@ -469,15 +510,16 @@
                   <div class="form-group" [ngClass]="{'has-error':!debitAllForm.controls['SECURITY_QUESTION_ANSWER'].valid && debitAllForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
                     style="margin-bottom:15px">
                     <label for="exampleInputEmail1">{{security_question}}</label>
-                    <input [formControl]="debitAllForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
-                      name="SECURITY_QUESTION_ANSWER">
+                    <input [formControl]="debitAllForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+                      id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
                     <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
                       Wrong answer.
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                      <button class="btn btn-block btn-white" [disabled]="!debitAllForm.valid" type="submit">Confirm Payment
+                      <button class="btn btn-block btn-white" [disabled]="!debitAllForm.valid" type="submit">Confirm
+                        Payment
                         <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                       </button>
                     </div>
@@ -549,8 +591,10 @@
         <p class="" style="margin-bottom: 0px">{{disbursement?.LEGAL_NAME}}</p>
         <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP!='8'&&disburse?.IS_TOP_UP!='6'">{{disbursement?.HOW_MUCH_WAS_GIVEN
           | number:'.2-2'}}</p>
-        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='8'">{{disbursement?.TOP_UP_AMOUNT | number:'.2-2'}}</p>
-        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='6'">{{disbursement?.REQUEST_PRINCIPAL | number:'.2-2'}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='8'">{{disbursement?.TOP_UP_AMOUNT |
+          number:'.2-2'}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='6'">{{disbursement?.REQUEST_PRINCIPAL |
+          number:'.2-2'}}</p>
       </div>
     </div>
   </div>
@@ -559,12 +603,15 @@
       <p class="" style="font-weight: bold">{{payment_type}}</p>
     </div>
     <div *ngIf="disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'" class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
-      <a class="paystack-switch-confirm {{paytype=='confirm'?'active':''}}" (click)="switchpay('confirm')">Confirm Payment</a>
+      <a class="paystack-switch-confirm {{paytype=='confirm'?'active':''}}" (click)="switchpay('confirm')">Confirm
+        Payment</a>
       <a class="paystack-switch-make {{paytype=='make'?'active':''}}" (click)="switchpay('make')">Make Payment</a>
     </div>
     <div *ngIf="disbursement?.IS_TOP_UP=='6'" class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
-      <a class="paystack-switch-confirm {{paytype=='confirm'?'active':''}}" (click)="switchpay('confirm')">Confirm Payment</a>
-      <a class="paystack-switch-make {{paytype=='card_make'?'active':''}}" (click)="switchpay('card_make')">Card Autodebit</a>
+      <a class="paystack-switch-confirm {{paytype=='confirm'?'active':''}}" (click)="switchpay('confirm')">Confirm
+        Payment</a>
+      <a class="paystack-switch-make {{paytype=='card_make'?'active':''}}" (click)="switchpay('card_make')">Card
+        Autodebit</a>
     </div>
     <div *ngIf="makingFinalPayment">
       <div *ngIf="paytype=='make'">
@@ -674,8 +721,8 @@
         <form [formGroup]="complexForm" (ngSubmit)="doPaymentConfirm(complexForm.value)">
           <h4>Transaction Details</h4>
           <p>Please confirm that the payment has been made.</p>
-          <div *ngIf="disburse?.ADJUST_CONTRACT_DATE && disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'" class="form-group"
-            style="margin-bottom:0px">
+          <div *ngIf="disburse?.ADJUST_CONTRACT_DATE && disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'"
+            class="form-group" style="margin-bottom:0px">
             <div class="row" *ngIf="disburse?.ADJUST_CONTRACT_DATE">
               <div class="col-md-9">
                 <label class="control_label">Adjust Contract Date</label>
@@ -711,7 +758,8 @@
           </div> -->
           <div class="form-group" *ngIf="disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'" style="margin-bottom:15px">
             <label for="exampleInputEmail1">Repayment Mode</label>
-            <select class="form-control" [formControl]="complexForm.controls['REPAYMENT_MODE']" name="REPAYMENT_MODE" id="REPAYMENT_MODE">
+            <select class="form-control" (change)="repaymentModeChanged($event)" [formControl]="complexForm.controls['REPAYMENT_MODE']"
+              name="REPAYMENT_MODE" id="REPAYMENT_MODE">
               <option value="0"></option>
               <option *ngFor="let mode of mode_of_repayment" [value]="mode.value">{{mode.display}}</option>
             </select>
@@ -729,13 +777,22 @@
           <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['SECURITY_QUESTION_ANSWER'].valid && complexForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
             style="margin-bottom:15px">
             <label for="exampleInputEmail1">{{security_question}}</label>
-            <input [formControl]="complexForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
-              name="SECURITY_QUESTION_ANSWER">
-            <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+            <input [formControl]="complexForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+              id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
+            <div *ngIf="otpError && !needsToCheckDirectDebit" class="error alert alert-block alert-danger fade in"
+              style="margin:10px 0px !important">
               {{otpmessage}}
             </div>
           </div>
-          <div class="row">
+          <div class="row" *ngIf="needsToCheckDirectDebit">
+            <div class="col-md-12">
+              <button class="btn btn-block btn-white" (click)="checkDirectDebitStatus()" [disabled]="checking_direct_debit"
+                type="button">Check Debit Mandate Status
+                <i class="fa fa-spinner fa-spin" *ngIf="checking_direct_debit"></i>
+              </button>
+            </div>
+          </div>
+          <div class="row" *ngIf="!needsToCheckDirectDebit">
             <div class="col-md-12">
               <button class="btn btn-block btn-white" [disabled]="!complexForm.valid" type="submit">Confirm Payment
                 <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
@@ -770,8 +827,8 @@
               <div class="form-group" [ngClass]="{'has-error':!newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].valid && newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].touched}"
                 style="margin-bottom:15px">
                 <label for="exampleInputEmail1">Account Number</label>
-                <input [formControl]="newAccountForm.controls['LENDER_ACCOUNT_NUMBER']" type="text" class="form-control" id="LENDER_ACCOUNT_NUMBER"
-                  name="LENDER_ACCOUNT_NUMBER">
+                <input [formControl]="newAccountForm.controls['LENDER_ACCOUNT_NUMBER']" type="text" class="form-control"
+                  id="LENDER_ACCOUNT_NUMBER" name="LENDER_ACCOUNT_NUMBER">
                 <div class="error phone_error alert alert-block alert-danger fade in hide" style="margin:10px 0px !important">
 
                 </div>
@@ -779,8 +836,8 @@
               <div class="form-group" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
 
                 <label class="control-label">Account Name</label>
-                <input [formControl]="newAccountForm.controls['LENDER_BANK_ACCOUNT_NAME']" type="text" disabled="" class="form-control" id="LENDER_BANK_ACCOUNT_NAME"
-                  name="LENDER_BANK_ACCOUNT_NAME">
+                <input [formControl]="newAccountForm.controls['LENDER_BANK_ACCOUNT_NAME']" type="text" disabled=""
+                  class="form-control" id="LENDER_BANK_ACCOUNT_NAME" name="LENDER_BANK_ACCOUNT_NAME">
               </div>
               <div class="form-group" *ngIf="!newaccountconfirmed&&VERIFY_STATUS">
                 <div class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
@@ -834,7 +891,8 @@
 
             <div class="form-group row">
               <div class="col-md-6">
-                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="payBorrower()">Make Payment
+                <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="payBorrower()">Make
+                  Payment
                   <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                 </button>
               </div>
@@ -872,7 +930,7 @@
                 <h4>Wallet Balance</h4>
                 <h1>{{wallet_balance | number:'.2-2'}}</h1>
                 <div *ngIf="wallet_status">
-                  
+
 
                   <div *ngIf="disburse?.ADJUST_CONTRACT_DATE" class="row">
                     <div class="col-md-9">
@@ -902,7 +960,8 @@
                   </div> -->
                   <div class="form-group" *ngIf="disbursement?.IS_TOP_UP!='7' && disbursement?.IS_TOP_UP!='6'" style="margin-bottom:15px">
                     <label for="exampleInputEmail1">Repayment Mode</label>
-                    <select class="form-control" [formControl]="walletPaymentForm.controls['REPAYMENT_MODE']" name="REPAYMENT_MODE" id="REPAYMENT_MODE">
+                    <select class="form-control" (change)="repaymentModeChanged($event)" [formControl]="walletPaymentForm.controls['REPAYMENT_MODE']"
+                      name="REPAYMENT_MODE" id="REPAYMENT_MODE">
                       <option value="0"></option>
                       <option *ngFor="let mode of mode_of_repayment" [value]="mode.value">{{mode.display}}</option>
                     </select>
@@ -910,13 +969,14 @@
                   <div class="form-group" [ngClass]="{'has-error':!walletPaymentForm.controls['SECURITY_QUESTION_ANSWER'].valid && walletPaymentForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
                     style="margin-bottom:15px">
                     <label for="exampleInputEmail1">{{security_question}}</label>
-                    <input [formControl]="walletPaymentForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
-                      name="SECURITY_QUESTION_ANSWER">
-                    <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
+                    <input [formControl]="walletPaymentForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+                      id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
+                    <div *ngIf="otpError && !needsToCheckDirectDebit" class="error alert alert-block alert-danger fade in"
+                      style="margin:10px 0px !important">
                       {{otpmessage}}
                     </div>
                   </div>
-                  <div class="form-group row">
+                  <div class="form-group row" *ngIf="!needsToCheckDirectDebit">
                     <div class="col-md-6">
                       <button class="btn btn-block btn-white" [disabled]="!walletPaymentForm.valid||loading" type="submit">Confirm
                         Payment
@@ -926,6 +986,14 @@
                     <div class="col-md-6">
                       <button class="btn btn-block btn-white" [disabled]="loading" type="button" (click)="cancelPayment()">Cancel
                         Payment</button>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="needsToCheckDirectDebit">
+                    <div class="col-md-12">
+                      <button class="btn btn-block btn-white" (click)="checkDirectDebitStatus()" [disabled]="checking_direct_debit"
+                        type="button">Check Debit Mandate Status
+                        <i class="fa fa-spinner fa-spin" *ngIf="checking_direct_debit"></i>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -967,7 +1035,8 @@
                 <div *ngIf="disburse?.ADJUST_CONTRACT_DATE" class="form-group" style="margin-bottom:15px">
                   <div class="checkbox" style="margin:0px !important">
                     <label style="padding-left:0px !important" class="control_label">
-                      <input [formControl]="bankPaymentForm.controls['ADJUST_CONTRACT_DATE']" type="checkbox" name="ADJUST_CONTRACT_DATE">                      Adjust
+                      <input [formControl]="bankPaymentForm.controls['ADJUST_CONTRACT_DATE']" type="checkbox" name="ADJUST_CONTRACT_DATE">
+                      Adjust
                       Contract Date</label>
                   </div>
 
@@ -1076,15 +1145,16 @@
                   <div class="form-group" [ngClass]="{'has-error':!debitAllForm.controls['SECURITY_QUESTION_ANSWER'].valid && debitAllForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
                     style="margin-bottom:15px">
                     <label for="exampleInputEmail1">{{security_question}}</label>
-                    <input [formControl]="debitAllForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
-                      name="SECURITY_QUESTION_ANSWER">
+                    <input [formControl]="debitAllForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+                      id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
                     <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
                       Wrong answer.
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                      <button class="btn btn-block btn-white" [disabled]="!debitAllForm.valid" type="submit">Confirm Payment
+                      <button class="btn btn-block btn-white" [disabled]="!debitAllForm.valid" type="submit">Confirm
+                        Payment
                         <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                       </button>
                     </div>
@@ -1103,7 +1173,41 @@
     <div class="text-center">
       <p class="" style="font-weight: bold">Cancel {{payment_type}}</p>
     </div>
-    <!-- <app-queuecancel [currentUser]="currentUser" (close)="closeOverlay()" (rejectRequest)="rejectRequest($event)" (moveToLevel)="moveToLevel($event)" [disburse]="disburse" [record_type]="record_type" [schedule_type]="schedule_type"></app-queuecancel> -->
+    <div class="panel-body animated" *ngIf="paytype=='confirm' && !paymentHasBeenProcessed">
+      <form [formGroup]="complexFormCancel" (ngSubmit)="doPaymentCancel(complexFormCancel.value)">
+         
+         
+
+        <div class="form-group" [ngClass]="{'has-error':!complexFormCancel.controls['SECURITY_QUESTION_ANSWER'].valid && complexFormCancel.controls['SECURITY_QUESTION_ANSWER'].touched}"
+          style="margin-bottom:15px">
+          <label for="exampleInputEmail1">{{security_question}}</label>
+          <input [formControl]="complexFormCancel.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+            id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
+          <div *ngIf="otpError" class="error alert alert-block alert-danger fade in"
+            style="margin:10px 0px !important">
+            {{otpmessage}}
+          </div>
+        </div>
+         
+        <div class="row">
+          <div class="col-md-12">
+            <button class="btn btn-block btn-white" [disabled]="!complexFormCancel.valid || loading" type="submit">Submit
+              <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="paymentHasBeenProcessed">
+      <div>
+        <a href="javascript:;" style="font-size:40px">
+          <i class="fa fa-check"></i>
+        </a>
+        <span style="display: block;">Payment Cancelled</span>
+      </div>
+       
+      <button type="button" class="btn btn-white" (click)="cancellationDone()">Close</button>
+    </div>
   </div>
 </section>
 <section class="panel" style="overflow:hidden;" *ngIf="record_type=='4'">
@@ -1181,8 +1285,8 @@
               <div class="form-group" [ngClass]="{'has-error':!newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].valid && newAccountForm.controls['LENDER_ACCOUNT_NUMBER'].touched}"
                 style="margin-bottom:15px">
                 <label for="exampleInputEmail1">Account Number</label>
-                <input [formControl]="newAccountForm.controls['LENDER_ACCOUNT_NUMBER']" type="text" class="form-control" id="LENDER_ACCOUNT_NUMBER"
-                  name="LENDER_ACCOUNT_NUMBER">
+                <input [formControl]="newAccountForm.controls['LENDER_ACCOUNT_NUMBER']" type="text" class="form-control"
+                  id="LENDER_ACCOUNT_NUMBER" name="LENDER_ACCOUNT_NUMBER">
                 <div class="error phone_error alert alert-block alert-danger fade in hide" style="margin:10px 0px !important">
 
                 </div>
@@ -1190,8 +1294,8 @@
               <div class="form-group" *ngIf="newaccountconfirmed&&VERIFY_STATUS">
 
                 <label class="control-label">Account Name</label>
-                <input [formControl]="newAccountForm.controls['LENDER_BANK_ACCOUNT_NAME']" type="text" disabled="" class="form-control" id="LENDER_BANK_ACCOUNT_NAME"
-                  name="LENDER_BANK_ACCOUNT_NAME">
+                <input [formControl]="newAccountForm.controls['LENDER_BANK_ACCOUNT_NAME']" type="text" disabled=""
+                  class="form-control" id="LENDER_BANK_ACCOUNT_NAME" name="LENDER_BANK_ACCOUNT_NAME">
               </div>
               <div class="form-group" *ngIf="!newaccountconfirmed&&VERIFY_STATUS">
                 <div class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
@@ -1291,8 +1395,8 @@
                     <div class="form-group" [ngClass]="{'has-error':!walletWithdrawalForm.controls['SECURITY_QUESTION_ANSWER'].valid && walletWithdrawalForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
                       style="margin-bottom:15px">
                       <label for="exampleInputEmail1">{{security_question}}</label>
-                      <input [formControl]="walletWithdrawalForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
-                        name="SECURITY_QUESTION_ANSWER">
+                      <input [formControl]="walletWithdrawalForm.controls['SECURITY_QUESTION_ANSWER']" type="password"
+                        class="form-control" id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
                       <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
                         {{otpmessage}}
                       </div>
@@ -1370,7 +1474,41 @@
     <div class="text-center">
       <p class="" style="font-weight: bold">Cancel {{payment_type}}</p>
     </div>
-    <!-- <app-queuecancel [currentUser]="currentUser" (close)="closeOverlay()" (rejectRequest)="rejectRequest($event)" (moveToLevel)="moveToLevel($event)" [disburse]="disburse" [record_type]="record_type" [schedule_type]="schedule_type"></app-queuecancel> -->
+    <div class="panel-body animated" *ngIf="!paymentHasBeenProcessed">
+      <form [formGroup]="walletWithdrawalFormCancel" (ngSubmit)="confirmwalletWithdrawalFormCancel(walletWithdrawalFormCancel.value)">
+         
+         
+
+        <div class="form-group" [ngClass]="{'has-error':!walletWithdrawalFormCancel.controls['SECURITY_QUESTION_ANSWER'].valid && walletWithdrawalFormCancel.controls['SECURITY_QUESTION_ANSWER'].touched}"
+          style="margin-bottom:15px">
+          <label for="exampleInputEmail1">{{security_question}}</label>
+          <input [formControl]="walletWithdrawalFormCancel.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+            id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
+          <div *ngIf="otpError" class="error alert alert-block alert-danger fade in"
+            style="margin:10px 0px !important">
+            {{otpmessage}}
+          </div>
+        </div>
+         
+        <div class="row">
+          <div class="col-md-12">
+            <button class="btn btn-block btn-white" [disabled]="!walletWithdrawalFormCancel.valid || loading" type="submit">Submit
+              <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="text-center" style="padding: 20px 0px;padding-bottom: 0px" *ngIf="paymentHasBeenProcessed">
+      <div>
+        <a href="javascript:;" style="font-size:40px">
+          <i class="fa fa-check"></i>
+        </a>
+        <span style="display: block;">Payment Cancelled</span>
+      </div>
+       
+      <button type="button" class="btn btn-white" (click)="cancellationDone()">Close</button>
+    </div>
   </div>
 </section>
 <section class="panel" style="overflow:hidden;" *ngIf="record_type=='5'">
@@ -1441,15 +1579,15 @@
               <div class="form-group" [ngClass]="{'has-error':!walletFundingForm.controls['DATE_ADDED'].valid && walletFundingForm.controls['DATE_ADDED'].touched}"
                 style="margin-bottom:15px">
                 <label for="exampleInputEmail1">Date</label>
-                <input [formControl]="walletFundingForm.controls['DATE_ADDED']" type="text" class="form-control" id="DATE_ADDED" name="DATE_ADDED"
-                  ngui-datetime-picker date-only="true">
+                <input [formControl]="walletFundingForm.controls['DATE_ADDED']" type="text" class="form-control" id="DATE_ADDED"
+                  name="DATE_ADDED" ngui-datetime-picker date-only="true">
 
               </div>
               <div class="form-group" [ngClass]="{'has-error':!walletFundingForm.controls['SECURITY_QUESTION_ANSWER'].valid && walletFundingForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
                 style="margin-bottom:15px">
                 <label for="exampleInputEmail1">{{security_question}}</label>
-                <input [formControl]="walletFundingForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
-                  name="SECURITY_QUESTION_ANSWER">
+                <input [formControl]="walletFundingForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+                  id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
                 <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
                   {{otpmessage}}
                 </div>
@@ -1535,8 +1673,8 @@
         <div class="form-group" [ngClass]="{'has-error':!customerrepaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID'].valid && customerrepaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
           style="margin-bottom:15px">
           <label for="exampleInputEmail1">Payment Bank</label>
-          <select class="form-control" [formControl]="customerrepaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
-            id="LENDER_BANK_ACCOUNT_ID">
+          <select class="form-control" [formControl]="customerrepaymentConfirmPayment.controls['LENDER_BANK_ACCOUNT_ID']"
+            name="LENDER_BANK_ACCOUNT_ID" id="LENDER_BANK_ACCOUNT_ID">
             <option value="0"></option>
             <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
           </select>
@@ -1544,8 +1682,8 @@
         <div class="form-group" [ngClass]="{'has-error':!customerrepaymentConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].valid && customerrepaymentConfirmPayment.controls['SECURITY_QUESTION_ANSWER'].touched}"
           style="margin-bottom:15px">
           <label for="exampleInputEmail1">{{security_question}}</label>
-          <input [formControl]="customerrepaymentConfirmPayment.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
-            id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
+          <input [formControl]="customerrepaymentConfirmPayment.controls['SECURITY_QUESTION_ANSWER']" type="password"
+            class="form-control" id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
           <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
             Wrong answer.
           </div>
@@ -1593,8 +1731,10 @@
         <p class="" style="margin-bottom: 0px">{{disbursement?.LEGAL_NAME}}</p>
         <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP!='8'&&disburse?.IS_TOP_UP!='6'">{{disbursement?.HOW_MUCH_WAS_GIVEN
           | number:'.2-2'}}</p>
-        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='8'">{{disbursement?.TOP_UP_AMOUNT | number:'.2-2'}}</p>
-        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='6'">{{disbursement?.REQUEST_PRINCIPAL | number:'.2-2'}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='8'">{{disbursement?.TOP_UP_AMOUNT |
+          number:'.2-2'}}</p>
+        <p class="" style="font-weight: bold" *ngIf="disburse?.IS_TOP_UP=='6'">{{disbursement?.REQUEST_PRINCIPAL |
+          number:'.2-2'}}</p>
       </div>
     </div>
   </div>
@@ -1604,8 +1744,8 @@
   <div *ngIf="paymentHasBeenProcessed">
     <div *ngIf="result.status==true">
       <div style="width: 120px;margin:20px auto;">
-        <svg style="width: 100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
-          y="0px" viewBox="0 0 100 125" enable-background="new 0 0 100 100" xml:space="preserve">
+        <svg style="width: 100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+          x="0px" y="0px" viewBox="0 0 100 125" enable-background="new 0 0 100 100" xml:space="preserve">
           <g>
             <circle fill="none" stroke="#1CA261" stroke-width="6" stroke-miterlimit="10" cx="50" cy="50" r="47" />
             <polygon style="color:#1CA261" points="72,25 42,71 27,56 23,60 43,80 77,28  " />
@@ -1634,7 +1774,8 @@
   </div>
   <div *ngIf="!paymentHasBeenProcessed">
     <div *ngIf="disbursement?.IS_TOP_UP!='7'&&disbursement?.IS_TOP_UP!='6'" class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
-      <a class="paystack-switch-confirm {{paytype=='confirm'?'active':''}}" (click)="switchpay('confirm')">Confirm Payment</a>
+      <a class="paystack-switch-confirm {{paytype=='confirm'?'active':''}}" (click)="switchpay('confirm')">Confirm
+        Payment</a>
       <a class="paystack-switch-make {{paytype=='make'?'active':''}}" (click)="switchpay('make')">Make Payment</a>
     </div>
 
@@ -1646,8 +1787,8 @@
           <div class="form-group" [ngClass]="{'has-error':!paymentConfirmRollbackForm.controls['LENDER_BANK_ACCOUNT_ID'].valid && paymentConfirmRollbackForm.controls['LENDER_BANK_ACCOUNT_ID'].touched}"
             style="margin-bottom:15px">
             <label for="exampleInputEmail1">Disbursement Bank</label>
-            <select class="form-control" [formControl]="paymentConfirmRollbackForm.controls['LENDER_BANK_ACCOUNT_ID']" name="LENDER_BANK_ACCOUNT_ID"
-              id="LENDER_BANK_ACCOUNT_ID">
+            <select class="form-control" [formControl]="paymentConfirmRollbackForm.controls['LENDER_BANK_ACCOUNT_ID']"
+              name="LENDER_BANK_ACCOUNT_ID" id="LENDER_BANK_ACCOUNT_ID">
               <option value="0"></option>
               <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.LENDER_ACCOUNT_NAME}}|{{bank.LENDER_ACCOUNT_NUMBER}}</option>
             </select>
@@ -1656,8 +1797,8 @@
           <div class="form-group" [ngClass]="{'has-error':!paymentConfirmRollbackForm.controls['SECURITY_QUESTION_ANSWER'].valid && paymentConfirmRollbackForm.controls['SECURITY_QUESTION_ANSWER'].touched}"
             style="margin-bottom:15px">
             <label for="exampleInputEmail1">{{security_question}}</label>
-            <input [formControl]="paymentConfirmRollbackForm.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
-              id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
+            <input [formControl]="paymentConfirmRollbackForm.controls['SECURITY_QUESTION_ANSWER']" type="password"
+              class="form-control" id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
             <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
               Wrong answer.
             </div>
@@ -1893,15 +2034,17 @@
     <p class="" style="font-weight: bold">Repayment</p>
   </div>
   <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
-    <a class="paystack-switch-confirm {{paytype=='send_email'?'active':''}}" (click)="switchpay('send_email')">Send Link</a>
-    <a class="paystack-switch-make {{paytype=='charge_card'?'active':''}}" (click)="switchpay('charge_card')">Card Autodebit</a>
+    <a class="paystack-switch-confirm {{paytype=='send_email'?'active':''}}" (click)="switchpay('send_email')">Send
+      Link</a>
+    <a class="paystack-switch-make {{paytype=='charge_card'?'active':''}}" (click)="switchpay('charge_card')">Card
+      Autodebit</a>
   </div>
   <div *ngIf="processDone=='1'">
     <h4 class="text-center">Autodebit Successful</h4>
 
     <div style="width: 120px;margin:20px auto;">
-      <svg style="width: 100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
-        y="0px" viewBox="0 0 100 125" enable-background="new 0 0 100 100" xml:space="preserve">
+      <svg style="width: 100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+        x="0px" y="0px" viewBox="0 0 100 125" enable-background="new 0 0 100 100" xml:space="preserve">
         <g>
           <circle fill="none" stroke="#1CA261" stroke-width="6" stroke-miterlimit="10" cx="50" cy="50" r="47" />
           <polygon style="color:#1CA261" points="72,25 42,71 27,56 23,60 43,80 77,28  " />
@@ -2016,7 +2159,8 @@
           <div class="form-group" [ngClass]="{'has-error':!sendRepaymentLink.controls['WHEN_TO_SEND'].valid && sendRepaymentLink.controls['WHEN_TO_SEND'].touched}"
             style="margin-bottom:15px">
             <label for="exampleInputEmail1">Time to send</label>
-            <select class="form-control" [formControl]="sendRepaymentLink.controls['WHEN_TO_SEND']" name="WHEN_TO_SEND" id="WHEN_TO_SEND">
+            <select class="form-control" [formControl]="sendRepaymentLink.controls['WHEN_TO_SEND']" name="WHEN_TO_SEND"
+              id="WHEN_TO_SEND">
               <option value="0"></option>
               <option [value]="1">Immediately</option>
               <option [value]="2">Today @ 4pm</option>
@@ -2026,15 +2170,16 @@
           <div class="form-group" [ngClass]="{'has-error':!sendRepaymentLink.controls['SECURITY_QUESTION_ANSWER'].valid && sendRepaymentLink.controls['SECURITY_QUESTION_ANSWER'].touched}"
             style="margin-bottom:15px">
             <label for="exampleInputEmail1">{{security_question}}</label>
-            <input [formControl]="sendRepaymentLink.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
-              name="SECURITY_QUESTION_ANSWER">
+            <input [formControl]="sendRepaymentLink.controls['SECURITY_QUESTION_ANSWER']" type="password" class="form-control"
+              id="SECURITY_QUESTION_ANSWER" name="SECURITY_QUESTION_ANSWER">
             <div *ngIf="otpError" class="error alert alert-block alert-danger fade in" style="margin:10px 0px !important">
               Wrong answer.
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <button class="btn btn-block btn-white" [disabled]="!sendRepaymentLink.valid" type="submit">Confirm Payment
+              <button class="btn btn-block btn-white" [disabled]="!sendRepaymentLink.valid" type="submit">Confirm
+                Payment
                 <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
               </button>
             </div>
@@ -2061,7 +2206,8 @@
               <div style="height:250px; overflow:auto">
                 <div class="beachacc" *ngFor="let acc of cards?.cards">
 
-                  <div class="media x-mod" style="cursor: pointer" (click)="setAsConnectedCard(acc?.ACCOUNT_CARD_ID,loan?.REQUEST_ID)" *ngIf="acc?.TYPE_OF=='2'&& acc?.CARD_VALIDATED_THROUGH=='1'">
+                  <div class="media x-mod" style="cursor: pointer" (click)="setAsConnectedCard(acc?.ACCOUNT_CARD_ID,loan?.REQUEST_ID)"
+                    *ngIf="acc?.TYPE_OF=='2'&& acc?.CARD_VALIDATED_THROUGH=='1'">
                     <div class="pull-left thumb" style="width: 75px">
                     </div>
                     <div class="media-body hover_toggle">
@@ -2082,7 +2228,8 @@
                       </span>
                     </div>
                   </div>
-                  <div class="media x-mod" style="cursor: pointer" (click)="setAsConnectedCard(acc?.ACCOUNT_CARD_ID,loan?.REQUEST_ID)" *ngIf="acc?.TYPE_OF=='2'&& acc?.CARD_VALIDATED_THROUGH=='2'">
+                  <div class="media x-mod" style="cursor: pointer" (click)="setAsConnectedCard(acc?.ACCOUNT_CARD_ID,loan?.REQUEST_ID)"
+                    *ngIf="acc?.TYPE_OF=='2'&& acc?.CARD_VALIDATED_THROUGH=='2'">
                     <div class="pull-left thumb" style="width: 75px">
                       <!-- <img src="assets/images/{{acc?.BANK_LOGO}}"> -->
                     </div>
@@ -2121,7 +2268,39 @@
             </div>
             <div *ngIf="confirmCardAD">
               <h4>Autodebit Request</h4>
-              <p></p>
+              <div class="row">
+                <div class="col-md-9">
+                  <label class="control_label">Debit total amount</label>
+                </div>
+                <div class="col-md-3">
+                  <div class="checkbox pull-right">
+                    <input type="radio" name="CHARGE_TYPE" [value]="1" [(ngModel)]="autodebit_form.CHARGE_TYPE">
+
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-9">
+                  <label class="control_label">Specify amount</label>
+                </div>
+                <div class="col-md-3">
+                  <div class="checkbox pull-right">
+                    <input type="radio" name="CHARGE_TYPE" [value]="2" [(ngModel)]="autodebit_form.CHARGE_TYPE">
+
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="autodebit_form.CHARGE_TYPE=='2'">
+                <div class="col-md-6">
+                  <label class="control_label">Amount</label>
+                </div>
+                <div class="col-md-6">
+                  <div class="checkbox pull-right">
+                    <input type="text" class="form-control" name="AMOUNT_TO_DEBIT" [(ngModel)]="autodebit_form.AMOUNT_TO_DEBIT">
+
+                  </div>
+                </div>
+              </div>
               <div class="form-group" style="margin-bottom:15px">
                 <label for="exampleInputEmail1">{{security_question}}</label>
                 <input [(ngModel)]="autodebit_form.SECURITY_QUESTION_ANSWER" type="password" class="form-control" id="SECURITY_QUESTION_ANSWER"
@@ -2132,7 +2311,8 @@
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <button class="btn btn-block btn-white" [disabled]="autodebit_form.SECURITY_ANSWER==''||loading" (click)="initiateAutodebit()">Confirm
+                  <button class="btn btn-block btn-white" [disabled]="autodebit_form.SECURITY_ANSWER==''||loading"
+                    (click)="initiateAutodebit()">Confirm
                     Payment
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>

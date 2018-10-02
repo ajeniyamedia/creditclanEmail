@@ -55,14 +55,16 @@ export class CustomersComponent implements OnInit {
   occupations: any;
   verifier = { phone_verifier: false, email_verifier: false, bvn_verifier: false, PEOPLE_CUSTOMERS_ID: '' };
   magic_filter = { reset: false, account_officer: false, start: 0, token: '', registered_from: this.statuses[0].value, searchText: '', borrower: true, investor: true, loans: '', investments: '', ratings_one: false, ratings_two: false, ratings_three: false, ratings_four: false, ratings_five: false };
-  
+  canSeeLinks = true;
   // Constructor 
   constructor(public toastr: ToastrService, public authService: AuthenticationService, public optionsService: OptionsserviceService,
     public router: Router, public DataService: DataService, protected customersSrvc: CustomersService,
     protected constants: ConstantsService, public storageService: StorageService) {
     this.api_base = constants.read('api_base');
     this.currentUser = this.storageService.read<any>('currentUser');
-
+    if (!authService.canViewModule('1,3,5')) {
+      this.canSeeLinks = false;
+    }
     this.DataService.reloadCustomers.subscribe(res => {
       this.normalLoad(this.navigation.next - 10);
     })
@@ -83,6 +85,9 @@ export class CustomersComponent implements OnInit {
   }
   // Fetch the initial list of customers from the server
   ngOnInit() {
+    if (!this.authService.canViewModule('1,3,5')) {
+      this.canSeeLinks = false;
+    }
     this.normalLoad(0);
     this.optionsService.getOccupation(2).subscribe(sectors => this.sectors = sectors);
     this.optionsService.getOccupation(1).subscribe(sectors => this.occupations = sectors);

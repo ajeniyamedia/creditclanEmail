@@ -17,23 +17,26 @@
                                     </article>
                                     <div class="pull-right text-right">
                                         <div class="" style="font-size:25px">
-                                             
+
                                             <div class="form-group" style="display:inline-block" *ngIf="schedule_type=='1'">
-                                                <select class="form-control"  (ngModelChange)="reloadrecord_($event)" name="record_type" [(ngModel)]="record_type">
+                                                <select class="form-control" (ngModelChange)="reloadrecord_($event)"
+                                                    name="record_type" [(ngModel)]="record_type">
                                                     <option *ngFor="let record of record_types_" [value]="record.value">{{record.display}}</option>
                                                 </select>
-                                            </div> 
-                                                <div class="form-group" style="display:inline-block" *ngIf="schedule_type=='2'">
-                                                        <select class="form-control"  (ngModelChange)="reloadrecord_($event)" name="record_type" [(ngModel)]="record_type">
-                                                            <option *ngFor="let record of record_types__" [value]="record.value">{{record.display}}</option>
-                                                        </select>
-                                                    </div>
+                                            </div>
+                                            <div class="form-group" style="display:inline-block" *ngIf="schedule_type=='2'">
+                                                <select class="form-control" (ngModelChange)="reloadrecord_($event)"
+                                                    name="record_type" [(ngModel)]="record_type">
+                                                    <option *ngFor="let record of record_types__" [value]="record.value">{{record.display}}</option>
+                                                </select>
+                                            </div>
                                             <a (click)="searching=!searching">
                                                 <i class="fa fa-search"></i>
                                             </a>
                                             <div class="btn-group">
 
-                                                <button aria-expanded="true" class="btn btn-xs btn-white dropdown-toggle" data-toggle="dropdown" type="button">
+                                                <button aria-expanded="true" class="btn btn-xs btn-white dropdown-toggle"
+                                                    data-toggle="dropdown" type="button">
                                                     <span class="fa fa-bars"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
@@ -56,7 +59,8 @@
                                     <div class="input-group">
                                         <input class="form-control" name="searchText" [(ngModel)]="searchName">
                                         <span class="input-group-btn">
-                                            <button class="btn btn-white" type="button" (click)="searchRecords()">Search !</button>
+                                            <button class="btn btn-white" type="button" (click)="searchRecords()">Search
+                                                !</button>
                                         </span>
                                     </div>
                                 </div>
@@ -106,10 +110,12 @@
 
                                             <div class="row" *ngIf="disburse.IS_VERIFIED!='1'">
                                                 <div class="col-md-12">
-                                                    <button *ngIf="disburse.IS_VERIFIED=='0'" class="btn btn-white btn-block" (click)="processDisbursement(disburse)">Confirm</button>
+                                                    <button *ngIf="disburse.IS_VERIFIED=='0'" class="btn btn-white btn-block"
+                                                        (click)="processDisbursement(disburse)">Confirm</button>
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <button *ngIf="disburse.IS_VERIFIED=='0'" class="btn btn-white btn-block" (click)="cancelQueue(disburse)">Cancel</button>
+                                                    <button *ngIf="disburse.IS_VERIFIED=='0'" class="btn btn-white btn-block"
+                                                        (click)="cancelQueue(disburse)">Cancel</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -165,19 +171,22 @@
 
                                                 <li class="text-left black_c sub_title " style="margin:10px 0px">
                                                     Wallet Balance
-                                                    <p class="no-margin black_c sub_title pull-right" style="">{{disburse.ledger.cu | number:'.2-2'}}</p>
+                                                    <p class="no-margin black_c sub_title pull-right" style="">{{disburse.ledger.cu
+                                                        | number:'.2-2'}}</p>
 
                                                 </li>
 
 
                                             </ul>
-                                             
+
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <button *ngIf="disburse.IS_VERIFIED=='0'" class="btn btn-white btn-block" (click)="processDisbursement(disburse)">Confirm</button>
+                                                    <button *ngIf="disburse.IS_VERIFIED=='0'" class="btn btn-white btn-block"
+                                                        (click)="processDisbursement(disburse)">Confirm</button>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <button *ngIf="disburse.IS_VERIFIED=='0'" class="btn btn-white btn-block" (click)="cancelQueue(disburse)">Cancel</button>
+                                                    <button *ngIf="disburse.IS_VERIFIED=='0'" class="btn btn-white btn-block"
+                                                        (click)="cancelQueue(disburse)">Cancel</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -233,7 +242,8 @@
 
                                                 <li class="text-left black_c sub_title " style="margin:10px 0px">
                                                     Wallet Balance
-                                                    <p class="no-margin black_c sub_title pull-right" style="">{{disburse.ledger.cu | number:'.2-2'}}</p>
+                                                    <p class="no-margin black_c sub_title pull-right" style="">{{disburse.ledger.cu
+                                                        | number:'.2-2'}}</p>
 
                                                 </li>
 
@@ -241,10 +251,12 @@
                                             </ul>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <button *ngIf="disburse.APPROVAL_STATUS=='0'" class="btn btn-white btn-block" (click)="processDisbursement(disburse)">Pay</button>
+                                                    <button *ngIf="disburse.APPROVAL_STATUS=='0'" class="btn btn-white btn-block"
+                                                        (click)="processWalletWithdrawal(disburse)">Pay</button>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <button *ngIf="disburse.APPROVAL_STATUS=='0'" class="btn btn-white btn-block" (click)="cancelQueue(disburse)">Cancel</button>
+                                                    <button *ngIf="disburse.APPROVAL_STATUS=='0'" class="btn btn-white btn-block"
+                                                        (click)="cancelQueue(disburse)">Cancel</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -303,10 +315,12 @@
                                             </ul>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <button *ngIf="disburse.IS_APPROVED=='0'" class="btn btn-white btn-block" (click)="processDisbursement(disburse)">Pay</button>
+                                                    <button *ngIf="disburse.IS_APPROVED=='0'" class="btn btn-white btn-block"
+                                                        (click)="processDisbursement(disburse)">Pay</button>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <button *ngIf="disburse.IS_APPROVED=='0'" class="btn btn-white btn-block" (click)="cancelQueue(disburse)">Cancel</button>
+                                                    <button *ngIf="disburse.IS_APPROVED=='0'" class="btn btn-white btn-block"
+                                                        (click)="cancelQueue(disburse)">Cancel</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -336,7 +350,8 @@
                                     </div>
 
                                     <span class="tools pull-right">
-                                        <a style="color:#fff" *ngIf="disburse.IS_TOP_UP==''||disburse.IS_TOP_UP=='0'" class="label label-warning">Disbursement</a>
+                                        <a style="color:#fff" *ngIf="disburse.IS_TOP_UP==''||disburse.IS_TOP_UP=='0'"
+                                            class="label label-warning">Disbursement</a>
 
                                         <a (click)="openSec(disburse.PAYMENT_QUEUE_ID)">
                                             <span class="tools pull-right" style="padding: 5px;border: 1px solid #eaeaea;border-radius: 50px;">
@@ -357,10 +372,12 @@
 
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <button *ngIf="disburse.IS_APPROVED=='0'" class="btn btn-white btn-block" (click)="processDisbursement(disburse)">Pay</button>
+                                                    <button *ngIf="disburse.IS_APPROVED=='0'" class="btn btn-white btn-block"
+                                                        (click)="processDisbursement(disburse)">Pay</button>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <button *ngIf="disburse.IS_APPROVED=='0'" class="btn btn-white btn-block" (click)="cancelQueue(disburse)">Cancel</button>
+                                                    <button *ngIf="disburse.IS_APPROVED=='0'" class="btn btn-white btn-block"
+                                                        (click)="cancelQueue(disburse)">Cancel</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -388,9 +405,9 @@
                                                 style="width:50px; height:50px">
                                         </a>
 
-                                    </div> 
+                                    </div>
                                     <span class="tools pull-right">
-                                     
+
                                         <a (click)="openSec(disburse.PAYMENT_QUEUE_ID)">
                                             <span class="tools pull-right" style="
                    padding: 5px;
@@ -412,10 +429,12 @@
 
                                             <div class="row" *ngIf="disburse.IS_VERIFIED!='1'">
                                                 <div class="col-md-6">
-                                                    <button *ngIf="disburse.IS_VERIFIED=='0'" class="btn btn-white btn-block" (click)="processDisbursement(disburse)">Confirm</button>
+                                                    <button *ngIf="disburse.IS_VERIFIED=='0'" class="btn btn-white btn-block"
+                                                        (click)="processDisbursement(disburse)">Confirm</button>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <button *ngIf="disburse.IS_VERIFIED=='0'" class="btn btn-white btn-block" (click)="cancelQueue(disburse)">Cancel</button>
+                                                    <button *ngIf="disburse.IS_VERIFIED=='0'" class="btn btn-white btn-block"
+                                                        (click)="cancelQueue(disburse)">Cancel</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -451,9 +470,12 @@
 
                                     </div>
                                     <span class="tools pull-right">
-                                        <a style="color:#fff" *ngIf="disburse.IS_TOP_UP==''||disburse.IS_TOP_UP=='0'" class="label label-warning">Disbursement</a>
-                                        <a style="color:#fff" *ngIf="disburse.IS_TOP_UP=='6'" class="label label-warning">Break Loan</a>
-                                        <a style="color:#fff" *ngIf="disburse.IS_TOP_UP=='8'" class="label label-warning">Top Up</a>
+                                        <a style="color:#fff" *ngIf="disburse.IS_TOP_UP==''||disburse.IS_TOP_UP=='0'"
+                                            class="label label-warning">Disbursement</a>
+                                        <a style="color:#fff" *ngIf="disburse.IS_TOP_UP=='6'" class="label label-warning">Break
+                                            Loan</a>
+                                        <a style="color:#fff" *ngIf="disburse.IS_TOP_UP=='8'" class="label label-warning">Top
+                                            Up</a>
                                         <a style="color:#fff" *ngIf="disburse.IS_TOP_UP=='7'" class="label label-warning">Rollover</a>
                                         <a (click)="openSec(disburse.PAYMENT_QUEUE_ID)">
                                             <span class="tools pull-right" style="
@@ -477,21 +499,24 @@
                                             <ul style="font-size:10px" *ngIf="disburse.IS_TOP_UP=='8'">
                                                 <li class="text-left black_c sub_title " style="margin:10px 0px">
                                                     Previous Loan Balance
-                                                    <p class="no-margin black_c sub_title pull-right" style="">{{disburse.REF_CURRENT_BALANCE | number:'.2-2'}}</p>
+                                                    <p class="no-margin black_c sub_title pull-right" style="">{{disburse.REF_CURRENT_BALANCE
+                                                        | number:'.2-2'}}</p>
 
                                                 </li>
                                             </ul>
                                             <ul style="font-size:10px" *ngIf="disburse.IS_TOP_UP=='8'">
                                                 <li class="text-left black_c sub_title " style="margin:10px 0px">
                                                     Top Up Amount
-                                                    <p class="no-margin black_c sub_title pull-right" style="">{{disburse.TOP_UP_AMOUNT | number:'.2-2'}}</p>
+                                                    <p class="no-margin black_c sub_title pull-right" style="">{{disburse.TOP_UP_AMOUNT
+                                                        | number:'.2-2'}}</p>
 
                                                 </li>
                                             </ul>
                                             <ul style="font-size:10px" *ngIf="disburse.IS_TOP_UP=='6'">
                                                 <li class="text-left black_c sub_title " style="margin:10px 0px">
                                                     Loan Balance
-                                                    <p class="no-margin black_c sub_title pull-right" style="">{{disburse.TOP_UP_AMOUNT | number:'.2-2'}}</p>
+                                                    <p class="no-margin black_c sub_title pull-right" style="">{{disburse.TOP_UP_AMOUNT
+                                                        | number:'.2-2'}}</p>
 
                                                 </li>
                                             </ul>
@@ -499,7 +524,8 @@
 
                                                 <li class="text-left black_c sub_title " style="margin:10px 0px">
                                                     Amount
-                                                    <p class="no-margin black_c sub_title pull-right" style="">{{disburse.HOW_MUCH_WAS_GIVEN | number:'.2-2'}}</p>
+                                                    <p class="no-margin black_c sub_title pull-right" style="">{{disburse.HOW_MUCH_WAS_GIVEN
+                                                        | number:'.2-2'}}</p>
 
                                                 </li>
                                                 <li>
@@ -511,11 +537,13 @@
                                             </ul>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <button *ngIf="disburse.IS_APPROVED=='0'" class="btn btn-white btn-block" (click)="processDisbursement(disburse)">Pay</button>
+                                                    <button *ngIf="disburse.IS_APPROVED=='0'" class="btn btn-white btn-block"
+                                                        (click)="processDisbursement(disburse)">Pay</button>
                                                 </div>
                                                 <div class="col-md-6">
-                                                        <button *ngIf="disburse.IS_APPROVED=='0'" class="btn btn-white btn-block" (click)="cancelQueue(disburse)">Cancel</button>
-                                                    </div>
+                                                    <button *ngIf="disburse.IS_APPROVED=='0'" class="btn btn-white btn-block"
+                                                        (click)="cancelQueue(disburse)">Cancel</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -547,16 +575,18 @@
                                 </section>
                             </div>
                             <section class="panel" style="margin-bottom:15px">
-                                  <div class="panel-body">
-                                      <div class="input-group">
-                                          <input type="text" class="form-control" name="searchText" required [(ngModel)]="searchName" #searchText="ngModel">
-                                          <span class="input-group-btn">
-                                            <button [disabled]="loading" (click)="searchRecords()" class="btn btn-white" type="button"><i class="fa fa-search"></i></button>
-                                          </span>
-                                      </div>
-                                       
-                                  </div>
-                                </section>
+                                <div class="panel-body">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="searchText" required [(ngModel)]="searchName"
+                                            #searchText="ngModel">
+                                        <span class="input-group-btn">
+                                            <button [disabled]="loading" (click)="searchRecords()" class="btn btn-white"
+                                                type="button"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </section>
                             <!-- <div style="margin-bottom:5px" *ngIf="schedule_type=='1'">
                                 <div style="border-bottom: 1px solid #d9d9d9;margin-bottom: 5px;" *ngFor="let record of record_types_">
 
@@ -596,7 +626,8 @@
                                             <a class="txt_l4 active" [routerLink]="['/operations/wallet']">Wallet</a>
                                         </li>
                                         <li>
-                                            <a class="txt_l4" [routerLink]="['/operations/chart_of_accounts']">Chart Of Accounts</a>
+                                            <a class="txt_l4" [routerLink]="['/operations/chart_of_accounts']">Chart Of
+                                                Accounts</a>
                                         </li>
                                         <li>
                                             <a class="txt_l4" [routerLink]="['/operations/journal']">Journal</a>
@@ -608,7 +639,7 @@
                                 </div>
                             </section>
                         </div>
-                        
+
                     </div>
 
                 </div>
@@ -624,7 +655,22 @@
         </a>
     </div>
     <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
-        <app-payment (closePaymentDialog)="closeOverlay($event)" [is_cancel]='is_cancel' (showMessage)="showMessage($event)" [record_type]="record_type" [platformwallet]="platformwallet" [schedule_type]="schedule_type" [disburse]="disburse" [security_question]="state?.security_question.QUESTION"></app-payment>
+        <app-payment (closePaymentDialog)="closeOverlay($event)" [is_cancel]='is_cancel' (showMessage)="showMessage($event)"
+            [record_type]="record_type" [platformwallet]="platformwallet" [schedule_type]="schedule_type" [disburse]="disburse"
+            [security_question]="state?.security_question.QUESTION"></app-payment>
+    </div>
+</div>
+<div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="openWithdrawal">
+
+    <div class="col-md-12">
+        <a class="dismiss cancel_treat_ close" role="button" (click)="closeOverlay()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
+        <app-customerwithdrawal (closePaymentDialog)="closeOverlay($event)" [is_cancel]='is_cancel' (showMessage)="showMessage($event)"
+            [record_type]="record_type" [platformwallet]="platformwallet" [schedule_type]="schedule_type" [disburse]="disburse"
+            [security_question]="state?.security_question.QUESTION"></app-customerwithdrawal>
     </div>
 </div>
 <div class="overlay_ app_overlay animated" style="overflow:hidden;background: rgba(138, 138, 138, 0.95);" *ngIf="overlayWithdrawal">
@@ -635,8 +681,9 @@
         </a>
     </div>
     <div class=" overpanel-content container" role="document" style="text-align:left;width:400px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
-        <app-wallettransfer [otpError]="otpError" [api_message]="api_message" [security_question]="security_question" [paymentConfirmed]="paymentConfirmed"
-            [paymentHasBeenProcessed]="paymentHasBeenProcessed" [makingFinalPayment]="makingFinalPayment" [loading]="loading"
-            [banks]="banks" (doWalletTransfer)="doWalletTransfer($event)" [ledger]="ledger" [account_details]="account_details"></app-wallettransfer>
+        <app-wallettransfer [otpError]="otpError" [api_message]="api_message" [security_question]="security_question"
+            [paymentConfirmed]="paymentConfirmed" [paymentHasBeenProcessed]="paymentHasBeenProcessed"
+            [makingFinalPayment]="makingFinalPayment" [loading]="loading" [banks]="banks" (doWalletTransfer)="doWalletTransfer($event)"
+            [ledger]="ledger" [account_details]="account_details"></app-wallettransfer>
     </div>
 </div>

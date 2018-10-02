@@ -15,12 +15,13 @@
 
       <div>
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-          <app-generalform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
-            [loan_duration]='loan_duration' [loading]='loading' [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'></app-generalform>
+          <app-generalform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency'
+            [countries]='countries' [loan_duration]='loan_duration' [loading]='loading' [loan_durations]='loan_durations'
+            [max_loan_duration]='max_loan_duration'></app-generalform>
 
-          <app-interestform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
-            [interest_duration]='interest_duration' [special_interest_duration]='special_interest_duration' [loading]='loading'
-            [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'></app-interestform>
+          <app-interestform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency'
+            [countries]='countries' [interest_duration]='interest_duration' [special_interest_duration]='special_interest_duration'
+            [loading]='loading' [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'></app-interestform>
 
           <app-loanamount (saveForm)="saveLAFrom($event)" [product]='product' [special_interest_duration]='special_interest_duration'
             [loading]='loading' [loan_durations]='loan_durations'></app-loanamount>
@@ -28,15 +29,16 @@
           <app-interestratefloor [product]="product" [floor_rate]='floor_rate' [loading]='loading' [loan_durations]='loan_durations'
             (saveFpayorm)="saveFRFrom($event)" [special_interest_duration]='special_interest_duration'></app-interestratefloor>
 
-          <app-originationfee (saveForm)="saveOFFrom($event)" [product]='product' [companyaccounts]='companyaccounts' [loading]='loading'
-            [fee_settings]='fee_settings'></app-originationfee>
+          <app-originationfee (saveForm)="saveOFFrom($event)" [product]='product' [companyaccounts]='companyaccounts'
+            [loading]='loading' [fee_settings]='fee_settings'></app-originationfee>
 
 
 
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingBSB">
               <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseBSB" aria-expanded="true" aria-controls="collapseBSB">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseBSB" aria-expanded="true"
+                  aria-controls="collapseBSB">
                   Borrower Score Based Interest Rates
                 </a>
               </h4>
@@ -112,8 +114,8 @@
                                 <input type="text" class="form-control" name="MAXIMUM_AMOUNT" [(ngModel)]="band.MAXIMUM_AMOUNT">
                             </div> -->
                     </div>
-                    <button type="submit" (click)="saveInterestRateBand(interestBandForm.value, interestBandForm.valid)" [disabled]="loading"
-                      class="btn btn-white pull-right">
+                    <button type="submit" (click)="saveInterestRateBand(interestBandForm.value, interestBandForm.valid)"
+                      [disabled]="loading" class="btn btn-white pull-right">
                       <span *ngIf="!loading">Submit</span>
                       <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                     </button>
@@ -157,8 +159,8 @@
           <div class="panel panel-default hide" *ngIf="enable_peer=='1'">
             <div class="panel-heading" role="tab" id="headingInvestors">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseInvestors" aria-expanded="false"
-                  aria-controls="collapseInvestors">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseInvestors"
+                  aria-expanded="false" aria-controls="collapseInvestors">
                   Investors
                 </a>
               </h4>
@@ -171,13 +173,15 @@
                       <label class="control-label col-md-6">Maximum Investment</label>
                       <div class="col-md-6">
 
-                        <input name="MAXIMUM_INVESTMENT_PERCENT" [(ngModel)]="investors.MAXIMUM_INVESTMENT_PERCENT" class="form-control">
+                        <input name="MAXIMUM_INVESTMENT_PERCENT" [(ngModel)]="investors.MAXIMUM_INVESTMENT_PERCENT"
+                          class="form-control">
 
                       </div>
                     </div>
 
 
-                    <button type="submit" (click)="saveInvestor(investor.value, investor.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <button type="submit" (click)="saveInvestor(investor.value, investor.valid)" [disabled]="loading"
+                      class="btn btn-white pull-right">
                       <span *ngIf="!loading">Submit</span>
                       <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                     </button>
@@ -189,8 +193,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingF">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseF" aria-expanded="false"
-                  aria-controls="collapseF">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseF"
+                  aria-expanded="false" aria-controls="collapseF">
                   Fines
                 </a>
               </h4>
@@ -220,7 +224,8 @@
                       </label>
                       <div class="col-md-6">
 
-                        <input name="FINES_PERCENT_VALUE" [(ngModel)]="fines_settings.FINES_PERCENT_VALUE" type="text" class="form-control">
+                        <input name="FINES_PERCENT_VALUE" [(ngModel)]="fines_settings.FINES_PERCENT_VALUE" type="text"
+                          class="form-control">
 
                       </div>
                     </div>
@@ -255,8 +260,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingBreak">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseBreak" aria-expanded="false"
-                  aria-controls="collapseBreak">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseBreak"
+                  aria-expanded="false" aria-controls="collapseBreak">
                   Loan Breaking
                 </a>
               </h4>
@@ -267,20 +272,77 @@
                   <form #breakForm="ngForm" novalidate>
                     <div class="form-group row">
                       <div class="col-md-12">
-                        <ul>
-                          <li class="text-left">
-                            <span> Enable Autobreak</span>
+                          <span> Enable Autobreak</span>
+                          <div class="pull-right">
+                            <input type="checkbox" name="ALLOW_AUTOBREAK" [(ngModel)]="break_settings.ALLOW_AUTOBREAK">
+                            <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="product.LOAN_PRODUCT_ID">
+                          </div>
+                         
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <span> Enable Pre-maturity penalty</span>
                             <div class="pull-right">
-                              <input type="checkbox" name="ALLOW_AUTOBREAK" [(ngModel)]="break_settings.ALLOW_AUTOBREAK">
-                              <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="product.LOAN_PRODUCT_ID">
+                              <input type="checkbox" name="ENABLE_PREMATURITY_PENALTY" [(ngModel)]="break_settings.ENABLE_PREMATURITY_PENALTY">
                             </div>
-                          </li>
-                        </ul>
+                        </div>
+                      </div>
+                    <div class="form-group row" *ngIf="break_settings.ENABLE_PREMATURITY_PENALTY">
+
+
+                      <label class="col-md-6">
+                        Action
+                      </label>
+                      <div class="col-md-6">
+
+                        <select class="form-control" name="PREMATURITY_ACTION" [(ngModel)]="break_settings.PREMATURITY_ACTION">
+                          <option [value]="0"></option>
+                          <option [value]="1">Accrue Interest</option>
+                          <option [value]="2">Apply fine</option>
+                        </select>
+
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="break_settings.PREMATURITY_ACTION==='1'">
+
+
+                      <label class="col-md-6">
+                        How many interest
+                      </label>
+                      <div class="col-md-6">
+
+                        <input type="number" class="form-control" name="HOW_MANY_INTEREST" [(ngModel)]="break_settings.HOW_MANY_INTEREST">
+
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="break_settings.PREMATURITY_ACTION==='2'">
+
+
+                      <label class="col-md-6">
+                        Percentage Fine
+                      </label>
+                      <div class="col-md-6">
+
+                        <input type="number" class="form-control" name="PERCENTAGE_FINE" [(ngModel)]="break_settings.PERCENTAGE_FINE">
+
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="break_settings.PREMATURITY_ACTION==='2'">
+
+
+                      <label class="col-md-6">
+                        Flat Fine
+                      </label>
+                      <div class="col-md-6">
+
+                        <input type="number" class="form-control" name="FLAT_FINE" [(ngModel)]="break_settings.FLAT_FINE">
+
                       </div>
                     </div>
 
-
-                    <button type="submit" (click)="saveBreakSettings(breakForm.value, breakForm.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <button type="submit" (click)="saveBreakSettings(breakForm.value, breakForm.valid)" [disabled]="loading"
+                      class="btn btn-white pull-right">
                       <span *ngIf="!loading">Submit</span>
                       <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                     </button>
@@ -292,8 +354,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingPayments">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePayments" aria-expanded="false"
-                  aria-controls="collapsePayments">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePayments"
+                  aria-expanded="false" aria-controls="collapsePayments">
                   Payments
                 </a>
               </h4>
@@ -336,7 +398,8 @@
                       </label>
                       <div class="col-md-6">
 
-                        <input name="AUTO_APPROVE_PAYMENT_AMOUNT" [(ngModel)]="payment.AUTO_APPROVE_PAYMENT_AMOUNT" type="text" class="form-control">
+                        <input name="AUTO_APPROVE_PAYMENT_AMOUNT" [(ngModel)]="payment.AUTO_APPROVE_PAYMENT_AMOUNT"
+                          type="text" class="form-control">
 
                       </div>
                     </div>
@@ -352,7 +415,8 @@
                         </ul>
                       </div>
                     </div>
-                    <button type="submit" (click)="savePayments(paymentsForm.value, paymentsForm.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <button type="submit" (click)="savePayments(paymentsForm.value, paymentsForm.valid)" [disabled]="loading"
+                      class="btn btn-white pull-right">
                       <span *ngIf="!loading">Submit</span>
                       <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                     </button>
@@ -364,8 +428,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingSeven">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false"
-                  aria-controls="collapseSeven">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven"
+                  aria-expanded="false" aria-controls="collapseSeven">
                   Loan Default Settings
                 </a>
               </h4>
@@ -428,8 +492,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingThree">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false"
-                  aria-controls="collapseThree">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
+                  aria-expanded="false" aria-controls="collapseThree">
                   Approvals
                 </a>
               </h4>
@@ -468,8 +532,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingFour">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false"
-                  aria-controls="collapseFour">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour"
+                  aria-expanded="false" aria-controls="collapseFour">
                   Customer Routing
                 </a>
               </h4>
@@ -505,7 +569,8 @@
                     </li>
 
                   </ul>
-                  <button type="submit" (click)="saveautorouting(autorouting.value, autorouting.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                  <button type="submit" (click)="saveautorouting(autorouting.value, autorouting.valid)" [disabled]="loading"
+                    class="btn btn-white pull-right">
                     <span *ngIf="!loading">Submit</span>
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
@@ -516,8 +581,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingEight">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="false"
-                  aria-controls="collapseEight">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight"
+                  aria-expanded="false" aria-controls="collapseEight">
                   Customer Account Number Settings
                 </a>
               </h4>
@@ -529,13 +594,14 @@
 
                     <div class="form-group row">
                       <label for="" class="control-label col-md-5">Customer Account Sections</label>
-                      <label for="" class="control-label col-md-7">[Prefix/Branch Code] | [Number Range] | [Account Type]</label>
+                      <label for="" class="control-label col-md-7">[Prefix/Branch Code] | [Number Range] | [Account
+                        Type]</label>
                     </div>
                     <div class="form-group row">
                       <label for="" class="control-label col-md-5">Account Prefix/Branch Code</label>
                       <div class="col-md-7">
-                        <input type="text" class="form-control" (ngModelChange)="changeSampleCA()" name="CUSTOMER_ACCOUNT_PART_ONE" [(ngModel)]="customeraccountsettings.CUSTOMER_ACCOUNT_PART_ONE"
-                          id="CUSTOMER_ACCOUNT_PART_ONE">
+                        <input type="text" class="form-control" (ngModelChange)="changeSampleCA()" name="CUSTOMER_ACCOUNT_PART_ONE"
+                          [(ngModel)]="customeraccountsettings.CUSTOMER_ACCOUNT_PART_ONE" id="CUSTOMER_ACCOUNT_PART_ONE">
                       </div>
                     </div>
                     <div class="form-group row">
@@ -543,12 +609,13 @@
                       <div class="col-md-7">
                         <div class="row">
                           <div class="col-md-6">
-                            <input type="number" min="100000" class="form-control" (change)="changeSampleCA()" [(ngModel)]="customeraccountsettings.CUSTOMER_ACCOUNT_RANGE_ONE"
-                              name="CUSTOMER_ACCOUNT_RANGE_ONE" id="CUSTOMER_ACCOUNT_RANGE_ONE">
+                            <input type="number" min="100000" class="form-control" (change)="changeSampleCA()"
+                              [(ngModel)]="customeraccountsettings.CUSTOMER_ACCOUNT_RANGE_ONE" name="CUSTOMER_ACCOUNT_RANGE_ONE"
+                              id="CUSTOMER_ACCOUNT_RANGE_ONE">
                           </div>
                           <div class="col-md-6">
-                            <input type="number" max="999999" class="form-control" id="CUSTOMER_ACCOUNT_RANGE_TWO" [(ngModel)]="customeraccountsettings.CUSTOMER_ACCOUNT_RANGE_TWO"
-                              name="CUSTOMER_ACCOUNT_RANGE_TWO">
+                            <input type="number" max="999999" class="form-control" id="CUSTOMER_ACCOUNT_RANGE_TWO"
+                              [(ngModel)]="customeraccountsettings.CUSTOMER_ACCOUNT_RANGE_TWO" name="CUSTOMER_ACCOUNT_RANGE_TWO">
                           </div>
                         </div>
                       </div>
@@ -558,8 +625,8 @@
                       <div class="col-md-7">
                         <div class="checkbox">
                           <label>
-                            <input type="checkbox" (change)="changeSampleCA()" [(ngModel)]="customeraccountsettings.INCLUDE_BRANCH_CODE_PREFIX" name="INCLUDE_BRANCH_CODE_PREFIX"
-                              id="INCLUDE_BRANCH_CODE_PREFIX">
+                            <input type="checkbox" (change)="changeSampleCA()" [(ngModel)]="customeraccountsettings.INCLUDE_BRANCH_CODE_PREFIX"
+                              name="INCLUDE_BRANCH_CODE_PREFIX" id="INCLUDE_BRANCH_CODE_PREFIX">
                           </label>
                         </div>
                       </div>
@@ -569,8 +636,8 @@
                       <div class="col-md-7">
                         <div class="checkbox">
                           <label>
-                            <input type="checkbox" (change)="changeSampleCA()" [(ngModel)]="customeraccountsettings.INCLUDE_ACCOUNT_TYPE_CODE" name="INCLUDE_ACCOUNT_TYPE_CODE"
-                              id="INCLUDE_ACCOUNT_TYPE_CODE">
+                            <input type="checkbox" (change)="changeSampleCA()" [(ngModel)]="customeraccountsettings.INCLUDE_ACCOUNT_TYPE_CODE"
+                              name="INCLUDE_ACCOUNT_TYPE_CODE" id="INCLUDE_ACCOUNT_TYPE_CODE">
                           </label>
                         </div>
                       </div>
@@ -578,12 +645,14 @@
                     <div class="form-group row">
                       <label for="" class="control-label col-md-5">Sample</label>
                       <div class="col-md-7">
-                        <input type="text" class="form-control" id="SAMPLE_CA" [disabled]="true" id="SAMPLE_CA" name="SAMPLE_CA" [(ngModel)]="customeraccountsettings.SAMPLE_CA">
+                        <input type="text" class="form-control" id="SAMPLE_CA" [disabled]="true" id="SAMPLE_CA" name="SAMPLE_CA"
+                          [(ngModel)]="customeraccountsettings.SAMPLE_CA">
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-12">
-                        <button type="submit" (click)="saveCustomerSettings(customeraccount.value, customeraccount.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                        <button type="submit" (click)="saveCustomerSettings(customeraccount.value, customeraccount.valid)"
+                          [disabled]="loading" class="btn btn-white pull-right">
                           <span *ngIf="!loading">Submit</span>
                           <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                         </button>
@@ -597,8 +666,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingAccounting">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAccounting" aria-expanded="false"
-                  aria-controls="collapseAccounting">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAccounting"
+                  aria-expanded="false" aria-controls="collapseAccounting">
                   Accounting
                 </a>
               </h4>
@@ -616,7 +685,8 @@
                     </li>
 
                   </ul>
-                  <button type="submit" (click)="saveAccPeer(accounting.value, accounting.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                  <button type="submit" (click)="saveAccPeer(accounting.value, accounting.valid)" [disabled]="loading"
+                    class="btn btn-white pull-right">
                     <span *ngIf="!loading">Submit</span>
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
@@ -627,8 +697,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingP2P">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseP2P" aria-expanded="false"
-                  aria-controls="collapseP2P">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseP2P"
+                  aria-expanded="false" aria-controls="collapseP2P">
                   P2p
                 </a>
               </h4>
@@ -653,7 +723,8 @@
                         </label>
                         <div class="col-md-6">
 
-                          <input name="MAX_DURATION_FOR_LOAN_MARKET" [(ngModel)]="backend.MAX_DURATION_FOR_LOAN_MARKET" type="text" class="form-control">
+                          <input name="MAX_DURATION_FOR_LOAN_MARKET" [(ngModel)]="backend.MAX_DURATION_FOR_LOAN_MARKET"
+                            type="text" class="form-control">
 
                         </div>
                       </div>
@@ -684,13 +755,15 @@
                           Make everyone anonymous
                         </label>
                         <div class="col-md-6">
-                          <input type="checkbox" name="MAKE_EVERYONE_ANONYMOUS" name="MAKE_EVERYONE_ANONYMOUS" [(ngModel)]="backend.MAKE_EVERYONE_ANONYMOUS">
+                          <input type="checkbox" name="MAKE_EVERYONE_ANONYMOUS" name="MAKE_EVERYONE_ANONYMOUS"
+                            [(ngModel)]="backend.MAKE_EVERYONE_ANONYMOUS">
                         </div>
                       </div>
                     </li>
 
                   </ul>
-                  <button type="submit" (click)="saveAccPeer(peertopeer.value, peertopeer.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                  <button type="submit" (click)="saveAccPeer(peertopeer.value, peertopeer.valid)" [disabled]="loading"
+                    class="btn btn-white pull-right">
                     <span *ngIf="!loading">Submit</span>
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
@@ -701,8 +774,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingEligibility">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEligibility" aria-expanded="false"
-                  aria-controls="collapseEligibility">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEligibility"
+                  aria-expanded="false" aria-controls="collapseEligibility">
                   Eligibility
                 </a>
               </h4>
@@ -721,7 +794,8 @@
                     <li class="text-left">
                       <span> Bank Account/Profile Name Match</span>
                       <div class="pull-right">
-                        <input type="checkbox" name="BANK_ACCOUNT_ELIGIBILITY" name="BANK_ACCOUNT_ELIGIBILITY" [(ngModel)]="backend.BANK_ACCOUNT_ELIGIBILITY">
+                        <input type="checkbox" name="BANK_ACCOUNT_ELIGIBILITY" name="BANK_ACCOUNT_ELIGIBILITY"
+                          [(ngModel)]="backend.BANK_ACCOUNT_ELIGIBILITY">
                       </div>
                     </li>
                     <li class="text-left">
@@ -745,7 +819,8 @@
                     <li class="text-left hide">
                       <span> Default Amount</span>
                       <div class="pull-right">
-                        <input type="checkbox" name="DEFAULT_AMOUNT_ELIGIBILITY" name="DEFAULT_AMOUNT_ELIGIBILITY" [(ngModel)]="backend.DEFAULT_AMOUNT_ELIGIBILITY">
+                        <input type="checkbox" name="DEFAULT_AMOUNT_ELIGIBILITY" name="DEFAULT_AMOUNT_ELIGIBILITY"
+                          [(ngModel)]="backend.DEFAULT_AMOUNT_ELIGIBILITY">
                       </div>
                     </li>
                     <li class="text-left">
@@ -763,7 +838,8 @@
                     <li class="text-left">
                       <span> Suspend if eligibility fails</span>
                       <div class="pull-right">
-                        <input type="checkbox" name="SUSPEND_IF_FAIL_ELIGIBILITY" name="SUSPEND_IF_FAIL_ELIGIBILITY" [(ngModel)]="backend.SUSPEND_IF_FAIL_ELIGIBILITY">
+                        <input type="checkbox" name="SUSPEND_IF_FAIL_ELIGIBILITY" name="SUSPEND_IF_FAIL_ELIGIBILITY"
+                          [(ngModel)]="backend.SUSPEND_IF_FAIL_ELIGIBILITY">
                       </div>
                     </li>
                     <li class="text-left">
@@ -797,7 +873,8 @@
                     </div>
 
                   </div>
-                  <button type="submit" (click)="saveEligibility(eligibility.value, eligibility.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                  <button type="submit" (click)="saveEligibility(eligibility.value, eligibility.valid)" [disabled]="loading"
+                    class="btn btn-white pull-right">
                     <span *ngIf="!loading">Submit</span>
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
@@ -808,8 +885,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingAutodisburse">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAutodisburse" aria-expanded="false"
-                  aria-controls="collapseAutodisburse">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAutodisburse"
+                  aria-expanded="false" aria-controls="collapseAutodisburse">
                   Disbursements
                 </a>
               </h4>
@@ -859,11 +936,13 @@
                     <li class="text-left">
                       <span> Enable Bulk Disbursement</span>
                       <div class="pull-right">
-                        <input type="checkbox" name="ENABLE_BULK_DISBURSEMENT" name="ENABLE_BULK_DISBURSEMENT" [(ngModel)]="backend.ENABLE_BULK_DISBURSEMENT">
+                        <input type="checkbox" name="ENABLE_BULK_DISBURSEMENT" name="ENABLE_BULK_DISBURSEMENT"
+                          [(ngModel)]="backend.ENABLE_BULK_DISBURSEMENT">
                       </div>
                     </li>
                   </ul>
-                  <button type="submit" (click)="saveAutodisburse(autodisburse.value, autodisburse.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                  <button type="submit" (click)="saveAutodisburse(autodisburse.value, autodisburse.valid)" [disabled]="loading"
+                    class="btn btn-white pull-right">
                     <span *ngIf="!loading">Submit</span>
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
@@ -875,8 +954,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingAccounts">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAccounts" aria-expanded="false"
-                  aria-controls="collapseAccounts">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAccounts"
+                  aria-expanded="false" aria-controls="collapseAccounts">
                   Accounts
                 </a>
               </h4>
@@ -895,7 +974,8 @@
                     </li>
 
                   </ul>
-                  <button type="submit" (click)="saveAccounts(accounts.value, accounts.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                  <button type="submit" (click)="saveAccounts(accounts.value, accounts.valid)" [disabled]="loading"
+                    class="btn btn-white pull-right">
                     <span *ngIf="!loading">Submit</span>
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
@@ -907,8 +987,8 @@
           <div class="panel panel-default  ">
             <div class="panel-heading" role="tab" id="headingQB">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseQB" aria-expanded="false"
-                  aria-controls="collapseQB">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseQB"
+                  aria-expanded="false" aria-controls="collapseQB">
                   Qualified Borrowers
                 </a>
               </h4>
@@ -919,16 +999,16 @@
                   <div class="form-group row">
                     <label class="control-label col-md-6">Minimum Age</label>
                     <div class="col-md-6">
-                      <input type="text" name="MIN_AGE" #MIN_AGE="ngModel" [(ngModel)]="qualified_borrowers.MIN_AGE" id="MIN_AGE" class="form-control"
-                        required>
+                      <input type="text" name="MIN_AGE" #MIN_AGE="ngModel" [(ngModel)]="qualified_borrowers.MIN_AGE" id="MIN_AGE"
+                        class="form-control" required>
 
                     </div>
                   </div>
                   <div class="form-group row">
                     <label class="control-label col-md-6">Maximum Age</label>
                     <div class="col-md-6">
-                      <input type="text" name="MAX_AGE" #MAX_AGE="ngModel" [(ngModel)]="qualified_borrowers.MAX_AGE" id="MAX_AGE" class="form-control"
-                        required>
+                      <input type="text" name="MAX_AGE" #MAX_AGE="ngModel" [(ngModel)]="qualified_borrowers.MAX_AGE" id="MAX_AGE"
+                        class="form-control" required>
 
                     </div>
                   </div>
@@ -942,7 +1022,8 @@
                             <span class="pull-right">
                               <div class="checkbox" style="margin:0px !important">
                                 <label>
-                                  <input type="checkbox" [checked]="isMaritalStatusAvailable(occ?.value,i)" name="mstat_{{occ?.value}}" (change)="checkMaritalStatus(occ,$event.target.checked,i)">
+                                  <input type="checkbox" [checked]="isMaritalStatusAvailable(occ?.value,i)" name="mstat_{{occ?.value}}"
+                                    (change)="checkMaritalStatus(occ,$event.target.checked,i)">
 
                                 </label>
                               </div>
@@ -963,7 +1044,8 @@
                             <span class="pull-right">
                               <div class="checkbox" style="margin:0px !important">
                                 <label>
-                                  <input type="checkbox" [checked]="isStateAvailable(state?.state_id,i)" name="tat_{{state?.state_name}}" (change)="checkAllowedState(state,$event.target.checked,i)">
+                                  <input type="checkbox" [checked]="isStateAvailable(state?.state_id,i)" name="tat_{{state?.state_name}}"
+                                    (change)="checkAllowedState(state,$event.target.checked,i)">
 
                                 </label>
                               </div>
@@ -993,7 +1075,8 @@
                             <span class="pull-right">
                               <div class="checkbox" style="margin:0px !important">
                                 <label>
-                                  <input type="checkbox" [checked]="isAvailable(occ?.OCCUPATION_ID,'occupation',i)" name="role_{{occ?.OCCUPATION_ID}}" (change)="checkOccupation(role,$event.target.checked,i)">
+                                  <input type="checkbox" [checked]="isAvailable(occ?.OCCUPATION_ID,'occupation',i)"
+                                    name="role_{{occ?.OCCUPATION_ID}}" (change)="checkOccupation(role,$event.target.checked,i)">
 
                                 </label>
                               </div>
@@ -1014,7 +1097,8 @@
                             <span class="pull-right">
                               <div class="checkbox" style="margin:0px !important">
                                 <label>
-                                  <input type="checkbox" [checked]="isAvailable(occ?.OCCUPATION_ID,'sector',i)" name="role_{{occ?.OCCUPATION_ID}}" (change)="checkSector(role,$event.target.checked,i)">
+                                  <input type="checkbox" [checked]="isAvailable(occ?.OCCUPATION_ID,'sector',i)" name="role_{{occ?.OCCUPATION_ID}}"
+                                    (change)="checkSector(role,$event.target.checked,i)">
 
                                 </label>
                               </div>
@@ -1037,8 +1121,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingGuarantor">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseGuarantor" aria-expanded="false"
-                  aria-controls="collapseQB">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseGuarantor"
+                  aria-expanded="false" aria-controls="collapseQB">
                   Guarantor Requirements
                 </a>
               </h4>
@@ -1068,7 +1152,8 @@
                             <span class="pull-right">
                               <div class="checkbox" style="margin:0px !important">
                                 <label>
-                                  <input type="checkbox" [checked]="isGuarantorRequirementAvailable(occ?.value,i)" name="gua_{{occ?.value}}" (change)="checkGuarantorRequirement($event.target.checked,i)">
+                                  <input type="checkbox" [checked]="isGuarantorRequirementAvailable(occ?.value,i)" name="gua_{{occ?.value}}"
+                                    (change)="checkGuarantorRequirement($event.target.checked,i)">
 
                                 </label>
                               </div>
@@ -1079,7 +1164,8 @@
                       </div>
                     </div>
                   </div>
-                  <button type="submit" (click)="saveGuarantorRequirements(gb.value, gb.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                  <button type="submit" (click)="saveGuarantorRequirements(gb.value, gb.valid)" [disabled]="loading"
+                    class="btn btn-white pull-right">
                     <span *ngIf="!loading">Submit</span>
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
@@ -1091,7 +1177,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingContract">
               <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseContract" aria-expanded="true" aria-controls="collapseContract">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseContract" aria-expanded="true"
+                  aria-controls="collapseContract">
                   Contract Settings
                 </a>
               </h4>
@@ -1106,7 +1193,8 @@
                           <li class="text-left">
                             <span> Borrower must accept contract</span>
                             <div class="pull-right">
-                              <input type="checkbox" name="MUST_ACCEPT_CONTRACT" name="MUST_ACCEPT_CONTRACT" [(ngModel)]="contract.MUST_ACCEPT_CONTRACT">
+                              <input type="checkbox" name="MUST_ACCEPT_CONTRACT" name="MUST_ACCEPT_CONTRACT"
+                                [(ngModel)]="contract.MUST_ACCEPT_CONTRACT">
 
                             </div>
                           </li>
@@ -1191,7 +1279,8 @@
                           <li class="text-left">
                             <span> Enable Signature</span>
                             <div class="pull-right">
-                              <input type="checkbox" name="ENABLE_CONTRACT_SIGNATURE" name="ENABLE_CONTRACT_SIGNATURE" [(ngModel)]="contract.ENABLE_CONTRACT_SIGNATURE">
+                              <input type="checkbox" name="ENABLE_CONTRACT_SIGNATURE" name="ENABLE_CONTRACT_SIGNATURE"
+                                [(ngModel)]="contract.ENABLE_CONTRACT_SIGNATURE">
 
                             </div>
                           </li>
@@ -1205,7 +1294,8 @@
                           <li class="text-left">
                             <span> Enable Contract Date Adjustment</span>
                             <div class="pull-right">
-                              <input type="checkbox" name="ADJUST_CONTRACT_DATE" name="ADJUST_CONTRACT_DATE" [(ngModel)]="contract.ADJUST_CONTRACT_DATE">
+                              <input type="checkbox" name="ADJUST_CONTRACT_DATE" name="ADJUST_CONTRACT_DATE"
+                                [(ngModel)]="contract.ADJUST_CONTRACT_DATE">
 
                             </div>
                           </li>
@@ -1219,7 +1309,8 @@
                           <li class="text-left">
                             <span> Get notification when contract is accepted</span>
                             <div class="pull-right">
-                              <input type="checkbox" name="NOTIFY_CONTRACT_ACCEPTED" name="NOTIFY_CONTRACT_ACCEPTED" [(ngModel)]="contract.NOTIFY_CONTRACT_ACCEPTED">
+                              <input type="checkbox" name="NOTIFY_CONTRACT_ACCEPTED" name="NOTIFY_CONTRACT_ACCEPTED"
+                                [(ngModel)]="contract.NOTIFY_CONTRACT_ACCEPTED">
 
                             </div>
                           </li>
@@ -1235,7 +1326,8 @@
                       </div>
                     </div>
 
-                    <button type="submit" (click)="saveContract(contractForm.value, contractForm.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <button type="submit" (click)="saveContract(contractForm.value, contractForm.valid)" [disabled]="loading"
+                      class="btn btn-white pull-right">
                       <span *ngIf="!loading">Submit</span>
                       <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                     </button>
@@ -1247,7 +1339,8 @@
           <div class="panel panel-default" *ngIf="gateway.CHOOSE_PAYMENT_PROCESSOR">
             <div class="panel-heading" role="tab" id="headingPP">
               <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePP" aria-expanded="true" aria-controls="collapsePP">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePP" aria-expanded="true"
+                  aria-controls="collapsePP">
                   Payment Gateway Settings
                 </a>
               </h4>
@@ -1281,7 +1374,8 @@
                               <span class="pull-right">
                                 <div class="checkbox" style="margin:0px !important">
                                   <label>
-                                    <input type="checkbox" [checked]="isAvailable(occ?.VALUE,'cards',i)" name="role_{{occ?.VALUE}}" (change)="checkCard(occ,$event.target.checked,i)">
+                                    <input type="checkbox" [checked]="isAvailable(occ?.VALUE,'cards',i)" name="role_{{occ?.VALUE}}"
+                                      (change)="checkCard(occ,$event.target.checked,i)">
 
                                   </label>
                                 </div>
@@ -1305,7 +1399,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingMail">
               <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMail" aria-expanded="true" aria-controls="collapseMail">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMail" aria-expanded="true"
+                  aria-controls="collapseMail">
                   Mail Settings
                 </a>
               </h4>
@@ -1441,7 +1536,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingSMS">
               <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSMS" aria-expanded="true" aria-controls="collapseSMS">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSMS" aria-expanded="true"
+                  aria-controls="collapseSMS">
                   SMS Settings
                 </a>
               </h4>
@@ -1457,7 +1553,8 @@
 
                       </div>
                       <div class="col-md-6">
-                        <input type="text" class="form-control" minlength="5" maxlength="10" name="SMS_DISPLAY_NAME" [ngModel]="mail_settings.SMS_DISPLAY_NAME">
+                        <input type="text" class="form-control" minlength="5" maxlength="10" name="SMS_DISPLAY_NAME"
+                          [ngModel]="mail_settings.SMS_DISPLAY_NAME">
 
                       </div>
                     </div>
@@ -1475,7 +1572,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingReminder">
               <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseReminder" aria-expanded="true" aria-controls="collapseReminder">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseReminder" aria-expanded="true"
+                  aria-controls="collapseReminder">
                   Repayment Settings
                 </a>
               </h4>
@@ -1535,7 +1633,8 @@
                           <li class="text-left">
                             <span> Get notification when customers make a repayment</span>
                             <div class="pull-right">
-                              <input type="checkbox" name="NOTIFY_REPAYMENT_MADE" name="NOTIFY_REPAYMENT_MADE" [(ngModel)]="reminders.NOTIFY_REPAYMENT_MADE">
+                              <input type="checkbox" name="NOTIFY_REPAYMENT_MADE" name="NOTIFY_REPAYMENT_MADE"
+                                [(ngModel)]="reminders.NOTIFY_REPAYMENT_MADE">
 
                             </div>
                           </li>
@@ -1550,7 +1649,8 @@
                         <input type="text" class="form-control" name="NOTIFY_REPAYMENT_EMAIL" [(ngModel)]="reminders.NOTIFY_REPAYMENT_EMAIL">
                       </div>
                     </div>
-                    <button type="submit" (click)="saveReminders(remind.value, remind.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                    <button type="submit" (click)="saveReminders(remind.value, remind.valid)" [disabled]="loading"
+                      class="btn btn-white pull-right">
                       <span *ngIf="!loading">Submit</span>
                       <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                     </button>
@@ -1562,8 +1662,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingSecurity">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSecurity" aria-expanded="false"
-                  aria-controls="collapseSecurity">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSecurity"
+                  aria-expanded="false" aria-controls="collapseSecurity">
                   Security
                 </a>
               </h4>
@@ -1577,12 +1677,14 @@
                     <li class="text-left">
                       <span> Require Security Question</span>
                       <div class="pull-right">
-                        <input type="checkbox" name="REQUIRE_SECURITY_QUESTION" name="REQUIRE_SECURITY_QUESTION" [(ngModel)]="security.REQUIRE_SECURITY_QUESTION">
+                        <input type="checkbox" name="REQUIRE_SECURITY_QUESTION" name="REQUIRE_SECURITY_QUESTION"
+                          [(ngModel)]="security.REQUIRE_SECURITY_QUESTION">
                       </div>
                     </li>
 
                   </ul>
-                  <button type="submit" (click)="saveSecurity(securtiyform.value, securtiyform.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                  <button type="submit" (click)="saveSecurity(securtiyform.value, securtiyform.valid)" [disabled]="loading"
+                    class="btn btn-white pull-right">
                     <span *ngIf="!loading">Submit</span>
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
@@ -1594,8 +1696,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingCompanies">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCompanies" aria-expanded="false"
-                  aria-controls="collapseCompanies">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCompanies"
+                  aria-expanded="false" aria-controls="collapseCompanies">
                   Companies
                 </a>
               </h4>
@@ -1610,8 +1712,8 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingReferral">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseReferral" aria-expanded="false"
-                  aria-controls="collapseReferral">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseReferral"
+                  aria-expanded="false" aria-controls="collapseReferral">
                   Referral Setting
                 </a>
               </h4>
@@ -1726,7 +1828,8 @@
                       </div>
                     </li>
                   </ul>
-                  <button type="submit" (click)="saveReferral(referralform.value, referralform.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                  <button type="submit" (click)="saveReferral(referralform.value, referralform.valid)" [disabled]="loading"
+                    class="btn btn-white pull-right">
                     <span *ngIf="!loading">Submit</span>
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
@@ -1735,11 +1838,236 @@
             </div>
 
           </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingContract">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseContract" aria-expanded="true"
+                  aria-controls="collapseContract">
+                  Contract Settings
+                </a>
+              </h4>
+            </div>
+            <div id="collapseContract" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingContract">
+              <div class="panel-body">
+                <div class="panel-body">
+                  <form #contractForm="ngForm" novalidate>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Borrower must accept contract</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="MUST_ACCEPT_CONTRACT" name="MUST_ACCEPT_CONTRACT"
+                                [(ngModel)]="contract.MUST_ACCEPT_CONTRACT">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Send contract documents</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="SEND_CONTRACT_DOCS" name="SEND_CONTRACT_DOCS" [(ngModel)]="contract.SEND_CONTRACT_DOCS">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Request for BVN</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="REQUEST_FOR_BVN" name="REQUEST_FOR_BVN" [(ngModel)]="contract.REQUEST_FOR_BVN">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Request for Card</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="REQUEST_FOR_CARD" name="REQUEST_FOR_CARD" [(ngModel)]="contract.REQUEST_FOR_CARD">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Request for Account</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="REQUEST_FOR_ACCOUNT" name="REQUEST_FOR_ACCOUNT" [(ngModel)]="contract.REQUEST_FOR_ACCOUNT">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Request for Direct Debit</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="REQUEST_FOR_DIRECT_DEBIT" [(ngModel)]="contract.REQUEST_FOR_DIRECT_DEBIT">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Enable Signature</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="ENABLE_CONTRACT_SIGNATURE" name="ENABLE_CONTRACT_SIGNATURE"
+                                [(ngModel)]="contract.ENABLE_CONTRACT_SIGNATURE">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Enable Contract Date Adjustment</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="ADJUST_CONTRACT_DATE" name="ADJUST_CONTRACT_DATE"
+                                [(ngModel)]="contract.ADJUST_CONTRACT_DATE">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span> Get notification when contract is accepted</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="NOTIFY_CONTRACT_ACCEPTED" name="NOTIFY_CONTRACT_ACCEPTED"
+                                [(ngModel)]="contract.NOTIFY_CONTRACT_ACCEPTED">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="contract.NOTIFY_CONTRACT_ACCEPTED">
+                      <div class="col-md-6">
+                        <label class="control-label">Email</label>
+                      </div>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" name="CONTRACT_ACCEPTED_EMAIL" [(ngModel)]="contract.CONTRACT_ACCEPTED_EMAIL">
+                      </div>
+                    </div>
+
+                    <button type="submit" (click)="saveContract(contractForm.value, contractForm.valid)" [disabled]="loading"
+                      class="btn btn-white pull-right">
+                      <span *ngIf="!loading">Submit</span>
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingdd">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseDD" aria-expanded="true"
+                  aria-controls="collapseDD">
+                  Direct Debit Mandate Settings
+                </a>
+              </h4>
+            </div>
+            <div id="collapseDD" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingdd">
+              <div class="panel-body">
+                <div class="panel-body">
+                  <form #dd="ngForm" novalidate>
+
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="control-label">Direct debit status check(hrs)</label>
+                      </div>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" name="DIRECT_DEBIT_STATUS_CHECK" [(ngModel)]="directdebitform.DIRECT_DEBIT_STATUS_CHECK">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="control-label">Cancel instruction after how many checks</label>
+                      </div>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" name="CANCEL_AFTER_HOW_MANY_CHECKS" [(ngModel)]="directdebitform.CANCEL_AFTER_HOW_MANY_CHECKS">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ul>
+                          <li class="text-left">
+                            <span>Get notified after how many checks</span>
+                            <div class="pull-right">
+                              <input type="checkbox" name="GET_NOTIFIED" [(ngModel)]="directdebitform.GET_NOTIFIED">
+
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="directdebitform.GET_NOTIFIED">
+                      <div class="col-md-6">
+                        <label class="control-label">Cancel instruction after how many checks</label>
+                      </div>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" name="GET_NOTIFIED_EMAIL" [(ngModel)]="directdebitform.GET_NOTIFIED_EMAIL">
+                      </div>
+                    </div>
+
+
+                    <button type="submit" (click)="saveDirectDebitSettings(dd.value, dd.valid)" [disabled]="loading"
+                      class="btn btn-white pull-right">
+                      <span *ngIf="!loading">Submit</span>
+                      <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="panel panel-default hide">
             <div class="panel-heading" role="tab" id="headingAnalytics">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAnalytics" aria-expanded="false"
-                  aria-controls="collapseAnalytics">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAnalytics"
+                  aria-expanded="false" aria-controls="collapseAnalytics">
                   Analytics weight Setting
                 </a>
               </h4>
@@ -1844,7 +2172,8 @@
                       </div>
                     </li>
                   </ul>
-                  <button type="submit" (click)="saveAnalytics(analyticsform.value, analyticsform.valid)" [disabled]="loading" class="btn btn-white pull-right">
+                  <button type="submit" (click)="saveAnalytics(analyticsform.value, analyticsform.valid)" [disabled]="loading"
+                    class="btn btn-white pull-right">
                     <span *ngIf="!loading">Submit</span>
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                   </button>
@@ -1853,11 +2182,11 @@
             </div>
           </div>
 
-          <div class="panel panel-default">
+          <div class="panel panel-default hide">
             <div class="panel-heading" role="tab" id="headingGeneralAnalytics">
               <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseGeneralAnalytics" aria-expanded="false"
-                  aria-controls="collapseGeneralAnalytics">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseGeneralAnalytics"
+                  aria-expanded="false" aria-controls="collapseGeneralAnalytics">
                   General Analytics Setting
                 </a>
               </h4>
@@ -2029,7 +2358,8 @@
                     </div>
                     <div class="col-md-8">
                       <div class="form-group">
-                        <select (change)="addToGuarantorOwnership($event)" name="PREFERRED_GUARANTOR_OWNERSHIP_STATUS" id="" class="form-control">
+                        <select (change)="addToGuarantorOwnership($event)" name="PREFERRED_GUARANTOR_OWNERSHIP_STATUS"
+                          id="" class="form-control">
                           <option value="0">Select Ownership status</option>
                           <option [value]="ownership_stat.id" *ngFor="let ownership_stat of ownership_status">
                             {{ownership_stat.name}}
@@ -2054,7 +2384,8 @@
                     </div>
                     <div class="col-md-8">
                       <div class="form-group">
-                        <select (change)="addToGuarantorJobSector($event)" name="ALLOWABLE_GUARANTOR_JOB_SECTOR" id="" class="form-control">
+                        <select (change)="addToGuarantorJobSector($event)" name="ALLOWABLE_GUARANTOR_JOB_SECTOR" id=""
+                          class="form-control">
                           <option value="0">Select Job Sector</option>
                           <option [value]="job_sector.OCCUPATION_ID" *ngFor="let job_sector of job_sectors">
                             {{job_sector.DESCRIPTION}}
@@ -2161,7 +2492,8 @@
                       <li class="text-left">
                         <span>Minimum Qualification </span>
                         <div class="pull-right">
-                          <select name="MIN_QUALIFICATION" [(ngModel)]="general_analytics_settings.MIN_QUALIFICATION" class="form-control">
+                          <select name="MIN_QUALIFICATION" [(ngModel)]="general_analytics_settings.MIN_QUALIFICATION"
+                            class="form-control">
                             <option value="0">Select Qualifications</option>
                             <option [value]="education_qualification.EDUCATION_LEVEL_ID" *ngFor="let education_qualification of education_qualifications">
                               {{education_qualification.EDUCATION_LEVEL}}
@@ -2322,7 +2654,8 @@
                       <li class="text-left">
                         <span>Minimum guarantor job grade </span>
                         <div class="pull-right">
-                          <select name="MIN_GUARANTOR_JOB_GRADE" [(ngModel)]="general_analytics_settings.MIN_GUARANTOR_JOB_GRADE" class="form-control">
+                          <select name="MIN_GUARANTOR_JOB_GRADE" [(ngModel)]="general_analytics_settings.MIN_GUARANTOR_JOB_GRADE"
+                            class="form-control">
                             <option value="0">Select Job Grade</option>
                             <option [value]="job_grade.OCCUPATION_ID" *ngFor="let job_grade of job_grades">
                               {{job_grade.DESCRIPTION}}
@@ -2365,14 +2698,16 @@
                       <li class="text-left">
                         <span>Maximum no of outgoing international calls monthly</span>
                         <div class="pull-right">
-                          <input type="text" class="form-control" name="MAX_NO_OF_OUTGOING_INT_CALLS_MONTHLY" [(ngModel)]="general_analytics_settings.MAX_NO_OF_OUTGOING_INT_CALLS_MONTHLY">
+                          <input type="text" class="form-control" name="MAX_NO_OF_OUTGOING_INT_CALLS_MONTHLY"
+                            [(ngModel)]="general_analytics_settings.MAX_NO_OF_OUTGOING_INT_CALLS_MONTHLY">
                         </div>
                       </li>
 
                       <li class="text-left">
                         <span>Maximum no of incoming international calls monthly</span>
                         <div class="pull-right">
-                          <input type="text" class="form-control" name="MAX_NO_OF_INCOMING_INT_CALLS_MONTHLY" [(ngModel)]="general_analytics_settings.MAX_NO_OF_INCOMING_INT_CALLS_MONTHLY">
+                          <input type="text" class="form-control" name="MAX_NO_OF_INCOMING_INT_CALLS_MONTHLY"
+                            [(ngModel)]="general_analytics_settings.MAX_NO_OF_INCOMING_INT_CALLS_MONTHLY">
                         </div>
                       </li>
                       <li class="text-left">
@@ -2402,30 +2737,34 @@
                       <li class="text-left">
                         <span>Minimum distance home to application point </span>
                         <div class="pull-right">
-                          <input type="text" class="form-control" name="MIN_DISTANCE_HOME_2_APPLICATION_POINT" [(ngModel)]="general_analytics_settings.MIN_DISTANCE_HOME_2_APPLICATION_POINT">
+                          <input type="text" class="form-control" name="MIN_DISTANCE_HOME_2_APPLICATION_POINT"
+                            [(ngModel)]="general_analytics_settings.MIN_DISTANCE_HOME_2_APPLICATION_POINT">
                         </div>
                       </li>
                       <li class="text-left">
                         <span>Maximum distance home to application point </span>
                         <div class="pull-right">
-                          <input type="text" class="form-control" name="MAX_DISTANCE_HOME_2_APPLICATION_POINT" [(ngModel)]="general_analytics_settings.MAX_DISTANCE_HOME_2_APPLICATION_POINT">
+                          <input type="text" class="form-control" name="MAX_DISTANCE_HOME_2_APPLICATION_POINT"
+                            [(ngModel)]="general_analytics_settings.MAX_DISTANCE_HOME_2_APPLICATION_POINT">
                         </div>
                       </li>
                       <li class="text-left">
                         <span>Minimum distance office to application point </span>
                         <div class="pull-right">
-                          <input type="text" class="form-control" name="MIN_DISTANCE_OFFICE_2_APPLICATION_POINT" [(ngModel)]="general_analytics_settings.MIN_DISTANCE_OFFICE_2_APPLICATION_POINT">
+                          <input type="text" class="form-control" name="MIN_DISTANCE_OFFICE_2_APPLICATION_POINT"
+                            [(ngModel)]="general_analytics_settings.MIN_DISTANCE_OFFICE_2_APPLICATION_POINT">
                         </div>
                       </li>
                       <li class="text-left">
                         <span>Maximum distance office to application point </span>
                         <div class="pull-right">
-                          <input type="text" class="form-control" name="MAX_DISTANCE_OFFICE_2_APPLICATION_POINT" [(ngModel)]="general_analytics_settings.MAX_DISTANCE_OFFICE_2_APPLICATION_POINT">
+                          <input type="text" class="form-control" name="MAX_DISTANCE_OFFICE_2_APPLICATION_POINT"
+                            [(ngModel)]="general_analytics_settings.MAX_DISTANCE_OFFICE_2_APPLICATION_POINT">
                         </div>
                       </li>
                     </ul>
-                    <button type="submit" (click)="saveGeneralAnalytics(generalanalyticsform.value, generalanalyticsform.valid)" [disabled]="loading"
-                      class="btn btn-white pull-right">
+                    <button type="submit" (click)="saveGeneralAnalytics(generalanalyticsform.value, generalanalyticsform.valid)"
+                      [disabled]="loading" class="btn btn-white pull-right">
                       <span *ngIf="!loading">Submit</span>
                       <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                     </button>
@@ -2481,8 +2820,8 @@
     </a>
   </div>
   <div class=" overpanel-content container" role="document" style="text-align:left;width:600px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
-    <app-levelform (checkEmployee)="checkEmployee($event)" (saveLevel)="saveLevel($event)" [employees]="employees" [loading]="loading"
-      [level]="level" [APPROVAL_LEVEL_ID_]="APPROVAL_LEVEL_ID_" [isedit]="isedit"></app-levelform>
+    <app-levelform (checkEmployee)="checkEmployee($event)" (saveLevel)="saveLevel($event)" [employees]="employees"
+      [loading]="loading" [level]="level" [APPROVAL_LEVEL_ID_]="APPROVAL_LEVEL_ID_" [isedit]="isedit"></app-levelform>
   </div>
 
 </div>
@@ -2495,7 +2834,7 @@
   </div>
 
   <div class=" overpanel-content container" role="document" style="text-align:left;width:600px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden; border-radius: 5px;">
-    <app-newlevelform (checkEmployee)="checkEmployee($event)" (saveLevel)="saveLevel($event)" [employees]="employees" [loading]="loading"
-      [APPROVAL_LEVEL_ID_]="APPROVAL_LEVEL_ID_" [isedit]="isedit"></app-newlevelform>
+    <app-newlevelform (checkEmployee)="checkEmployee($event)" (saveLevel)="saveLevel($event)" [employees]="employees"
+      [loading]="loading" [APPROVAL_LEVEL_ID_]="APPROVAL_LEVEL_ID_" [isedit]="isedit"></app-newlevelform>
   </div>
 </div>

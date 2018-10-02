@@ -15,6 +15,8 @@ declare var swal: any;
   encapsulation: ViewEncapsulation.None
 })
 export class StatementdetailsComponent implements OnInit {
+  initiate_stop_remita = false;
+  canViewModule = false;
   record_type = '3';
   notification: any;
   initiate_debit_instruction = false;
@@ -119,10 +121,26 @@ export class StatementdetailsComponent implements OnInit {
   PASSWORD = '';
   account_for_direct_debit: any;
   changingpayment = false;
-  constructor(public operationsService: OperationsService, public toastr: ToastrService,
+  isloanofficer = true;
+  canViewLinks = true;
+  creditingstatement = false;
+  ttype = '1';
+  makeloanpayment=false
+  reversing_transaction=false;
+  clearingFines=false;
+  remitanotify = false;
+  remita_records:any;
+  refreshingremita = false;
+  constructor(public authService: AuthenticationService, public operationsService: OperationsService, public toastr: ToastrService,
     vcr: ViewContainerRef, private DataService: DataService,
     public router: Router, public route: ActivatedRoute,
     public loansService: LoansService, public storageService: StorageService) {
+    if (!this.authService.canViewModule('1,3,1026')) {
+      this.canViewLinks = false;
+    }
+    if (!authService.canViewModule('1,3,5,1026')) {
+      this.router.navigate(['../unauthorized']);
+    }
     this.has_remita = this.storageService.read<any>('has_remita');
     this.DataService.onGetData.subscribe(res => {
       if (res) {
@@ -136,6 +154,15 @@ export class StatementdetailsComponent implements OnInit {
     this.DataService.onChangeDefaultPayment.subscribe(res => {
       this.loan = res.loan;
       this.changingpayment = true;
+    })
+    this.DataService.remitaLoanNotification.subscribe(res => {
+      this.loan = res.loan;
+      this.remitanotify = true;
+    })
+    this.DataService.onCreditLoanStatement.subscribe(res => {
+      this.loan = res.loan;
+      this.ttype = res.ttype;
+      this.creditingstatement = true;
     })
     this.DataService.rejectBorrowerPayment.subscribe(res => {
       this.notification = res.notify;
@@ -151,6 +178,27 @@ export class StatementdetailsComponent implements OnInit {
     this.DataService.initiateDebitInstruction.subscribe(res => {
       this.repayment = res.repayment;
       this.initiate_debit_instruction = true;
+
+    })
+    this.DataService.initStopRemita.subscribe(res => {
+      console.log(res)
+      this.loan = res.loan;
+      this.repayment = res.repayment;
+      this.initiate_stop_remita = true;
+
+    })
+    this.DataService.refreshRemitaDetails.subscribe(res => {
+      this.remita_records = res.remita_records;
+      this.refreshingremita = true;
+    })
+    this.DataService.oninitiateReverseTransaction.subscribe(res => {
+      this.repayment = res.repayment;
+      this.reversing_transaction = true;
+
+    })
+    this.DataService.onInitiateClearFines.subscribe(res => {
+      this.repayment = res.repayment;
+      this.clearingFines = true;
 
     })
     this.DataService.initiateCheckDebitInstruction.subscribe(res => {
@@ -197,8 +245,9 @@ export class StatementdetailsComponent implements OnInit {
 
       this.viewing_loan = true
       this.loan_viewed = this.parentRouteId;
-      this.view_state = '7';
-      this.dontshownext = '1';
+     this.view_state = '7';
+     this.dontshownext = '1';
+      //this.makeloanpayment = true;
     })
     this.DataService.onRollbackPaymentFromStatement.subscribe(res => {
 
@@ -270,10 +319,16 @@ export class StatementdetailsComponent implements OnInit {
     this.viewing_loan = false;
     this.rolling_back_payment = false;
     this.initiate_debit_instruction = false;
+    this.reversing_transaction = false;
     this.initiate_debit_instruction_cancel = false;
     this.stopdebitmandates = false;
     this.initiate_debit_instruction_status = false;
     this.changingpayment = false;
+    this.creditingstatement = false;
+    this.makeloanpayment = false;
+    this.initiate_stop_remita = false;
+    this.remitanotify = false;
+    this.refreshingremita = false;
   }
   checkLevel(sector, event, index) {
 

@@ -13,6 +13,13 @@ import { IonRangeSliderComponent } from 'ng2-ion-range-slider';
   styleUrls: ['./backendsettings.component.css']
 })
 export class BackendsettingsComponent implements OnInit {
+  directdebitform = {
+    DIRECT_DEBIT_STATUS_CHECK: '',
+    CANCEL_AFTER_HOW_MANY_CHECKS: '',
+    GET_NOTIFIED: false,
+    GET_NOTIFIED_EMAIL: '',
+    ENABLE_AUTO_DEBIT_INSTRUCTION: false
+  }
   @Input('is_dashboard') is_dashboard = false;
   is_edit = false;
   addingInterestRateBand = false;
@@ -317,7 +324,12 @@ export class BackendsettingsComponent implements OnInit {
     ENABLE_BULK_DISBURSEMENT: false
   };
   public break_settings = {
-    ALLOW_AUTOBREAK: true
+    ALLOW_AUTOBREAK: true,
+    ENABLE_PREMATURITY_PENALTY: false,
+    PREMATURITY_ACTION: '0',
+    HOW_MANY_INTEREST: '0',
+    PERCENTAGE_FINE: '0',
+    FLAT_FINE: '0'
   };
   public loandefault = {
     LOAN_DEFAULT_DURATION: '0',
@@ -566,10 +578,20 @@ export class BackendsettingsComponent implements OnInit {
         this.payment.ALLOW_AUTO_APPROVE_PAYMENT = data.payments.ALLOW_AUTO_APPROVE_PAYMENT;
         this.payment.AUTO_APPROVE_PAYMENT_AMOUNT = data.payments.AUTO_APPROVE_PAYMENT_AMOUNT;
         this.payment.SEND_PAYMENTS_TO_QUEUE = data.payments.SEND_PAYMENTS_TO_QUEUE;
-        this.payment.ALLOW_PART_PAYMENT = data.payments.ALLOW_PART_PAYMENT
+        this.payment.ALLOW_PART_PAYMENT = data.payments.ALLOW_PART_PAYMENT;
+
+        this.directdebitform.DIRECT_DEBIT_STATUS_CHECK = data.directdebit.DIRECT_DEBIT_STATUS_CHECK;
+        this.directdebitform.CANCEL_AFTER_HOW_MANY_CHECKS = data.directdebit.CANCEL_AFTER_HOW_MANY_CHECKS;
+        this.directdebitform.GET_NOTIFIED = data.directdebit.GET_NOTIFIED;
+        this.directdebitform.GET_NOTIFIED_EMAIL = data.directdebit.GET_NOTIFIED_EMAIL;
+        this.directdebitform.ENABLE_AUTO_DEBIT_INSTRUCTION = data.directdebit.ENABLE_AUTO_DEBIT_INSTRUCTION;
 
         this.break_settings.ALLOW_AUTOBREAK = data.break_settings.ALLOW_AUTOBREAK;
-
+        this.break_settings.ENABLE_PREMATURITY_PENALTY = data.break_settings.ENABLE_PREMATURITY_PENALTY;
+        this.break_settings.PREMATURITY_ACTION = data.break_settings.PREMATURITY_ACTION;
+        this.break_settings.HOW_MANY_INTEREST = data.break_settings.HOW_MANY_INTEREST;
+        this.break_settings.PERCENTAGE_FINE = data.break_settings.PERCENTAGE_FINE;
+        this.break_settings.FLAT_FINE = data.break_settings.FLAT_FINE;
 
         this.management_fee.FEE_TYPE = data.management_fee.FEE_TYPE;
         this.management_fee.FEE_FLAT_VALUE = data.management_fee.TOTAL_FLAT_FEES;
@@ -645,8 +667,8 @@ export class BackendsettingsComponent implements OnInit {
         this.reminders.REMINDER_INTERVAL = data.reminders.REMINDER_INTERVAL;
         this.reminders.AUTODEBIT_INTERVAL = data.reminders.AUTODEBIT_INTERVAL;
         this.reminders.REPAYMENT_SOURCE = data.reminders.REPAYMENT_SOURCE;
-        this.reminders.NOTIFY_REPAYMENT_MADE =  data.reminders.NOTIFY_REPAYMENT_MADE;
-        this.reminders.NOTIFY_REPAYMENT_EMAIL =  data.reminders.NOTIFY_REPAYMENT_EMAIL;
+        this.reminders.NOTIFY_REPAYMENT_MADE = data.reminders.NOTIFY_REPAYMENT_MADE;
+        this.reminders.NOTIFY_REPAYMENT_EMAIL = data.reminders.NOTIFY_REPAYMENT_EMAIL;
 
         this.investors.MAXIMUM_INVESTMENT_PERCENT = data.investors.MAXIMUM_INVESTMENT_PERCENT;
 
@@ -770,7 +792,19 @@ export class BackendsettingsComponent implements OnInit {
     }
 
   }
+  saveDirectDebitSettings(value, valid) {
 
+    this.loading = true;
+    this.operationsService.saveDirectDebitSettings(this.currentUser.token, this.directdebitform)
+      .subscribe(data => {
+        this.loading = false;
+        if (data.status === '1') {
+          this.showSuccess(data.message)
+        } else {
+          this.showError(data.message)
+        }
+      });
+  }
   saveAnalytics(value, valid) {
 
     this.loading = true;

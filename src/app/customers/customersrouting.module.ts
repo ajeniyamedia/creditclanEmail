@@ -35,7 +35,7 @@ const routes: Routes = [
       { path: 'attachments', component: CustomerAttachmentsComponent },
       // { path: 'messages', component: CustomerMessagesComponent },
       { path: 'financials', component: CustomerFinanceComponent },
-      { path: 'creditcheck', component: CreditcheckComponent },
+      { path: 'creditcheck', component: CreditcheckComponent, data: [{ where: 'customer' }] },
       { path: 'kyc', component: CustomerkycComponent },
       { path: 'loans', component: CustomerLoansComponent },
       { path: 'investments', component: CustomerInvestmentsComponent },

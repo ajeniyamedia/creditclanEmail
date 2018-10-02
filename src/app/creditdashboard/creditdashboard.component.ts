@@ -12,8 +12,9 @@ import { AnonymousSubscription } from 'rxjs/Subscription';
   styleUrls: ['./creditdashboard.component.css']
 })
 export class CreditdashboardComponent implements OnInit {
-  DISBURSEMENTS:any;
-  DASHBOARD_TM:any;
+  canViewModule = true;
+  DISBURSEMENTS: any;
+  DASHBOARD_TM: any;
   // Vertical BarChart
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -24,8 +25,8 @@ export class CreditdashboardComponent implements OnInit {
   public barChartLegend: boolean = true;
 
   public barChartData: any[] = [
-    { data: [0, 0, 0, 0, 0, 0, 0,0,0,0,0,0], label: 'Booked' },
-    { data: [0, 0, 0, 0, 0, 0, 0,0,0,0,0,0], label: 'Collected' }
+    { data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Booked' },
+    { data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Collected' }
   ];
   emp_perf = {
     PEOPLE_PEOPLE_ID: '',
@@ -33,20 +34,20 @@ export class CreditdashboardComponent implements OnInit {
     TPDATE_: '',
     CATEGORY: ''
   }
-  pie_perf = { 
+  pie_perf = {
     PIETPDATE: '',
     PIETPDATE_: '',
     CATEGORY: '1',
-    SUBCATEGORY:'',
-    SUBSTAFFCATEGORY:''
+    SUBCATEGORY: '',
+    SUBSTAFFCATEGORY: ''
   }
-  pps_perf = { 
+  pps_perf = {
     PPSTPDATE: '',
-    PPSTPDATE_: '', 
+    PPSTPDATE_: '',
   }
-  platform_performance:any;
+  platform_performance: any;
   // Doughnut
-  public doughnutChartLabels: string[] = ['', '', '','',''];
+  public doughnutChartLabels: string[] = ['', '', '', '', ''];
   public doughnutChartData: number[] = [0, 0, 0];
   public doughnutChartLegent: any = { 'display': false, 'position': 'bottom' };
   public doughnutChartType: string = 'doughnut';
@@ -147,7 +148,7 @@ export class CreditdashboardComponent implements OnInit {
   public approvalsOpen = false;
   public userClosedView = false;
   employees: any;
-  is_company_staff=false; 
+  is_company_staff = false;
   piefilterStatus = 'date_duration';
   piefilterStatusCategory = '';
   public pie_filter_types = [
@@ -240,9 +241,12 @@ export class CreditdashboardComponent implements OnInit {
     }
   ]
   platform_analysis_view = 'first';
-  constructor(public analytics: AnalyticsService, public approvalService: ApprovalsService, public DataService: DataService, 
-    public router: Router, public fb: FormBuilder, public operationsService: OperationsService, 
+  constructor(public analytics: AnalyticsService, public approvalService: ApprovalsService, public DataService: DataService,
+    public router: Router, public fb: FormBuilder, public operationsService: OperationsService, public authService: AuthenticationService,
     public storageService: StorageService) {
+    // if (!this.authService.canViewModule('1,2,3,5,1026')) {
+    //   this.canViewModule = false
+    // }
     this.currentUser = this.storageService.read<any>('currentUser');
     this.DataService.onRequestCreated.subscribe(res => {
       this.loadDashboardData();
@@ -274,10 +278,10 @@ export class CreditdashboardComponent implements OnInit {
       .subscribe(dashboarddatas => {
         if (dashboarddatas == false) {
           this.router.navigate(['/login']);
-        } else { 
+        } else {
           this.preloading = false;
           this.dashboarddata = dashboarddatas;
-          this.repayments = dashboarddatas.REPAYMENTS;  
+          this.repayments = dashboarddatas.REPAYMENTS;
           //this.loans_summary = dashboarddatas.loans_summary;
           this.employees = dashboarddatas.employees;
         }
@@ -290,15 +294,15 @@ export class CreditdashboardComponent implements OnInit {
       .subscribe(dashboarddatas => {
         if (dashboarddatas == false) {
           this.router.navigate(['/login']);
-        } else { 
-          this.DASHBOARD_TM = dashboarddatas; 
+        } else {
+          this.DASHBOARD_TM = dashboarddatas;
           this.DISBURSEMENTS = dashboarddatas.DISBURSEMENTS;
         }
 
       });
 
   }
-  
+
   ngOnInit() {
     const self = this;
     this.loadDashboardData();
@@ -312,24 +316,26 @@ export class CreditdashboardComponent implements OnInit {
     this.is_company_staff = this.storageService.read<any>('is_company_staff');
   }
   public refreshData(): void {
+    if (this.canViewModule) {
+      this.postsSubscription = this.approvalService.getApprovals(this.currentUser.token).subscribe(approvals => {
+        if (approvals.size == '0') {
 
-    this.postsSubscription = this.approvalService.getApprovals(this.currentUser.token).subscribe(approvals => {
-      if (approvals.size == '0') {
+        } else {
+          this.approvals = approvals.approvals;
+          this.approvals_size = approvals.size;
+          if (!this.approvalsOpen) {
+            if (!this.userClosedView) {
+              this.approvalsOpen = true;
+              this.loan_viewed = approvals.loan_viewed;
+            }
 
-      } else {
-        this.approvals = approvals.approvals;
-        this.approvals_size = approvals.size;
-        if (!this.approvalsOpen) {
-          if (!this.userClosedView) {
-            this.approvalsOpen = true;
-            this.loan_viewed = approvals.loan_viewed;
           }
 
         }
+        this.subscribeToData();
+      });
+    }
 
-      }
-      this.subscribeToData();
-    });
   }
   closeShowInterest() {
     this.approvalsOpen = false;
@@ -346,9 +352,9 @@ export class CreditdashboardComponent implements OnInit {
   public subscribeToData(): void {
     //this.timerSubscription = Observable.timer(10000).first().subscribe(() => this.refreshData());
   }
-  
-  runPlatformAnalysis(){
-    this.barChartLabels = ['Jan','Feb','Mar','Apr','May','June','Jul','Aug','Sept','Oct','Nov','Dec']
+
+  runPlatformAnalysis() {
+    this.barChartLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
     this.loading = true;
     this.analytics.runPlatformAnalysis(this.currentUser.token, this.bar_form)
       .subscribe(platform_analysis => {
@@ -357,8 +363,8 @@ export class CreditdashboardComponent implements OnInit {
 
       });
   }
-  pps_performance:any;
-  runPPSPerformance(){ 
+  pps_performance: any;
+  runPPSPerformance() {
     this.loading = true;
     this.analytics.runPPSPerformance(this.currentUser.token, this.pps_perf)
       .subscribe(platform_analysis => {
@@ -367,7 +373,7 @@ export class CreditdashboardComponent implements OnInit {
 
       });
   }
-  
+
 
   // events
   public chartClicked(e: any): void {
@@ -393,9 +399,9 @@ export class CreditdashboardComponent implements OnInit {
     this.barChartData = clone;
 
   }
- 
+
   runPiePerformance() {
-    
+
     this.loading = true;
     this.analytics.runPiePerformance(this.currentUser.token, this.pie_perf)
       .subscribe(employee_performance => {
@@ -406,7 +412,7 @@ export class CreditdashboardComponent implements OnInit {
       });
 
   }
- 
+
   changeFilter(event) {
     this.filterStatus = event.target.value
   }
@@ -421,13 +427,13 @@ export class CreditdashboardComponent implements OnInit {
       });
 
   }
-  
+
   changePieFilter(event) {
     this.piefilterStatus = event.target.value
   }
   changePieFilterCategory(event) {
     this.piefilterStatusCategory = event.target.value
   }
-  
+
 
 }

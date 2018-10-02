@@ -3,7 +3,7 @@
 
     <header class="panel-heading">
         Loan Account Statement
-        <span class="tools pull-right">
+        <span class="tools pull-right" *ngIf="canViewLinks">
             <div class="btn-group">
                 <button class="btn btn-white btn-xs" (click)="breakLoan()" type="button">Break Loan</button>
                 <button class="btn btn-white btn-xs" (click)="makeLoanPayment()" type="button">Make Payment</button>
@@ -48,6 +48,15 @@
                     <li>
                         <a (click)="type_of_entry='-1';getStatement()">Show All Transactions</a>
                     </li>
+                    <li>
+                        <a (click)="creditStatement()">Credit Statement</a>
+                    </li>
+                    <li>
+                        <a (click)="debitStatement()">Debit Statement</a>
+                    </li>
+                    <li *ngIf="loan?.loan?.USE_REMITA=='1' && loan?.loan?.REMITA_MANDATE_REF ==''">
+                        <a (click)="initiateSendRemitaLoanNotification(loan)">Initiate Remita Inflight</a>
+                    </li>
                 </ul>
             </div>
         </span>
@@ -63,7 +72,7 @@
                         <strong>{{loan?.custoner_account.LEGAL_NAME}}</strong>
                     </li>
                     <li>Account Number : {{loan?.custoner_account.ACCOUNT_NUMBER}}</li>
-
+                    <li>Repayment Mode : {{repayment_mode[loan?.loan?.REPAYMENT_MODE]}}</li>
                 </ul>
             </div>
             <div class="col-lg-4 col-sm-4">

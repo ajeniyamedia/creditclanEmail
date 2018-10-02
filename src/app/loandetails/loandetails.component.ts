@@ -13,6 +13,7 @@ import { LoancontractComponent } from '../loancontract/loancontract.component';
   encapsulation: ViewEncapsulation.None
 })
 export class LoandetailsComponent implements OnInit {
+  canViewModule = false;
   PASSWORD = "";
   account_for_direct_debit: any;
   adjustingWeights = false;
@@ -232,19 +233,19 @@ export class LoandetailsComponent implements OnInit {
   };
   banks: any;
   changingofficer = false;
+
   constructor(private toastr: ToastrService, private _elementRef: ElementRef,
     private authService: AuthenticationService,
     public operationsService: OperationsService, private DataService: DataService,
     public router: Router, public route: ActivatedRoute, public loansService: LoansService, public storageService: StorageService) {
-
+      if (!this.authService.canViewModule('1,2,3,5,1026')) { 
+        this.router.navigate(['../unauthorized']);
+      }
     this.DataService.onChangeLoanOfficer.subscribe(res => {
       this.loan = res.loan;
       this.changingofficer = true;
     })
-
-    if (!this.authService.canViewModule('1,2,3,5,1026')) {
-      this.router.navigate(['../unauthorized']);
-    }
+ 
     this.enable_peer = this.storageService.read<any>('enable_peer_to_peer');
     this.DataService.onGetData.subscribe(res => {
       if (res) {
@@ -309,6 +310,10 @@ export class LoandetailsComponent implements OnInit {
         this.account_for_direct_debit = res.acc;
       }
       if (res.location == 'cancel_debit_mandate') {
+
+        this.account_for_direct_debit = res.acc;
+      }
+      if (res.location == 'resend_debit_mandate') {
 
         this.account_for_direct_debit = res.acc;
       }
@@ -1075,6 +1080,24 @@ export class LoandetailsComponent implements OnInit {
         });
     });
 
+  }
+  sendForResendDirectDebitStatus() {
+    this.loading = true;
+    this.sub = this.route.params.subscribe(params => {
+      this.parentRouteId = +params['id'];
+
+      this.loansService.sendForResendDirectDebitStatus(this.currentUser.token, this.parentRouteId, this.account_for_direct_debit)
+        .subscribe(data => {
+          this.loading = false;
+
+          this.is_done = '1';
+
+          if (data.isActive == true) {
+            this.showSuccess('Mandate link has been resent');
+            this.DataService.onreloadAccountsAndCards.emit({});
+          }
+        });
+    });
   }
   sendForCancelDirectDebitStatus() {
     this.loading = true;
