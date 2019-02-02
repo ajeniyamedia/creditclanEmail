@@ -44,7 +44,7 @@
                               <span class="timeline-icon red"></span>
                               <span class="timeline-date">{{ item?.DATE_ADDED  | amDateFormat:'h:mm a'}}</span>
                               <h1 class="red">{{ item?.DATE_ADDED  | amDateFormat:'D'}} {{ item?.DATE_ADDED  | amDateFormat:'MMMM'}} | {{ item?.DATE_ADDED  | amDateFormat:'dddd'}}</h1>
-                              <p>{{item?.LEGAL_NAME}} | <span>{{item?.TIMELINE_ACTIVITY | safehtml: 'style'}}</span></p>
+                              <p>{{item?.LEGAL_NAME}} | <span [innerHTML]="item?.TIMELINE_ACTIVITY"></span></p>
                           </div>
                       </div>
                   </div>
@@ -55,7 +55,7 @@
                               <span class="timeline-icon green"></span>
                               <span class="timeline-date">{{ item?.DATE_ADDED  | amDateFormat:'h:mm a'}}</span>
                               <h1 class="green">{{ item?.DATE_ADDED  | amDateFormat:'D'}} {{ item?.DATE_ADDED  | amDateFormat:'MMMM'}} | {{ item?.DATE_ADDED | amAdd: 1 : 'hours'  | amDateFormat:'dddd'}}</h1>
-                              <p>{{item?.LEGAL_NAME}} | {{item?.TIMELINE_ACTIVITY}}</p>
+                              <p>{{item?.LEGAL_NAME}} | <span [innerHTML]="item?.TIMELINE_ACTIVITY"></span></p>
                           </div>
                       </div>
                   </div>

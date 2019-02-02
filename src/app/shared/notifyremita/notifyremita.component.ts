@@ -32,7 +32,6 @@ export class NotifyremitaComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.loan)
     this.change_payment_form.REQUEST_ID = this.loan.REQUEST_ID;
     this.change_payment_form.REPAYMENT_MODE = this.loan.REPAYMENT_MODE;
   }

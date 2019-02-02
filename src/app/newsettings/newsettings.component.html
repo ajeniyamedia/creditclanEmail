@@ -1,0 +1,106 @@
+<app-main-navigation></app-main-navigation>
+
+<div class="row" style="margin-top:150px">
+        <div class="col-xs-6 col-sm-3">
+            <div>
+                <div class="sidebar">
+                    <h1 class="sidebar--icon">
+                        <i class="fa fa-home"></i></h1>
+                    <p style="text-align: center; width: 150px; font-size: 15px;">{{viewTitle}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-6">
+                <div class="panel box edged_box">
+                        <ul class="decList decSettings">
+                            <li>
+                                <h4 class="general-s--heading">{{viewTitle}}
+                                    <span class="fas fa-angle-down pull-right" 
+                                    (click)="onSettings( setting )"></span>
+                                </h4>
+                            </li>
+                    
+                            <div [ngSwitch]="viewMode">
+                                <div *ngSwitchCase="'mobile-app'">
+                                    <app-mobile [is_mobile]=true [view]='view'></app-mobile>
+                                </div>
+                                <div id="general" *ngSwitchCase="'general'">
+                                    <app-backendsettings [is_dashboard]=true>
+                                    </app-backendsettings>
+                                </div>
+                                <div *ngSwitchCase="'ussd'">
+                                    <app-mobile [is_mobile]=true [view]='view'></app-mobile>
+                                </div>
+                                <div *ngSwitchCase="'eligibility'">
+                                    <app-backendsettings [settings]=false [is_dashboard]=true 
+                                        [subview]='subview'>
+                                    </app-backendsettings>
+                                </div>
+                                <div *ngSwitchCase="'company'">
+                                    <app-backendsettings [settings]=false [is_dashboard]=true 
+                                        [subview]='subview'>
+                                    </app-backendsettings>
+                                </div>
+                                <div *ngSwitchCase="'approval'">
+                                    <app-backendsettings [is_dashboard]=true [settings]=false
+                                        [subview]='subview'>
+                                        </app-backendsettings>
+                                </div>
+                                <div *ngSwitchCase="'products'">
+                                    <app-products></app-products>
+                                </div>
+                                <div *ngSwitchCase="'analytics'">
+                                    <app-backendsettings [settings]=false [is_dashboard]=true 
+                                    [subview]='subview'>
+                                        </app-backendsettings>
+                                </div>
+                                <div *ngSwitchCase="'message'">
+                                    <app-backendsettings [settings]=false [is_dashboard]=true 
+                                        [subview]='subview'>
+                                    </app-backendsettings>
+                                </div>
+                                <div *ngSwitchCase="'payment'">
+                                    <app-backendsettings [settings]=false [is_dashboard]=true 
+                                    [subview]='subview'>
+                                        </app-backendsettings>
+                                </div>
+                                <div *ngSwitchCase="'security'">
+                                    <app-backendsettings [settings]=false [is_dashboard]=true 
+                                    [subview]='subview'>
+                                        </app-backendsettings>
+                                </div>
+                                <div *ngSwitchCase="'accounting'">
+                                    <app-backendsettings [settings]=false [is_dashboard]=true 
+                                    [subview]='subview'>
+                                        </app-backendsettings> 
+                                </div>
+                                <div *ngSwitchCase="'peer'">
+                                    <div>Peer and Crowd</div>
+                                </div>
+                            </div>
+                            </ul>
+                        </div>
+        </div>
+        <!-- Optional: clear the XS cols if their content doesn't match in height -->
+        <div class="clearfix visible-xs-block"></div>
+        <div class="col-xs-6 col-sm-3">
+            <div [hidden]="setting" class="setting--list">
+                <p (click)="viewMode = 'general'; viewTitle = 'General Settings'">General</p>
+                <p (click)="viewMode = 'mobile-app'; viewTitle = 'Mobile + Website Settings'; view='mobile'">Mobile + Website</p>
+                <p (click)="viewMode = 'ussd'; viewTitle = 'USSD & Chat Settings'; view='ussd'">USSD & Chat</p>
+                <p (click)="viewMode = 'eligibility'; viewTitle = 'Eligibility & Qualification Borrowers Settings'; subview ='eligibility'">Eligibility & Qualification Borrowers</p>
+                <p (click)="viewMode = 'approval'; viewTitle = 'Approvals Settings'; subview ='approval'">Approvals</p>
+                <p (click)="viewMode = 'company'; viewTitle = 'Company Settings'; subview ='company'">Company</p>
+                <p (click)="viewMode = 'products'; viewTitle = 'Products Settings'">Products</p>
+                <p (click)="viewMode = 'analytics'; viewTitle = 'Analytics Settings'; subview ='analytics'">Analytics</p>
+                <p (click)="viewMode = 'message'; viewTitle = 'Messages Settings';  subview ='message'">Messages</p>
+                <p (click)="viewMode = 'payment'; viewTitle = 'Payment Settings'; subview ='payment'">Payment settings</p>
+                <p (click)="viewMode = 'security'; viewTitle = 'Security Settings'; subview ='security'">Security</p>
+                <p (click)="viewMode = 'interest'; viewTitle = 'Interest Rate Floor '; subview ='interest'">Interest Rate Floor</p>
+                <p (click)="viewMode = 'accounting'; viewTitle = 'Accounting Settings'; subview ='accounting'">Accounting</p>
+                <p (click)="viewMode = 'peer'; viewTitle = 'Peer and Crowd Settings' ">Peer and Crowd</p>
+            </div>
+        </div>
+</div>
+
+

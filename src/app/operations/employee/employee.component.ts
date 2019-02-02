@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { RoleModel } from '../../_models/role.model';
 import { UserService, OperationsService, AuthenticationService, StorageService } from '../../_services/index';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
@@ -27,9 +28,13 @@ export class EmployeeComponent implements OnInit {
   roles: RoleModel[];
   deleting = false;
 
-  constructor(public toastr: ToastrService, vcr: ViewContainerRef, public fb: FormBuilder, public operationsService: OperationsService,
+  constructor(public router: Router,public authService:AuthenticationService,public toastr: ToastrService, vcr: ViewContainerRef, 
+    public fb: FormBuilder, public operationsService: OperationsService,
     public storageService: StorageService) {
     this.currentUser = this.storageService.read<any>('currentUser');
+    if(!authService.canViewModule('1,3')){
+      this.router.navigate(['../unauthorized']);
+    }
   }
   showSuccess(message) {
     this.toastr.success(message, 'Success!');

@@ -1,0 +1,512 @@
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingInt">
+    <h4 class="panel-title">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseInt"
+        aria-expanded="false" aria-controls="collapseInt">
+        Interest Settings
+      </a>
+    </h4>
+  </div>
+  <div id="collapseInt" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInt">
+    <div class="panel-body" style="padding: 15px 70px">
+      <form #g="ngForm" novalidate>
+        <div class="form-group row">
+          <label class="control-label col-md-6">Interest Rate type</label>
+          <div class="col-md-6">
+            <input type="hidden" name="LOAN_INTEREST_TYPE" [(ngModel)]="company_interest.LOAN_INTEREST_TYPE">
+            <input type="hidden" name="product_id" name="product_id" [(ngModel)]="company_interest.product_id">
+            <select name="INTEREST_RATE_TYPE_ID" [(ngModel)]="company_interest.INTEREST_RATE_TYPE_ID" class="form-control">
+              <option [value]="0"></option>
+              <option [value]="1" selected="selected">Flat</option>
+              <option [value]="2">Simple</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row" id="loan_interest_container">
+          <label class="control-label col-md-6">Interest</label>
+          <div class="col-md-6">
+
+            <div class="input-group ">
+              <input type="text" class="form-control" [(ngModel)]="company_interest.REQUEST_RATE" name="REQUEST_RATE">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-white dropdown-toggle  lockForCom" data-toggle="dropdown">
+                  <span class="sel_cur">{{interest_duration}}</span>
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                  <li *ngFor="let d of loan_durations;let i=index;">
+                    <a (click)="changeDuration(i,2)">{{d.INTEREST_DURATION}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group row">
+
+
+          <label class="col-md-6">
+            Installment Frequency
+          </label>
+          <div class="col-md-6">
+
+            <select name="INSTALLMENT_FREQUENCY" (change)="changeFrequency($event)" [(ngModel)]="company_interest.INSTALLMENT_FREQUENCY"
+              class="form-control">
+              <option [value]="0"></option>
+              <option [value]="1">One Off</option>
+              <option [value]="2">Monthly</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+
+
+          <label class="col-md-6">
+            Repayment type
+          </label>
+          <div class="col-md-6">
+
+            <select name="REPAYMENT_TYPE_ID" [(ngModel)]="company_interest.REPAYMENT_TYPE_ID" class="form-control">
+              <option [value]="0"></option>
+              <option [value]="1">EPI</option>
+              <option [value]="2">Interest Alone</option>
+              <option [value]="3">Bullet</option>
+              <option [value]="6">Reducing Balance</option>
+            </select>
+          </div>
+        </div>
+
+
+
+
+        <div class="form-group row ">
+
+          <div class="col-md-6 rpVV animated ">
+            <label for="RMI" class="control-label">Interest Applied When</label>
+
+          </div>
+          <div class="col-md-6">
+            <select class="form-control" [(ngModel)]="company_interest.RP_SET_TYPE" name="RP_SET_TYPE">
+              <option [value]="0">select</option>
+              <option [value]="1">Immediate</option>
+              <option [value]="2">Prorated</option>
+
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row " *ngIf="company_interest?.INSTALLMENT_FREQUENCY==='2'">
+
+          <div class="col-md-6 rpVV animated ">
+            <label for="RMI" class="control-label">Repayment Period</label>
+
+          </div>
+          <div class="col-md-6">
+            <select class="form-control" name="MONTHLY_PERIOD" [(ngModel)]="company_interest.MONTHLY_PERIOD">
+              <option [value]="1">Monthly</option>
+              <option [value]="2">+28 days</option>
+              <option [value]="3">+29 days</option>
+              <option [value]="4">+30 days</option>
+              <option [value]="5">+31 days</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" (click)="saveCompanyInterest(g.value, g.valid)" [disabled]="loading" class="btn btn-white pull-right">
+          <span *ngIf="!loading">Submit</span>
+          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<app-originationfee (saveForm)="saveOFFrom($event)" [product]='product' [companyaccounts]='companyaccounts' [loading]='loading'
+  [fee_settings]='fee_settings'></app-originationfee>
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingApp">
+    <h4 class="panel-title">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseApp"
+        aria-expanded="false" aria-controls="collapseApp">
+        Loan Application
+      </a>
+    </h4>
+  </div>
+  <div id="collapseApp" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingApp">
+    <div class="panel-body" style="padding: 15px 70px">
+      <form #i="ngForm" novalidate>
+
+
+        <p class="t_l4" style="margin-top: 30px; margin-bottom: 0">
+          <strong>Documents to be asked during loan application</strong>
+        </p>
+        <ul class="list list_border sm">
+
+          <li class="text-left">
+            <span>Profile</span>
+          </li>
+          <li class="text-left sub_list">
+            <span>Must a selfie be provided</span>
+            <div class="pull-right">
+              <input type="checkbox" name="mustprovideselfie" [(ngModel)]="mobile.mustprovideselfie">
+            </div>
+          </li>
+          <li class="text-left sub_list">
+            <span>Must next of kin details be provided</span>
+            <div class="pull-right">
+              <input type="checkbox" name="nextofkin" [(ngModel)]="mobile.nextofkin">
+            </div>
+          </li>
+          <li class="text-left sub_list">
+            <span>Must provide Education Information</span>
+            <div class="pull-right">
+              <input type="checkbox" name="education" [(ngModel)]="mobile.education">
+              <input type="hidden" name="product_id" [(ngModel)]="mobile.product_id">
+            </div>
+          </li>
+
+
+
+          <li class="text-left">
+            <span>Home Address</span>
+          </li>
+          <li class="text-left sub_list">
+            <span>Should the home address be provided </span>
+            <div class="pull-right">
+              <input type="checkbox" name="homeaddress" [(ngModel)]="mobile.homeaddress">
+            </div>
+          </li>
+          <li class="text-left sub_list">
+            <span>Must provide proof of home address</span>
+            <div class="pull-right">
+              <input type="checkbox" name="proofofaddress" [(ngModel)]="mobile.proofofaddress">
+            </div>
+          </li>
+
+          <li class="text-left">
+            <span>Work Information</span>
+          </li>
+          <li class="text-left sub_list">
+            <span>Must provide work information </span>
+            <div class="pull-right">
+              <input type="checkbox" name="workinfo" [(ngModel)]="mobile.workinfo">
+            </div>
+          </li>
+          <li class="text-left sub_list">
+            <span>Must validate work email</span>
+            <div class="pull-right">
+                <input type="checkbox" name="validate_work_email" [(ngModel)]="mobile.validate_work_email">
+            </div>
+        </li>
+
+          <li class="text-left sub_list">
+            <span>Must provide personal expense details(E.g phone,internet) </span>
+            <div class="pull-right">
+              <input type="checkbox" name="personalexpense" [(ngModel)]="mobile.personalexpense">
+            </div>
+          </li>
+          <li class="text-left sub_list">
+            <span>Must provide guarantors</span>
+            <div class="pull-right">
+                <input type="checkbox" name="guarantor" [(ngModel)]="mobile.guarantor">
+            </div>
+        </li>
+        <li class="text-left" style="padding-left: 60px" *ngIf="mobile.guarantor">
+            <span>How many guarantors</span>
+            <div class="pull-right">
+                <input type="text" name="guarantorcount" [(ngModel)]="mobile.guarantorcount">
+            </div>
+        </li>
+          <li class="text-left">
+            <span>Account Card</span>
+          </li>
+          <li class="text-left" style="padding-left: 60px" *ngFor="let ac of accountcards">
+            <span>{{ac.display}}</span>
+            <div class="pull-right">
+              <input type="radio" name="accountcard" [value]="ac.value" [(ngModel)]="mobile.accountcard">
+            </div>
+          </li>
+
+          <li class="text-left">
+            <span>List of documents to be provided by the borrower</span>
+          </li>
+          <li class="text-left sub_list" *ngFor="let document of required_documents">
+            <span>{{ document.display }}</span>
+            <div class="pull-right">
+              <input type="checkbox" name="{{document.display}}" [(ngModel)]="document.checked">
+            </div>
+          </li>
+
+        </ul>
+        <button type="submit" (click)="saveMobileApplication(i.value, i.valid)" [disabled]="loading" class="btn btn-white pull-right">
+          <span *ngIf="!loading">Submit</span>
+          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingContract">
+    <h4 class="panel-title">
+      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseContract" aria-expanded="true"
+        aria-controls="collapseContract">
+        Contract Settings
+      </a>
+    </h4>
+  </div>
+  <div id="collapseContract" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingContract">
+    <div class="panel-body">
+      <div class="panel-body">
+        <form #contractForm="ngForm" novalidate>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <ul>
+                <li class="text-left">
+                  <span> Borrower must accept contract</span>
+                  <div class="pull-right">
+                    <input type="checkbox" name="MUST_ACCEPT_CONTRACT" name="MUST_ACCEPT_CONTRACT" [(ngModel)]="contract.MUST_ACCEPT_CONTRACT">
+
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <div class="col-md-12">
+              <ul>
+                <li class="text-left">
+                  <span> Send contract documents</span>
+                  <div class="pull-right">
+                    <input type="checkbox" name="SEND_CONTRACT_DOCS" name="SEND_CONTRACT_DOCS" [(ngModel)]="contract.SEND_CONTRACT_DOCS">
+                    <input type="hidden" name="product_id" name="product_id" [(ngModel)]="contract.product_id">
+
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-12">
+              <ul>
+                <li class="text-left">
+                  <span> Request for BVN</span>
+                  <div class="pull-right">
+                    <input type="checkbox" name="REQUEST_FOR_BVN" name="REQUEST_FOR_BVN" [(ngModel)]="contract.REQUEST_FOR_BVN">
+
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-12">
+              <ul>
+                <li class="text-left">
+                  <span> Request for Card</span>
+                  <div class="pull-right">
+                    <input type="checkbox" name="REQUEST_FOR_CARD" name="REQUEST_FOR_CARD" [(ngModel)]="contract.REQUEST_FOR_CARD">
+
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-12">
+              <ul>
+                <li class="text-left">
+                  <span> Request for Account</span>
+                  <div class="pull-right">
+                    <input type="checkbox" name="REQUEST_FOR_ACCOUNT" name="REQUEST_FOR_ACCOUNT" [(ngModel)]="contract.REQUEST_FOR_ACCOUNT">
+
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-12">
+              <ul>
+                <li class="text-left">
+                  <span> Request for Direct Debit</span>
+                  <div class="pull-right">
+                    <input type="checkbox" name="REQUEST_FOR_DIRECT_DEBIT" [(ngModel)]="contract.REQUEST_FOR_DIRECT_DEBIT">
+
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <div class="col-md-12">
+              <ul>
+                <li class="text-left">
+                  <span> Enable Contract Date Adjustment</span>
+                  <div class="pull-right">
+                    <input type="checkbox" name="ADJUST_CONTRACT_DATE" name="ADJUST_CONTRACT_DATE" [(ngModel)]="contract.ADJUST_CONTRACT_DATE">
+
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <button type="submit" (click)="saveContract(contractForm.value, contractForm.valid)" [disabled]="loading"
+            class="btn btn-white pull-right">
+            <span *ngIf="!loading">Submit</span>
+            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingGuarantor">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseGuarantor" aria-expanded="true"
+          aria-controls="collapseGuarantor">
+          Guarantor Requirements
+        </a>
+      </h4>
+    </div>
+    <div id="collapseGuarantor" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingGuarantor">
+      <div class="panel-body">
+        <div class="panel-body">
+            <form #gb="ngForm" novalidate>
+                <ul class="list list_border sm">
+
+
+                  <li class="text-left">
+                    <span> Send Guarantor Requests</span>
+                    <div class="pull-right">
+                      <input type="checkbox" name="SEND_GUARANTOR_INVITES" [(ngModel)]="guarantor_requirements.SEND_GUARANTOR_INVITES">
+                      <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="product.LOAN_PRODUCT_ID">
+                    </div>
+                  </li>
+
+                </ul>
+                <div class="form-group row">
+                  <label class="control-label col-md-4">Guarantor Requirements</label>
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="col-md-6" *ngFor="let occ of guarantors;let i = index" style="padding-right:5px !important">
+                        <div class="form-group" style="margin-bottom:0px">
+                          <span class="pull-left text-primary">{{occ?.display}}</span>
+                          <span class="pull-right">
+                            <div class="checkbox" style="margin:0px !important">
+                              <label>
+                                <input type="checkbox" [checked]="isGuarantorRequirementAvailable(occ?.value,i)" name="gua_{{occ?.value}}"
+                                  (change)="checkGuarantorRequirement($event.target.checked,i)">
+
+                              </label>
+                            </div>
+                          </span>
+                          <div class="clearfix"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <ul>
+                        <li class="text-left">
+                            <span>List of documents to be provided by the guarantor</span>
+                        </li>
+                        <li style="overflow: auto !important" class="text-left sub_list" *ngFor="let document of required_documents_guarantors">
+                            <span>{{ document.display }}</span>
+                            <div class="pull-right">
+                                <input type="checkbox" name="{{document.display}}" [(ngModel)]="document.checked">
+                            </div>
+                        </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label class="control-label">Terms and Conditions</label>
+                        <app-ngx-editor [config]="editorConfig" name="GUARANTOR_TERMS_AND_CONDITIONS" [(ngModel)]="guarantor_requirements.GUARANTOR_TERMS_AND_CONDITIONS"></app-ngx-editor>
+                    </div>
+                  </div>
+                <button type="submit" (click)="saveGuarantorRequirements(gb.value, gb.valid)" [disabled]="loading"
+                  class="btn btn-white pull-right">
+                  <span *ngIf="!loading">Submit</span>
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                </button>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingTC">
+    <h4 class="panel-title">
+      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTC" aria-expanded="true"
+        aria-controls="collapseTC">
+        Terms and Condition
+      </a>
+    </h4>
+  </div>
+  <div id="collapseTC" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTC">
+    <div class="panel-body">
+      <form #tcs="ngForm" novalidate>
+        <ul class="list list_border sm">
+          <li class="text-left" style="margin-bottom:15px">
+            <span>
+              <p class="no-margin">
+                <strong>Include Terms in contract</strong>
+              </p>
+            </span>
+            <div class="pull-right">
+
+              <input type="checkbox" name="INCLUDE_TERMS_IN_CONTRACT" [(ngModel)]="tc.INCLUDE_TERMS_IN_CONTRACT">
+            </div>
+          </li>
+        </ul>
+        <div class="form-group">
+          <input type="hidden" name="product_id" [(ngModel)]="tc.product_id">
+          <app-ngx-editor [config]="editorConfig" name="TERMS_AND_CONDITIONS" [(ngModel)]="tc.TERMS_AND_CONDITIONS"></app-ngx-editor>
+        </div>
+        <button type="submit" (click)="saveTC(tcs.value, tcs.valid)" [disabled]="loading" class="btn btn-white pull-right">
+          <span *ngIf="!loading">Submit</span>
+          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingOL">
+    <h4 class="panel-title">
+      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOL" aria-expanded="true"
+        aria-controls="collapseOL">
+        Offer Letter
+      </a>
+    </h4>
+  </div>
+  <div id="collapseOL" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOL">
+    <div class="panel-body">
+      <form #ols="ngForm" novalidate>
+
+        <div class="form-group">
+          <input type="hidden" name="product_id" [(ngModel)]="mobile.product_id">
+          <app-ngx-editor [config]="editorConfig" name="OFFER_LETTER" [(ngModel)]="ol.OFFER_LETTER"></app-ngx-editor>
+        </div>
+        <button type="submit" (click)="saveOL(ols.value, ols.valid)" [disabled]="loading" class="btn btn-white pull-right">
+          <span *ngIf="!loading">Submit</span>
+          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

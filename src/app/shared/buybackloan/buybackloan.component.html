@@ -1,0 +1,107 @@
+<section class="panel" style="overflow:hidden;">
+  <div style="padding:24px 20px; overflow: auto;">
+    <div class="text-center borrower-info">
+      <a class="pull-left" style="margin-right: 25px">
+        <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{loan?.FILE_NAME | imagenotfound}}?q=auto"
+          style="width:50px; height:50px">
+      </a>
+      <div class="borrower-text pull-left" style="text-align:left">
+        <p class="" style="margin-bottom: 0px">{{loan?.LEGAL_NAME}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    <p class="" style="font-weight: bold">Loan</p>
+  </div>
+  <div class="paytype-switch" style="width: 100%;position: relative;z-index: 10;background: white; overflow: auto">
+    <a class="paystack-switch-make active text-center" style="width:100% !important">Buy Back Loan</a>
+  </div>
+  <div>
+
+    <div class="panel-body">
+      <div *ngIf="!paymentHasBeenProcessed">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="control-label">Search</label>
+              <div class="input-group m-bot15">
+                <input class="form-control" name="searchText" required="" [(ngModel)]="searchString" type="text">
+                <span class="input-group-btn">
+                  <button [disabled]="loading || searchString==''" (click)="searchCustomers()" class="btn btn-white"
+                    type="button">Search <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="customerSelected">
+            <div class="panel-body">
+              <p class="txt t_l3 t_lh1" style="word-wrap:break-word;">{{selectedCustomer?.LEGAL_NAME}}</p>
+              <p class="txt t_dull">{{selectedCustomer?.PEOPLE_CUSTOMERS_ID}}</p>
+            </div>
+          </div>
+        </div>
+        <div style="height: 120px;
+        overflow-y: auto;
+        margin-bottom: 20px;" *ngIf="!customerSelected">
+          <div *ngIf="searchedCustomerResult?.count=='0'">
+            <div class="text-center" style="padding:30px 0px">
+              <a style="font-size:50px">
+                <i class="fa fa-meh-o"></i>
+              </a>
+              <h4>No customer found</h4>
+            </div>
+          </div>
+          <div *ngIf="searchedCustomerResult?.count!='0'">
+
+            <article (click)="selectCustomer(customer)" class="media" *ngFor="let customer of searchedCustomerResult?.a"
+              style="padding: 10px; margin-top: 0; cursor: pointer;">
+              <div class="pull-left thumb p-thumb">
+                <img src="http://res.cloudinary.com/africacodes-concepts-limited/image/upload/v1507561173/{{customer?.FILE_NAME | imagenotfound}}"
+                  style=" width: 40px;   height: 40px; border-radius: 50%; ">
+              </div>
+              <div class="media-body">
+                <p class="txt t_l4 t_cool" style="word-wrap:break-word; ">{{customer?.LEGAL_NAME}}</p>
+                <p style="font-size: 12px">{{customer?.PEOPLE_CUSTOMERS_ID}}</p>
+              </div>
+            </article>
+
+          </div>
+        </div>
+        <form #interestBandForm="ngForm" novalidate *ngIf="!searching">
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="control-label">Password</label>
+                <input type="password" class="form-control" name="SECURITY_QUESTION_ANSWER" [(ngModel)]="change_payment_form.SECURITY_QUESTION_ANSWER">
+                <input type="hidden" name="REQUEST_ID" [(ngModel)]="change_payment_form.REQUEST_ID">
+                <input type="hidden" name="PEOPLE_ID" [(ngModel)]="change_payment_form.PEOPLE_ID">
+              </div>
+            </div>
+          </div>
+          <button type="submit" (click)="creditTheStatement(interestBandForm.value, interestBandForm.valid)" [disabled]="loading"
+            class="btn btn-white pull-right">
+            <span *ngIf="!loading">Submit</span>
+            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+          </button>
+        </form>
+      </div>
+      <div *ngIf="paymentHasBeenProcessed">
+        <div class="">
+          <h4 class="text-center">Success</h4>
+
+          <div style="width: 120px;margin:20px auto;">
+            <svg style="width: 100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+              version="1.1" x="0px" y="0px" viewBox="0 0 100 125" enable-background="new 0 0 100 100" xml:space="preserve">
+              <g>
+                <circle fill="none" stroke="#1CA261" stroke-width="6" stroke-miterlimit="10" cx="50" cy="50" r="47" />
+                <polygon style="color:#1CA261" points="72,25 42,71 27,56 23,60 43,80 77,28  " />
+              </g>
+            </svg>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

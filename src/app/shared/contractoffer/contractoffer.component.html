@@ -61,9 +61,9 @@
               <span *ngIf="!loading">Update</span>
               <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
             </button>
-            <button style="margin-left:16px" type="button" (click)="sendingContract=!sendingContract" class="btn btn-white pull-right">
+            <!-- <button style="margin-left:16px" type="button" (click)="sendingContract=!sendingContract" class="btn btn-white pull-right">
               <span>Send Offer Letter</span>
-            </button>
+            </button> -->
             <button style="margin-left:16px" type="button" [disabled]="printing" (click)="printTheOfferLetter()" class="btn btn-white pull-right">
                 <span>Print Offer Letter <i class="fa fa-spinner fa-spin" *ngIf="printing"></i></span>
               </button>

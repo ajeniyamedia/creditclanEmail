@@ -181,7 +181,7 @@ export class CustomersService {
   }
   saveAllCountries(country: any): Observable<any> {
     // get users from api
-    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/options/saveAllCountries', {country:country})
+    return this.http.post('https://dataupload.creditclan.com/api/v2/options/saveAllCountries', {country:country})
       .map((response: Response) => response.json());
   }
   // Load customer referrals
@@ -360,12 +360,12 @@ export class CustomersService {
   }
   saveMobileApplication(token: any, value: any): Observable<any> {
     // get users from api
-    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/company/saveMobileApplication', JSON.stringify({ token: token, data: value }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/company/saveMobileApplication', JSON.stringify({ token: token, data: value }))
       .map((response: Response) => response.json());
   }
   saveCompanyDetails(token: any, value: any): Observable<any> {
     // get users from api
-    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/company/saveCompanyDetails', JSON.stringify({ token: token, data: value }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/company/saveCompanyDetails', JSON.stringify({ token: token, data: value }))
       .map((response: Response) => response.json());
   }
   updateCompanyAddress(company_address:any) {
@@ -562,7 +562,7 @@ export class CustomersService {
 
   updateProfilePhoto(token:any, basicInfo:any, profile_photo:any): Observable<any> {
     // get users from api
-    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/customer/updateProfilePicture', JSON.stringify({ token: token, basicInfo: basicInfo, profile_photo: profile_photo }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/customer/updateProfilePicture', JSON.stringify({ token: token, basicInfo: basicInfo, profile_photo: profile_photo }))
       .map((response: Response) => response.json());
   }
 }

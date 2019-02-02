@@ -3,7 +3,7 @@
     <div class="container" [ngClass]="is_mobile == true? 'head': 'dashhead'">
         <div class="row">
             <div [ngClass]="is_mobile == true? 'col-md-6': 'col-md-9'">
-                <section class="panel panl" style="margin-bottom: 5px">
+                <!-- <section class="panel panl" style="margin-bottom: 5px">
                     <div class="panel-body">
                         <article class="media">
                             <div class="pull-left">
@@ -11,7 +11,7 @@
                             </div>
                         </article>
                     </div>
-                </section>
+                </section> -->
                 <div>
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
@@ -203,10 +203,10 @@
         </div>
     </div>
 </div>
-<div class="container dashhead" *ngIf="view=='mobile'">
+<div class="container" *ngIf="view=='mobile'">
     <div class="row">
         <div class="col-md-9" [ngClass]="is_mobile == true? 'col-md-6': 'col-md-9'">
-
+<!-- 
             <section class="panel panl" style="margin-bottom: 5px">
                 <div class="panel-body">
                     <article class="media">
@@ -215,8 +215,8 @@
                         </div>
                     </article>
                 </div>
-            </section>
-            <div>
+            </section> -->
+            <div> 
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <!-- <app-generalform (saveForm)="saveForm($event)" [product]='product' [loan_currency]='loan_currency' [countries]='countries'
                         [loan_duration]='loan_duration' [loading]='loading' [loan_durations]='loan_durations' [max_loan_duration]='max_loan_duration'>
@@ -233,7 +233,8 @@
 
     <app-originationfee (saveForm)="saveOFFrom($event)" [product]='product' [companyaccounts]='companyaccounts' [loading]='loading'
         [fee_settings]='fee_settings'></app-originationfee>  -->
-                    <div class="panel panel-default">
+
+                    <!-- <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingVR">
                             <h4 class="panel-title">
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseVR"
@@ -277,7 +278,8 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
+
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingOne">
                             <h4 class="panel-title">
@@ -291,7 +293,7 @@
                             <div class="panel-body" style="padding: 15px 70px">
                                 <form #h="ngForm" novalidate>
                                     <ul class="list list_border sm">
-                                        <li class="text-left">
+                                        <!-- <li class="text-left">
                                             <span>
                                                 <p class="no-margin">
                                                     <strong>Phone Confirmation</strong>
@@ -299,9 +301,11 @@
                                             </span>
                                             <div class="pull-right">
 
-                                                <input type="checkbox" name="skipphoneconfirmation" [(ngModel)]="mobile.skipphoneconfirmation">
+                                                <input type="checkbox" 
+                                                name="skipphoneconfirmation" 
+                                                [(ngModel)]="mobile.skipphoneconfirmation">
                                             </div>
-                                        </li>
+                                        </li> -->
                                         <li class="text-left">
                                             <span>
                                                 <p class="no-margin">
@@ -549,10 +553,11 @@
                                                 <input type="textbox" name="notificationemail" [(ngModel)]="mobile.notificationemail">
                                             </div>
                                         </li>
-                                        <li class="text-left">
+                                        <li style="margin-top:10px" class="text-left">
                                             <span>List of documents to be provided by the borrower</span>
                                         </li>
-                                        <li class="text-left sub_list" *ngFor="let document of required_documents">
+                                        <li style="width:50%; float: right; height: 60px;" class="text-left sub_list" 
+                                            *ngFor="let document of required_documents">
                                             <span>{{ document.display }}</span>
                                             <div class="pull-right">
                                                 <input type="checkbox" name="{{document.display}}" [(ngModel)]="document.checked">
@@ -568,7 +573,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel panel-default">
+                    <!-- <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingTC">
                             <h4 class="panel-title">
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTC"
@@ -605,7 +610,8 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
+
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingOL">
                             <h4 class="panel-title">

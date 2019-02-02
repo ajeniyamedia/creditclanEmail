@@ -15,6 +15,8 @@ export class GeneralformComponent implements OnInit {
   @Input('max_loan_duration') max_loan_duration: any;
   @Input('loading') loading: any;
   @Output() saveForm = new EventEmitter();
+  days: any;
+  month: any;
 
   constructor() { }
 

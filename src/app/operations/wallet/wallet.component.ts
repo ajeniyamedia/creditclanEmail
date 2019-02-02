@@ -37,9 +37,13 @@ export class WalletComponent implements OnInit {
   fundingQueued=false;
   dashboarddata:any;
 
-  constructor(public fb: FormBuilder, public router: Router, public operationsService: OperationsService, 
+  constructor(public authService:AuthenticationService,public fb: FormBuilder, 
+    public router: Router, public operationsService: OperationsService, 
     public storageService: StorageService) {
     this.currentUser = this.storageService.read<any>('currentUser');
+    if(!authService.canViewModule('1,3')){
+      this.router.navigate(['../unauthorized']);
+    }
   }
 
   ngOnInit() {

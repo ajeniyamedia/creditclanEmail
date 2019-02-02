@@ -14,7 +14,7 @@ export class MarketService {
   
   makeOfferToAdvertisedLoan(token: string, offer: OfferModel): Observable<any> {
     // get users from api
-    return this.http.post('http://137.117.105.90/dataupload_test/api/v2/market/makeOfferToAdvertisedLoan', JSON.stringify({ token: token, offer: offer }))
+    return this.http.post('https://dataupload.creditclan.com/api/v2/market/makeOfferToAdvertisedLoan', JSON.stringify({ token: token, offer: offer }))
       .map((response: Response) => response.json());
   }
 }

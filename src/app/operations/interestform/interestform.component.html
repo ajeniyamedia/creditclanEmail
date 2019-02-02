@@ -17,8 +17,8 @@
                 <input type="hidden" name="LOAN_INTEREST_TYPE" [(ngModel)]="product.LOAN_INTEREST_TYPE">
                 <select name="INTEREST_RATE_TYPE_ID" [(ngModel)]="product.INTEREST_RATE_TYPE_ID" class="form-control">
                   <option [value]="0"></option>
-                  <option [value]="1" selected="selected">Flat</option>
-                  <option [value]="2">Simple</option>
+                  <option [value]="1" selected="selected">Reducing balance</option>
+                  <option [value]="2">Flat</option>
                 </select>
               </div>
             </div>
@@ -55,7 +55,7 @@
 
                   <select name="INSTALLMENT_FREQUENCY" (change)="changeFrequency($event)" [(ngModel)]="product.INSTALLMENT_FREQUENCY" class="form-control">
                     <option [value]="0"></option>
-                    <option [value]="1">One Off</option>
+                    <!-- <option [value]="1">One Off</option> -->
                     <option [value]="2">Monthly</option>
                   </select>
                 </div>
@@ -70,10 +70,10 @@
 
                   <select name="REPAYMENT_TYPE_ID" [(ngModel)]="product.REPAYMENT_TYPE_ID" class="form-control">
                     <option [value]="0"></option>
-                    <option [value]="1">EPI</option>
-                    <option [value]="2">Interest Alone</option>
                     <option [value]="3">Bullet</option>
-                    <option [value]="6">Reducing Balance</option>
+                    <option [value]="1">Equal Installment</option>
+                    <option [value]="6">Reducing</option>
+                    <option [value]="2">Interest Alone</option>
                   </select>
                 </div>
               </div>
@@ -88,7 +88,8 @@
 
                 </div>
                 <div class="col-md-6">
-                  <select class="form-control" [(ngModel)]="product.RP_SET_TYPE" name="RP_SET_TYPE">
+                  <select class="form-control"
+                   [(ngModel)]="product.RP_SET_TYPE" name="RP_SET_TYPE">
                     <option [value]="0">select</option>
                     <option [value]="1">Immediate</option>
                     <option [value]="2">Prorated</option>

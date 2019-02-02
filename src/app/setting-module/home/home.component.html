@@ -1,0 +1,90 @@
+<app-main-navigation></app-main-navigation>
+
+<div class="row" style="margin-top:150px">
+        <div class="col-xs-6 col-sm-3">
+            <div>
+                <div class="sidebar">
+                    <h1 class="sidebar--icon">
+                        <i class="fa fa-home"></i></h1>
+                    <p style="text-align: center; width: 150px; font-size: 15px;">{{viewTitle}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-6">
+            <div class="panel box edged_box">
+                <ul class="decList decSettings">
+                    <li>
+                        <h4 class="general-s--heading">{{viewTitle}}
+                            <span class="fas fa-angle-down pull-right" 
+                            (click)="onSettings( setting )"></span>
+                        </h4>
+                    </li>
+                </ul>
+                <router-outlet></router-outlet>
+            </div>
+          
+        </div>
+        <!-- Optional: clear the XS cols if their content doesn't match in height -->
+        <div class="clearfix visible-xs-block"></div>
+        <div class="col-xs-6 col-sm-3">
+            <div [hidden]="setting" class="setting--list">
+                
+                <a [routerLink]="['/newsettings/general']">
+                  <p (click)="viewTitle = 'General Settings'">General</p>
+                </a>
+                <a [routerLink]="['/newsettings/mobilewebsite']">
+                  <p (click)="viewTitle = 'Mobile + Website Settings'">Mobile + Website</p>
+                </a>
+                <a [routerLink]="['/newsettings/ussd']">
+                  <p (click)="viewTitle = 'USSD & Chat Settings'">USSD & Chat</p>
+                </a>
+                <a [routerLink]="['/newsettings/eligibility']">
+                  <p (click)="viewTitle = 'Eligibility & Qualification Borrowers Settings'">Eligibility & Qualification Borrowers</p>
+                </a>
+                <a [routerLink]="['/newsettings/approval']">
+                  <p (click)="viewTitle = 'Approvals Settings'">Approvals</p>
+                </a>
+                <a [routerLink]="['/newsettings/company']">
+                  <p (click)="viewTitle = 'Company Settings'">Company</p>
+                </a>
+                <a [routerLink]="['/newsettings/products']">
+                  <p (click)="viewTitle = 'Products Settings'">Products</p>
+                </a>
+                <a [routerLink]="['/newsettings/analytics']">
+                  <p (click)="viewTitle = 'Analytics Settings'">Analytics</p>
+                </a>
+                <a [routerLink]="['/newsettings/messages']">
+                  <p (click)="viewTitle = 'Messages Settings'">Messages</p>
+                </a>
+                <a [routerLink]="['/newsettings/payment']">
+                  <p (click)="viewTitle = 'Payment Settings'">Payment settings</p>
+                </a> 
+                <a [routerLink]="['/newsettings/guarantor']">
+                  <p (click)="viewTitle = 'Guarantor Requirements Settings'">
+                    Guarantor Requirements
+                  </p>
+                </a>
+                <!-- <a [routerLink]="['/newsettings/interest']">
+                  <p (click)="viewTitle = 'Interest Rate Floor Settings'">Interest Rate Floor</p>
+                </a>
+                <a [routerLink]="['/newsettings/amount']">
+                  <p (click)="viewTitle = 'Amount Based Interest Settings'">Amount Based Interest</p>
+                </a> -->
+                <a [routerLink]="['/newsettings/security']">
+                  <p (click)="viewTitle = 'Security Settings'">Security</p>
+                </a>
+                <a [routerLink]="['/newsettings/accounting']">
+                  <p (click)="viewTitle = 'Accounting Settings'">Accounting</p>
+                </a>
+                <a [routerLink]="['/newsettings/p2p']">
+                  <p (click)="viewTitle = 'P2P'">P2P</p>
+                </a>
+                <a [routerLink]="['/newsettings/peer-crowd']">
+                  <p (click)="viewTitle = 'Peer and Crowd Settings'">Peer and Crowd</p>
+                </a>
+                <a [routerLink]="['/newsettings/email']">
+                  <p (click)="viewTitle = 'Email Settings'">Email setting</p>
+                </a>
+              </div>
+        </div>
+</div>

@@ -13,13 +13,15 @@ export class RefreshremitaComponent implements OnInit {
 
   @Input('remita_records') remita_records: any;
   @Input('currentUser') currentUser: any;
-  @Input('loan') loan: any;
+  @Input('loan') loan: any = {
+    PEOPLE_ID: ''
+  };
   loading = false;
   change_payment_form = {
     SECURITY_QUESTION_ANSWER: '',
     REQUEST_ID: '',
     REPAYMENT_MODE: '',
-    PEOPLE_ID:''
+    PEOPLE_ID: ''
   };
   mode_of_repayment = [
     { 'value': '1', 'display': 'Remita Inflight' },
@@ -33,8 +35,8 @@ export class RefreshremitaComponent implements OnInit {
 
   }
 
-  ngOnInit() {   
-    this.change_payment_form.PEOPLE_ID = this.loan.loan.PEOPLE_ID;
+  ngOnInit() {
+    //this.change_payment_form.PEOPLE_ID = this.loan.PEOPLE_ID;
   }
   showSuccess(message) {
     this.toastr.success(message, 'Success!');
@@ -45,17 +47,16 @@ export class RefreshremitaComponent implements OnInit {
   }
 
   sendRemitaaRefreshNotification(value, valid) {
-console.log(value)
-    // this.loading = true;
-    // this.operationsService.notifyRemitaOfLoan(this.currentUser.token, value)
-    //   .subscribe(data => {
-    //     this.loading = false;
-    //     if (data.status === true) {
-    //       this.showSuccess(data.message)
-    //     } else {
-    //       this.showError(data.message)
-    //     }
-    //   });
+    this.loading = true;
+    this.operationsService.refresh_remita_details(this.currentUser.token, value, this.remita_records, this.loan)
+      .subscribe(data => {
+        this.loading = false;
+        if (data.status === true) {
+          this.showSuccess(data.message)
+        } else {
+          this.showError(data.message)
+        }
+      });
   }
 
 }

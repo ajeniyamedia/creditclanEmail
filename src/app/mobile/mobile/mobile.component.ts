@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewContainerRef, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { OperationsService, StorageService } from '../../_services/index';
+import { OperationsService, StorageService, AuthenticationService } from '../../_services/index';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -78,7 +78,7 @@ export class MobileComponent implements OnInit {
     bvnmustmatch: false,
     cardmustmatch: false,
     accountmustmatch: false,
-  }
+  };
 
   @Input('view') view = 'mobile';
   public ussd = {
@@ -147,8 +147,7 @@ export class MobileComponent implements OnInit {
     { value: '3', display: 'Both' }
   ];
   public notify = [
-    { value: '0', display: 'Do Nothing' },
-    { value: '1', display: 'Notify account officer' },
+    { value: '0', display: 'Do Nothing' }, 
     { value: '2', display: 'Send to email' },
   ];
 
@@ -165,9 +164,12 @@ export class MobileComponent implements OnInit {
     minWidth: "100%"
   };
   required_documents:any;
-  constructor(public toastr: ToastrService, vcr: ViewContainerRef, private router: Router,
+  constructor(public authService:AuthenticationService,public toastr: ToastrService, vcr: ViewContainerRef, private router: Router,
     public storageService: StorageService, public operationsService: OperationsService) {
     this.currentUser = this.storageService.read<any>('currentUser');
+    if(!authService.canViewModule('1,3')){
+      this.router.navigate(['../unauthorized']);
+    }
   }
   showSuccess(message) {
     this.toastr.success(message, 'Success!');
@@ -357,14 +359,7 @@ export class MobileComponent implements OnInit {
         this.showSuccess(data.message);
       });
   }
-  saveOL(value, valid) {
-    this.loading = true;
-    this.operationsService.saveOLSettings(this.currentUser.token, value)
-      .subscribe(data => {
-        this.loading = false;
-        this.showSuccess(data.message);
-      });
-  }
+  
   save_(value, valid) {
     this.loading = true;
     this.operationsService.saveUssdSettings(this.currentUser.token, value)

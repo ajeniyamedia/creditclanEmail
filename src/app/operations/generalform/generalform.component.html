@@ -30,47 +30,126 @@
             </div>
           </div>
           <div class="form-group row">
-            <div class="col-md-6">
-              <label class="no-margin control-label">Min amount</label>
-              <div class="input-group btn-block">
-                <input type="text" class="form-control" name="LOAN_AMOUNT" [(ngModel)]="product.LOAN_AMOUNT">
-                <input type="hidden" name="LOAN_DURATION_TYPE" [(ngModel)]="product.LOAN_DURATION_TYPE">
-                <input type="hidden" name="LOAN_CURRENCY" [(ngModel)]="product.LOAN_CURRENCY">
-                <input type="hidden" name="LOAN_INTEREST_TYPE" [(ngModel)]="product.LOAN_INTEREST_TYPE">
-                <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="product.LOAN_PRODUCT_ID">
-                <div class="input-group-btn hide">
-                  <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
-                    <span class="sel_cur">{{loan_currency}}</span>
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu pull-right">
-                    <li *ngFor="let c of countries">
-                      <a href="javascript:;" (click)="changeCurrency(c)">{{c.currency[0]}}</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <label class="no-margin control-label">Max Amount</label>
-              <div class="input-group ">
-                <input type="text" class="form-control" name="MAX_AMOUNT" [(ngModel)]="product.MAX_AMOUNT">
-                <div class="input-group-btn">
-                  <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
-                    <span class="sel_cur">{{loan_currency}}</span>
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu pull-right">
-                    <li *ngFor="let c of countries">
-                      <a href="javascript:;" (click)="changeCurrency(c)">{{c.currency[0]}}</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="no-margin control-label col-md-6">Base Duration Type</label>
+                    <div class="col-md-6">
+                      <select class="form-control" 
+                        name="BASE_DURATION_TYPE" 
+                        [(ngModel)]="product.BASE_DURATION_TYPE">
+                        <option [value]="1">Days</option>
+                        <option [value]="2">Months</option>
+                      </select>                        
+                    </div>
+                  </div>
+
+                  <!-- <div class="form-group row " id="loan_interval_container">
+                      <div class="col-md-6">
+                        <label class="no-margin control-label">Loan Interval</label>
+                        <div class="input-group btn-block">
+                          <input type="text" class="form-control btn-block" name="LOAN_INTERVAL" [(ngModel)]="product.LOAN_INTERVAL">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="no-margin control-label">Duration Interval</label>
+                        <div class="">
+                          <input type="text" class="form-control" name="DURATION_INTERVAL" [ngModel]="product.DURATION_INTERVAL">
+                        </div>
+                      </div>
+                 </div> -->
             </div>
           </div>
-          <div class="form-group row" id="loan_duration_container">
-            <div class="col-md-6">
+          <div class="form-group row" id="loan_duration_container"
+           *ngIf="product.BASE_DURATION_TYPE == 2">
+           <div class="row">
+              <div class="col-xs-6 col-sm-4">
+                  <label class="no-margin control-label">Min Tenor</label>
+                  <div class="input-group btn-block">
+                    <input type="text" class="form-control btn-block" name="LOAN_DURATION" [(ngModel)]="product.LOAN_DURATION">
+                    <div class="input-group-btn hide">
+                      <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                        <span class="sel_cur">{{loan_duration}}</span>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu pull-right">
+                        <li *ngFor="let d of loan_durations;let i=index;">
+                          <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-xs-6 col-sm-4">
+                  <label class="no-margin control-label">Max Tenor</label>
+                  <div class="input-group ">
+                    <input type="text" class="form-control" name="MAX_LOAN_DURATION" [(ngModel)]="product.MAX_LOAN_DURATION">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                        <span class="sel_cur">{{max_loan_duration}}</span>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu pull-right">
+                        <ul class="dropdown-menu pull-right">
+                          <li *ngFor="let d of loan_durations;let i=index;">
+                            <a (click)="changeMaxDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                          </li>
+                        </ul>
+                      </ul>
+                    </div>
+                  </div>
+              </div>
+              <div class="clearfix visible-xs-block"></div>
+              <div class="col-xs-6 col-sm-4">
+                  <label class="no-margin control-label">Loan Interval</label>
+                    <div class="input-group btn-block">
+                      <input type="text" class="form-control btn-block" name="LOAN_INTERVAL" [(ngModel)]="product.LOAN_INTERVAL">
+                    </div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 15px">
+                <div class="col-md-6" *ngIf="product.BASE_DURATION_TYPE == 2">
+                    <label class="no-margin control-label">Min amount</label>
+                    <div class="input-group btn-block">
+                      <input type="text" class="form-control" name="LOAN_AMOUNT" [(ngModel)]="product.LOAN_AMOUNT">
+                      <input type="hidden" name="LOAN_DURATION_TYPE" [(ngModel)]="product.LOAN_DURATION_TYPE">
+                      <input type="hidden" name="LOAN_CURRENCY" [(ngModel)]="product.LOAN_CURRENCY">
+                      <input type="hidden" name="LOAN_INTEREST_TYPE" [(ngModel)]="product.LOAN_INTEREST_TYPE">
+                      <input type="hidden" name="LOAN_PRODUCT_ID" [(ngModel)]="product.LOAN_PRODUCT_ID">
+                      <div class="input-group-btn hide">
+                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                          <span class="sel_cur">{{loan_currency}}</span>
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                          <li *ngFor="let c of countries">
+                            <a href="javascript:;" (click)="changeCurrency(c)">{{c.currency[0]}}</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6" *ngIf="product.BASE_DURATION_TYPE == 2">
+                    <label class="no-margin control-label">Max Amount</label>
+                    <div class="input-group ">
+                      <input type="text" class="form-control" name="MAX_AMOUNT" [(ngModel)]="product.MAX_AMOUNT">
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                          <span class="sel_cur">{{loan_currency}}</span>
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                          <li *ngFor="let c of countries">
+                            <a href="javascript:;" (click)="changeCurrency(c)">{{c.currency[0]}}</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+
+            
+            <!-- <div class="col-md-6">
               <label class="no-margin control-label">Min Tenor</label>
               <div class="input-group btn-block">
                 <input type="text" class="form-control btn-block" name="LOAN_DURATION" [(ngModel)]="product.LOAN_DURATION">
@@ -86,8 +165,8 @@
                   </ul>
                 </div>
               </div>
-            </div>
-            <div class="col-md-6">
+            </div> -->
+            <!-- <div class="col-md-6">
               <label class="no-margin control-label">Max Tenor</label>
               <div class="input-group ">
                 <input type="text" class="form-control" name="MAX_LOAN_DURATION" [(ngModel)]="product.MAX_LOAN_DURATION">
@@ -105,49 +184,51 @@
                   </ul>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
 
-          <div class="form-group row" id="loan_interval_container">
-            <div class="col-md-6">
-              <label class="no-margin control-label">Loan Interval</label>
-              <div class="input-group btn-block">
-                <input type="text" class="form-control btn-block" name="LOAN_INTERVAL" [(ngModel)]="product.LOAN_INTERVAL">
-              </div>
-            </div>
-            <div class="col-md-6">
-              <label class="no-margin control-label">Duration Interval</label>
-              <div class="">
-                <input type="text" class="form-control" name="DURATION_INTERVAL" [ngModel]="product.DURATION_INTERVAL">
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label class="no-margin control-label col-md-6">How many days per year</label>
             <div class="col-md-6">
               <input type="text" class="form-control" name="DAYS_PER_YEAR" [(ngModel)]="product.DAYS_PER_YEAR"> </div>
-          </div>
-          <div class="form-group row">
-            <label class="no-margin control-label col-md-6">Minimum no of days</label>
+          </div> -->
+       
+          <div class="form-group row" *ngIf="product.BASE_DURATION_TYPE == 1">
+
+              <div class="row">
+                <div class="col-xs-6 col-sm-4">
+                  <p><label class="no-margin control-label">Minimum no of days</label></p>
+                  <input type="text" class="form-control" name="MIN_LOAN_DURATION_DAYS" 
+                    [(ngModel)]="product.MIN_LOAN_DURATION_DAYS"> 
+                </div>
+                <div class="col-xs-6 col-sm-4" *ngIf="product.BASE_DURATION_TYPE == 1">
+                  <p><label class="no-margin control-label">Maximum no of days</label></p>
+                  <input type="text" class="form-control" name="MAX_LOAN_DURATION_DAYS" 
+                  [(ngModel)]="product.MAX_LOAN_DURATION_DAYS"> 
+                </div>
+                <!-- Optional: clear the XS cols if their content doesn't match in height -->
+                <div class="clearfix visible-xs-block"></div>
+                <div class="col-xs-6 col-sm-4">
+                    <p><label class="no-margin control-label">Duration Interval</label></p>
+                    <input type="text" class="form-control" name="DURATION_INTERVAL" [ngModel]="product.DURATION_INTERVAL">
+
+                </div>
+              </div>
+
+            <!-- <label class="no-margin control-label col-md-6">Minimum no of days</label>
             <div class="col-md-6">
-              <input type="text" class="form-control" name="MIN_LOAN_DURATION_DAYS" [(ngModel)]="product.MIN_LOAN_DURATION_DAYS"> </div>
+              <input type="text" class="form-control" name="MIN_LOAN_DURATION_DAYS" 
+              [(ngModel)]="product.MIN_LOAN_DURATION_DAYS"> 
+            </div> -->
           </div>
-          <div class="form-group row">
+          <!-- <div class="form-group row" *ngIf="product.BASE_DURATION_TYPE == 1">
             <label class="no-margin control-label col-md-6">Maximum no of days</label>
             <div class="col-md-6">
               <input type="text" class="form-control" name="MAX_LOAN_DURATION_DAYS" [(ngModel)]="product.MAX_LOAN_DURATION_DAYS"> </div>
-          </div>
-          <div class="form-group row">
-            <label class="no-margin control-label col-md-6">Base Duration Type</label>
-            <div class="col-md-6">
-              <select class="form-control" name="BASE_DURATION_TYPE" [(ngModel)]="product.BASE_DURATION_TYPE">
-                <option [value]="0">Both</option>
-                <option [value]="1">Days</option>
-                <option [value]="2">Months</option>
-              </select>
-            </div>
-          </div>
+          </div> -->
+         
+
+         
           <div class="form-group row hide">
             <div class="col-md-12">
               <label class="no-margin control-label">Title</label>

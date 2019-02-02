@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewContainerRef, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { OperationsService, StorageService, LoansService, DecisionService } from '../../_services/index';
+import { OperationsService, StorageService, LoansService, DecisionService,AuthenticationService } from '../../_services/index';
 import { OptionsserviceService } from '../../_services/optionsservice.service';
 import { Observable } from 'rxjs/Rx';
 import { ToastrService } from 'ngx-toastr';
@@ -13,16 +13,53 @@ import { IonRangeSliderComponent } from 'ng2-ion-range-slider';
   styleUrls: ['./backendsettings.component.css']
 })
 export class BackendsettingsComponent implements OnInit {
+  required_documents:any;
+  public vr = {
+    bvnmustmatch: false,
+    cardmustmatch: false,
+    accountmustmatch: false,
+  };
+
+  public ol = {
+    LOAN_PRODUCT_ID: '',
+    OFFER_LETTER: '' 
+  }
+
+  geo_settings = {
+    ENABLE_GEOFENCING: false,
+    ADDRESS_TO_USE:'1',
+    LGAS: [],
+    STATE_ID: '',
+    LGA: {
+      LGA_ID: '',
+      LGA: ''
+    },
+    LGS: [],
+    GEOFENCE_DISTANCE:'10',
+    ADDRESSTYPES:[]
+  }
   directdebitform = {
     DIRECT_DEBIT_STATUS_CHECK: '',
     CANCEL_AFTER_HOW_MANY_CHECKS: '',
     GET_NOTIFIED: false,
     GET_NOTIFIED_EMAIL: '',
-    ENABLE_AUTO_DEBIT_INSTRUCTION: false
+    ENABLE_AUTO_DEBIT_INSTRUCTION: false,
+    TERMS_AND_CONDITIONS: ''
+  }
+  generalnotifications = {
+    DUEREPAYMENT: '',
+    DIRECTDEBIT: '',
+    ADDING_CARDS: false,
+    DOCUMENT_UPLOAD: '',
+    GENERAL_NOTIFICATION_EMAIL: false,
+    TERMS_AND_CONDITIONS: ''
   }
   @Input('is_dashboard') is_dashboard = false;
+  @Input('is_approval') is_approval= true;
   is_edit = false;
   addingInterestRateBand = false;
+  @Input('settings') settings=true;
+  @Input('subview') subview;
   band = {
     "LENDER_ID": "",
     "LOWER_BAND": "",
@@ -160,9 +197,12 @@ export class BackendsettingsComponent implements OnInit {
   investors = {
     MAXIMUM_INVESTMENT_PERCENT: '',
   }
+  
+  required_documents_guarantors:any;
   guarantor_requirements = {
     guarantor_requirements: [],
-    SEND_GUARANTOR_INVITES: false
+    SEND_GUARANTOR_INVITES: false,
+    GUARANTOR_TERMS_AND_CONDITIONS:''
   }
   enable_peer = '0';
   referral_settings = {
@@ -298,6 +338,7 @@ export class BackendsettingsComponent implements OnInit {
     SUSPEND_IF_FAIL_ELIGIBILITY: false,
     SUSPEND_FOR_HOW_LONG: 24,
     enableautorouting: true,
+    defaultofficer: '',
     autorouter_size: 0,
     autorouter: [],
     enable_p2p: false,
@@ -321,7 +362,8 @@ export class BackendsettingsComponent implements OnInit {
     SEND_CANCELLATION_MESSAGE: false,
     CANCELLATION_MESSAGE: '',
     MAKE_EVERYONE_ANONYMOUS: true,
-    ENABLE_BULK_DISBURSEMENT: false
+    ENABLE_BULK_DISBURSEMENT: false,
+    VIEW_INELIGIBLE_REQUESTS: false
   };
   public break_settings = {
     ALLOW_AUTOBREAK: true,
@@ -329,7 +371,8 @@ export class BackendsettingsComponent implements OnInit {
     PREMATURITY_ACTION: '0',
     HOW_MANY_INTEREST: '0',
     PERCENTAGE_FINE: '0',
-    FLAT_FINE: '0'
+    FLAT_FINE: '0',
+    INTEREST_CALCULATION:'2'
   };
   public loandefault = {
     LOAN_DEFAULT_DURATION: '0',
@@ -360,8 +403,8 @@ export class BackendsettingsComponent implements OnInit {
     { value: '2', display: 'Home Address' },
     { value: '3', display: 'Work Information' },
     { value: '4', display: 'Bank Account' },
-    { value: '5', display: 'Repayment Card' },
-    { value: '6', display: 'Social' }
+    { value: '5', display: 'Repayment Card' }, 
+    { value: '6', display: 'Social' },
   ];
   sectors: any;
   occupations: any;
@@ -376,6 +419,7 @@ export class BackendsettingsComponent implements OnInit {
     SAMPLE_CA: "",
   }
   states: any;
+  lgas: any;
   marital_statuses = [
     { value: '1', display: 'Single' },
     { value: '2', display: 'Married' },
@@ -395,13 +439,22 @@ export class BackendsettingsComponent implements OnInit {
   public interest_duration = 'Per Month';
   public special_interest_duration = 'Per Day';
   companyaccounts = [];
-  constructor(public toastr: ToastrService, vcr: ViewContainerRef, public loansService: LoansService, public optionsService: OptionsserviceService,
+  public accountcards = [
+    { value: '1', display: 'Home',checked:false,checked_:false },
+    { value: '2', display: 'Office',checked:false,checked_:false },
+    { value: '3', display: 'Request',checked:false,checked_:false }
+  ];
+  constructor(public authService:AuthenticationService,public toastr: ToastrService, 
+    vcr: ViewContainerRef, public loansService: LoansService, 
+    public optionsService: OptionsserviceService,
     private router: Router, public storageService: StorageService,
     public operationsService: OperationsService,
     public decisionService: DecisionService) {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.enable_peer = this.storageService.read<any>('enable_peer_to_peer');
-
+    if(!authService.canViewModule('1,3')){
+      this.router.navigate(['../unauthorized']);
+    }
 
   }
   showSuccess(message) {
@@ -442,11 +495,11 @@ export class BackendsettingsComponent implements OnInit {
     this.operationsService.getAppSettings(this.currentUser.token)
       .subscribe(data => {
 
+        this.required_documents_guarantors = data.required_documents_guarantors;
         this.gateway.CHOOSE_PAYMENT_PROCESSOR = data.gateway.CHOOSE_PAYMENT_PROCESSOR;
         this.gateway.ACTIVE_PAYMENT_GATEWAY = data.gateway.ACTIVE_PAYMENT_GATEWAY;
 
         this.gateway.ALLOWED_CARD_TYPES = data.gateway.ALLOWED_CARD_TYPES;
-
 
         this.contract.MUST_ACCEPT_CONTRACT = data.contract.MUST_ACCEPT_CONTRACT;
         this.contract.SEND_CONTRACT_DOCS = data.contract.SEND_CONTRACT_DOCS;
@@ -534,6 +587,7 @@ export class BackendsettingsComponent implements OnInit {
         this.backend.ENABLE_BULK_DISBURSEMENT = data.backend.ENABLE_BULK_DISBURSEMENT;
         this.backend.SUSPEND_IF_FAIL_ELIGIBILITY = data.backend.SUSPEND_IF_FAIL_ELIGIBILITY;
         this.backend.enableautorouting = data.backend.enableautorouting;
+        this.backend.defaultofficer = data.backend.defaultofficer;
         this.backend.autorouter_size = data.backend.AUTO_ROUTER_SIZE;
         this.backend.autorouter = data.backend.AUTO_ROUTER;
         this.backend.enable_p2p = data.backend.ENABLE_PEER;
@@ -557,6 +611,7 @@ export class BackendsettingsComponent implements OnInit {
         this.backend.CANCEL_AFTER_FAILED = data.backend.CANCEL_AFTER_FAILED;
         this.backend.RETRY_OTP = data.backend.RETRY_OTP;
         this.backend.BANK_ACCOUNT_ELIGIBILITY = data.backend.BANK_ACCOUNT_ELIGIBILITY;
+        this.backend.VIEW_INELIGIBLE_REQUESTS = data.backend.VIEW_INELIGIBLE_REQUESTS;
         this.loandefault.LOAN_DEFAULT_DURATION = data.backend.LOAN_DEFAULT_DURATION;
         this.loandefault.LOAN_LATE_DURATION = data.backend.LOAN_LATE_DURATION;
         this.loandefault.AUTOROLLOVER = data.backend.AUTOROLLOVER;
@@ -585,6 +640,13 @@ export class BackendsettingsComponent implements OnInit {
         this.directdebitform.GET_NOTIFIED = data.directdebit.GET_NOTIFIED;
         this.directdebitform.GET_NOTIFIED_EMAIL = data.directdebit.GET_NOTIFIED_EMAIL;
         this.directdebitform.ENABLE_AUTO_DEBIT_INSTRUCTION = data.directdebit.ENABLE_AUTO_DEBIT_INSTRUCTION;
+        this.directdebitform.TERMS_AND_CONDITIONS = data.directdebit.TERMS_AND_CONDITIONS;
+
+        this.generalnotifications.DUEREPAYMENT = data.generalnotifications.DUEREPAYMENT;
+        this.generalnotifications.DIRECTDEBIT = data.generalnotifications.DIRECTDEBIT;
+        this.generalnotifications.ADDING_CARDS = data.generalnotifications.ADDING_CARDS;
+        this.generalnotifications.DOCUMENT_UPLOAD = data.generalnotifications.DOCUMENT_UPLOAD;
+        this.generalnotifications.GENERAL_NOTIFICATION_EMAIL = data.generalnotifications.GENERAL_NOTIFICATION_EMAIL;
 
         this.break_settings.ALLOW_AUTOBREAK = data.break_settings.ALLOW_AUTOBREAK;
         this.break_settings.ENABLE_PREMATURITY_PENALTY = data.break_settings.ENABLE_PREMATURITY_PENALTY;
@@ -592,6 +654,7 @@ export class BackendsettingsComponent implements OnInit {
         this.break_settings.HOW_MANY_INTEREST = data.break_settings.HOW_MANY_INTEREST;
         this.break_settings.PERCENTAGE_FINE = data.break_settings.PERCENTAGE_FINE;
         this.break_settings.FLAT_FINE = data.break_settings.FLAT_FINE;
+        this.break_settings.INTEREST_CALCULATION = data.break_settings.INTEREST_CALCULATION;
 
         this.management_fee.FEE_TYPE = data.management_fee.FEE_TYPE;
         this.management_fee.FEE_FLAT_VALUE = data.management_fee.TOTAL_FLAT_FEES;
@@ -646,6 +709,7 @@ export class BackendsettingsComponent implements OnInit {
 
         this.guarantor_requirements.guarantor_requirements = data.product.GUARANTOR_REQUIREMENTS;
         this.guarantor_requirements.SEND_GUARANTOR_INVITES = data.product.SEND_GUARANTOR_INVITES;
+        this.guarantor_requirements.GUARANTOR_TERMS_AND_CONDITIONS = data.product.GUARANTOR_TERMS_AND_CONDITIONS;
 
         this.mail_settings.HAS_SMTP = data.mail_settings.HAS_SMTP;
         this.mail_settings.SMTP_SERVER = data.mail_settings.SMTP_SERVER;
@@ -673,6 +737,7 @@ export class BackendsettingsComponent implements OnInit {
         this.investors.MAXIMUM_INVESTMENT_PERCENT = data.investors.MAXIMUM_INVESTMENT_PERCENT;
 
         this.states = data.states;
+        this.lgas = data.lgas;
 
         this.referral_settings.AMOUNT_PER_REFERRAL_CASH = data.referral.AMOUNT_PER_REFERRAL_CASH;
         this.referral_settings.AMOUNT_PER_REFERRAL_POINTS = data.referral.AMOUNT_PER_REFERRAL_POINTS;
@@ -694,6 +759,13 @@ export class BackendsettingsComponent implements OnInit {
         this.customeraccountsettings.INCLUDE_ACCOUNT_TYPE_CODE = data.customeraccountsettings.INCLUDE_ACCOUNT_TYPE_CODE;
         this.customeraccountsettings.SAMPLE_CA = data.customeraccountsettings.SAMPLE_CA;
         this.companyaccounts = data.accounts.a;
+
+        this.geo_settings.LGAS = data.product.ALLOWED_LGAS
+        this.geo_settings.LGS = data.product.LGA_IDS;
+        this.geo_settings.ENABLE_GEOFENCING = data.product.ENABLE_GEOFENCING;
+        this.geo_settings.ADDRESS_TO_USE = data.product.ADDRESS_TO_USE;
+        this.geo_settings.GEOFENCE_DISTANCE = data.product.GEOFENCE_DISTANCE;
+        this.geo_settings.ADDRESSTYPES = data.product.ADDRESS_TYPES;
         if (data.product.LOAN_INTEREST_TYPE === '1') {
 
           this.interest_duration = "Per Day";
@@ -751,7 +823,21 @@ export class BackendsettingsComponent implements OnInit {
         this.band.INTRREST_RATE_BAND_ID = '0';
       });
   }
+  addLGAToAllowedLGAS() {
+    if (this.geo_settings.LGS.indexOf(this.geo_settings.LGA.LGA_ID) > -1) {
 
+    } else {
+      this.geo_settings.LGAS.push(this.geo_settings.LGA);
+      this.geo_settings.LGS.push(this.geo_settings.LGA.LGA_ID);
+    }
+  }
+  getLGAs(event) {
+    this.optionsService.getLGAs(this.currentUser.token, event.target.value)
+      .subscribe(data => {
+
+        this.lgas = data.lgas;
+      });
+  }
   updateProfilePercentage(slider, event, type) {
 
     if (type == 'profile') {
@@ -792,10 +878,46 @@ export class BackendsettingsComponent implements OnInit {
     }
 
   }
+
+  saveRecordsValidation(value, valid) {
+    this.loading = true;
+    this.operationsService.saveRecordsValidation(this.currentUser.token, value)
+      .subscribe(data => {
+        this.loading = false;
+        this.showSuccess(data.message);
+      });
+  }
+
+  saveOL(value, valid) {
+    this.loading = true;
+    this.operationsService.saveOLSettings(this.currentUser.token, value)
+      .subscribe(data => {
+        this.loading = false;
+        this.showSuccess(data.message);
+      });
+  }
+
+  onClickShowExecutor( setting ) {
+    
+  }
+  
   saveDirectDebitSettings(value, valid) {
 
     this.loading = true;
     this.operationsService.saveDirectDebitSettings(this.currentUser.token, this.directdebitform)
+      .subscribe(data => {
+        this.loading = false;
+        if (data.status === '1') {
+          this.showSuccess(data.message)
+        } else {
+          this.showError(data.message)
+        }
+      });
+  }
+  saveGeneralNotificationSettings(value, valid) {
+
+    this.loading = true;
+    this.operationsService.saveGeneralNotificationSettings(this.currentUser.token, this.generalnotifications)
       .subscribe(data => {
         this.loading = false;
         if (data.status === '1') {
@@ -851,6 +973,10 @@ export class BackendsettingsComponent implements OnInit {
   }
   checkAllowedState(sector, event, index) {
     this.states[index]["checked_"] = event;
+
+  }
+  checkAllowedAddressType(sector, event, index) {
+    this.accountcards[index]["checked_"] = event;
 
   }
   changeCurrency(c) {
@@ -994,6 +1120,19 @@ export class BackendsettingsComponent implements OnInit {
         }
       });
   }
+  saveGeofencing(value, valid) {
+
+    this.loading = true;
+    this.operationsService.saveGeofencing(this.currentUser.token, value, this.geo_settings.LGAS, this.accountcards)
+      .subscribe(data => {
+        this.loading = false;
+        if (data.status === '1') {
+          this.showSuccess(data.message)
+        } else {
+          this.showError(data.message)
+        }
+      });
+  }
   savePayments(value, valid) {
 
     this.loading = true;
@@ -1036,7 +1175,7 @@ export class BackendsettingsComponent implements OnInit {
   saveGuarantorRequirements(value, valid) {
 
     this.loading = true;
-    this.operationsService.saveGuarantorRequirements(this.currentUser.token, value, this.sectors, this.occupations, this.marital_statuses, this.states, this.guarantors, this.guarantor_requirements)
+    this.operationsService.saveGuarantorRequirements(this.currentUser.token, value, this.sectors, this.occupations, this.marital_statuses, this.states, this.guarantors, this.guarantor_requirements, this.required_documents_guarantors)
       .subscribe(data => {
         this.loading = false;
         if (data.status === '1') {
@@ -1196,6 +1335,14 @@ export class BackendsettingsComponent implements OnInit {
   isStateAvailable(OCCUPATION_ID, index) {
     if (this.qualified_borrowers.ALLOWED_ADDRESS_STATES.indexOf(OCCUPATION_ID) > -1) {
       this.states[index]["checked"] = true;
+      return true;
+    } else {
+      return false;
+    }
+  }
+  isAddressTypeAvailable(OCCUPATION_ID, index) {
+    if (this.geo_settings.ADDRESSTYPES.indexOf(OCCUPATION_ID) > -1) {
+      this.accountcards[index]["checked"] = true;
       return true;
     } else {
       return false;

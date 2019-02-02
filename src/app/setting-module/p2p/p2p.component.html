@@ -1,0 +1,71 @@
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingP2P">
+    <h4 class="panel-title">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseP2P"
+        aria-expanded="false" aria-controls="collapseP2P">
+        P2p
+      </a>
+    </h4>
+  </div>
+  <div id="collapseP2P" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingP2P">
+    <div class="panel-body">
+      <form #peertopeer="ngForm" novalidate>
+        <ul class="list list_border sm">
+
+          <li class="text-left" style=" border-bottom:0px">
+            <span> Enable P2P</span>
+            <div class="pull-right">
+              <input type="checkbox" name="enable_p2p" name="enable_p2p" [(ngModel)]="backend.enable_p2p">
+            </div>
+          </li>
+          <li class="text-left" style=" border-bottom:0px">
+            <div class="form-group row" *ngIf="backend.enable_p2p">
+              <label class="col-md-6">
+                Maximum Duration for Loan Market (days)
+              </label>
+              <div class="col-md-6">
+                <input name="MAX_DURATION_FOR_LOAN_MARKET" [(ngModel)]="backend.MAX_DURATION_FOR_LOAN_MARKET"
+                  type="text" class="form-control">
+              </div>
+            </div>
+          </li>
+          <li class="text-left" style=" border-bottom:0px">
+            <div class="form-group row" *ngIf="backend.enable_p2p">
+              <label class="control-label col-md-6">Action if funding duration elapses</label>
+              <div class="col-md-6">
+                <select name="NOT_FUNDED_ACTION" [(ngModel)]="backend.NOT_FUNDED_ACTION" class="form-control">
+                  <option *ngFor="let action of notactions" [value]="action.value">{{action.display}}</option>
+                </select>
+              </div>
+            </div>
+          </li>
+
+          <li class="text-left" style=" border-bottom:0px">
+            <div class="form-group row" *ngIf="backend.enable_p2p && backend.NOT_FUNDED_ACTION=='2'">
+              <label class="control-label col-md-6">Message</label>
+              <div class="col-md-6">
+                <textarea name="CANCELLATION_MESSAGE" class="form-control" [(ngModel)]="backend.CANCELLATION_MESSAGE"></textarea>
+              </div>
+            </div>
+          </li>
+          <li class="text-left" style=" border-bottom:0px">
+            <div class="form-group row" *ngIf="backend.enable_p2p">
+              <label class="col-md-6">
+                Make everyone anonymous
+              </label>
+              <div class="col-md-6">
+                <input type="checkbox" name="MAKE_EVERYONE_ANONYMOUS" name="MAKE_EVERYONE_ANONYMOUS"
+                  [(ngModel)]="backend.MAKE_EVERYONE_ANONYMOUS">
+              </div>
+            </div>
+          </li>
+        </ul>
+        <button type="submit" (click)="saveAccPeer(peertopeer.value, peertopeer.valid)" [disabled]="loading"
+          class="btn btn-white pull-right">
+          <span *ngIf="!loading">Submit</span>
+          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

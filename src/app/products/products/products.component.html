@@ -1,0 +1,315 @@
+<!-- <app-main-navigation></app-main-navigation> -->
+<div class="container" style="margin-top:10px">
+  <div class="row">
+    <div class="col-md-7">
+      <section class="panel panl" style="margin-bottom: 5px">
+        <div class="panel-body">
+          <article class="media">
+            <div class="pull-left">
+              <h4 class="no-margin">Loan Products</h4>
+            </div>
+            <div class="pull-right">
+              <button class="btn btn-white" (click)="addingProduct=!addingProduct">New Product</button>
+            </div>
+          </article>
+        </div>
+      </section>
+      <section class="panel" *ngIf="!addingProduct">
+        <div *ngIf="count === 0" class="animated">
+          <div class="text-center" style="min-height:304px; padding-top:70px"><a href="javascript:;" style="font-size:40px"><i
+                class="fa fa-meh-o"></i></a>
+            <h3>No products</h3>
+          </div>
+        </div>
+        <div *ngIf="count > 0" class="table_cus">
+
+          <article *ngFor="let product of products" class="media" style="margin: 5px 0px;background: #fff;padding: 5px;cursor:pointer; margin-bottom:15px">
+
+
+
+            <div class="media-body">
+              <a [routerLink]="['/newsettings/product/', product.LOAN_PRODUCT_ID]">
+                <p class="pull-left">{{product.LOAN_TITLE}}</p>
+              </a>
+              <p class="">
+                <small>{{product.LOAN_DESCRIPTIOM}}</small>
+              </p>
+              <button *ngIf="product?.IS_SUSPENDED==='0'" class="btn btn-white pull-right" (click)="deleteProduct(product?.LOAN_PRODUCT_ID)"><i class="fa fa-times"></i></button>
+              <button *ngIf="product?.IS_SUSPENDED==='1'" class="btn btn-white pull-right" (click)="deleteProduct(product?.LOAN_PRODUCT_ID)"><i class="fa fa-check"></i></button>
+
+            </div>
+          </article>
+        </div>
+      </section>
+      <section class="panel" *ngIf="addingProduct">
+        <div class="panel-body">
+          <h2>New Product</h2>
+          <form #productForm="ngForm" novalidate>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">Title</label>
+
+                </div>
+              </div>
+              <div class="col-md-6">
+                <input type="text" class="form-control" required name="LOAN_TITLE" [(ngModel)]="product.LOAN_TITLE">
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="no-margin control-label">Description</label>
+                <label class="pull-right item-text-counter2">320</label>
+              </div>
+              <div class="col-md-6">
+                <textarea class="form-control" name="LOAN_DESCRIPTION" [(ngModel)]="product.LOAN_DESCRIPTION" rows="5"></textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="no-margin control-label">Min amount</label>
+                <div class="input-group btn-block">
+                  <input type="text" required class="form-control" name="LOAN_AMOUNT" [(ngModel)]="product.LOAN_AMOUNT">
+                  <input type="hidden" name="LOAN_DURATION_TYPE" [(ngModel)]="product.LOAN_DURATION_TYPE">
+                  <input type="hidden" name="LOAN_CURRENCY" [(ngModel)]="product.LOAN_CURRENCY">
+                  <input type="hidden" name="LOAN_INTEREST_TYPE" [(ngModel)]="product.LOAN_INTEREST_TYPE">
+                  <div class="input-group-btn hide">
+                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                      <span class="sel_cur">{{loan_currency}}</span>
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                      <li *ngFor="let c of countries">
+                        <a href="javascript:;" (click)="changeCurrency(c)">{{c.currency[0]}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="no-margin control-label">Max Amount</label>
+                <div class="input-group ">
+                  <input type="text" required class="form-control" name="MAX_AMOUNT" [(ngModel)]="product.MAX_AMOUNT">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                      <span class="sel_cur">{{loan_currency}}</span>
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                      <li *ngFor="let c of countries">
+                        <a href="javascript:;" (click)="changeCurrency(c)">{{c.currency[0]}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row" id="loan_duration_container">
+              <div class="col-md-6">
+                <label class="no-margin control-label">Min Tenor</label>
+                <div class="input-group btn-block">
+                  <input type="text" class="form-control btn-block" name="LOAN_DURATION" [(ngModel)]="product.LOAN_DURATION">
+                  <div class="input-group-btn hide">
+                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                      <span class="sel_cur">{{loan_duration}}</span>
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                      <li *ngFor="let d of loan_durations;let i=index;">
+                        <a (click)="changeDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="no-margin control-label">Max Tenor</label>
+                <div class="input-group ">
+                  <input type="text" class="form-control" name="MAX_LOAN_DURATION" [(ngModel)]="product.MAX_LOAN_DURATION">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                      <span class="sel_cur">{{max_loan_duration}}</span>
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                      <ul class="dropdown-menu pull-right">
+                        <li *ngFor="let d of loan_durations;let i=index;">
+                          <a (click)="changeMaxDuration(i,1)">{{d.LOAN_DURATION}}</a>
+                        </li>
+                      </ul>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row" id="loan_interval_container">
+              <div class="col-md-6">
+                <label class="no-margin control-label">Loan Interval</label>
+                <div class="input-group btn-block">
+                  <input type="text" class="form-control btn-block" name="LOAN_INTERVAL" [(ngModel)]="product.LOAN_INTERVAL">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="no-margin control-label">Duration Interval</label>
+                <div class="">
+                  <input type="text" class="form-control" name="DURATION_INTERVAL" [ngModel]="product.DURATION_INTERVAL">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="no-margin control-label col-md-6">How many days per year</label>
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="DAYS_PER_YEAR" [(ngModel)]="product.DAYS_PER_YEAR"> </div>
+            </div>
+            <div class="form-group row">
+              <label class="no-margin control-label col-md-6">Minimum no of days</label>
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="MIN_LOAN_DURATION_DAYS" [(ngModel)]="product.MIN_LOAN_DURATION_DAYS">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="no-margin control-label col-md-6">Maximum no of days</label>
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="MAX_LOAN_DURATION_DAYS" [(ngModel)]="product.MAX_LOAN_DURATION_DAYS">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="no-margin control-label col-md-6">Base Duration Type</label>
+              <div class="col-md-6">
+                <select class="form-control" name="BASE_DURATION_TYPE" [(ngModel)]="product.BASE_DURATION_TYPE">
+                  <option [value]="0">Both</option>
+                  <option [value]="1">Days</option>
+                  <option [value]="2">Months</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" (click)="saveProduct(productForm.value, productForm.valid)" [disabled]="loading||!productForm.valid"
+              class="btn btn-white pull-right">
+              <span *ngIf="!loading">Submit</span>
+              <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+            </button>
+          </form>
+        </div>
+      </section>
+    </div>
+
+
+    <!-- <div class="col-md-3">
+      <div class="panel-body text-center b_grey crd_theme">
+        <div class="text-center crd_top" style="margin-top: 5px; margin-bottom: 15px;">
+          <p class="t_lh1">
+            <img src="assets/images/phone_blue.PNG">
+          </p>
+        </div>
+        <a class="btn btn-white btn-full egded-box wd_btn" style="display: inline">Back</a>
+      </div>
+
+      <section class="box panel">
+        <div class="panel-body">
+          <ul class="list list_border">
+            <li>
+              <a class="txt_l4" [routerLink]="['../mobile']">Mobile App</a>
+            </li>
+            <li>
+              <a class="txt_l4" [routerLink]="['../backend']">Backend</a>
+            </li>
+            <li>
+              <a class="txt_l4" [routerLink]="['../ussd']">USSD</a>
+            </li>
+            <li>
+              <a class="txt_l4" [routerLink]="['../decision-engine']">Decision Engine</a>
+            </li>
+            <li>
+              <a class="txt_l4" [routerLink]="['../products']">Loan Products</a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div> -->
+
+
+  </div>
+</div>
+<div class="overlay_ app_overlay animated ln_mdl" style="overflow:hidden" *ngIf="deletingProduct">
+
+  <div class="col-md-12">
+    <a class="dismiss cancel_treat_ close" role="button" (click)="deletingProduct=!deletingProduct">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <div class=" overpanel-content animated bounceIn  container" role="document" style="background:rgba(255, 255, 255, 0.95); height:100%; text-align:left;width:650px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden">
+
+    <div class="modl text-center">
+
+      <div class="modl_title" style="margin-bottom: 50px">
+        <h2>
+          <span class="text-success">SUspend Product</span>
+          <br>
+          <small class="modl_sub">The loan product will be suspended</small>
+        </h2>
+      </div>
+
+      <div style="width: 500px; margin: 0 auto 25px">
+
+      </div>
+
+      <div style="width: 200px; margin: 0 auto">
+        <div style="margin-bottom: 30px">
+          <button class="text-center txt t_l4 btn-block" [ngClass]="{'btn-danger': is_done=='0', 'btn-success': is_done=='1'}"
+            style="padding-top: 12px; padding-bottom: 12px" (click)="suspendLoanProduct()" [disabled]="loading||is_done=='1'">
+            <strong *ngIf="is_done=='0'">Confirm</strong>
+            <i class="fa fa-spinner fa-spin" *ngIf="loading && is_done=='0'"></i>
+            <i class="fa fa-check" *ngIf="!loading && is_done=='1'"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+</div>
+<div class="overlay_ app_overlay animated ln_mdl" style="overflow:hidden" *ngIf="enablingProduct">
+
+  <div class="col-md-12">
+    <a class="dismiss cancel_treat_ close" role="button" (click)="enablingProduct=!enablingProduct">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <div class=" overpanel-content animated bounceIn  container" role="document" style="background:rgba(255, 255, 255, 0.95); height:100%; text-align:left;width:650px; padding-top:0px;padding-left:0px;padding-right:0px; overflow:hidden">
+
+    <div class="modl text-center">
+
+      <div class="modl_title" style="margin-bottom: 50px">
+        <h2>
+          <span class="text-success">Enable Product</span>
+          <br>
+          <small class="modl_sub">The loan product will be enabled</small>
+        </h2>
+      </div>
+
+      <div style="width: 500px; margin: 0 auto 25px">
+
+      </div>
+
+      <div style="width: 200px; margin: 0 auto">
+        <div style="margin-bottom: 30px">
+          <button class="text-center txt t_l4 btn-block" [ngClass]="{'btn-danger': is_done=='0', 'btn-success': is_done=='1'}"
+            style="padding-top: 12px; padding-bottom: 12px" (click)="enableLoanProduct()" [disabled]="loading||is_done=='1'">
+            <strong *ngIf="is_done=='0'">Confirm</strong>
+            <i class="fa fa-spinner fa-spin" *ngIf="loading && is_done=='0'"></i>
+            <i class="fa fa-check" *ngIf="!loading && is_done=='1'"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+</div>

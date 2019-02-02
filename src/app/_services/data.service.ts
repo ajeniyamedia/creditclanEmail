@@ -91,4 +91,16 @@ export class DataService {
   onInitiateClearFines: EventEmitter<any> = new EventEmitter();
   remitaLoanNotification: EventEmitter<any> = new EventEmitter();
   refreshRemitaDetails: EventEmitter<any> = new EventEmitter();
+  renewRemitaDetails: EventEmitter<any> = new EventEmitter();
+  initLoanBuyBack: EventEmitter<any> = new EventEmitter();
+  onCreateSavingsContract: EventEmitter<any> = new EventEmitter();
+  requestLoad: EventEmitter<any> = new EventEmitter();
+  openContractModal: EventEmitter<any> = new EventEmitter();
+  onSavingsContractCreated: EventEmitter<any> = new EventEmitter();
+  onSavingsPosted: EventEmitter<any> = new EventEmitter();
+  onMakeWintdrawalFromStatement: EventEmitter<any> = new EventEmitter();
+  onBreakInvestment: EventEmitter<any> = new EventEmitter();
+  onSendInvestmentAccountStatement: EventEmitter<any> = new EventEmitter();
+  onChangeSettingsView: EventEmitter<any> = new EventEmitter();
+  openmailevent: EventEmitter<any> = new EventEmitter();
 }

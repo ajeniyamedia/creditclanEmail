@@ -15,7 +15,7 @@ import { BankaccountanalyticsComponent } from './bankaccountanalytics/bankaccoun
 
 @NgModule({
   imports: [
-    CommonModule,
+    CommonModule, 
     SharedModule,
     DecisionRoutingModule
   ],

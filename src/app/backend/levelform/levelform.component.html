@@ -21,7 +21,9 @@
             </div>
 
           </div>
-          <div class="form-group row">
+          <div class="form-group row description" 
+          style="border-bottom: 1px solid #ddd;
+          padding-bottom: 30px;">
 
             <label class="control-label col-md-6">Level Description</label>
             <div class="col-md-6">
@@ -29,8 +31,8 @@
                 id="APPROVAL_LEVEL_DESCRIPTION" name="APPROVAL_LEVEL_DESCRIPTION"></textarea>
 
             </div>
-
           </div>
+         
           <div class="form-group row">
             <div class="col-md-12">
               <label for="" class="control-label">
@@ -39,7 +41,8 @@
             </div>
           </div>
           <div class="form-group row">
-            <div class="col-md-6" *ngFor="let emp of employees;let i = index" style="padding-right:5px !important">
+            <div class="col-md-6" *ngFor="let emp of employees;let i = index" 
+            style="padding-right:5px !important; font-size: 12px;">
                 <div class="form-group" style="margin-bottom:0px">
                     <span class="pull-left text-primary">{{emp?.LEGAL_NAME}}</span>
                     <span class="pull-right">
@@ -54,7 +57,10 @@
                 </div>
             </div>
         </div>
-        <div class="form-group row"> 
+        <hr>
+        <div class="form-group row" class="form-group row description" 
+        style="border-bottom: 1px solid #ddd;
+        padding-bottom: 30px;"> 
           <div class="col-md-6"> <label>Loan Officer </label> 
             <div class="checkbox pull-right"> <label> <input type="checkbox" value="1"  [checked]="formLevel.ILO==='1'" (change)="checkILO($event.target.checked)" name="ILO" id="ILO"> </label> </div>
           </div>

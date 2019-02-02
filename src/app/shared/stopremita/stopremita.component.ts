@@ -93,56 +93,7 @@ export class StopremitaComponent implements OnInit {
     this.currentUser = this.storageService.read<any>('currentUser');
     this.operationsService.getNigerianBanks(this.currentUser.token).subscribe(nigerian_banks => this.nigerian_banks = nigerian_banks);
 
-    this.investorConfirmPayment = fb.group({
-      'INVESTMENT_QUEUE_ID': '',
-      'DISBURSEMENT_MODE': '1',
-      'LENDER_BANK_ACCOUNT_ID': [null, Validators.required],
-      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
-      'PEOPLE_ID': '',
-      'REQUEST_ID': '',
-    });
-
-    this.sendRepaymentLink = fb.group({
-      'REPAYMENT_SCHEDULE_ID': '',
-      'REQUEST_ID': '',
-      'PEOPLE_ID': '',
-      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
-      'WHEN_TO_SEND': '',
-      'LENDER_ID': ''
-    });
-
-    this.investorConfirmPayment_ = fb.group({
-      'INVESTMENT_QUEUE_ID': '',
-      'DISBURSEMENT_MODE': '1',
-      'LENDER_BANK_ACCOUNT_ID': [null, Validators.required],
-      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
-      'PEOPLE_ID': '',
-      'REQUEST_ID': '',
-    });
-    this.repaymentConfirmPayment = fb.group({
-      'PAYMENT_QUEUE_ID': '',
-      'DISBURSEMENT_MODE': '1',
-      'LENDER_BANK_ACCOUNT_ID': [null, Validators.required],
-      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
-      'PEOPLE_ID': '',
-      'REQUEST_ID': '',
-    });
-    this.customerrepaymentConfirmPayment = fb.group({
-      'LOAN_REPAYMENT_ID': '',
-      'PEOPLE_ID': '',
-      'REQUEST_ID': '',
-      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
-    });
-    this.complexForm = fb.group({
-      'PAYMENT_QUEUE_ID': '',
-      'INVESTMENT_QUEUE_ID': '',
-      'DISBURSEMENT_MODE': '1',
-      'LENDER_BANK_ACCOUNT_ID': [null, Validators.required],
-      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
-      'PEOPLE_ID': '',
-      'REQUEST_ID': '',
-      'ADJUST_CONTRACT_DATE': false,
-    })
+   
     this.debitInstruction = fb.group({
       'PAYMENT_QUEUE_ID': '',
       'INVESTMENT_QUEUE_ID': '',
@@ -153,83 +104,7 @@ export class StopremitaComponent implements OnInit {
       'REQUEST_ID': '',
       'ADJUST_CONTRACT_DATE': false,
     })
-    this.debitAllForm = fb.group({
-      'PAYMENT_QUEUE_ID': '',
-      'INVESTMENT_QUEUE_ID': '',
-      'DISBURSEMENT_MODE': '1',
-      'LENDER_BANK_ACCOUNT_ID': '',
-      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
-      'PEOPLE_ID': '',
-      'REQUEST_ID': '',
-      'ADJUST_CONTRACT_DATE': false,
-    })
-    this.paymentConfirmRollbackForm = fb.group({
-      'ROLLBACK_ID': '',
-      'PAYMENT_QUEUE_ID': '',
-      'INVESTMENT_QUEUE_ID': '',
-      'DISBURSEMENT_MODE': '1',
-      'LENDER_BANK_ACCOUNT_ID': [null, Validators.required],
-      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
-      'PEOPLE_ID': '',
-      'REQUEST_ID': '',
-    })
-    this.walletFundingConfimForm = fb.group({
-      'PAYMENT_QUEUE_ID': '',
-      'INVESTMENT_QUEUE_ID': '',
-      'DISBURSEMENT_MODE': '1',
-      'LENDER_BANK_ACCOUNT_ID': [null, Validators.required],
-      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
-      'PEOPLE_ID': '',
-      'REQUEST_ID': '',
-      'WALLET_WITHDRAWAL_REQUEST_ID': ''
-    })
-    this.newAccountForm = fb.group({
-      // We can set default values by passing in the corresponding value or leave blank if we wish to not set the value. For our example, we’ll default the gender to female.
-      'BANK_ID': [null, Validators.required],
-      'LENDER_ACCOUNT_NUMBER': [null, Validators.required],
-      'LENDER_BANK_ACCOUNT_NAME': '',
-      'PAYMENT_QUEUE_ID': '',
-      'INVESTMENT_QUEUE_ID': '',
-      'WALLET_WITHDRAWAL_REQUEST_ID': '',
-      'PEOPLE_ID': '',
-      'REQUEST_ID': '',
-      'RECURRENT_BILLING_TOKEN': ''
-    })
-    this.walletPaymentForm = fb.group({
-      // We can set default values by passing in the corresponding value or leave blank if we wish to not set the value. For our example, we’ll default the gender to female.
-      'PAYMENT_QUEUE_ID': '',
-      'INVESTMENT_QUEUE_ID': '',
-      'DISBURSEMENT_MODE': '2',
-      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
-      'PEOPLE_ID': '',
-      'REQUEST_ID': '',
-      'ADJUST_CONTRACT_DATE': ''
-    })
-    this.walletWithdrawalForm = fb.group({
-      // We can set default values by passing in the corresponding value or leave blank if we wish to not set the value. For our example, we’ll default the gender to female.
-      'WALLET_WITHDRAWAL_REQUEST_ID': '',
-      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
-      'PEOPLE_ID': '',
-    })
-    this.walletFundingForm = fb.group({
-      // We can set default values by passing in the corresponding value or leave blank if we wish to not set the value. For our example, we’ll default the gender to female.
-      'WALLET_WITHDRAWAL_REQUEST_ID': '',
-      'SECURITY_QUESTION_ANSWER': [null, Validators.required],
-      'PEOPLE_ID': '',
-      'DATE_ADDED': '',
-      'LENDER_BANK_ACCOUNT_ID': [null, Validators.required],
-    })
-    this.bankPaymentForm = fb.group({
-      // We can set default values by passing in the corresponding value or leave blank if we wish to not set the value. For our example, we’ll default the gender to female.
-      'PAYMENT_QUEUE_ID': '',
-      'INVESTMENT_QUEUE_ID': '',
-      'DISBURSEMENT_MODE': '3',
-      'CONNECTED_ACCOUNT_ID': [null, Validators.required],
-      'LENDER_BANK_ACCOUNT_ID': [null, Validators.required],
-      'PEOPLE_ID': '',
-      'REQUEST_ID': '',
-      'ADJUST_CONTRACT_DATE': ''
-    })
+    
   }
   showSuccess(message) {
     this.toastr.success(message, 'Success!');
@@ -511,7 +386,7 @@ export class StopremitaComponent implements OnInit {
     this.paymentHasBeenProcessed = false;
     this.payment_status = false;
     this.loading = true;
-    this.operationsService.doCancelRemitaInflight(this.currentUser.token, value, this.repayment)
+    this.operationsService.doCancelRemitaInflight(this.currentUser.token, value, this.loan)
       .subscribe(status => {
         this.loading = false;
         if (status.status == true) {
@@ -650,7 +525,8 @@ export class StopremitaComponent implements OnInit {
       });
   }
   ngOnInit() {
-
+    (<FormControl>this.debitInstruction.controls['REQUEST_ID'])
+    .setValue(this.loan.REQUEST_ID, { onlySelf: true });
   }
 
   getDisbursements() {

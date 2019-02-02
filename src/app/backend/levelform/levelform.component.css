@@ -1,0 +1,5 @@
+.app_overlay {
+    overflow: hidden;
+    background: rgba(138, 138, 138, 0.95);
+    position: relative;
+}

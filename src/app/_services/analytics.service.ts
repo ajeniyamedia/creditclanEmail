@@ -6,18 +6,25 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class AnalyticsService {
 
-  private postsUrl = 'http://137.117.105.90/dataupload_test/api/v2/';
+  private postsUrl = 'https://dataupload.creditclan.com/api/v2/';
+  private analyticsUrl = 'https://loans.creditclan.com/';
   constructor(private http: HttpClient, private loggingService: LoggingService) {
 
   }
   public runEmployeePerformance(token: any, emp_perf:any): Observable<any> {
     return this.http.post(this.postsUrl+'operations/runEmployeePerformance', JSON.stringify({ token: token, emp_perf:emp_perf }));
   }
+  public getPendingApprovals(token: any): Observable<any> {
+    return this.http.post(this.analyticsUrl+'pendingapprovals', JSON.stringify({ token: token}));
+  }
+  public runPlatformSummary(token: any): Observable<any> {
+    return this.http.post(this.analyticsUrl+'loan/summary', JSON.stringify({ token: token}));
+  }
   public runPlatformAnalysis(token: any, data:any): Observable<any> {
-    return this.http.post(this.postsUrl+'operations/runPlatformAnalysis', JSON.stringify({ token: token, data:data }));
+    return this.http.post(this.analyticsUrl+'loan/loanperformance', JSON.stringify({ token: token, data:data }));
   }
   public runPiePerformance(token: any, data:any): Observable<any> {
-    return this.http.post(this.postsUrl+'operations/runPiePerformance', JSON.stringify({ token: token, data:data }));
+    return this.http.post(this.analyticsUrl+'loan/distribution', JSON.stringify({ token: token, data:data }));
   }
   runPPSPerformance(token: any, data:any): Observable<any> {
     return this.http.post(this.postsUrl+'operations/runPPSPerformance', JSON.stringify({ token: token, data:data }));

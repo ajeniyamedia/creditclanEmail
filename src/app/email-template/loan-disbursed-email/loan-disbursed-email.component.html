@@ -1,0 +1,410 @@
+<nav class="navbar fixed-top menu-s"> 
+    <a class="navbar-brand" routerLink="/">
+      <img src="/docs/4.1/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+      CreditClan
+    </a>
+  
+    <span class="pull-right">
+      <div class="btn-group">
+        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Select option you want to display
+        </button>
+        <div class="dropdown-menu">
+        <a class="dropdown-item" (click)="insertTextAtCursor('[CC_NUMBER]')" 
+        routerLink="/newsettings/email"
+        >CC Number</a>
+        <a class="dropdown-item" (click)="insertTextAtCursor('[LEGAL_NAME]')" 
+        routerLink="/newsettings/email"
+        >Legal Name</a>
+        <a class="dropdown-item" (click)="insertTextAtCursor('[ACCOUNT_NUMBER]')" 
+        routerLink="/newsettings/email"
+        >Account Number</a>
+        <a class="dropdown-item" (click)="insertTextAtCursor('[ADDRESS]')" 
+        routerLink="/newsettings/email"
+        >Address</a>
+        <a class="dropdown-item" (click)="insertTextAtCursor('[CURRENT_DATE]')" 
+        routerLink="/newsettings/email"
+        >Current Date</a>
+        <a class="dropdown-item" (click)="insertTextAtCursor('[EMAIL]')" 
+        routerLink="/newsettings/email"
+        >Email</a>
+        <a class="dropdown-item" (click)="insertTextAtCursor('[BVN_NUMBER]')" 
+        routerLink="/newsettings/email"
+        >Bvn Number</a>
+        <a class="dropdown-item" (click)="insertTextAtCursor('[LENDER]')" 
+        routerLink="/newsettings/email"
+        >Lender</a>
+        <a class="dropdown-item" (click)="insertTextAtCursor('[OBLIGOR]')" 
+        routerLink="/newsettings/email"
+        >Obligor</a>
+        <a class="dropdown-item" (click)="insertTextAtCursor('[FACILITY_TYPE]')" 
+        routerLink="/newsettings/email"
+        >Facility Type</a>
+        <a class="dropdown-item" (click)="insertTextAtCursor('[FACILITY_AMOUNT]')" 
+        routerLink="/newsettings/email"
+        >Facility Amount</a>
+        <a class="dropdown-item" (click)="insertTextAtCursor('[PURPOSE]')" 
+        routerLink="/newsettings/email"
+        >Purpose</a>
+        <a class="dropdown-item" (click)="insertTextAtCursor('[TENURE]')" 
+        routerLink="/newsettings/email"
+        >Tenure</a>
+        <a class="dropdown-item" (click)="insertTextAtCursor('[FIRST_REPAYMENT_DATE]')" 
+        routerLink="/newsettings/email"
+        >First repayment date</a>
+        </div>
+    </div>
+    </span>
+</nav>
+<div class="row container-fluid">
+    <div class="col-xs-12 col-md-7">
+
+        <!-- Email template start here -->
+
+        <div class="email-template">
+              <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+                  <tr>
+                      <td align="center" valign="top" id="bodyCell">
+                          <!-- BEGIN TEMPLATE // -->
+                          <table border="0" cellpadding="0" cellspacing="0" id="templateContainer">
+                    
+                            <tr>
+                                  <td align="center" valign="top">
+                                      <!-- BEGIN HEADER // -->
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateHeader">
+                                            <tr id="logo-section">
+                                                <td align="center" class="headerContent">
+                                                    <small style="cursor: pointer; padding: 20px" (click)="viewMode = 'logo'"
+                                                    ><span class="pull-right">
+                                                        <i class="fa fa-edit"></i>
+                                                    </span></small>
+                                                    <div style="margin: 0 auto;text-align: center;padding: 10px;">
+                                                  <img id="logo-item" (mouseenter)="showLogoPanelOnOver = true"  
+                                                  *ngIf="this.logoUrl "                 
+                                                  class="logo-item" [(src)]=" this.logoUrl " 
+                                                        style="max-width:600px;" 
+                                                        id="headerImage" 
+                                                       /> 
+                                                       <i class="fa fa-spinner fa-spin fa-fw" *ngIf="!this.logoUrl"></i>
+                                                  </div>
+
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="!this.logoUrl">
+                                                <div *ngIf="!this.logoUrl" class="linear-background floader">
+                                                    <div class="inter-draw"></div>
+                                                    <div class="inter-crop"></div>
+                                                    <div class="inter-right--top"></div>
+                                                    <div class="inter-right--bottom"></div>
+                                                  </div>
+                                            </tr>
+                                        </table>
+                                        <!-- // END HEADER -->
+                                    </td>
+                            </tr>
+                            
+                            <tr>
+                                  <td align="center" valign="top">
+                                        
+                                      <!-- BEGIN BODY // -->
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateBody">
+                                            <tr>
+                                                    <small style="cursor: pointer; padding: 20px" (click)="viewMode = 'heading'"
+                                                    ><span class="pull-right">
+                                                        <i class="fa fa-edit"></i>
+                                                    </span></small>
+                                            </tr>
+                                            <tr>
+                                               
+                                                <td valign="top" class="bodyContent" mc:edit="body_content">
+                                                    <div> 
+                                                            <div [innerHTML]="this.mailBodyContent"></div>
+                                                        
+                                                    </div>
+
+                                                    <div *ngIf="!this.mailBodyContent" class="linear-background floader">
+                                                        <div class="inter-draw"></div>
+                                                        <div class="inter-crop"></div>
+                                                        <div class="inter-right--top"></div>
+                                                        <div class="inter-right--bottom"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <!-- // END BODY -->
+                                    </td>
+                            </tr>
+                            <tr>
+                                <td style="margin:20px; background-color: #fff;">
+                                        <p style="margin-top: 30px; text-align: center">
+                                            <span class="pull-left loan_contract">Loan Contract</span>
+
+                                            <small style="cursor: pointer; padding: 30px" (click)="viewMode = 'userfield'"
+                                                ><span class="pull-right">
+                                                    <i class="fa fa-edit"></i>
+                                                </span>
+                                                </small>
+                                        </p>
+                                        
+                                        <div class="static-content">
+                                            
+                                            <table align="left" class="table table-hover">
+                                            <tr *ngIf="!this.vendorSettingData">
+                                                <span>
+                                                        <i class="fa fa-spinner fa-spin fa-fw" *ngIf="loading"></i>
+                                                </span>
+                                            </tr>
+                                                <tr *ngIf="this.vendorSettingData.contract_id == 1">
+                                                    <td style="text-align:left; font-size: 12px">Contract ID</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                                <tr *ngIf="this.vendorSettingData.loan_amount == 1">
+                                                    <td style="text-align:left; font-size: 12px">Loan Amount</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                                <tr *ngIf="this.vendorSettingData.duration == 1">
+                                                    <td style="text-align:left; font-size: 12px">Duration</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                                <tr *ngIf="this.vendorSettingData.fees == 1">
+                                                    <td style="text-align:left; font-size: 12px">Fees</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                                <tr *ngIf="this.vendorSettingData.net_disbursement == 1">
+                                                    <td style="text-align:left; font-size: 12px">Net Disbursement</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                                <tr *ngIf="this.vendorSettingData.monthly_installment == 1">
+                                                    <td style="text-align:left; font-size: 12px">Monthly Installment</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                                <tr *ngIf="this.vendorSettingData.total_repayment == 1">
+                                                    <td style="text-align:left; font-size: 12px">Total Repayment</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                                <tr *ngIf="this.vendorSettingData.lender == 1">
+                                                    <td style="text-align:left; font-size: 12px">Lender</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                                <tr *ngIf="this.vendorSettingData.obligor == 1">
+                                                    <td style="text-align:left; font-size: 12px">Obligor</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                                <tr *ngIf="this.vendorSettingData.facility_type == 1">
+                                                    <td style="text-align:left; font-size: 12px">Facility Type</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                                <tr *ngIf="this.vendorSettingData.facility_amount == 1">
+                                                    <td style="text-align:left; font-size: 12px">Facility Amount</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                                <tr *ngIf="this.vendorSettingData.purpose == 1">
+                                                    <td style="text-align:left; font-size: 12px">Purpose</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                                <tr *ngIf="this.vendorSettingData.tenure == 1">
+                                                    <td style="text-align:left; font-size: 12px">Tenure</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                                <tr *ngIf="this.vendorSettingData.first_repayment_date == 1">
+                                                    <td style="text-align:left; font-size: 12px">First Repayment Date</td>
+                                                    <td style="text-align:left; font-size: 12px"></td>
+                                                </tr>
+                                    
+                                            </table>
+                                        </div>  
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                  <td align="center" valign="top">
+                                      <!-- BEGIN FOOTER // -->
+                                        <table border="0" cellpadding="10" cellspacing="0" width="100%" id="templateFooter">
+                                            <tr>
+                                            <small style="cursor: pointer; padding: 30px" (click)="viewMode = 'footer'"><span class="pull-right">
+                                                        <i class="fa fa-edit"></i>
+                                                    </span>
+                                            </small>
+                                                    <div style="padding: 20px" [innerHTML]="this.footerBodyContent"></div>
+                                            </tr>
+                                            <tr>
+                                                <div *ngIf="!this.footerBodyContent" class="linear-background floader">
+                                                    <div class="inter-draw"></div>
+                                                    <div class="inter-crop"></div>
+                                                    <div class="inter-right--top"></div>
+                                                    <div class="inter-right--bottom"></div>
+                                                  </div>
+                                            </tr>
+                                           
+                                        </table>
+                                        <!-- // END FOOTER -->
+                                    </td>
+                            </tr>
+                            </table>
+                            <!-- // END TEMPLATE -->
+                        </td>
+                    </tr>
+                </table>
+        </div>
+        <!-- Email template end here -->
+       
+        <div *ngIf="editorContent"[froalaView]="editorContent"></div>
+    
+    </div>
+    <div class="col-xs-6 col-md-5">
+        <div class="default-setting">
+            <div [ngSwitch]="viewMode">
+                <div @fade *ngSwitchCase="'logo'">
+                     <!-- Page update logo division-->
+                    <div class="page-header setting">
+                        <div class="top-design__setting">
+                            <p class="backToSetting" (click)="viewMode = ''">
+                            <i class="fa fa-chevron-left"> </i>
+                            Back <span class="pull-right" style="font-size: 13px;">Update Logo</span>
+                            </p>
+                        </div>
+                        <div class="upload_form_wrapper">
+                                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                                    <div class="form-group">
+                                        <input type="file" id="avatar" (change)="onFileChange($event)" 
+                                        #fileInput>
+                                        <button type="button" class="btn btn-sm btn-default" 
+                                        (click)="clearFile()">clear file</button>
+                                    </div>
+                                    <button type="submit" [disabled]="form.invalid || loading" 
+                                        class="btn btn-success">Submit 
+                                    <i class="fa fa-spinner fa-spin fa-fw" *ngIf="loading"></i>
+                                </button>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+                <div @fade *ngSwitchCase="'heading'">
+                     <!-- Page setting header division-->
+                    <div class="page-header setting">
+                        <div class="top-design__setting">
+                            <p class="backToSetting" (click)="viewMode = ''">
+                            <i class="fa fa-chevron-left"> </i>
+                            Back <span class="pull-right" style="font-size: 13px;">Update Body Content</span>
+                            </p>
+                        </div> 
+                            <form [formGroup]="updateBodyContentForm" 
+                                (ngSubmit)="onUpdateBodyContent(this.mailBodyContent)">
+
+                                <quill-editor 
+                                [(ngModel)]='this.mailBodyContent'
+                                formControlName="bodyContent" 
+                                [style]="{height: '250px'}"
+                                [required]="true" 
+                                [theme]="bubble" >
+                              </quill-editor>
+                                <p>
+                                    <button 
+                                    style="margin-top: 20px;" 
+                                    [disabled]="!updateBodyContentForm.valid"
+                                    type="submit" 
+                                    class="btn btn-primary">Update
+                                    <i class="fa fa-spinner fa-spin fa-fw" *ngIf="loading"></i>
+                                    </button>
+                                </p>
+                            </form>
+                    </div>
+                </div>
+                <div  @fade *ngSwitchCase="'footer'">
+                        <!-- Page setting header division-->
+                       <div class="page-header setting">
+                           <div class="top-design__setting">
+                               <p class="backToSetting" (click)="viewMode = ''">
+                                <i class="fa fa-chevron-left"> </i>
+                               Back 
+                               <span class="pull-right" style="font-size: 13px;">Update Footer Content</span>
+                               </p>
+                           </div>
+                               <form [formGroup]="updateFooterContentForm" 
+                               (ngSubmit)="onUpdateFooterContent(this.footerBodyContent)">
+                                   <quill-editor 
+                                        [(ngModel)]='this.footerBodyContent'
+                                        formControlName="footerContent" 
+                                        [style]="{height: '300px'}"
+                                        [required]="true" 
+                                        [theme]="bubble" >
+                                    </quill-editor>
+                                   <p>
+                                       <button style="margin-top: 20px;" 
+                                       [disabled]="!updateFooterContentForm.valid"
+                                        type="submit" 
+                                        class="btn btn-primary">Update 
+                                        <i class="fa fa-spinner fa-spin fa-fw" *ngIf="loading"></i>
+                                        </button>
+                                    </p>
+                               </form>
+                       </div>
+                </div>
+                <div @fade *ngSwitchCase="'userfield'">
+                        <!-- Page setting header division-->
+                       <div class="page-header setting">
+                           <div class="top-design__setting">
+                               <p class="backToSetting" (click)="viewMode = ''">
+                                <i class="fa fa-chevron-left"> </i>
+                               Back 
+                               <span class="pull-right" style="font-size: 13px;">Update User Field</span>
+                               </p>
+                           </div>
+                           <p class="small">Check the field the want user to see</p>
+                           <form [formGroup]="formCheckbox" (ngSubmit)="submit()">
+                                <label class="formGroupList" 
+                                    formArrayName="fields" 
+                                    style="display: block;"
+                                    *ngFor="let order of formCheckbox.controls.fields.controls; let i = index">
+                                  <input type="checkbox" [checked]="fields[i].value"  [formControlName]="i">
+                                  {{fields[i].name}}
+                                </label>
+                              
+                                <button 
+                                    style="margin-top: 20px;" 
+                                    [disabled]="!formCheckbox.valid"
+                                    type="submit" 
+                                    class="btn btn-primary">Update
+                                    <i class="fa fa-spinner fa-spin fa-fw" *ngIf="loading"></i>
+                                    </button>
+                            </form>
+                       </div>
+                </div>
+                <div @fade *ngSwitchDefault>
+                    <div>
+                            <h1 style="text-align:center; margin-top: 60px; font-size: 260px"><i class="fa fa-edit"></i></h1>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Page setting body division-->
+            <div class="page-body setting" *ngIf="this.settingPage.bodySetting">
+                <div class="top-design__setting">
+                    <p class="backToSetting" (click)="OnclickShowSetting()">
+                      Back <span class="pull-right" style="font-size: 20px;">Body Design</span>
+                    </p>
+                </div>
+                <p>This is the body setting</p>
+            </div>
+
+              <!-- Page setting footer division-->
+            <div class="page-footer setting" *ngIf="this.settingPage.footerSetting">
+                <div class="top-design__setting">
+                    <p class="backToSetting" (click)="OnclickShowSetting()">
+                      Back <span class="pull-right" style="font-size: 20px;">Footer Design</span>
+                    </p>
+                </div>
+                <p>This is the footer setting</p>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+

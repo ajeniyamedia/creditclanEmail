@@ -1,0 +1,41 @@
+<app-main-navigation class="requests_active"></app-main-navigation>
+<div class="container" style="width:70%; padding-top:130px; margin-bottom: 50px">
+  <div class="col-md-9" style="padding-right: 5px">
+    <section class="">
+      <div class="tbds">
+        <div class="tbd_profile tbd active">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="col-md-3" style="padding-left:0px">
+    <section class="panel">
+      <div class="panel-body text-center b_grey crd_theme">
+        <div class="text-center crd_top">
+          <p class="txt t_l3 t_lh1">
+            <strong>Home</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <section class="panel" style="border: 1px solid #E6E7E8">
+      <div class="panel-body" style="padding: 10px 25px">
+          <ul class="list list_border">
+              <li>
+                  <a [routerLink]="['./details']" class="txt_l4">Details</a>
+              </li>
+              <li>
+                  <a [routerLink]="['./settings']" class="txt_l4">Settings</a>
+              </li>
+              <!-- <li>
+                  <a [routerLink]="['./approvals']" class="txt_l4">Approvals</a>
+              </li> -->
+            
+          </ul>
+      </div>
+  </section>
+
+  </div>
+</div>

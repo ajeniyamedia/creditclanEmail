@@ -1,8 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
 .modal-content {
 	width: 600px !important;
     margin: 30px auto !important;
     overflow: hidden !important;
+}
+
+.sub_list.ng-star-inserted:hover {
+    background-color: #eee;
+    color: #251818;
+}
+
+div#accordion {
+    margin-right: 20px !important;
 }

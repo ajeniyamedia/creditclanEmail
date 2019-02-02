@@ -7,9 +7,7 @@
 
 
           <div *ngIf="preloading">
-            <div class="dashboard-container" style="    margin: 0px auto;
-  margin-top: 0px;
-  width: 100%;">
+            <div class="dashboard-container" style="margin: 0px auto;margin-top: 0px;width: 100%;">
               <div class="row">
                 <div class="col-md-3 sPad">
                   <section class="panel sd_bt">
@@ -80,7 +78,8 @@
                     <h1 style="margin-bottom: 0px" class="t_cool">{{DASHBOARD_TM?.DASHBOARD_TM.LOANS_SUM[4]}}</h1>
                     <span style="display: block">Loan Request</span>
                   </div>
-                  <a [routerLink]="['/requests']" class="btn btn-normal btn-block ld_btn_portfolio" style="padding: 10px; position: absolute; left: 15px; right: 15px; bottom: 15px; width: auto;">View Requests</a>
+                  <a [routerLink]="['/requests']" class="btn btn-normal btn-block ld_btn_portfolio" style="padding: 10px; position: absolute; left: 15px; right: 15px; bottom: 15px; width: auto;">View
+                    Requests</a>
                 </div>
               </section>
 
@@ -101,7 +100,8 @@
                   </article>
                 </div>
                 <div class="panel-body text-center" *ngIf="showingAvgLRate" (mouseleave)="showingAvgLRate=!showingAvgLRate">
-                  <a [routerLink]="['../../operations/queue']" class="btn btn-white btn-full egded-box" style="height: 40px; line-height: 25px">View Reports</a>
+                  <a [routerLink]="['../../operations/queue']" class="btn btn-white btn-full egded-box" style="height: 40px; line-height: 25px">View
+                    Reports</a>
                 </div>
               </section>
               <section class="panel">
@@ -150,7 +150,8 @@
                 <div class="panel-body b_grey" style="padding: 25px">
                   <div class="dashboard-greeting">
                     <div class="dashboard-greeting-text">
-                      <h4 class="today-date txt t_cool t_l3" style="line-height: 1.2; font-size: 18px">Loan Request Dashboard</h4> 
+                      <h4 class="today-date txt t_cool t_l3" style="line-height: 1.2; font-size: 18px">Loan Request
+                        Dashboard</h4>
                       <h5 class="today-sub">Today, {{DASHBOARD_TM?.CURRENT_DATE}}</h5>
                     </div>
                     <div class="dashboard-greeting-filter">
@@ -208,7 +209,7 @@
             <div class="col-md-2 col">
               <section class="panel">
                 <div class="panel-body" style="height: 310px">
-                  <app-duerepayment [currentUser]='currentUser'></app-duerepayment>
+                  
                 </div>
               </section>
 
@@ -229,7 +230,8 @@
                   </article>
                 </div>
                 <div class="panel-body b_grey" *ngIf="showingWalletSummary" (mouseleave)="closeWalletSummary()">
-                  <a [routerLink]="['../../operations/wallet']" class="btn btn-white btn-block egded-box" style="height: 40px; line-height: 25px">View Wallet</a>
+                  <a [routerLink]="['../../operations/wallet']" class="btn btn-white btn-block egded-box" style="height: 40px; line-height: 25px">View
+                    Wallet</a>
                 </div>
               </section>
               <section class="panel">
@@ -242,7 +244,8 @@
                     </div>
                     <div class="pull-left">
                       <p class="txt t_l3 t_lh1" style="word-wrap:break-word;font-size:23px">{{DASHBOARD_TM?.DASHBOARD_TM.TM}}</p>
-                      <p class="txt t_dull" style="font-size:10px">{{DASHBOARD_TM?.DASHBOARD_TM.LOANS_SUM[6]}} Lenders | {{DASHBOARD_TM?.DASHBOARD_TLT.CUSTOMERS_SUM.TOTAL_CUSTOMERS}}
+                      <p class="txt t_dull" style="font-size:10px">{{DASHBOARD_TM?.DASHBOARD_TM.LOANS_SUM[6]}} Lenders
+                        | {{DASHBOARD_TM?.DASHBOARD_TLT.CUSTOMERS_SUM.TOTAL_CUSTOMERS}}
                         Bor...</p>
 
                     </div>
@@ -250,13 +253,15 @@
                   </article>
                 </div>
                 <div class="panel-body b_grey" *ngIf="showinglandb" (mouseleave)="showinglandb =!showinglandb">
-                  <a [routerLink]="['../../crm/customers']" class="btn btn-white btn-block egded-box" style="height: 40px; line-height: 25px">View Customers</a>
+                  <a [routerLink]="['../../crm/customers']" class="btn btn-white btn-block egded-box" style="height: 40px; line-height: 25px">View
+                    Customers</a>
                 </div>
               </section>
             </div>
             <div class="col-md-2 col">
               <section class="panel">
-                <div class="panel-body text-center b_grey" style="padding-bottom:33px;height: 208px;" *ngIf="!showingAvgPTime" (mouseenter)="showingAvgPTime=!showingAvgPTime">
+                <div class="panel-body text-center b_grey" style="padding-bottom:33px;height: 208px;" *ngIf="!showingAvgPTime"
+                  (mouseenter)="showingAvgPTime=!showingAvgPTime">
 
                   <div style="text-align: center;padding:15px 0px; margin-bottom: 30px">
                     <img style="width:75px; height:75px;" src="assets/img/naira_shade.png">
@@ -264,7 +269,8 @@
                   <p class="txt t_l3 t_lh1 t_cool">{{DASHBOARD_TM?.DASHBOARD_TM.LOANS_SUM[7]}}</p>
                   <p class="txt">Active Loans</p>
                 </div>
-                <div class="panel-body text-center" style="padding-bottom:0px; height: 208px" *ngIf="showingAvgPTime" (mouseleave)="showAvgPTime()">
+                <div class="panel-body text-center" style="padding-bottom:0px; height: 208px" *ngIf="showingAvgPTime"
+                  (mouseleave)="showAvgPTime()">
 
                   <div class="text-center" style="padding:15px 0px; margin-top: 50px">
                     <p class="txt t_l3 t_lh1">Active Loans</p>
@@ -378,11 +384,11 @@
               <label class="">Date Range</label>
             </div>
             <div class="input-group" *ngIf="piefilterStatus=='date_duration'">
-              <input type="text" name="PIETPDATE" class="form-control" [(ngModel)]="pie_perf.PIETPDATE" ngui-datetime-picker date-only="true"
-              />
+              <input type="text" name="PIETPDATE" class="form-control" [(ngModel)]="pie_perf.PIETPDATE"
+                ngui-datetime-picker date-only="true" />
               <span class="input-group-addon">To</span>
-              <input type="text" name="PIETPDATE_" class="form-control" [(ngModel)]="pie_perf.PIETPDATE_" ngui-datetime-picker date-only="true"
-              />
+              <input type="text" name="PIETPDATE_" class="form-control" [(ngModel)]="pie_perf.PIETPDATE_"
+                ngui-datetime-picker date-only="true" />
             </div>
             <div class="form-group">
               <select (change)="changePieFilterCategory($event)" class="form-control" id="CATEGORY" [(ngModel)]="pie_perf.CATEGORY">
@@ -439,8 +445,8 @@
         </div>
       </div>
       <div class="col-md-6" style="padding: 37px 0; border-radius: 20px">
-        <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [options]="doughnutChartOptions"
-          (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
+          [options]="doughnutChartOptions" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
       </div>
     </div>
   </div>
@@ -459,19 +465,20 @@
                 <ul class="list no_pad">
                   <li>
                     <div class="search_box">
-                      <input type="text" name="PPSTPDATE" class="form-control" [(ngModel)]="pps_perf.PPSTPDATE" ngui-datetime-picker date-only="true"
-                      />
+                      <input type="text" name="PPSTPDATE" class="form-control" [(ngModel)]="pps_perf.PPSTPDATE"
+                        ngui-datetime-picker date-only="true" />
 
                     </div>
                   </li>
                   <li>
                     <div class="search_box">
-                      <input type="text" name="PPSTPDATE_" class="form-control" [(ngModel)]="pps_perf.PPSTPDATE_" ngui-datetime-picker date-only="true"
-                      />
+                      <input type="text" name="PPSTPDATE_" class="form-control" [(ngModel)]="pps_perf.PPSTPDATE_"
+                        ngui-datetime-picker date-only="true" />
                     </div>
                   </li>
                   <li>
-                    <button class="btn btn-normal btn-orange btn-block edged_box" style="padding: 15px;width: auto;" (click)="runPPSPerformance()">View Requests</button>
+                    <button class="btn btn-normal btn-orange btn-block edged_box" style="padding: 15px;width: auto;"
+                      (click)="runPPSPerformance()">View Requests</button>
                   </li>
                 </ul>
               </div>
@@ -549,15 +556,15 @@
           <ul class="list no_pad">
             <li>
               <div class="search_box">
-                <input type="text" name="PPSTPDATE" class="form-control" [(ngModel)]="pps_perf.PPSTPDATE" ngui-datetime-picker date-only="true"
-                />
+                <input type="text" name="PPSTPDATE" class="form-control" [(ngModel)]="pps_perf.PPSTPDATE"
+                  ngui-datetime-picker date-only="true" />
 
               </div>
             </li>
             <li>
               <div class="search_box">
-                <input type="text" name="PPSTPDATE_" class="form-control" [(ngModel)]="pps_perf.PPSTPDATE_" ngui-datetime-picker date-only="true"
-                />
+                <input type="text" name="PPSTPDATE_" class="form-control" [(ngModel)]="pps_perf.PPSTPDATE_"
+                  ngui-datetime-picker date-only="true" />
               </div>
             </li>
             <li>
@@ -681,11 +688,11 @@
                       </select>
                     </div>
                     <div class="input-group" *ngIf="filterStatus=='date_duration'">
-                      <input type="text" name="TPDATE" class="form-control" [(ngModel)]="emp_perf.TPDATE" ngui-datetime-picker date-only="true"
-                      />
+                      <input type="text" name="TPDATE" class="form-control" [(ngModel)]="emp_perf.TPDATE"
+                        ngui-datetime-picker date-only="true" />
                       <span class="input-group-addon">To</span>
-                      <input type="text" name="TPDATE_" class="form-control" [(ngModel)]="emp_perf.TPDATE_" ngui-datetime-picker date-only="true"
-                      />
+                      <input type="text" name="TPDATE_" class="form-control" [(ngModel)]="emp_perf.TPDATE_"
+                        ngui-datetime-picker date-only="true" />
                     </div>
                     <div class="form-group" *ngIf="filterStatus=='category'">
                       <select class="form-control" id="CATEGORY" [(ngModel)]="emp_perf.CATEGORY">
@@ -694,7 +701,8 @@
                       </select>
                     </div>
 
-                    <button (click)="runEmployeePerformance()" [disabled]="emp_perf.TPDATE==''||emp_perf.TPDATE_==''" class="btn btn-primary btn-tp edged_box">Submit</button>
+                    <button (click)="runEmployeePerformance()" [disabled]="emp_perf.TPDATE==''||emp_perf.TPDATE_==''"
+                      class="btn btn-primary btn-tp edged_box">Submit</button>
                   </div>
                 </div>
               </div>
@@ -815,12 +823,4 @@
     </div>
   </div>
 </div>
-<!-- <div *ngIf="!preloading && !is_company_staff && summaryOpen" style="background:#fff" class="panl">
-  <app-loans [limited]=true></app-loans>
-</div> -->
-
-
-<div *ngIf="approvalsOpen && canViewModule">
-  <app-loansummary [pending_approvals]="approvals_size" [is_approval]=true [loan_viewed]="loan_viewed" [view_state]="0" [dontshownext]="0"
-    (modalClosed)="closeShowInterest($event)"></app-loansummary>
-</div>
+ 
