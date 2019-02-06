@@ -28,6 +28,7 @@ import { ProductModule } from '../../product/product.module';
 import { ProductbasicComponent } from '../../product/productbasic/productbasic.component';
 import { ProductsettingsComponent } from '../../product/productsettings/productsettings.component';
 import { ProductapprovalsComponent } from '../../product/productapprovals/productapprovals.component';
+import { WebsiteSettingsComponent } from '../../setting-module/website-settings/website-settings.component';
 
 const routes: Routes = [
   {
@@ -54,6 +55,7 @@ const routes: Routes = [
       { path: 'products', component: ProductSettingComponent, canActivate: [AuthGuard]},
       { path: 'security', component: SecurityComponent, canActivate: [AuthGuard]},
       { path: 'email', component: EmailTemplateComponent, canActivate: [AuthGuard]},
+      { path: 'website', component: WebsiteSettingsComponent, canActivate: [AuthGuard]},
       { path: 'product/:id', component: ProductbasicComponent, canActivate: [AuthGuard]},
       { path: 'product/:id/details', component: ProductbasicComponent, canActivate: [AuthGuard]},
       { path: 'product/:id/settings', component: ProductsettingsComponent, canActivate: [AuthGuard]},

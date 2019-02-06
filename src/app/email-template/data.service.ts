@@ -79,7 +79,7 @@ export class DataService {
   }
 
 
-  getSetting(resource) { 
+  getSetting(resource) {
     return this.http.post( this.link + 'getSetting', resource)
     .map( response  => response.json())
     .catch(this.handleError);

@@ -34,6 +34,7 @@ import { Ng2TrackScrollModule } from 'ng2-track-scroll';
 import { NewsettingsComponent } from './newsettings/newsettings.component';
 import { EmailHomeComponent } from './email-app/email-home/email-home.component';
 import { QuillModule } from 'ngx-quill';
+import { WebsiteSettingsComponent } from './email-template/website-settings/website-settings.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { QuillModule } from 'ngx-quill';
     CreditComponent,
     CreditdashboardComponent,
     PageNotFoundComponent, 
-    ForgotComponent, NewsettingsComponent, EmailHomeComponent
+    ForgotComponent, NewsettingsComponent, EmailHomeComponent, WebsiteSettingsComponent
   ],
   imports: [
     BrowserModule,

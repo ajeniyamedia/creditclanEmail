@@ -1,0 +1,280 @@
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingFIR">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFIR" aria-expanded="true" aria-controls="collapseFIR">
+           Website Logo
+        </a>
+      </h4>
+    </div>
+    <div id="collapseFIR" class="panel-collapse collapse" role="tabpanel" 
+    aria-labelledby="headingFIR">
+      <div class="panel-body">
+        <div class="panel-body toc-panel">
+            <form #logoForm="ngForm" (ngSubmit)="onSubmitLogo(logoForm)">
+                <div class="form-group">
+                    <label for="exampleFormControlFile1">Upload logo Image</label>
+                    <input type="file" class="form-control-file" 
+                    required
+                    [(ngModel)]="logo" name="logo"
+                    #logoName="ngModel"
+                    >
+                </div>
+                <div *ngIf="!logoName.valid && logoName.touched"> 
+                    <div class="alert alert-danger" role="alert">
+                        Logo is required!
+                    </div>
+                </div>
+
+
+                <button type="submit" [disabled]="!logoForm.form.valid">
+                    Upload
+                    <i class="fa fa-spinner fa-spin" *ngIf="loader"></i>
+                  </button>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingBack">
+        <h4 class="panel-title">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseBack" aria-expanded="true" aria-controls="collapseFIR">
+              Background Image
+          </a>
+        </h4>
+      </div>
+      <div id="collapseBack" class="panel-collapse collapse" role="tabpanel" 
+      aria-labelledby="headingBack">
+        <div class="panel-body">
+          <div class="panel-body toc-panel">
+              <form #bgImageForm="ngForm" (ngSubmit)="onSubmitBgImage(bgImageForm)">
+                  <div class="form-group">
+                      <label for="exampleFormControlFile1">Upload background Image</label>
+                      <input type="file" class="form-control-file" 
+                      required
+                      [(ngModel)]="bgImage" name="bgImage"
+                      #bgImageName="ngModel"
+                      >
+                  </div>
+                  <div *ngIf="!bgImageName.valid && bgImageName.touched">
+                      <div class="alert alert-danger" role="alert">
+                          Background is required!
+                      </div>
+                  </div>
+
+
+                <div class="form-group">
+                    <label for="bgPos">Background Position</label>
+                    <input type="text" class="form-control"  
+                    placeholder="1200 by 800"
+                    required 
+                    [(ngModel)]="bgPos" name="bgPos"
+                    #bgPosText="ngModel">
+                </div>
+  
+                  <button type="submit" [disabled]="!bgImageForm.form.valid">
+                      Upload <i class="fa fa-spinner fa-spin" *ngIf="loader"></i>
+                    </button>
+              </form>
+          </div>
+        </div>
+      </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingToAction">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseToAction" aria-expanded="true" aria-controls="collapseFIR">
+            Call To Action
+        </a>
+      </h4>
+    </div>
+    <div id="collapseToAction" class="panel-collapse collapse" role="tabpanel" 
+    aria-labelledby="headingToAction">
+      <div class="panel-body">
+        <div class="panel-body toc-panel">
+            <form #callToActionForm="ngForm" (ngSubmit)="onSubmitCallToAction(callToActionForm)">
+
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Call To Action</label>
+                    <textarea class="form-control" 
+                    required
+                    [(ngModel)]="callToAction" name="callToAction"
+                    #onSubmitCallToAction="ngModel"
+                    rows="3"></textarea>
+                  </div>
+                <div *ngIf="!onSubmitCallToAction.valid && onSubmitCallToAction.touched">
+                    <div class="alert alert-danger" role="alert">
+                        Call to action is required!
+                    </div>
+                </div>
+
+                <button type="submit" [disabled]="!callToActionForm.form.valid">
+                    Submit
+                    <i class="fa fa-spinner fa-spin" *ngIf="loader"></i>
+                  </button>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingCodeSection">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCodeSection" aria-expanded="true" aria-controls="collapseFIR">
+            Code Section
+        </a>
+      </h4>
+    </div>
+    <div id="collapseCodeSection" class="panel-collapse collapse" role="tabpanel" 
+    aria-labelledby="headingCodeSection">
+      <div class="panel-body">
+        <div class="panel-body toc-panel">
+            <form #codeSectionForm="ngForm" (ngSubmit)="onSubmitCodeSection(codeSectionForm)">
+
+                <div class="form-group">
+                    <label for="slogan">Company corporate slogan</label>
+                    <input type="text" class="form-control"  
+                    placeholder="Borrow with Convenience"
+                    required 
+                    [(ngModel)]="slogan" name="slogan"
+                    #sloganText="ngModel">
+                </div>
+                
+                <div *ngIf="!sloganText.valid && sloganText.touched">
+                    <div class="alert alert-danger" role="alert">
+                        Corporate slogan is required!
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="corporateCode">Company corporate code</label>
+                    <input type="text" class="form-control"  
+                    placeholder="Coolbucksng"
+                    required 
+                    [(ngModel)]="corporateCode" name="corporateCode"
+                    #code="ngModel">
+                </div>
+                
+                <div *ngIf="!code.valid && code.touched">
+                    <div class="alert alert-danger" role="alert">
+                        Corporate code is required!
+                    </div>
+                </div>
+
+                <button type="submit" [disabled]="!codeSectionForm.form.valid">
+                    Submit
+                    <i class="fa fa-spinner fa-spin" *ngIf="loader"></i>
+                  </button>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingContact">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseContact" aria-expanded="true" aria-controls="collapseFIR">
+            Contact Section
+        </a>
+      </h4>
+    </div>
+    <div id="collapseContact" class="panel-collapse collapse" role="tabpanel" 
+    aria-labelledby="headingContact">
+      <div class="panel-body">
+        <div class="panel-body toc-panel">
+            <form #contactSectionForm="ngForm" (ngSubmit)="onSubmitContactSection(contactSectionForm)">
+
+                <div class="form-group">
+                    <label for="companyDescription">Company discription</label>
+                    <textarea class="form-control" 
+                    required 
+                    [(ngModel)]="companyDescription" name="companyDescription"
+                    #companyDes="ngModel"
+                    rows="3"></textarea>
+                </div>
+                
+                <div *ngIf="!companyDes.valid && companyDes.touched">
+                    <div class="alert alert-danger" role="alert">
+                        Company discription is required!
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control"  
+                    required 
+                    [(ngModel)]="address" name="address"
+                    #companyAddress="ngModel">
+                </div>
+                
+                <div *ngIf="!companyAddress.valid && companyAddress.touched">
+                    <div class="alert alert-danger" role="alert">
+                        Corporate code is required!
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Email</label>
+                    <input type="text" class="form-control"  
+                    required 
+                    [(ngModel)]="email" name="email"
+                    #companyEmails="ngModel">
+                </div>
+                
+                <div *ngIf="!companyEmails.valid && companyEmails.touched">
+                    <div class="alert alert-danger" role="alert">
+                        Email is required!
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Phone Number</label>
+                    <input type="text" class="form-control"  
+                    required 
+                    [(ngModel)]="phone" name="phone"
+                    #companyPhone="ngModel">
+                </div>
+                
+                <div *ngIf="!companyPhone.valid && companyPhone.touched">
+                    <div class="alert alert-danger" role="alert">
+                        Phone Number is required!
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlFile1">Upload background Image</label>
+                    <input type="file" class="form-control-file" 
+                    required
+                    [(ngModel)]="bgImage" name="bgImage"
+                    #bgImageName="ngModel"
+                    >
+                </div>
+                <div *ngIf="!bgImageName.valid && bgImageName.touched">
+                    <div class="alert alert-danger" role="alert">
+                        Background is required!
+                    </div>
+                </div>
+
+
+              <div class="form-group">
+                  <label for="bgPos">Background Position</label>
+                  <input type="text" class="form-control"  
+                  placeholder="1200 by 800"
+                  required 
+                  [(ngModel)]="bgPos" name="bgPos"
+                  #bgPosText="ngModel">
+              </div>
+
+                <button type="submit" [disabled]="!contactSectionForm.form.valid">
+                    Submit
+                    <i class="fa fa-spinner fa-spin" *ngIf="loader"></i>
+                  </button>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>

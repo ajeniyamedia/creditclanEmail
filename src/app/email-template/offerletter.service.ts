@@ -71,7 +71,7 @@ export class OfferletterService {
   }
 
 
-  getSetting(resource) { 
+  getSetting(resource) {
     return this.http.post( this.url + 'getOfferLetterSetting', resource)
     .map( response  => response.json())
     .catch(this.handleError);

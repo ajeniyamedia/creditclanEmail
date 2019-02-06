@@ -22,6 +22,7 @@ import { LoanamountComponent } from './loanamount/loanamount.component';
 import { P2pComponent } from './p2p/p2p.component';
 import { GuarantorComponent } from './guarantor/guarantor.component';
 import { EmailTemplateComponent } from './email-template/email-template.component';
+import { WebsiteSettingsComponent } from './website-settings/website-settings.component';
 
 @NgModule({
   imports: [
@@ -34,6 +35,6 @@ import { EmailTemplateComponent } from './email-template/email-template.componen
     ApprovalsComponent, CompanyComponent, AnalyticsComponent, MessagesComponent,
     LoanamountComponent,
     PaymentSettingsComponent, SecurityComponent, AccountingComponent, PeerCrowdComponent,
-    DashboardComponent, ProductSettingComponent, P2pComponent, GuarantorComponent, EmailTemplateComponent]
+    DashboardComponent, ProductSettingComponent, P2pComponent, GuarantorComponent, EmailTemplateComponent, WebsiteSettingsComponent]
 })
 export class SettingModuleModule { }

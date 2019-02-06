@@ -1,6 +1,6 @@
 <app-main-navigation></app-main-navigation>
 
-<div class="row" style="margin-top:150px">
+<div class="container-fluid" style="margin-top:150px">
         <div class="col-xs-6 col-sm-3">
             <div>
                 <div class="sidebar">
@@ -84,6 +84,9 @@
                 </a>
                 <a [routerLink]="['/newsettings/email']">
                   <p (click)="viewTitle = 'Email Settings'">Email setting</p>
+                </a>
+                <a [routerLink]="['/newsettings/website']">
+                  <p (click)="viewTitle = 'Website Settings'">Website setting</p>
                 </a>
               </div>
         </div>
