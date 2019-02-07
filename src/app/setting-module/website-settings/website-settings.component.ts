@@ -116,7 +116,7 @@ export class WebsiteSettingsComponent implements OnInit {
       });
   }
 
-  onSubmitBgImage() {
+  onSubmitBgImage(form: NgForm) {
     this.loader = true;
       const uploadBgImage = new FormData();
         uploadBgImage.append('img', this.selectedBgImg, this.selectedBgImg.name);

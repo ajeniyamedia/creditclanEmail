@@ -75,7 +75,7 @@
       aria-labelledby="headingBack">
         <div class="panel-body">
           <div class="panel-body toc-panel">
-              <form #bgImageForm="ngForm" enctype="multipart/form-data" (ngSubmit)="onSubmitBgImage()">
+              <form #bgImageForm="ngForm" enctype="multipart/form-data" (ngSubmit)="onSubmitBgImage(bgImageForm)">
                     <div *ngIf="!data">
                             <div class="linear-background">
                                 <div class="inter-draw"></div>
@@ -90,7 +90,9 @@
 
                   <div class="form-group">
                       <label for="exampleFormControlFile1">Upload background Image</label>
-                      <input type="file" class="form-control-file" 
+                      <input class="form-control-file" 
+                      type="file"
+                      (change)="onBgImgUpload($event)"
                       [(ngModel)]="bgImage" name="img"
                       >
                   </div>

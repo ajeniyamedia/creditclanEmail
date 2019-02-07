@@ -14,12 +14,12 @@ export class EmailService {
 
   getWebsiteContent(company_id: any): Observable<any> {
     return this.http.
-    post('https://emailmodule.creditclan.com/index.php/websiteSetting/getWebsiteInformation',
+    post('http://localhost:8888/email/index.php/websiteSetting/getWebsiteInformation',
     {company_id: company_id}).map((response: Response) => response.json());
   }
 
   postLogo(uploadData): Observable<any> {
-    return this.http.post('https://emailmodule.creditclan.com/index.php/websiteSetting/updateLogo', 
+    return this.http.post('http://localhost:8888/email/index.php/websiteSetting/updateLogo', 
     uploadData)
       .map((response: Response) =>  response.json());
   }
@@ -28,20 +28,20 @@ export class EmailService {
   postBgImage(uploadBgImage): Observable<any> {
     console.log(uploadBgImage);
     return this.http
-    .post('https://emailmodule.creditclan.com/index.php/websiteSetting/updateBgImg',
+    .post('http://localhost:8888/email/index.php/websiteSetting/updateBgImg',
     uploadBgImage ).map((response: Response) => response.json());
   }
 
   postCallToAction(token: any, company_id: any, data: any): Observable<any> {
     return this.http.
-    post('https://emailmodule.creditclan.com/index.php/websiteSetting/addCallToAction',
+    post('http://localhost:8888/email/index.php/websiteSetting/addCallToAction',
     {token: token, company_id: company_id, call_to_action: data })
       .map((response: Response) => response.json());
   }
 
   postCodeSection(token: any, company_id: any, data: any): Observable<any> {
     return this.http
-    .post('https://emailmodule.creditclan.com/index.php/websiteSetting/updateCodeSection', {
+    .post('http://localhost:8888/email/index.php/websiteSetting/updateCodeSection', {
         token: token,
         company_id: company_id,
         website_company_slogan: data.corporateCode,
@@ -52,7 +52,7 @@ export class EmailService {
   postContactSection(uploadFooter): Observable<any> {
     console.log(uploadFooter);
     return this.http
-    .post('https://emailmodule.creditclan.com/index.php/websiteSetting/updateFooterSection',
+    .post('http://localhost:8888/email/index.php/websiteSetting/updateFooterSection',
     uploadFooter ).map((response: Response) => response.json());
   }
 
