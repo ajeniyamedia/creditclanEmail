@@ -12,40 +12,48 @@ export class EmailService {
   constructor(public http: Http) {
   }
 
-  getWebsiteContent(token: any, savings_id: any): Observable<any> {
-    return this.http.post('https://savings.creditclan.com/api/v2/',
-      JSON.stringify({ token: token, savings_id: savings_id }))
+  getWebsiteContent(company_id: any): Observable<any> {
+    return this.http.
+    post('https://emailmodule.creditclan.com/index.php/websiteSetting/getWebsiteInformation',
+    {company_id: company_id}).map((response: Response) => response.json());
+  }
+
+  postLogo(uploadData): Observable<any> {
+    return this.http.post('https://emailmodule.creditclan.com/index.php/websiteSetting/updateLogo', 
+    uploadData)
+      .map((response: Response) =>  response.json());
+  }
+
+
+  postBgImage(uploadBgImage): Observable<any> {
+    console.log(uploadBgImage);
+    return this.http
+    .post('https://emailmodule.creditclan.com/index.php/websiteSetting/updateBgImg',
+    uploadBgImage ).map((response: Response) => response.json());
+  }
+
+  postCallToAction(token: any, company_id: any, data: any): Observable<any> {
+    return this.http.
+    post('https://emailmodule.creditclan.com/index.php/websiteSetting/addCallToAction',
+    {token: token, company_id: company_id, call_to_action: data })
       .map((response: Response) => response.json());
   }
 
-  postLogo(token: any, savings_id: any, data:any): Observable<any> {
-    return this.http.post('https://savings.creditclan.com/api/v2/',
-      JSON.stringify({ token: token, savings_id: savings_id, request:data }))
-      .map((response: Response) => response.json());
+  postCodeSection(token: any, company_id: any, data: any): Observable<any> {
+    return this.http
+    .post('https://emailmodule.creditclan.com/index.php/websiteSetting/updateCodeSection', {
+        token: token,
+        company_id: company_id,
+        website_company_slogan: data.corporateCode,
+        website_company_code: data.slogan
+      }).map((response: Response) => response.json());
   }
 
-  postBgImage(token: any, savings_id: any, data:any): Observable<any> {
-    return this.http.post('https://savings.creditclan.com/api/v2/',
-      JSON.stringify({ token: token, savings_id: savings_id, request:data }))
-      .map((response: Response) => response.json());
-  }
-
-  postCallToAction(token: any, savings_id: any, data:any): Observable<any> {
-    return this.http.post('https://savings.creditclan.com/api/v2/',
-      JSON.stringify({ token: token, savings_id: savings_id, request:data }))
-      .map((response: Response) => response.json());
-  }
-
-  postCodeSection(token: any, savings_id: any, data:any): Observable<any> {
-    return this.http.post('https://savings.creditclan.com/api/v2/',
-      JSON.stringify({ token: token, savings_id: savings_id, request:data }))
-      .map((response: Response) => response.json());
-  }
-
-  postContactSection(token: any, savings_id: any, data:any): Observable<any> {
-    return this.http.post('https://savings.creditclan.com/api/v2/',
-      JSON.stringify({ token: token, savings_id: savings_id, request:data }))
-      .map((response: Response) => response.json());
+  postContactSection(uploadFooter): Observable<any> {
+    console.log(uploadFooter);
+    return this.http
+    .post('https://emailmodule.creditclan.com/index.php/websiteSetting/updateFooterSection',
+    uploadFooter ).map((response: Response) => response.json());
   }
 
 

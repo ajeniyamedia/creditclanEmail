@@ -23,11 +23,13 @@ import { P2pComponent } from './p2p/p2p.component';
 import { GuarantorComponent } from './guarantor/guarantor.component';
 import { EmailTemplateComponent } from './email-template/email-template.component';
 import { WebsiteSettingsComponent } from './website-settings/website-settings.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   imports: [
     CommonModule,
     SettingsroutingModule,
+    ImageCropperModule,
     SharedModule
   ],
   declarations: [HomeComponent, GeneralComponent, MobileWebsiteComponent,

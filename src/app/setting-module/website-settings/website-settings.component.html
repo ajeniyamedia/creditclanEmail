@@ -10,11 +10,25 @@
     aria-labelledby="headingFIR">
       <div class="panel-body">
         <div class="panel-body toc-panel">
-            <form #logoForm="ngForm" (ngSubmit)="onSubmitLogo(logoForm)">
+            <form #logoForm="ngForm" enctype="multipart/form-data" (ngSubmit)="onSubmitLogo()">
+                <!-- {{ data[0]?.website_logo }} -->
+                <div *ngIf="!data">
+                        <div class="linear-background">
+                                <div class="inter-draw"></div>
+                                <div class="inter-crop"></div>
+                                <div class="inter-right--top"></div>
+                                <div class="inter-right--bottom"></div>
+                            </div>
+                </div>
+                <div *ngIf="selectedLogo">
+                    <img  class="img--padding__full" [(src)]="logo"> 
+                </div>
+                
                 <div class="form-group">
                     <label for="exampleFormControlFile1">Upload logo Image</label>
                     <input type="file" class="form-control-file" 
                     required
+                    (change)="onFileChanged($event)"
                     [(ngModel)]="logo" name="logo"
                     #logoName="ngModel"
                     >
@@ -24,6 +38,19 @@
                         Logo is required!
                     </div>
                 </div>
+
+                <image-cropper
+                    [imageChangedEvent]="imageChangedEvent"
+                    [maintainAspectRatio]="true"
+                    [aspectRatio]="4 / 3"
+                    [resizeToWidth]="128"
+                    format="png"
+                    (imageCropped)="imageCropped($event)"
+                    (imageLoaded)="imageLoaded()"
+                    (loadImageFailed)="loadImageFailed()"
+                ></image-cropper>
+
+            <img [src]="croppedImage" />
 
 
                 <button type="submit" [disabled]="!logoForm.form.valid">
@@ -48,32 +75,27 @@
       aria-labelledby="headingBack">
         <div class="panel-body">
           <div class="panel-body toc-panel">
-              <form #bgImageForm="ngForm" (ngSubmit)="onSubmitBgImage(bgImageForm)">
+              <form #bgImageForm="ngForm" enctype="multipart/form-data" (ngSubmit)="onSubmitBgImage()">
+                    <div *ngIf="!data">
+                            <div class="linear-background">
+                                <div class="inter-draw"></div>
+                                <div class="inter-crop"></div>
+                                <div class="inter-right--top"></div>
+                                <div class="inter-right--bottom"></div>
+                            </div>
+                    </div>
+                    <div *ngIf="data">
+                        <img  class="img--padding" [src]="data[0]?.website_bk_img"> 
+                    </div>
+
                   <div class="form-group">
                       <label for="exampleFormControlFile1">Upload background Image</label>
                       <input type="file" class="form-control-file" 
-                      required
-                      [(ngModel)]="bgImage" name="bgImage"
-                      #bgImageName="ngModel"
+                      [(ngModel)]="bgImage" name="img"
                       >
                   </div>
-                  <div *ngIf="!bgImageName.valid && bgImageName.touched">
-                      <div class="alert alert-danger" role="alert">
-                          Background is required!
-                      </div>
-                  </div>
-
-
-                <div class="form-group">
-                    <label for="bgPos">Background Position</label>
-                    <input type="text" class="form-control"  
-                    placeholder="1200 by 800"
-                    required 
-                    [(ngModel)]="bgPos" name="bgPos"
-                    #bgPosText="ngModel">
-                </div>
   
-                  <button type="submit" [disabled]="!bgImageForm.form.valid">
+                  <button type="submit">
                       Upload <i class="fa fa-spinner fa-spin" *ngIf="loader"></i>
                     </button>
               </form>
@@ -94,13 +116,13 @@
     aria-labelledby="headingToAction">
       <div class="panel-body">
         <div class="panel-body toc-panel">
-            <form #callToActionForm="ngForm" (ngSubmit)="onSubmitCallToAction(callToActionForm)">
+            <form #callToActionForm="ngForm" (ngSubmit)="onSubmitToAction(callToActionForm)">
 
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Call To Action</label>
                     <textarea class="form-control" 
                     required
-                    [(ngModel)]="callToAction" name="callToAction"
+                    [(ngModel)]="data[0].website_call_to_action" name="callToAction"
                     #onSubmitCallToAction="ngModel"
                     rows="3"></textarea>
                   </div>
@@ -139,7 +161,7 @@
                     <input type="text" class="form-control"  
                     placeholder="Borrow with Convenience"
                     required 
-                    [(ngModel)]="slogan" name="slogan"
+                    [(ngModel)]="data[0].website_company_slogan" name="slogan"
                     #sloganText="ngModel">
                 </div>
                 
@@ -154,7 +176,7 @@
                     <input type="text" class="form-control"  
                     placeholder="Coolbucksng"
                     required 
-                    [(ngModel)]="corporateCode" name="corporateCode"
+                    [(ngModel)]="data[0].website_company_code" name="corporateCode"
                     #code="ngModel">
                 </div>
                 
@@ -191,85 +213,58 @@
                 <div class="form-group">
                     <label for="companyDescription">Company discription</label>
                     <textarea class="form-control" 
-                    required 
-                    [(ngModel)]="companyDescription" name="companyDescription"
+                    [(ngModel)]="data[0].website_company_description" name="companyDescription"
                     #companyDes="ngModel"
                     rows="3"></textarea>
                 </div>
-                
-                <div *ngIf="!companyDes.valid && companyDes.touched">
-                    <div class="alert alert-danger" role="alert">
-                        Company discription is required!
-                    </div>
-                </div>
+
 
                 <div class="form-group">
                     <label for="address">Address</label>
                     <input type="text" class="form-control"  
-                    required 
-                    [(ngModel)]="address" name="address"
+                    [(ngModel)]="data[0].website_address" name="address"
                     #companyAddress="ngModel">
                 </div>
                 
-                <div *ngIf="!companyAddress.valid && companyAddress.touched">
-                    <div class="alert alert-danger" role="alert">
-                        Corporate code is required!
-                    </div>
-                </div>
+
 
                 <div class="form-group">
                     <label for="address">Email</label>
                     <input type="text" class="form-control"  
-                    required 
-                    [(ngModel)]="email" name="email"
+                    [(ngModel)]="data[0].website_email" name="email"
                     #companyEmails="ngModel">
                 </div>
                 
-                <div *ngIf="!companyEmails.valid && companyEmails.touched">
-                    <div class="alert alert-danger" role="alert">
-                        Email is required!
-                    </div>
-                </div>
+
 
                 <div class="form-group">
                     <label for="address">Phone Number</label>
                     <input type="text" class="form-control"  
-                    required 
-                    [(ngModel)]="phone" name="phone"
+                    [(ngModel)]="data[0].website_phone" name="phone"
                     #companyPhone="ngModel">
                 </div>
-                
-                <div *ngIf="!companyPhone.valid && companyPhone.touched">
-                    <div class="alert alert-danger" role="alert">
-                        Phone Number is required!
-                    </div>
-                </div>
+
 
                 <div class="form-group">
-                    <label for="exampleFormControlFile1">Upload background Image</label>
+                    <label for="img">Upload background Image</label>
                     <input type="file" class="form-control-file" 
-                    required
-                    [(ngModel)]="bgImage" name="bgImage"
+                    (change)="onFooterImgUpload($event)"
+                    [(ngModel)]="img" name="img"
                     #bgImageName="ngModel"
                     >
                 </div>
-                <div *ngIf="!bgImageName.valid && bgImageName.touched">
-                    <div class="alert alert-danger" role="alert">
-                        Background is required!
-                    </div>
-                </div>
+
 
 
               <div class="form-group">
-                  <label for="bgPos">Background Position</label>
+                  <label for="bgPosFooter">Background Position</label>
                   <input type="text" class="form-control"  
                   placeholder="1200 by 800"
-                  required 
-                  [(ngModel)]="bgPos" name="bgPos"
+                  [(ngModel)]="data[0].website_footer_pg_img_position" name="bgPosFooter"
                   #bgPosText="ngModel">
               </div>
 
-                <button type="submit" [disabled]="!contactSectionForm.form.valid">
+                <button type="submit">
                     Submit
                     <i class="fa fa-spinner fa-spin" *ngIf="loader"></i>
                   </button>
