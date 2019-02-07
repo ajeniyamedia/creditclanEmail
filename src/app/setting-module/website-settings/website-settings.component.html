@@ -44,13 +44,12 @@
                     [maintainAspectRatio]="true"
                     [aspectRatio]="4 / 3"
                     [resizeToWidth]="128"
-                    format="png"
                     (imageCropped)="imageCropped($event)"
                     (imageLoaded)="imageLoaded()"
                     (loadImageFailed)="loadImageFailed()"
                 ></image-cropper>
 
-            <img [src]="croppedImage" />
+               <img [src]="croppedImage" />
 
 
                 <button type="submit" [disabled]="!logoForm.form.valid">
@@ -85,7 +84,7 @@
                             </div>
                     </div>
                     <div *ngIf="data">
-                        <img  class="img--padding" [src]="data[0]?.website_bk_img"> 
+                        <img  class="img--padding" [src]="bgImg"> 
                     </div>
 
                   <div class="form-group">
@@ -96,6 +95,8 @@
                       [(ngModel)]="bgImage" name="img"
                       >
                   </div>
+
+                  
   
                   <button type="submit">
                       Upload <i class="fa fa-spinner fa-spin" *ngIf="loader"></i>
@@ -246,25 +247,30 @@
                     #companyPhone="ngModel">
                 </div>
 
+                <div *ngIf="!data">
+                        <div class="linear-background">
+                            <div class="inter-draw"></div>
+                            <div class="inter-crop"></div>
+                            <div class="inter-right--top"></div>
+                            <div class="inter-right--bottom"></div>
+                        </div>
+                </div>
+
+                <div *ngIf="selectedFtImg">
+                        <img  class="img--padding" [(src)]="footerBgImg"> 
+                </div>
+
 
                 <div class="form-group">
                     <label for="img">Upload background Image</label>
                     <input type="file" class="form-control-file" 
                     (change)="onFooterImgUpload($event)"
-                    [(ngModel)]="img" name="img"
+                    [(ngModel)]="footerBgImg" name="img"
                     #bgImageName="ngModel"
                     >
                 </div>
 
 
-
-              <div class="form-group">
-                  <label for="bgPosFooter">Background Position</label>
-                  <input type="text" class="form-control"  
-                  placeholder="1200 by 800"
-                  [(ngModel)]="data[0].website_footer_pg_img_position" name="bgPosFooter"
-                  #bgPosText="ngModel">
-              </div>
 
                 <button type="submit">
                     Submit

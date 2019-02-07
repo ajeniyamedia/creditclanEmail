@@ -22,6 +22,11 @@ export class WebsiteSettingsComponent implements OnInit {
   selectBgImg: any;
   footerImg: any;
   selectedBgImg: File;
+  bgImg: any;
+  footerBgImg: any;
+  selectedFtImg = true;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
 
   constructor(
     public toastr: ToastrService,
@@ -40,6 +45,8 @@ export class WebsiteSettingsComponent implements OnInit {
       this.data = data;
       console.log(this.data);
       this.logo = data[0].website_logo;
+      this.bgImg = data[0].website_bk_img;
+      this.footerBgImg = data[0].website_footer_bg_img;
     });
   }
 
@@ -57,7 +64,7 @@ export class WebsiteSettingsComponent implements OnInit {
 
   onFooterImgUpload(event) {
     this.selectedFooterImg = event.target.files[0];
-    this.selectedLogo = false;
+    this.selectedFtImg = false;
     console.log(this.selectedFooterImg);
   }
 
@@ -107,10 +114,11 @@ export class WebsiteSettingsComponent implements OnInit {
         uploadFooter.append('address', form.value.address);
         uploadFooter.append('email', form.value.email);
         uploadFooter.append('phone', form.value.phone);
-        uploadFooter.append('bgPosFooter', form.value.bgPosFooter);
 
-      console.log(form.value);
-      this.services.postContactSection(uploadFooter).subscribe(() => {
+      this.services.postContactSection(uploadFooter).subscribe((data) => {
+        console.log(data);
+        this.footerBgImg = data.website_bk_img;
+        this.selectedFtImg = true;
         this.loader = false;
         this.toastr.success('Success', 'Success!');
       });
@@ -122,10 +130,29 @@ export class WebsiteSettingsComponent implements OnInit {
         uploadBgImage.append('img', this.selectedBgImg, this.selectedBgImg.name);
         uploadBgImage.append('company_id', this.vendor_id);
 
-      this.services.postBgImage(uploadBgImage).subscribe(() => {
+      this.services.postBgImage(uploadBgImage).subscribe(( response ) => {
+        this.bgImg = response.website_bk_img;
+
+        console.log(response);
         this.loader = false;
         this.toastr.success('Success', 'Success!');
       });
+  }
+
+  fileChangeEvent(event: any): void {
+    this.imageChangedEvent = event;
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+      this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+      // show cropper
+  }
+  
+  loadImageFailed() {
+      // show message
   }
 
 }

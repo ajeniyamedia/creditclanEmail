@@ -26,10 +26,8 @@ export class EmailService {
 
 
   postBgImage(uploadBgImage): Observable<any> {
-    console.log(uploadBgImage);
-    return this.http
-    .post('http://localhost:8888/email/index.php/websiteSetting/updateBgImg',
-    uploadBgImage ).map((response: Response) => response.json());
+    return this.http.post('http://localhost:8888/email/index.php/websiteSetting/updateBgImg',
+    uploadBgImage ).map((response) => response.json());
   }
 
   postCallToAction(token: any, company_id: any, data: any): Observable<any> {
